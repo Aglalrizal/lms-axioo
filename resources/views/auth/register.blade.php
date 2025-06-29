@@ -80,11 +80,7 @@
                             <hr class="flex-grow-1">
                         </div>
                         {{-- Login with Google Button --}}
-                        <div>
-                            <div class="d-grid">
-                                <a href="#" class="btn btn-primary">Sign up with Google</a>
-                            </div>
-                        </div>
+                        <x-google-button title="Sign Up"></x-google-button>
                     </div>
                 </div>
             </div>

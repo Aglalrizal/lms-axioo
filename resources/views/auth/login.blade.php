@@ -16,7 +16,7 @@
                                 <h1 class="mb-0 fw-bold">Sign in</h1>
                                 <span>
                                     Don’t have an account?
-                                    <a href="sign-up.html" class="ms-1">Sign up</a>
+                                    <a href="{{ route('register') }}" class="ms-1">Sign up</a>
                                 </span>
                             </div>
                         </div>
@@ -62,12 +62,7 @@
                             <span class="mx-2 text-muted">or</span>
                             <hr class="flex-grow-1">
                         </div>
-                        <div>
-                            <!-- Button -->
-                            <div class="d-grid">
-                                <a href="submit" class="btn btn-primary">Login with Google</a>
-                            </div>
-                        </div>
+                        <x-google-button title="Login"></x-google-button>
                     </div>
                 </div>
             </div>

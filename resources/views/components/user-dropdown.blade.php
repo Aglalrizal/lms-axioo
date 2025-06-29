@@ -11,7 +11,7 @@
                     <img alt="avatar" src="/assets/images/avatar/avatar-1.jpg" class="rounded-circle" />
                 </div>
                 <div class="ms-3 lh-1">
-                    <h5 class="mb-1">{{ auth()->user()->name ?? 'User' }}</h5>
+                    <h5 class="mb-1">{{ auth()->user()->username ?? 'User' }}</h5>
                     <p class="mb-0">{{ auth()->user()->email }}</p>
                 </div>
             </div>
