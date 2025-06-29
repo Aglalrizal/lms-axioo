@@ -1,0 +1,58 @@
+<div class="dropdown ms-2 d-inline-block position-static">
+    <a class="rounded-circle" href="#" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+        <div class="avatar avatar-md avatar-indicators avatar-online">
+            <img alt="avatar" src="/assets/images/avatar/avatar-1.jpg" class="rounded-circle" />
+        </div>
+    </a>
+    <div class="dropdown-menu dropdown-menu-end position-absolute mx-3 my-5">
+        <div class="dropdown-item">
+            <div class="d-flex">
+                <div class="avatar avatar-md avatar-indicators avatar-online">
+                    <img alt="avatar" src="/assets/images/avatar/avatar-1.jpg" class="rounded-circle" />
+                </div>
+                <div class="ms-3 lh-1">
+                    <h5 class="mb-1">{{ auth()->user()->name ?? 'User' }}</h5>
+                    <p class="mb-0">{{ auth()->user()->email }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dropdown-divider"></div>
+
+        <ul class="list-unstyled">
+            <li>
+                <a class="dropdown-item" href="{{ route('dashboard') }}">
+                    <i class="fe fe-home me-2"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#">
+                    <i class="fe fe-user me-2"></i> Profile
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#">
+                    <i class="fe fe-star me-2"></i> Subscription
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#">
+                    <i class="fe fe-settings me-2"></i> Settings
+                </a>
+            </li>
+        </ul>
+
+        <div class="dropdown-divider"></div>
+
+        <ul class="list-unstyled mb-0">
+            <li>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="dropdown-item bg-transparent border-0">
+                        <i class="fe fe-power me-2"></i> Sign Out
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>
