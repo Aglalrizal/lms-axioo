@@ -4,7 +4,7 @@
             <div class="col-xl-3 col-lg-12 col-md-6 col-12">
                 <div class="d-flex flex-column gap-4">
                     <div>
-                        <img src="./assets/images/svg/geeks-logo.svg" alt="geeks logo" />
+                        <img src="{{ asset('./assets/images/brand/logo/logo.svg') }}" alt="geeks logo" />
                     </div>
                     <p class="mb-0">
                         Nascetur nibh feugiat vulputate urna mauris tincidunt

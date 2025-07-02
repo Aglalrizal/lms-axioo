@@ -1,7 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
     <section class="container d-flex flex-column vh-75 justify-content-center my-6">
         <div class="row align-items-center justify-content-center g-0 h-lg-100">
             <div class="col-lg-5 col-md-8 py-xl-0">
@@ -9,6 +7,7 @@
                 <div class="card shadow">
                     <!-- Card body -->
                     <div class="card-body p-6 d-flex flex-column gap-4">
+                        <x-auth-session-status class="mb-4" :status="session('status')" />
                         <div>
                             {{-- <a href="../index.html"><img src="../assets/images/brand/logo/logo-icon.svg" class="mb-4"
                                     alt="logo-icon" /></a> --}}
@@ -47,7 +46,7 @@
                                     <div class="invalid-feedback">You must agree before submitting.</div>
                                 </div> --}}
                                 <div>
-                                    <a href="forget-password.html">Forgot your password?</a>
+                                    <a href="{{ route('password.email') }}">Forgot your password?</a>
                                 </div>
                             </div>
                             <div>
