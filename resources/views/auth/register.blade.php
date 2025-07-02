@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('content')
     <section class="container d-flex flex-column vh-75 my-8 justify-content-center">
-        <x-auth-session-status class="mb-4" :status="session('status')" />
         <div class="row align-items-center justify-content-center g-0 h-lg-100">
             <div class="col-lg-5 col-md-8 py-xl-0">
                 <!-- Card -->
