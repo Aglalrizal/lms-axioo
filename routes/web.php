@@ -1,8 +1,16 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\SocialiteController;
+
+Route::middleware(['auth', 'role:admin'])->group( function () {
+    Route::get('/admin/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/users/all', [UserController::class, 'index'])->name('admin.users.all');
+    Route::post('/admin/users/{user}/role', [UserController::class, 'update'])->name('admin.users.updateRole');
+});
 
 Route::get('/', function () {
     return view('public.landing');
@@ -29,7 +37,7 @@ Route::get('/help-center/guide/{slug}', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/dashboard/admin-student', function () {
