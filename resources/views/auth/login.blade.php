@@ -26,15 +26,14 @@
                             <div class="mb-3">
                                 <x-input-label for="email" :value="__('Email')" />
                                 <x-text-input id="email" type="email" name="email" :value="old('email')" required
-                                    autofocus placeholder="Email address here" autocomplete="username" />
+                                    autofocus autocomplete="username" />
                                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
                             </div>
                             <!-- Password -->
                             <div class="mb-3">
                                 <x-input-label for="password" :value="__('Password')" />
 
-                                <x-text-input id="password" type="password" name="password" required
-                                    autocomplete="current-password" placeholder="****************" />
+                                <x-password-input></x-password-input>
 
                                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
                             </div>

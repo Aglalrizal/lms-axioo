@@ -33,16 +33,14 @@
                             <div class="mb-3">
                                 <x-input-label for="password" :value="__('Password')" />
 
-                                <x-text-input id="password" type="password" name="password" required
-                                    autocomplete="new-password" />
+                                <x-password-input></x-password-input>
 
                                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
                             </div>
                             {{-- Password Confirmation --}}
                             <div class="mb-3">
                                 <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-                                <x-text-input id="password_confirmation" type="password" name="password_confirmation"
-                                    required autocomplete="new-password" />
+                                <x-password-input :id="__('password_confirmation')" :name="__('password_confirmation')"></x-password-input>
                                 <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                             </div>
                             <div>

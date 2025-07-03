@@ -5,7 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\SocialiteController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('public.landing');
 });
 
 Route::get('/help-center', function () {
