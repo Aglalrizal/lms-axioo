@@ -448,7 +448,7 @@
                                             aria-controls="navMenuLevelThreeOne">
                                             NavItem 1
                                         </a>
-                                        <div id="navMenuLevelThreeOne" class="collapse collapse "
+                                        <div id="navMenuLevelThreeOne" class="collapse"
                                             data-bs-parent="#navMenuLevelThree">
                                             <ul class="nav flex-column">
                                                 <li class="nav-item">
