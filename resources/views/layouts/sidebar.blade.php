@@ -55,18 +55,7 @@
                 <div id="navCMS" class="collapse " data-bs-parent="#sideNavbar">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link  active "
-                                href="../../pages/dashboard/admin-cms-overview.html">Overview</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="../../pages/dashboard/admin-cms-post.html">All Post</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="../../pages/dashboard/admin-cms-post-new.html">New
-                                Post</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="../../pages/dashboard/admin-cms-post-category.html">Category</a>
+                            <a class="nav-link " href="{{ route('admin.faq') }}">FAQ</a>
                         </li>
                     </ul>
                 </div>

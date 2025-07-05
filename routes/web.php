@@ -2,14 +2,24 @@
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\FaqController as AdminFaq;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\SocialiteController;
 
 Route::middleware(['auth', 'role:admin'])->group( function () {
     Route::get('/admin/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/users/all', [UserController::class, 'index'])->name('admin.users.all');
+    Route::get('/admin/users/all', action: [UserController::class, 'index'])->name('admin.users.all');
     Route::post('/admin/users/{user}/role', [UserController::class, 'update'])->name('admin.users.updateRole');
+    Route::get('/admin/faq', action: [AdminFaq::class, 'index'])->name('admin.faq');
+    // Route::post('/admin/faq/store', action: [AdminFaq::class, 'store'])->name('admin.faq.store');
+});
+
+Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
+    Route::post('admin/faq/store', [AdminFaq::class, 'store'])->name('admin.faq.store');
+    Route::put('admin/faq/{faq}', [AdminFaq::class, 'update'])->name('admin.faq.update');
+    Route::delete('/faqs/{faq}', [AdminFaq::class, 'destroy'])->name('admin.faq.destroy');
+    Route::post('/admin/faq/reorder', [AdminFaq::class, 'reorder'])->name('admin.faq.reorder');
 });
 
 Route::get('/', function () {

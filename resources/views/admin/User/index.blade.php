@@ -88,7 +88,8 @@
             </div>
         </div>
     </section>
-
+@endsection
+@section('scripts')
     {{-- script for datatables --}}
     <script src="{{ asset('assets/js/vendors/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/libs/datatables.net/js/dataTables.min.js') }}"></script>
