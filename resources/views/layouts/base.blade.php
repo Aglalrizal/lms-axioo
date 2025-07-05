@@ -2,10 +2,11 @@
 <html lang="en">
 
 <head>
+    @yield('styles')
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+    @yield('csrf-token')
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/images/favicon/favicon.ico') }}" />
 
@@ -30,7 +31,6 @@
     @yield('container')
 
     <!-- Scripts -->
-
     <!-- Libs JS -->
     <script src="{{ asset('assets/libs/@popperjs/core/dist/umd/popper.min.js') }}"></script>
     <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
@@ -39,13 +39,14 @@
     <!-- Theme JS -->
     <script src="{{ asset('assets/js/theme.min.js') }}"></script>
 
-    <script src="{{ asset('assets/libs/tiny-slider/dist/min/tiny-slider.js') }}"></script>
-    <script src="{{ asset('assets/js/vendors/tnsSlider.js') }}"></script>
+    {{-- <script src="{{ asset('assets/libs/tiny-slider/dist/min/tiny-slider.js') }}"></script>
+    <script src="{{ asset('assets/js/vendors/tnsSlider.js') }}"></script> --}}
 
     {{-- From: Help Center Support --}}
-    <script src={{ asset('assets/js/vendors/validation.js') }}></script>
+    {{-- <script src={{ asset('assets/js/vendors/validation.js') }}></script>
     <script src={{ asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}></script>
-    <script src={{ asset('assets/js/vendors/choice.js') }}></script>
+    <script src={{ asset('assets/js/vendors/choice.js') }}></script> --}}
+    @yield('scripts')
 
     <!-- Custom JS -->
     <script src="{{ asset('assets/js/script.js') }}"></script>
