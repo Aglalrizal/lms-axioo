@@ -172,175 +172,29 @@
                     <div class="offset-lg-2 col-lg-8 col-12">
                         <!-- accordions  -->
                         <div class="accordion accordion-flush" id="accordionExample">
-                            <div class="border p-3 rounded-3 mb-2" id="headingOne">
-                                <h3 class="mb-0 fs-4">
-                                    <a href="#" class="d-flex align-items-center text-inherit"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
-                                        aria-controls="collapseOne">
-                                        <span class="me-auto">Is there a 14-days trial?</span>
-                                        <span class="collapse-toggle ms-4">
-                                            <i class="fe fe-chevron-down"></i>
-                                        </span>
-                                    </a>
-                                </h3>
-                                <!-- collapse  -->
-                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
-                                    data-bs-parent="#accordionExample">
-                                    <div class="pt-2">
-                                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fuga aperiam velit
-                                        possimus! Voluptatum aliquid minima dolorum, enim perspiciatis sit. Distinctio
-                                        quidem perferendis
-                                        reprehenderit quisquam cum natus id, iusto, aut, quasi modi nihil veritatis!
-                                        Possimus eum beatae dolor rem quidem libero sit odio quia eius ullam.
+                            @foreach ($faqs as $faq)
+                                <div class="border p-3 rounded-3 mb-2" id="heading{{ $faq->id }}">
+                                    <h3 class="mb-0 fs-4">
+                                        <a href="#" class="d-flex align-items-center text-inherit"
+                                            data-bs-toggle="collapse" data-bs-target="#collapse{{ $faq->id }}"
+                                            @if ($loop->first) aria-expanded="true" @else aria-expanded="false" @endif
+                                            aria-controls="collapse{{ $faq->id }}">
+                                            <span class="me-auto">{{ $faq->question }}</span>
+                                            <span class="collapse-toggle ms-4">
+                                                <i class="fe fe-chevron-down"></i>
+                                            </span>
+                                        </a>
+                                    </h3>
+                                    <!-- collapse  -->
+                                    <div id="collapse{{ $faq->id }}"
+                                        class="collapse @if ($loop->first) show @endif"
+                                        aria-labelledby="heading{{ $faq->id }}" data-bs-parent="#accordionExample">
+                                        <div class="pt-2">
+                                            {{ $faq->answer }}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- Card  -->
-                            <!-- Card header  -->
-                            <div class="border p-3 rounded-3 mb-2" id="headingTwo">
-                                <h3 class="mb-0 fs-4">
-                                    <a href="#" class="d-flex align-items-center text-inherit"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
-                                        aria-controls="collapseTwo">
-                                        <span class="me-auto">What’s the benefits of the Premium Membership?</span>
-                                        <span class="collapse-toggle ms-4">
-                                            <i class="fe fe-chevron-down"></i>
-                                        </span>
-                                    </a>
-                                </h3>
-                                <!-- collapse  -->
-                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-                                    data-bs-parent="#accordionExample">
-                                    <div class="pt-3">
-                                        Velit nisi libero modi, repellat quo ducimus eos saepe totam architecto
-                                        doloremque earum commodi. Porro labore, accusantium totam eius unde quam
-                                        obcaecati cum ut animi voluptatum
-                                        iste sit veritatis minima reiciendis aliquid reprehenderit praesentium autem
-                                        ipsa molestias quod dolores.
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Card  -->
-                            <!-- Card header  -->
-                            <div class="border p-3 rounded-3 mb-2" id="headingThree">
-                                <h3 class="mb-0 fs-4">
-                                    <a href="#" class="d-flex align-items-center text-inherit"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
-                                        aria-controls="collapseThree">
-                                        <span class="me-auto">How much time I will need to learn this app?</span>
-                                        <span class="collapse-toggle ms-4">
-                                            <i class="fe fe-chevron-down"></i>
-                                        </span>
-                                    </a>
-                                </h3>
-                                <!-- collapse  -->
-                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
-                                    data-bs-parent="#accordionExample">
-                                    <div class="pt-3">
-                                        Necessitatibus alias at labore explicabo totam illum saepe error delectus
-                                        excepturi. Dolorem vitae eaque magnam quidem optio explicabo ipsa quae in nisi
-                                        aut voluptates ratione
-                                        cumque dignissimos non at voluptatum quis soluta, modi dolorum nesciunt porro
-                                        praesentium corporis commodi doloremque.
-                                        <br />
-                                        <br />
-                                        Architecto eaque vitae quaerat quo in, voluptas earum hic repudiandae assumenda,
-                                        incidunt, mollitia numquam illo saepe impedit!
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Card  -->
-                            <!-- Card header  -->
-                            <div class="border p-3 rounded-3 mb-2" id="headingFour">
-                                <h3 class="mb-0 fs-4">
-                                    <a href="#" class="d-flex align-items-center text-inherit"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false"
-                                        aria-controls="collapseFour">
-                                        <span class="me-auto">Are there any free tutorials available?</span>
-                                        <span class="collapse-toggle ms-4">
-                                            <i class="fe fe-chevron-down"></i>
-                                        </span>
-                                    </a>
-                                </h3>
-                                <!-- collapse  -->
-                                <div id="collapseFour" class="collapse" aria-labelledby="headingFour"
-                                    data-bs-parent="#accordionExample">
-                                    <div class="pt-3">
-                                        Tenetur rem error, voluptatem fugit iusto laudantium laborum at molestias
-                                        dolorum sint facilis voluptas alias soluta consequuntur. Id saepe officiis
-                                        voluptates sit fuga repellat
-                                        facilis tempore vel explicabo unde, dicta, natus, amet repellendus ea
-                                        reprehenderit! Perspiciatis non modi beatae vel est. Nisi?
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="border p-3 rounded-3 mb-2" id="headingFive">
-                                <h3 class="mb-0 fs-4">
-                                    <a href="#" class="d-flex align-items-center text-inherit"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false"
-                                        aria-controls="collapseFive">
-                                        <span class="me-auto">Is there a month-to-month payment option?</span>
-                                        <span class="collapse-toggle ms-4">
-                                            <i class="fe fe-chevron-down"></i>
-                                        </span>
-                                    </a>
-                                </h3>
-                                <!-- collapse  -->
-                                <div id="collapseFive" class="collapse" aria-labelledby="headingFive"
-                                    data-bs-parent="#accordionExample">
-                                    <div class="pt-3">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                        brunch. Food truck quinoa
-                                        nesciunt laborum eiusmod.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="border p-3 rounded-3 mb-2" id="headingSix">
-                                <h3 class="mb-0 fs-4">
-                                    <a href="#" class="d-flex align-items-center text-inherit"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false"
-                                        aria-controls="collapseSix">
-                                        <span class="me-auto">How do I take a Geeks course?</span>
-                                        <span class="collapse-toggle ms-4">
-                                            <i class="fe fe-chevron-down"></i>
-                                        </span>
-                                    </a>
-                                </h3>
-                                <!-- collpase  -->
-                                <div id="collapseSix" class="collapse" aria-labelledby="headingSix"
-                                    data-bs-parent="#accordionExample">
-                                    <div class="pt-3">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                        brunch. Food truck quinoa
-                                        nesciunt laborum eiusmod.
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- collapse  -->
-                            <div class="border p-3 rounded-3 mb-2" id="headingSeven">
-                                <h3 class="mb-0 fs-4">
-                                    <a href="#" class="d-flex align-items-center text-inherit"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false"
-                                        aria-controls="collapseSeven">
-                                        <span class="me-auto">How Does Geeks Courses Work?</span>
-                                        <span class="collapse-toggle ms-4">
-                                            <i class="fe fe-chevron-down"></i>
-                                        </span>
-                                    </a>
-                                </h3>
-                                <!-- collapse  -->
-                                <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven"
-                                    data-bs-parent="#accordionExample">
-                                    <div class="pt-3">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                        brunch. Food truck quinoa
-                                        nesciunt laborum eiusmod.
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
