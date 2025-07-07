@@ -61,13 +61,14 @@
                                         </svg>
                                     </div>
                                     <!-- heading  -->
-                                    <h3 class="fw-semibold"><a href="help-center-faq.html" class="text-inherit">FAQs</a>
+                                    <h3 class="fw-semibold"><a href="{{ route('public.help-center.faqs') }}"
+                                            class="text-inherit">FAQs</a>
                                     </h3>
                                     <!-- para  -->
                                     <p>FAQ, short for frequently asked questions, is a list of commonly asked questions
                                         and answers about a specific topic.</p>
                                     <!-- button  -->
-                                    <a href="help-center-faq.html" class="link-primary fw-semibold">
+                                    <a href="{{ route('public.help-center.faqs') }}" class="link-primary fw-semibold">
                                         View FAQ
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                             fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
@@ -93,13 +94,14 @@
                                         </svg>
                                     </div>
                                     <!-- heading  -->
-                                    <h3 class="fw-semibold"><a href="help-center-guide.html" class="text-inherit">Guides
+                                    <h3 class="fw-semibold"><a href="{{ route('public.help-center.guide') }}"
+                                            class="text-inherit">Guides
                                             & Resources</a></h3>
                                     <!-- para  -->
                                     <p>UI Style Guides are a design & development tool that brings cohesion to a digital
                                         product user interface & experience</p>
                                     <!-- button  -->
-                                    <a href="help-center-guide.html" class="link-primary fw-semibold">
+                                    <a href="{{ route('public.help-center.guide') }}" class="link-primary fw-semibold">
                                         Browse Guides
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                             fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
@@ -134,13 +136,13 @@
                                         </svg>
                                     </div>
                                     <!-- heading  -->
-                                    <h3 class="fw-semibold"><a href="help-center-support.html"
+                                    <h3 class="fw-semibold"><a href="{{ route('public.help-center.support') }}"
                                             class="text-inherit">Support</a></h3>
                                     <!-- para  -->
                                     <p>The good news is that youre not alone, and youre in the right place. Contact us
                                         for more detailed support.</p>
                                     <!-- button  -->
-                                    <a href="help-center-support.html" class="link-primary fw-semibold">
+                                    <a href="{{ route('public.help-center.support') }}" class="link-primary fw-semibold">
                                         Submit a Request
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                             fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">

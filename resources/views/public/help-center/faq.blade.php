@@ -31,10 +31,10 @@
         </div>
         <section class="py-8">
             <div class="container">
-                <div class="row mb-6">
+                {{-- <div class="row mb-6">
                     <div class="offset-md-2 col-md-8 col-12">
                         <div class="d-flex flex-column gap-4">
-                            <div class="">
+                            <div>
                                 <h2 class="mb-0 fw-semibold">Most asked</h2>
                             </div>
                             <div class="accordion accordion-flush" id="accordionExample">
@@ -131,7 +131,42 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
+                @foreach ($categories as $category)
+                    <div class="row mb-6">
+                        <div class="offset-md-2 col-md-8 col-12">
+                            <div class="d-flex flex-column gap-4">
+                                <div>
+                                    <h2 class="mb-0 fw-semibold">{{ Str::title($category->name) }}</h2>
+                                </div>
+                                <div class="accordion accordion-flush" id="accordionExample">
+                                    @foreach ($category->faqs->sortBy('order') as $faq)
+                                        <div class="border p-3 rounded-3 mb-2" id="heading{{ $faq->id }}">
+                                            <h3 class="mb-0 fs-4">
+                                                <a href="#" class="d-flex align-items-center text-inherit"
+                                                    data-bs-toggle="collapse" data-bs-target="#collapse{{ $faq->id }}"
+                                                    aria-expanded="false" aria-controls="collapse{{ $faq->id }}">
+                                                    <span class="me-auto">{{ $faq->question }}</span>
+                                                    <span class="collapse-toggle ms-4">
+                                                        <i class="fe fe-chevron-down"></i>
+                                                    </span>
+                                                </a>
+                                            </h3>
+                                            <!-- collapse  -->
+                                            <div id="collapse{{ $faq->id }}" class="collapse"
+                                                aria-labelledby="heading{{ $faq->id }}"
+                                                data-bs-parent="#accordionExample">
+                                                <div class="pt-2">
+                                                    {{ $faq->answer }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </section>
     </main>

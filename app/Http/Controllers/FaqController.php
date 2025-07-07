@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faq;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
+use App\Models\FaqCategory;
+use Illuminate\Http\Request;
 
 class FaqController extends Controller
 {
@@ -23,10 +24,8 @@ class FaqController extends Controller
         /**
          * Show the guide data.
          */
-        return view('public.help-center.faq', [
-            'most_asked' => Faq::all()->where('faq_category_id', 1),
-            'general' => Faq::all()->where('faq_category_id', 2),
-            'support' => Faq::all()->where('faq_category_id', 3),
-        ]);
+
+        $categories = FaqCategory::with(['faqs' => fn($q) => $q->orderBy('order')])->orderBy('order')->get();
+        return view('public.help-center.faq', compact('categories'));
     }
 }

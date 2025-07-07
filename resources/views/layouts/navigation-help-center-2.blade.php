@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand ">
     <div class="container px-0">
         <div class="d-flex align-items-center">
-            <a class="navbar-brand me-4" href="../index.html"><img src="../assets/images/brand/logo/logo.svg"
+            <a class="navbar-brand me-4" href="/"><img src="../assets/images/brand/logo/logo.svg"
                     alt="Geeks" /></a>
 
             <ul class="list-unstyled mb-0 lh-1">

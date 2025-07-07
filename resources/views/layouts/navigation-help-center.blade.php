@@ -1,8 +1,7 @@
 <nav class="navbar navbar-expand navbar-transparent shadow-none">
     <div class="container px-0">
         <div class="d-flex align-items-center">
-            <a class="navbar-brand me-4" href="../index.html"><img src="../assets/images/brand/logo/logo.svg"
-                    alt="Geeks" />
+            <a class="navbar-brand me-4" href="/"><img src="../assets/images/brand/logo/logo.svg" alt="Geeks" />
             </a>
 
             <ul class="list-unstyled mb-0 lh-1">
@@ -13,19 +12,20 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarBrowse">
                         <li>
-                            <a class="dropdown-item" href="../pages/help-center.html">Help Center</a>
+                            <a class="dropdown-item" href="{{ route('public.help-center') }}">Help Center</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="../pages/help-center-faq.html">FAQ's</a>
+                            <a class="dropdown-item" href="{{ route('public.help-center.faqs') }}">FAQ's</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="../pages/help-center-guide.html">Guide</a>
+                            <a class="dropdown-item" href="{{ route('public.help-center.guide') }}">Guide</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="../pages/help-center-guide-single.html">Guide Single</a>
+                            <a class="dropdown-item" href="#">Guide
+                                Single</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="../pages/help-center-support.html">Support</a>
+                            <a class="dropdown-item" href="{{ route('public.help-center.support') }}l">Support</a>
                         </li>
                     </ul>
                 </li>

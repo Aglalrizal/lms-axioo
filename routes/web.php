@@ -23,8 +23,8 @@ Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
     Route::post('/admin/faq/reorder', [AdminFaq::class, 'reorder'])->name('admin.faq.reorder');
 });
 
-Route::get('/help-center', [UserFaq::class, 'show_most_asked'])->name('faqs.show');
-Route::get('/help-center/faqs', [UserFaq::class, 'show'])->name('faqs.all');
+Route::get('/help-center', [UserFaq::class, 'show_most_asked'])->name('public.help-center');
+Route::get('/help-center/faqs', [UserFaq::class, 'show'])->name('public.help-center.faqs');
 
 Route::get('/', function () {
     return view('public.landing');
@@ -32,15 +32,15 @@ Route::get('/', function () {
 
 Route::get('/help-center/support', function () {
     return view('public.help-center.support');
-});
+})->name('public.help-center.support');
 
 Route::get('/help-center/guide', function () {
     return view('public.help-center.guide');
-});
+})->name('public.help-center.guide');
 
 Route::get('/help-center/guide/{slug}', function () {
     return view('public.help-center.guide-single');
-});
+})->name('public.help-center.guide-single');
 
 Route::get('/dashboard', function () {
     return view('admin.dashboard');

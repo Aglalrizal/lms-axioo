@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container px-0">
-        <a class="navbar-brand" href="./"><img src="{{ asset('./assets/images/brand/logo/logo.svg') }}"
+        <a class="navbar-brand" href="/"><img src="{{ asset('./assets/images/brand/logo/logo.svg') }}"
                 alt="Geeks" /></a>
         <!-- Mobile view nav wrap -->
         <div class="ms-auto d-flex align-items-center order-lg-3">

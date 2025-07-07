@@ -83,7 +83,7 @@
                     <span class="text-white-stable">Community</span>
                     <ul class="list-unstyled mb-0 d-flex flex-column nav nav-footer nav-x-0">
                         <li>
-                            <a href="#!" class="nav-link">Help and Support</a>
+                            <a href="{{ route('public.help-center') }}" class="nav-link">Help and Support</a>
                         </li>
                         <li>
                             <a href="#!" class="nav-link">Affiliate</a>
