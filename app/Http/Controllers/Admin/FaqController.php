@@ -16,6 +16,7 @@ class FaqController extends Controller
      */
     public function index()
     {
+        sweetalert()->success('Your submission has been received successfully.');
         $categories = FaqCategory::with(['faqs' => fn($q) => $q->orderBy('order')])->orderBy('order')->get();
         return view('admin.faq.index', compact('categories'));
     }
@@ -25,7 +26,7 @@ class FaqController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -47,8 +48,8 @@ class FaqController extends Controller
         'faq_category_id' => $request->faq_category_id,
         'order' => $lastOrder + 1,
     ]);
-
-    return back()->with('success', 'FAQ added successfully.');
+    flash()->option('position', 'bottom-right')->success('Berhasil menambahkan faq baru.');
+    return back();
     }
 
     /**

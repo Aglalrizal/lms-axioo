@@ -27,7 +27,6 @@
 </head>
 
 <body class="bg-white">
-
     @yield('container')
 
     <!-- Scripts -->
