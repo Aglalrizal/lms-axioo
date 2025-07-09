@@ -38,8 +38,8 @@
     <!-- Theme JS -->
     <script src="{{ asset('assets/js/theme.min.js') }}"></script>
 
-    {{-- <script src="{{ asset('assets/libs/tiny-slider/dist/min/tiny-slider.js') }}"></script>
-    <script src="{{ asset('assets/js/vendors/tnsSlider.js') }}"></script> --}}
+    <script src="{{ asset('assets/libs/tiny-slider/dist/min/tiny-slider.js') }}"></script>
+    <script src="{{ asset('assets/js/vendors/tnsSlider.js') }}"></script>
 
     {{-- From: Help Center Support --}}
     {{-- <script src={{ asset('assets/js/vendors/validation.js') }}></script>

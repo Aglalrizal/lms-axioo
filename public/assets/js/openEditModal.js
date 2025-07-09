@@ -1,6 +1,5 @@
 function openEditModal(el) {
-    const faq = JSON.parse(el.dataset.faq); // Ambil data dari attribute
-    console.log(faq); // Untuk debug
+    const faq = JSON.parse(el.dataset.faq);
 
     const form = document.getElementById("faqForm");
     form.action = `/admin/faq/${faq.id}`;
