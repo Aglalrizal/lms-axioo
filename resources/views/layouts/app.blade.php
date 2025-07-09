@@ -2,15 +2,16 @@
 
 @section('container')
     {{-- navbar --}}
-    @if (Request::is('help-center'))
-        @include('layouts.navigation-help-center')
-    @elseif (Request::is('help-center/*') || Request::is('help-center/*/*'))
-        @include('layouts.navigation-help-center-2')
-    @else
-        {{-- Default navigation --}}
-        @include('layouts.navigation')
-    @endif
+{{--    @if (Request::is('help-center'))--}}
+{{--        @include('layouts.navigation-help-center')--}}
+{{--    @elseif (Request::is('help-center/*') || Request::is('help-center/*/*'))--}}
+{{--        @include('layouts.navigation-help-center-2')--}}
+{{--    @else--}}
+{{--        --}}{{-- Default navigation --}}
+{{--        @include('layouts.navigation')--}}
+{{--    @endif--}}
 
+    @include('layouts.navigation')
     <x-modal></x-modal>
 
     {{-- content --}}

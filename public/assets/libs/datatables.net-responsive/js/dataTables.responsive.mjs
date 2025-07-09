@@ -1396,7 +1396,7 @@ Responsive.display = {
 			(!update && rowNode.hasClass('dtr-expanded')) ||
 			!row.responsive.hasHidden()
 		) {
-			// User interaction and the row is show, or nothing to show
+			// user interaction and the row is show, or nothing to show
 			row.child(false);
 
 			return false;
