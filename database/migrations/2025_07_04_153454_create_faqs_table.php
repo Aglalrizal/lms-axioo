@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('answer');
             $table->foreignId('faq_category_id')->constrained()->onDelete('cascade');
             $table->integer('order');
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }
