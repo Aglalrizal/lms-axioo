@@ -26,7 +26,7 @@ class CreateFaqs extends Component
     {
         return view('livewire.admin.faqs.create-faqs');
     }
-        public function save(){
+    public function save(){
         $data = $this->validate();
         $lastOrder = Faq::where('faq_category_id', $this->faq_category_id)->max('order') ?? 0;
         $data['order'] = $lastOrder + 1;

@@ -15,7 +15,23 @@ class Index extends Component
     public $categories = [];
     public $faqToDelete = null;
 
+    public $categoryToDelete = null;
+
     public $faq = [];
+
+    #[On('delete-faq-category')]
+    public function confirmDeleteCategory($id)
+    {
+        $this->categoryToDelete = $id;
+
+        sweetalert()
+            ->showDenyButton()
+            ->option('confirmButtonText', 'Yes, delete it!')
+            ->option('denyButtonText', 'Cancel')
+            ->option('id', $id)
+            ->warning('Are you sure you want to delete this FAQ category?', ['Confirm Deletion']);
+    }
+
 
     #[On('delete-faq')]
     public function confirmDelete($id)
@@ -33,24 +49,45 @@ class Index extends Component
     #[On('sweetalert:confirmed')]
     public function deleteTask(array $payload)
     {
-        $faq = Faq::find($this->faqToDelete);
+        if ($this->categoryToDelete) {
+            $category = FaqCategory::find($this->categoryToDelete);
+            if ($category) {
+                $category->delete(); // Akan error kalau ada relasi FAQ yang masih nyangkut, hati-hati
+                flash()->success('FAQ Category deleted successfully!');
+            } else {
+                flash()->error('FAQ Category not found.');
+            }
 
-        if ($faq) {
-            $faq->delete();
-            $this->faq = Faq::latest()->get();
-            flash()->success('Faq deleted successfully!');
-        } else {
-            flash()->error('Faq not found.');
+            $this->categoryToDelete = null;
+            $this->refreshProducts();
+            return;
         }
+        if ($this->faqToDelete) {
+            $faq = Faq::find($this->faqToDelete);
+            if ($faq) {
+                $faq->delete();
+                flash()->success('FAQ deleted successfully!');
+            } else {
+                flash()->error('FAQ not found.');
+            }
 
-        $this->faqToDelete = null;
+            $this->faqToDelete = null;
+            $this->refreshProducts();
+        }
     }
+
 
     #[On('sweetalert:denied')]
     public function cancelDelete()
     {
-        $this->faqToDelete = null;
-        flash()->info('Faq deletion cancelled.');
+        if($this->categoryToDelete){
+            $this->categoryToDelete = null;
+            flash()->info('Category Faq deletion cancelled.');
+        }
+        if($this->faqToDelete){
+            $this->faqToDelete = null;
+            flash()->info('Faq deletion cancelled.');
+        }
     }
 
     public function mount(){
