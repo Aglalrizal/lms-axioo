@@ -48,7 +48,7 @@
                                         <div class="d-flex align-items-center flex-row gap-2">
                                             <img src="{{ optional($user)->profile_picture
                                                 ? asset('storage/' . $user->profile_picture)
-                                                : 'https://ui-avatars.com/api/?background=random&name=' . urlencode(optional(auth()->user())->username) }}"
+                                                : 'https://ui-avatars.com/api/?background=random&name=' . urlencode(optional($user)->username) }}"
                                                 alt="{{ $user->username . '-avatar' }}"
                                                 class="rounded-circle avatar-md" />
                                             <h5 class="mb-0">{{ $user->username }}</h5>
