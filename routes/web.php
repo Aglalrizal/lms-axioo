@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\FaqController as AdminFaq;
-use App\Http\Controllers\FaqController as UserFaq;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\SupportTicketController;
 use App\Http\Controllers\Auth\SocialiteController;
+use App\Http\Controllers\FaqController as UserFaq;
+use App\Http\Controllers\Admin\FaqController as AdminFaq;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard');
@@ -14,6 +15,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/users/{user}/role', [UserController::class, 'update'])->name('admin.users.updateRole');
     Route::get('/admin/faq', action: [AdminFaq::class, 'index'])->name('admin.faq');
     // Route::post('/admin/faq/store', action: [AdminFaq::class, 'store'])->name('admin.faq.store');
+
+    Route::get('/admin/support-tickets', [SupportTicketController::class, 'index'])->name('admin.support-ticket.index');
+    Route::get('/admin/support-tickets/{ticket}', [SupportTicketController::class, 'show'])->name('admin.support-ticket.show');
 });
 
 Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
@@ -25,14 +29,11 @@ Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
 
 Route::get('/help-center', [UserFaq::class, 'show_most_asked'])->name('public.help-center');
 Route::get('/help-center/faqs', [UserFaq::class, 'show'])->name('public.help-center.faqs');
+Route::get('/help-center/support', [SupportTicketController::class, 'create'])->name('public.help-center.support');
 
 Route::get('/', function () {
     return view('public.landing');
 });
-
-Route::get('/help-center/support', function () {
-    return view('public.help-center.support');
-})->name('public.help-center.support');
 
 Route::get('/help-center/guide', function () {
     return view('public.help-center.guide');
@@ -42,9 +43,9 @@ Route::get('/help-center/guide/{slug}', function () {
     return view('public.help-center.guide-single');
 })->name('public.help-center.guide-single');
 
-Route::get('/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('admin.dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
