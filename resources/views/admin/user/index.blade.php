@@ -5,9 +5,6 @@
 @endsection
 @section('content')
     <section class="container-fluid p-4">
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
         <div class="row">
             <div class="col-lg-12 col-md-12 col-12">
                 <!-- Page header -->
@@ -33,7 +30,7 @@
                 <div class="card mb-5">
                     <!-- table  -->
                     <div class="card-body">
-                        <div class="table-card">
+                        <div class="table-responsive">
                             <table id="dataTableBasic" class="table table-hover" style="width: 100%">
                                 <thead class="table-light">
                                     <tr>

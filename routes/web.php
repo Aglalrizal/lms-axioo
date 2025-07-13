@@ -13,7 +13,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/users/all', action: [UserController::class, 'index'])->name('admin.users.all');
     Route::post('/admin/users/{user}/role', [UserController::class, 'update'])->name('admin.users.updateRole');
-    Route::get('/admin/faq', action: [AdminFaq::class, 'index'])->name('admin.faq');
+    // Route::get('/admin/faqs', action: [AdminFaq::class, 'index'])->name('admin.faq');
     // Route::post('/admin/faq/store', action: [AdminFaq::class, 'store'])->name('admin.faq.store');
 
     Route::get('/admin/support-tickets', [SupportTicketController::class, 'index'])->name('admin.support-ticket.index');
@@ -21,10 +21,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
-    Route::post('admin/faq/store', [AdminFaq::class, 'store'])->name('admin.faq.store');
-    Route::put('admin/faq/{faq}', [AdminFaq::class, 'update'])->name('admin.faq.update');
-    Route::delete('/faqs/{faq}', [AdminFaq::class, 'destroy'])->name('admin.faq.destroy');
-    Route::post('/admin/faq/reorder', [AdminFaq::class, 'reorder'])->name('admin.faq.reorder');
+    // Route::post('admin/faqs/store', [AdminFaq::class, 'store'])->name('admin.faq.store');
+    // Route::put('admin/faqs/{faq}', [AdminFaq::class, 'update'])->name('admin.faq.update');
+    // Route::delete('/faqs/{faq}', [AdminFaq::class, 'destroy'])->name('admin.faq.destroy');
+    // Route::post('/admin/faqs/reorder', [AdminFaq::class, 'reorder'])->name('admin.faq.reorder');
+    Route::get('admin/faqs', \App\Livewire\Admin\Faqs\Index::class)->name('admin.faqs');
 });
 
 Route::get('/help-center', [UserFaq::class, 'show_most_asked'])->name('public.help-center');

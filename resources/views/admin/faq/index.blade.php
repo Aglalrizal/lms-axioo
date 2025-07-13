@@ -7,9 +7,6 @@
     <link href="{{ asset('/assets/libs/dragula/dist/dragula.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('/assets/css/custom.css') }}" rel="stylesheet" />
 @endsection
-@section('csrf-token')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-@endsection
 @include('components.faq-modal', ['categories' => $categories])
 @include('components.category-faq-modal')
 @section('content')

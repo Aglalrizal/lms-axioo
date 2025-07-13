@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 category_id: categoryId,
             }));
 
-            fetch("/admin/faq/reorder", {
+            fetch("/admin/faqs/reorder", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -11,7 +11,7 @@ class Faq extends Model
     use HasFactory;
 
     protected $fillable = [
-        'question', 'answer', 'order', 'faq_category_id'
+        'question', 'answer', 'order', 'faq_category_id', 'is_active'
     ];
 
     public function categories (){

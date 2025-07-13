@@ -7,8 +7,11 @@
         <!-- Page Content -->
         <main id="page-content">
             @include('layouts.dashboard-header')
-
-            @yield('content')
+            @hasSection('content')
+                @yield('content')
+            @else
+                {{ $slot ?? '' }}
+            @endif
         </main>
     </div>
 @endsection

@@ -93,8 +93,8 @@ class FaqController extends Controller
     foreach ($request->data as $item) {
         Faq::where('id', $item['id'])->update(['order' => $item['order']]);
     }
-
-    return response()->json(['success' => true]);
+    
+    return flash()->option('position', 'bottom-right')->success('Berhasil mengubah urutan FAQ!');;
 }
 
     /**

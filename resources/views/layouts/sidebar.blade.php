@@ -55,7 +55,7 @@
                 <div id="navCMS" class="collapse " data-bs-parent="#sideNavbar">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link " href="{{ route('admin.faq') }}">FAQ</a>
+                            <a class="nav-link " href="{{ route('admin.faqs') }}">FAQs</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link " href="{{ route('admin.support-ticket.index') }}">Support Tickets</a>
