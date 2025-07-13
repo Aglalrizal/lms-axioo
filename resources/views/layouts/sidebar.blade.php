@@ -57,6 +57,9 @@
                         <li class="nav-item">
                             <a class="nav-link " href="{{ route('admin.faq') }}">FAQ</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="{{ route('admin.support-ticket.index') }}">Support Tickets</a>
+                        </li>
                     </ul>
                 </div>
             </li>
