@@ -29,7 +29,7 @@
 
         <ul class="list-unstyled">
             <li>
-                <a class="dropdown-item" href="{{ route('dashboard') }}">
+                <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
                     <i class="fe fe-home me-2"></i> Dashboard
                 </a>
             </li>

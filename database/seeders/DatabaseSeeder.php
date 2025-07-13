@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\SupportTicket;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,7 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(FaqCategorySeeder::class);
         $this->call(FaqSeeder::class);
-        
+
         //akun admin
         $admin = User::factory()->create([
             'username' => 'Admin',
@@ -45,5 +46,6 @@ class DatabaseSeeder extends Seeder
             $user->assignRole('instructor');
         });
 
+        SupportTicket::factory(50)->create();
     }
 }
