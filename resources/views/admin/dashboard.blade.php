@@ -1,5 +1,5 @@
-<x-layouts.dashboard>
-
+@extends('layouts.dashboard')
+@section('content')
     <section class="container-fluid p-4">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-12">

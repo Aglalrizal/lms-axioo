@@ -7,19 +7,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\SocialiteController;
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth', 'role:super-admin|admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/users/all', action: [UserController::class, 'index'])->name('admin.users.all');
-    Route::post('/admin/users/{user}/role', [UserController::class, 'update'])->name('admin.users.updateRole');
-    // Route::get('/admin/faqs', action: [AdminFaq::class, 'index'])->name('admin.faq');
-    // Route::post('/admin/faq/store', action: [AdminFaq::class, 'store'])->name('admin.faq.store');
+    Route::get('/admin/user/{role}', \App\Livewire\Admin\User\Index::class)->name('admin.user');
+    Route::get('/admin/user/{username}/profile', \App\Livewire\Admin\User\ManageProfile::class)->name('admin.user.profile');
 });
 
 Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
-    // Route::post('admin/faqs/store', [AdminFaq::class, 'store'])->name('admin.faq.store');
-    // Route::put('admin/faqs/{faq}', [AdminFaq::class, 'update'])->name('admin.faq.update');
-    // Route::delete('/faqs/{faq}', [AdminFaq::class, 'destroy'])->name('admin.faq.destroy');
-    // Route::post('/admin/faqs/reorder', [AdminFaq::class, 'reorder'])->name('admin.faq.reorder');
     Route::get('admin/faqs', \App\Livewire\Admin\Faqs\Index::class)->name('admin.faqs');
 });
 

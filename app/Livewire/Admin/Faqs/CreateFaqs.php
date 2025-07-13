@@ -14,7 +14,7 @@ class CreateFaqs extends Component
 
     public $editform=false;
 
-    #[Rule('required')]
+    #[Rule(['required', 'string', 'min:5'])]
     public $question;
     #[Rule('required')]
     public $answer;
@@ -27,6 +27,7 @@ class CreateFaqs extends Component
         return view('livewire.admin.faqs.create-faqs');
     }
     public function save(){
+        $this->validate();
         $data = $this->validate();
         $lastOrder = Faq::where('faq_category_id', $this->faq_category_id)->max('order') ?? 0;
         $data['order'] = $lastOrder + 1;
@@ -37,6 +38,7 @@ class CreateFaqs extends Component
     }
     #[On('reset-modal')]
     public function close(){
+        $this->resetValidation();
         $this->reset();
     }
 
@@ -52,6 +54,7 @@ class CreateFaqs extends Component
         $this->faq_category_id=$this->faq->faq_category_id;
     }
     public function update(){
+        $this->validate();
         $validated=$this->validate();
         $f=Faq::findOrFail($this->faq->id);
         $f->update($validated);

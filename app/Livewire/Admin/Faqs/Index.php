@@ -47,7 +47,7 @@ class Index extends Component
     }
 
     #[On('sweetalert:confirmed')]
-    public function deleteTask(array $payload)
+    public function delete(array $payload)
     {
         if ($this->categoryToDelete) {
             $category = FaqCategory::find($this->categoryToDelete);

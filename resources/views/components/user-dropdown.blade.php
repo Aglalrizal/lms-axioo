@@ -1,14 +1,22 @@
 <div class="dropdown ms-2 d-inline-block position-static">
     <a class="rounded-circle" href="#" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
         <div class="avatar avatar-md avatar-indicators avatar-online">
-            <img alt="avatar" src="https://ui-avatars.com/api/?name={{auth()->user()->username}}" class="rounded-circle" />
+            <img alt="{{ auth()->user()->username . '-avatar' }}"
+                src="{{ optional(auth()->user())->profile_picture
+                    ? asset('storage/' . auth()->user()->profile_picture)
+                    : 'https://ui-avatars.com/api/?background=random&name=' . urlencode(optional(auth()->user())->username) }}"
+                class="rounded-circle" />
         </div>
     </a>
     <div class="dropdown-menu dropdown-menu-end position-absolute mx-3 my-5">
         <div class="dropdown-item">
             <div class="d-flex">
                 <div class="avatar avatar-md avatar-indicators avatar-online">
-                    <img alt="avatar" src="https://ui-avatars.com/api/?name={{auth()->user()->username}}" class="rounded-circle" />
+                    <img alt="{{ auth()->user()->username . '-avatar' }}"
+                        src="{{ optional(auth()->user())->profile_picture
+                            ? asset('storage/' . auth()->user()->profile_picture)
+                            : 'https://ui-avatars.com/api/?background=random&name=' . urlencode(optional(auth()->user())->username) }}"
+                        class="rounded-circle" />
                 </div>
                 <div class="ms-3 lh-1">
                     <h5 class="mb-1">{{ auth()->user()->username ?? 'user' }}</h5>

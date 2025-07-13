@@ -24,6 +24,7 @@
 
     <link rel="stylesheet" href="{{ asset('assets/libs/tiny-slider/dist/tiny-slider.css') }}" />
     <title>Homepage | Axioo</title>
+    @stack('scripts')
 </head>
 
 <body class="bg-white">
