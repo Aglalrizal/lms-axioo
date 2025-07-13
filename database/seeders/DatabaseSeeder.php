@@ -25,13 +25,17 @@ class DatabaseSeeder extends Seeder
         //akun admin
         $admin = User::factory()->create([
             'username' => 'Admin',
-            'email' => 'admin@admin.com',
+            'email' => 'super@admin.com',
             'password' => Hash::make('password')
         ]);
-        $admin->assignRole('admin');
+        $admin->assignRole('super-admin');
         $manageFaq = Permission::firstOrCreate(['name' => 'manage faqs']);
         $admin->givePermissionTo($manageFaq);
-
+        
+        // dummy akun admin
+        User::factory(3)->create()->each(function ($user) {
+            $user->assignRole('admin');
+        });
         // dummy akun students
         User::factory(50)->create()->each(function ($user) {
             $user->assignRole('student');

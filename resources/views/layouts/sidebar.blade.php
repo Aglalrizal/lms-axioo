@@ -33,15 +33,12 @@
                 </a>
                 <div id="navProfile" class="collapse " data-bs-parent="#sideNavbar">
                     <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link " href="{{ route('admin.users.all') }}">All</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="../../pages/dashboard/admin-instructor.html">Instructor</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="../../pages/dashboard/admin-students.html">Students</a>
-                        </li>
+                        @foreach (\Spatie\Permission\Models\Role::all() as $role)
+                            <li class="nav-item">
+                                <a class="nav-link "
+                                    href="{{ route('admin.user', ['role' => $role->name]) }}">{{ Str::of($role->name)->replace('-', ' ')->title() }}</a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </li>
