@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\SupportTicket;
 use Livewire\Component;
+use Livewire\Features\SupportPagination\HandlesPagination;
 use Livewire\WithPagination;
 
 
@@ -11,7 +12,10 @@ class SupportTicketIndex extends Component
 {
     use WithPagination;
 
+    protected $paginationTheme = 'bootstrap';
+
     public $isShowing = 'all';
+    public $query = '';
 
     public function setShow(string $status): void
     {
@@ -19,15 +23,15 @@ class SupportTicketIndex extends Component
         $this->resetPage(pageName: 'tickets_page');
     }
 
+    public function search()
+    {
+        $this->resetPage();
+    }
+
     public function softDelete(SupportTicket $ticket)
     {
         $ticket->delete();
     }
-
-    // public function restore(SupportTicket $ticket)
-    // {
-    //     $ticket->restore();
-    // }
 
     public function restore(int $ticketId): void
     {
@@ -52,8 +56,9 @@ class SupportTicketIndex extends Component
 
         return view('livewire.support-ticket-index', [
             'tickets' => $query
+                ->whereAny(['title', 'email'], 'ilike', '%' . $this->query . '%')
                 ->orderBy('created_at', 'desc')
-                ->simplePaginate(10, pageName: 'tickets_page'),
+                ->paginate(10, pageName: 'tickets_page'),
         ]);
     }
 }

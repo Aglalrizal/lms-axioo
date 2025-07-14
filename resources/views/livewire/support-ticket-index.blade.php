@@ -60,7 +60,8 @@
                         <span class="position-absolute ps-3 search-icon">
                             <i class="fe fe-search"></i>
                         </span>
-                        <input type="search" class="form-control ps-6" placeholder="Search Post" />
+                        <input wire:model="query" wire:keydown.debounce="search()" type="search"
+                            class="form-control ps-6" placeholder="Search Post" />
                     </form>
                 </div>
                 <div>
@@ -102,12 +103,12 @@
                                                 </td>
                                                 <td>
                                                     <h5 class="mb-0">
-                                                        <a href="{{ url()->current() }}/{{ $ticket->id }}"
+                                                        <a href="support-tickets/{{ $ticket->id }}"
                                                             class="text-inherit">{{ $ticket->title }}</a>
                                                     </h5>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ url()->current() }}/    {{ $ticket->id }}"
+                                                    <a href="support-tickets/{{ $ticket->id }}"
                                                         class="text-inherit">{{ $ticket->subject }}</a>
                                                 </td>
 
