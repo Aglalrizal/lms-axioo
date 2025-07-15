@@ -60,6 +60,20 @@
                     </ul>
                 </div>
             </li>
+            <li class="nav-item">
+                <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navReport"
+                    aria-expanded="false" aria-controls="navReport">
+                    <i class="bi bi-card-checklist me-2"></i>
+                    Report
+                </a>
+                <div id="navReport" class="collapse " data-bs-parent="#sideNavbar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link " href="{{ route('admin.report.activity-log') }}">Activity Log</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
         </ul>
     </div>
 </nav>
