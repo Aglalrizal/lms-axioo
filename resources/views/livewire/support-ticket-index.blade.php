@@ -165,13 +165,14 @@
                                                             @if ($ticket->deleted_at)
                                                                 <a wire:click="restore({{ $ticket->id }})"
                                                                     wire:confirm="Are you sure you want to restore this ticket?"
-                                                                    class="dropdown-item">
+                                                                    wire:loading.attr="disabled" class="dropdown-item">
                                                                     <i class="fe fe-rotate-cw dropdown-item-icon"></i>
                                                                     Restore
                                                                 </a>
                                                             @else
                                                                 <a wire:click="softDelete({{ $ticket->id }})"
                                                                     wire:confirm="Are you sure you want to delete this ticket?"
+                                                                    wire:loading.attr="disabled"
                                                                     class="dropdown-item">
                                                                     <i class="fe fe-trash dropdown-item-icon"></i>
                                                                     Delete
