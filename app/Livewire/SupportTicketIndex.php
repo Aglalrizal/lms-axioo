@@ -56,7 +56,7 @@ class SupportTicketIndex extends Component
 
         return view('livewire.support-ticket-index', [
             'tickets' => $query
-                ->whereAny(['title', 'email'], 'ilike', '%' . $this->query . '%')
+                ->whereAny(['title', 'email'], 'like', '%' . $this->query . '%')
                 ->orderBy('created_at', 'desc')
                 ->paginate(10, pageName: 'tickets_page'),
         ]);

@@ -4,12 +4,14 @@ namespace App\Livewire\Admin\Faqs;
 
 use App\Models\Faq;
 use Livewire\Component;
+use App\Models\FaqCategory;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 
 class CreateFaqs extends Component
 {
     public $faq;
+    public $categories = [];
     public $formtitle = 'Buat FAQ';
 
     public $editform=false;
@@ -19,9 +21,13 @@ class CreateFaqs extends Component
     #[Rule('required')]
     public $answer;
     #[Rule('boolean')]
-    public $is_active = true;
+    public $is_active = false;
     #[Rule('required')]
     public $faq_category_id = 1;
+
+    public function mount(){
+        $this->categories=FaqCategory::with(['faqs' => fn($q) => $q->orderBy('order')])->orderBy('order')->get();
+    }
     public function render()
     {
         return view('livewire.admin.faqs.create-faqs');
@@ -36,13 +42,13 @@ class CreateFaqs extends Component
         flash()->success('Berhasil menambah FAQ!');
         $this->reset();
     }
-    #[On('reset-modal')]
+    #[On('reset-faq-item-modal')]
     public function close(){
         $this->resetValidation();
         $this->reset();
     }
 
-    #[On('edit-mode')]
+    #[On('edit-faq-item-mode')]
     public function edit($id){
         //dd($id);
         $this->editform=true;
@@ -62,5 +68,9 @@ class CreateFaqs extends Component
         flash()->success('Berhasil memperbarui FAQ!');
         $this->dispatch('refresh-faqs');
         $this->reset();
+    }
+    #[On('refresh-categories')]
+    public function refreshCategories(){
+        $this->categories=FaqCategory::with(['faqs' => fn($q) => $q->orderBy('order')])->orderBy('order')->get();
     }
 }

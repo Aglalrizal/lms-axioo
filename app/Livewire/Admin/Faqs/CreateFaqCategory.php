@@ -12,7 +12,7 @@ class CreateFaqCategory extends Component
     #[Rule('required')]
     public $name = '';
     #[Rule('boolean')]
-    public $is_active = true;
+    public $is_active = false;
     public $formtitle = 'Buat FAQ Kategori';
     public $editform=false;
 
@@ -28,15 +28,16 @@ class CreateFaqCategory extends Component
         $data['order'] = FaqCategory::max('order') + 1;
         FaqCategory::create($data);
         $this->dispatch('refresh-faqs');
+        $this->dispatch('refresh-categories')->to(CreateFaqs::class);
         flash()->success('Berhasil menambah FAQ kategori!');
         $this->reset();
     }
 
-    #[On('reset-modal')]
+    #[On('reset-category-modal')]
     public function close(){
         $this->reset();
     }
-    #[On('edit-mode')]
+    #[On('edit-category-mode')]
     public function edit($id){
         //dd($id);
         $this->editform=true;
@@ -54,8 +55,8 @@ class CreateFaqCategory extends Component
             dd($th);
         }
         $this->dispatch('refresh-faqs');
+        $this->dispatch('refresh-categories')->to(CreateFaqs::class);
         flash()->success('Berhasil memperbarui FAQ Kategori!');
-        $this->dispatch('refresh-faqs');
         $this->reset();
     }
 }
