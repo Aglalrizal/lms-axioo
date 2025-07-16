@@ -120,7 +120,7 @@
     </div>
 
     <livewire:admin.faqs.create-faq-category />
-    <livewire:admin.faqs.create-faqs :key="'faq-form-' . now()->timestamp" lazy />
+    <livewire:admin.faqs.create-faqs :key="'faq-form-' . now()->timestamp" />
 
 </section>
 

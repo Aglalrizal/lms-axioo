@@ -29,7 +29,7 @@
                                 <th>Event</th>
                                 <th>Model</th>
                                 <th>Deskripsi</th>
-                                <th>Perubahan</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,32 +55,17 @@
                                         {{ $log->description }}
                                     </td>
                                     <td>
-                                        @php
-                                            $old = $log->properties['old'] ?? [];
-                                            $new = $log->properties['attributes'] ?? [];
-                                        @endphp
-
-                                        @if ($old && $new)
-                                            <ul class="list-unstyled small">
-                                                @foreach ($new as $key => $value)
-                                                    @if (!in_array($key, ['updated_at', 'created_at']) && $old[$key] ?? null !== $value)
-                                                        <li>
-                                                            <strong>{{ ucfirst(str_replace('_', ' ', $key)) }}</strong>:
-                                                            <span class="text-danger">{{ $old[$key] ?? '-' }}</span>
-                                                            →
-                                                            <span class="text-success">{{ $value }}</span>
-                                                        </li>
-                                                    @endif
-                                                @endforeach
-                                            </ul>
-                                        @else
-                                            <em class="text-muted">-</em>
-                                        @endif
+                                        <button type="button"
+                                            wire:click="$dispatch('show-log-detail',{id: {{ $log->id }}})"
+                                            class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                            data-bs-target="#detailLogItemModal">
+                                            Detail
+                                        </button>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-center text-muted">Tidak ada aktivitas.</td>
+                                    <td colspan="6" class="text-center text-muted">Tidak ada aktivitas.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -93,4 +78,10 @@
             </div>
         </div>
     </div>
+    <livewire:admin.reports.activity-log.show-detail />
 </section>
+
+<script>
+    document.getElementById('detailLogItemModal')
+        .addEventListener('hidden.bs.modal', () => Livewire.dispatch('reset-log-detail'));
+</script>

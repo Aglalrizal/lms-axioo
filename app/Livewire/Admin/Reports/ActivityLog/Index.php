@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Livewire\Admin\Reports;
+namespace App\Livewire\Admin\Reports\ActivityLog;
 
-use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
 use Spatie\Activitylog\Models\Activity;
-
 
 #[Layout('layouts.dashboard')]
 
-class ActivityLog extends Component
+class Index extends Component
 {
+
     use WithPagination;
 
     public $search = '';
@@ -24,6 +24,6 @@ class ActivityLog extends Component
             )
             ->paginate(10);
 
-        return view('livewire.admin.reports.activity-log', compact('activities'));
+        return view('livewire.admin.reports.activity-log.index', compact('activities'));
     }
 }
