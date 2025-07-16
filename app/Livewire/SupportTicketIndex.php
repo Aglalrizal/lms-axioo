@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\SupportTicket;
+use Flasher\SweetAlert\Laravel\Facade\SweetAlert;
 use Livewire\Component;
 use Livewire\Features\SupportPagination\HandlesPagination;
 use Livewire\WithPagination;
@@ -31,13 +32,14 @@ class SupportTicketIndex extends Component
     public function softDelete(SupportTicket $ticket)
     {
         $ticket->delete();
+        SweetAlert::success('Ticket deleted successfully.');
     }
 
     public function restore(int $ticketId): void
     {
         $ticket = SupportTicket::withTrashed()->find($ticketId);
-
         $ticket->restore();
+        SweetAlert::success('Ticket restored successfully.');
     }
 
     public function render()

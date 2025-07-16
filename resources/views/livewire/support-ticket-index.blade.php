@@ -76,12 +76,12 @@
                                     <!-- Table Head -->
                                     <thead class="table-light">
                                         <tr>
-                                            <th>
+                                            {{-- <th>
                                                 <div class="form-check">
                                                     <input type="checkbox" class="form-check-input" id="checkAll" />
                                                     <label class="form-check-label" for="checkAll"></label>
                                                 </div>
-                                            </th>
+                                            </th> --}}
                                             <th>Title</th>
                                             <th>Subject</th>
                                             <th>Date</th>
@@ -94,13 +94,13 @@
                                         <!-- Table body -->
                                         @forelse ($tickets as $ticket)
                                             <tr wire:key="ticket-{{ $ticket->id }}">
-                                                <td>
+                                                {{-- <td>
                                                     <div class="form-check">
                                                         <input type="checkbox" class="form-check-input"
                                                             id="postOne" />
                                                         <label class="form-check-label" for="postOne"></label>
                                                     </div>
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     <h5 class="mb-0">
                                                         <a href="support-tickets/{{ $ticket->id }}"
