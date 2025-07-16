@@ -3,16 +3,38 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasRoles, HasFactory, Notifiable;
+    use HasRoles, HasFactory, Notifiable, LogsActivity;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logExcept(['password', 'updated_at'])
+            ->logOnlyDirty()
+            ->useLogName('user');
+    }
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        $actor = auth()->user()?->username ?? 'System';
+
+        return match ($eventName) {
+            'created' => "[{$actor}] created user \"{$this->username}\"",
+            'updated' => "[{$actor}] updated user \"{$this->username}\"",
+            'deleted' => "[{$actor}] deleted user \"{$this->username}\"",
+            default => ucfirst($eventName)." user \"{$this->username}\"",
+        };
+    }
 
     /**
      * The attributes that are mass assignable.
