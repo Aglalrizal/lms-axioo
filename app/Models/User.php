@@ -43,7 +43,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'provider_token', 
+        'provider_token',
         'provider_refresh_token'
     ];
 
@@ -58,5 +58,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Blog::class);
     }
 }

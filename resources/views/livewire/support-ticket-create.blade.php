@@ -59,7 +59,7 @@
                 @enderror
             </div>
             <!-- button  -->
-            <button class="btn btn-primary" type="submit">Submit</button>
+            <button wire:loading.attr="disabled" class="btn btn-primary" type="submit">Submit</button>
         </form>
     </div>
 </div>
