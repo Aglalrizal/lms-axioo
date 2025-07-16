@@ -2,12 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\SupportTicketController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\FaqController as UserFaq;
-use App\Http\Controllers\Admin\FaqController as AdminFaq;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
+use App\Http\Controllers\SupportTicketController;
+use App\Http\Controllers\BlogController;
 
 Route::middleware(['auth', 'role:super-admin|admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard');
@@ -15,6 +14,8 @@ Route::middleware(['auth', 'role:super-admin|admin'])->group(function () {
     Route::get('/admin/user/{username}/profile', \App\Livewire\Admin\User\ManageProfile::class)->name('admin.user.profile');
     Route::get('/admin/support-tickets', [SupportTicketController::class, 'index'])->name('admin.support-ticket.index');
     Route::get('/admin/support-tickets/{ticket}', [SupportTicketController::class, 'show'])->name('admin.support-ticket.show');
+    Route::get('/admin/blogs', [BlogController::class, 'index_admin'])->name('admin.blog.index');
+    Route::get('/admin/blogs/create', [BlogController::class, 'create'])->name('admin.blog.create');
 });
 
 Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
@@ -24,6 +25,8 @@ Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
 Route::get('/help-center', [UserFaq::class, 'show_most_asked'])->name('public.help-center');
 Route::get('/help-center/faqs', [UserFaq::class, 'show'])->name('public.help-center.faqs');
 Route::get('/help-center/support', [SupportTicketController::class, 'create'])->name('public.help-center.support');
+Route::get('/blogs', [BlogController::class, 'index_public'])->name('public.blog.index');
+Route::get('/blogs/{blog}', [BlogController::class, 'show'])->name('public.blog.show');
 
 Route::get('/', function () {
     return view('public.landing');
