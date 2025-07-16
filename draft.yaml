@@ -1,0 +1,12 @@
+models:
+  course_categories:
+    name: string
+  course:
+    title: string
+    teacher_id: id foreign:users
+    description: longtext
+    thumbnail: string
+    level: enum
+    description: longtext
+
+controllers:

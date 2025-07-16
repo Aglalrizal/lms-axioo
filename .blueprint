@@ -1,0 +1,5 @@
+models:
+    Faq: { question: string, answer: text, faq_category_id: 'biginteger unsigned', order: integer, is_active: boolean }
+    FaqCategory: { name: string, order: integer, is_active: boolean }
+    SupportTicket: { title: string, full_name: string, email: string, subject: "enum:'General','Technical','Accounts','Payment','Other'", description: text, status: "enum:'open','in-progress','resolved','closed' default:open" }
+    User: { username: 'string nullable', email: string, email_verified_at: 'timestamp nullable', password: 'string nullable', provider_id: 'string nullable', provider_name: 'string nullable', provider_token: 'string nullable', provider_refresh_token: 'string nullable', remember_token: 'string:100 nullable', profile_picture: 'string nullable', id_number: 'string nullable', phone_number: 'string nullable', first_name: 'string nullable', surname: 'string nullable', date_of_birth: 'date nullable', place_of_birth: 'string nullable', education: 'string nullable', institution: 'string nullable', address: 'text nullable' }
