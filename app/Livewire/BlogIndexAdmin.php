@@ -2,13 +2,12 @@
 
 namespace App\Livewire;
 
-use App\Models\SupportTicket;
-use Flasher\SweetAlert\Laravel\Facade\SweetAlert;
+use App\Models\Blog;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Flasher\SweetAlert\Laravel\Facade\SweetAlert;
 
-
-class SupportTicketIndex extends Component
+class BlogIndexAdmin extends Component
 {
     use WithPagination;
 
@@ -20,7 +19,7 @@ class SupportTicketIndex extends Component
     public function setShow(string $status): void
     {
         $this->isShowing = $status;
-        $this->resetPage(pageName: 'tickets_page');
+        $this->resetPage(pageName: 'posts_page');
     }
 
     public function search()
@@ -28,22 +27,22 @@ class SupportTicketIndex extends Component
         $this->resetPage();
     }
 
-    public function softDelete(SupportTicket $ticket)
+    public function softDelete(Blog $blog)
     {
-        $ticket->delete();
+        $blog->delete();
         SweetAlert::success('Ticket deleted successfully.');
     }
 
-    public function restore(int $ticketId): void
+    public function restore(int $blogId): void
     {
-        $ticket = SupportTicket::withTrashed()->find($ticketId);
-        $ticket->restore();
+        $blog = Blog::withTrashed()->find($blogId);
+        $blog->restore();
         SweetAlert::success('Ticket restored successfully.');
     }
 
     public function render()
     {
-        $query = SupportTicket::query();
+        $query = Blog::query();
 
         if ($this->isShowing === 'deleted') {
             $query->onlyTrashed();
@@ -55,11 +54,12 @@ class SupportTicketIndex extends Component
             }
         }
 
-        return view('livewire.support-ticket-index', [
-            'tickets' => $query
-                ->whereAny(['title', 'email'], 'like', '%' . $this->query . '%')
+        return view('livewire.blog-index-admin', [
+            'blogs' => $query
+                ->with(['author', 'category'])
+                ->whereAny(['title'], 'like', '%' . $this->query . '%')
                 ->orderBy('created_at', 'desc')
-                ->paginate(10, pageName: 'tickets_page'),
+                ->paginate(10, pageName: 'posts_page'),
         ]);
     }
 }
