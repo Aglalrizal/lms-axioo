@@ -59,7 +59,7 @@ class Index extends Component
             }
 
             $this->categoryToDelete = null;
-            $this->refreshProducts();
+            $this->refreshFaqs();
             return;
         }
         if ($this->faqToDelete) {
@@ -72,7 +72,7 @@ class Index extends Component
             }
 
             $this->faqToDelete = null;
-            $this->refreshProducts();
+            $this->refreshFaqs();
         }
     }
 
@@ -98,7 +98,7 @@ class Index extends Component
         return view('livewire.admin.faqs.index');
     }
     #[On('refresh-faqs')]
-    public function refreshProducts(){
+    public function refreshFaqs(){
         $this->categories=FaqCategory::with(['faqs' => fn($q) => $q->orderBy('order')])->orderBy('order')->get();
     }
 }

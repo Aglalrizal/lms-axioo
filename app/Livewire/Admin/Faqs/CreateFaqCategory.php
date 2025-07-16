@@ -24,6 +24,7 @@ class CreateFaqCategory extends Component
 
     public function save(){
         $this->name = trim($this->name);
+        $this->validate();
         $data = $this->validate();
         $data['order'] = FaqCategory::max('order') + 1;
         FaqCategory::create($data);
@@ -47,13 +48,10 @@ class CreateFaqCategory extends Component
         $this->is_active= (bool) $this->faqCategory->is_active;
     }
     public function update(){
+        $this->validate();
         $validated=$this->validate();
         $fc=FaqCategory::findOrFail($this->faqCategory->id);
-        try {
-            $fc->update($validated);
-        } catch (\Throwable $th) {
-            dd($th);
-        }
+        $fc->update($validated);
         $this->dispatch('refresh-faqs');
         $this->dispatch('refresh-categories')->to(CreateFaqs::class);
         flash()->success('Berhasil memperbarui FAQ Kategori!');

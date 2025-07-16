@@ -11,13 +11,14 @@ Route::middleware(['auth', 'role:super-admin|admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/user/{role}', \App\Livewire\Admin\User\Index::class)->name('admin.user');
     Route::get('/admin/user/{username}/profile', \App\Livewire\Admin\User\ManageProfile::class)->name('admin.user.profile');
-    Route::get('/admin/support-tickets', [SupportTicketController::class, 'index'])->name('admin.support-ticket.index');
-    Route::get('/admin/support-tickets/{ticket}', [SupportTicketController::class, 'show'])->name('admin.support-ticket.show');
+    Route::get('/admin/course/category', \App\Livewire\Admin\Course\CourseCategory::class)->name('admin.course.category');
+    Route::get('/admin/cms/support-tickets', [SupportTicketController::class, 'index'])->name('admin.cms.support-ticket.index');
+    Route::get('/admin/cms/support-tickets/{ticket}', [SupportTicketController::class, 'show'])->name('admin.cms.support-ticket.show');
     Route::get('admin/report/activity-log', \App\Livewire\Admin\Reports\ActivityLog\Index::class)->name('admin.report.activity-log');
 }); 
 
 Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
-    Route::get('admin/faqs', \App\Livewire\Admin\Faqs\Index::class)->name('admin.faqs');
+    Route::get('admin/cms/faqs', \App\Livewire\Admin\Faqs\Index::class)->name('admin.cms.faqs');
 });
 
 Route::get('/help-center', [UserFaq::class, 'show_most_asked'])->name('public.help-center');
