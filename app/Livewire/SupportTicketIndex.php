@@ -2,10 +2,11 @@
 
 namespace App\Livewire;
 
+use Livewire\Component;
+use Livewire\Attributes\On;
+use Livewire\WithPagination;
 use App\Models\SupportTicket;
 use Flasher\SweetAlert\Laravel\Facade\SweetAlert;
-use Livewire\Component;
-use Livewire\WithPagination;
 
 
 class SupportTicketIndex extends Component
@@ -16,6 +17,8 @@ class SupportTicketIndex extends Component
 
     public $isShowing = 'all';
     public $query = '';
+    public $ticketId;
+    public $ticketAction;
 
     public function setShow(string $status): void
     {
@@ -28,17 +31,43 @@ class SupportTicketIndex extends Component
         $this->resetPage();
     }
 
-    public function softDelete(SupportTicket $ticket)
+    public function confirmation($id, $action)
     {
-        $ticket->delete();
-        SweetAlert::success('Ticket deleted successfully.');
+        $this->ticketId = $id;
+        $this->ticketAction = $action;
+
+        sweetalert()
+            ->showDenyButton()
+            ->option('confirmButtonText', 'Yes, ' . $action . ' it!')
+            ->option('denyButtonText', 'Cancel')
+            ->option('id', $id)
+            ->warning('Are you sure you want to ' . $action . ' this user?');
     }
 
-    public function restore(int $ticketId): void
+    #[On('sweetalert:confirmed')]
+    public function actionOnConfirm()
     {
-        $ticket = SupportTicket::withTrashed()->find($ticketId);
-        $ticket->restore();
-        SweetAlert::success('Ticket restored successfully.');
+        if ($this->ticketAction === 'delete') {
+            SupportTicket::findOrFail($this->ticketId)->delete();
+            flash()->success('Ticket deleted successfully.');
+        } else {
+            SupportTicket::withTrashed()->findOrFail($this->ticketId)->restore();
+            flash()->success('Ticket restored successfully.');
+        }
+    }
+
+    #[On('sweetalert:denied')]
+    public function actionOnCancel()
+    {
+        $this->ticketId = null;
+
+        if ($this->ticketAction === 'delete') {
+            flash()->info('Ticket deletion cancelled.');
+        } else {
+            flash()->info('Ticket restoration cancelled.');
+        }
+
+        $this->ticketAction = null;
     }
 
     public function render()
