@@ -31,7 +31,7 @@
                 <div class="card-header">
                     <h4 class="mb-0">Create Post</h4>
                 </div>
-                <form class="needs-validation" novalidate>
+                <form wire:submit="submit" class="needs-validation" novalidate>
                     <!-- Card body -->
                     <div class="card-body">
                         <input type="radio" class="btn-check mb-1 mb-md-0" name="options" id="option1"
@@ -65,15 +65,15 @@
                                 <!-- Date -->
                                 <div class="mb-3 col-md-4">
                                     <label for="selectDate" class="form-label">Date</label>
-                                    <input type="text" id="selectDate" class="form-control text-dark flatpickr"
-                                        placeholder="Select Date" required />
+                                    <input wire:model="date" type="text" id="selectDate"
+                                        class="form-control text-dark flatpickr" placeholder="Select Date" required />
                                     <div class="invalid-feedback">Please enter valid date.</div>
                                 </div>
                                 <div class="mb-3 col-md-9">
                                     <!-- Title -->
                                     <label for="postTitle" class="form-label">Title</label>
-                                    <input type="text" id="postTitle" class="form-control text-dark"
-                                        placeholder="Post Title" required />
+                                    <input wire:model="title" type="text" id="postTitle"
+                                        class="form-control text-dark" placeholder="Post Title" required />
                                     <small>Keep your post titles under 60 characters. Write heading that describe the
                                         topic content.
                                         Contextualize for Your Audience.</small>
@@ -83,26 +83,28 @@
                                 <div class="mb-3 col-md-9">
                                     <label for="basic-url" class="form-label">Slug</label>
                                     <div class="input-group mb-1">
-                                        <span class="input-group-text" id="basic-addon3">https://example.com/</span>
-                                        <input type="text" class="form-control" id="basic-url"
+                                        <span class="input-group-text"
+                                            id="basic-addon3">http://lms-axioo.com/blogs/</span>
+                                        <input wire:model="slug" type="text" class="form-control" id="basic-url"
                                             aria-describedby="basic-addon3" />
                                     </div>
                                     <small>Field must contain an unique value</small>
                                 </div>
-                                <!-- Excerpt -->
+                                {{-- <!-- Excerpt -->
                                 <div class="mb-3 col-md-9">
                                     <label for="Excerpt" class="form-label">Excerpt</label>
                                     <textarea rows="3" id="Excerpt" class="form-control text-dark" placeholder="Excerpt"></textarea>
                                     <small>A short extract from writing.</small>
-                                </div>
+                                </div> --}}
                                 <!-- Category -->
                                 <div class="mb-3 col-md-9">
                                     <label class="form-label" for="category">Category</label>
-                                    <select class="form-select" data-choices="" id="category" required>
-                                        <option value="">Course</option>
-                                        <option value="Post Category">Post Category</option>
-                                        <option value="Workshop">Workshop</option>
-                                        <option value="Marketing">Marketing</option>
+                                    <select wire:model="category" class="form-select" id="category" required>
+                                        <option selected value="">Select</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->name }}">{{ str($category->name)->ucfirst() }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                     <div class="invalid-feedback">Please choose category.</div>
                                 </div>
@@ -111,38 +113,7 @@
                         <!-- Editor -->
                         <div class="mt-2 mb-4">
                             <div id="editor">
-                                <br />
-                                <h4>One Ring to Rule Them All</h4>
-                                <br />
-                                <p>
-                                    Three Rings for the
-                                    <i>Elven-kingsunder</i>
-                                    the sky,
-                                    <br />
-                                    Seven for the
-                                    <u>Dwarf-lords</u>
-                                    in halls of stone, Nine for Mortal Men,
-                                    <br />
-                                    doomed to die, One for the Dark Lord on his dark throne.
-                                    <br />
-                                    In the Land of Mordor where the Shadows lie.
-                                    <br />
-                                    <br />
-                                </p>
-                                <p>
-                                    One Ring to
-                                    <b>rule</b>
-                                    them all,
-                                    <br />
-                                    One Ring to find them,
-                                    <br />
-                                    One Ring to bring them all and in the darkness bind them.
-                                    <br />
-                                    In the Land of Mordor where the Shadows lie.
-                                </p>
-                                <p>
-                                    <br />
-                                </p>
+
                             </div>
                         </div>
                         <!-- button -->
