@@ -9,10 +9,14 @@
                     </h1>
                 </div>
                 <div class="nav btn-group" role="tablist">
-                    @if (Route::is('admin.user.student'))
-                        <button class="btn btn-outline-secondary">
+                    @if ($role == 'student')
+                        {{-- <button class="btn btn-outline-secondary" data-bs-toggle="modal"
+                            data-bs-target="#importUserModal">
                             Import
-                        </button>
+                        </button> --}}
+                        <a href="{{ route('admin.user.import') }}" class="btn btn-outline-secondary">
+                            Import
+                        </a>
                     @endif
                     <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createUserModal">
                         Tambah
@@ -48,7 +52,7 @@
                                         <div class="d-flex align-items-center flex-row gap-2">
                                             <img src="{{ optional($user)->profile_picture
                                                 ? asset('storage/' . $user->profile_picture)
-                                                : 'https://ui-avatars.com/api/?background=random&name=' . urlencode(optional(auth()->user())->username) }}"
+                                                : 'https://ui-avatars.com/api/?background=random&name=' . urlencode(optional($user)->username) }}"
                                                 alt="{{ $user->username . '-avatar' }}"
                                                 class="rounded-circle avatar-md" />
                                             <h5 class="mb-0">{{ $user->username }}</h5>
@@ -109,20 +113,28 @@
         </div>
     </div>
     <livewire:admin.user.create :role="$role" />
+    <livewire:admin.user.import />
 </section>
 <script>
     document.addEventListener('livewire:initialized', () => {
         @this.on('refresh-users', (event) => {
             var createUserModalEl = document.querySelector('#createUserModal')
             var createUserModal = bootstrap.Modal.getOrCreateInstance(createUserModalEl)
+            var importUserModalEl = document.querySelector('#importUserModal')
+            var importUserModal = bootstrap.Modal.getOrCreateInstance(importUserModalEl)
 
 
             createUserModal.hide();
+            importUserModal.hide();
             @this.dispatch('reset-modal');
         })
 
         var createUserModalEl = document.getElementById('createUserModal')
         createUserModalEl.addEventListener('hidden.bs.modal', (event) => {
+            @this.dispatch('reset-modal');
+        })
+        var importUserModalEl = document.getElementById('importUserModal')
+        importUserModalEl.addEventListener('hidden.bs.modal', (event) => {
             @this.dispatch('reset-modal');
         })
     })

@@ -6,12 +6,12 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\SupportTicketController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\FaqController as UserFaq;
-use App\Http\Controllers\Admin\FaqController as AdminFaq;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 
 Route::middleware(['auth', 'role:super-admin|admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/user/{role}', \App\Livewire\Admin\User\Index::class)->name('admin.user');
+    Route::get('/admin/user/create/import', \App\Livewire\Admin\User\Import::class)->name('admin.user.import');
     Route::get('/admin/user/{username}/profile', \App\Livewire\Admin\User\ManageProfile::class)->name('admin.user.profile');
     Route::get('/admin/support-tickets', [SupportTicketController::class, 'index'])->name('admin.support-ticket.index');
     Route::get('/admin/support-tickets/{ticket}', [SupportTicketController::class, 'show'])->name('admin.support-ticket.show');

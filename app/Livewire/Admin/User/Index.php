@@ -4,16 +4,18 @@ namespace App\Livewire\Admin\User;
 
 use App\Models\User;
 use Livewire\Component;
-use Illuminate\Support\Str;
 use Livewire\Attributes\On;
+use App\Imports\UsersImport;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Excel;
+use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
 
 #[Layout('layouts.dashboard')]
 
 class Index extends Component
 {
-    use WithPagination;
+    use WithPagination, WithFileUploads;
 
     public $role;
     public $search = '';
