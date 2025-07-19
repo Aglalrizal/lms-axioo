@@ -6,8 +6,8 @@
                 <h1 class="modal-title fs-5" id="createUserModalLabel">{{ $formtitle ?? 'Buat ' . $title }}</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form>
+            <form wire:submit={{ $editform ? 'update' : 'save' }}>
+                <div class="modal-body">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
                         <input wire:model="username" type="text"
@@ -70,19 +70,12 @@
                             @enderror
                         </div>
                     @endif
-
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                @if ($editform)
+                </div>
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button wire:click="update" type="button" class="btn btn-primary">Update</button>
-                @else
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button wire:click="save" type="button" class="btn btn-primary">Save changes</button>
-                @endif
-            </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
