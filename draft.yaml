@@ -13,7 +13,7 @@ models:
     level: enum:beginner,intermediate,advanced
     duration: integer
     extra_description: longtext
-    is_published: boolean
+    is_published: boolean default:0
     created_by: string
     modified_by: string
     timestamps: true

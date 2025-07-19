@@ -1,1 +1,28 @@
-var quill,editorElement=document.querySelector("#editor");editorElement&&(quill=new Quill(editorElement,{modules:{toolbar:[[{header:[1,2,!1]}],[{font:[]}],["bold","italic","underline","strike"],[{size:["small",!1,"large","huge"]}],[{list:"ordered"},{list:"bullet"}],[{color:[]},{background:[]},{align:[]}],["link","image","code-block","video"]]},theme:"snow"}));
+var quill,
+    editorElement = document.querySelector("#editor");
+editorElement &&
+    (quill = new Quill(editorElement, {
+        modules: {
+            toolbar: [
+                ["bold", "italic", "underline", "strike"], // toggled buttons
+                ["blockquote", "code-block"],
+                ["link", "image", "video", "formula"],
+
+                [{ header: 1 }, { header: 2 }], // custom button values
+                [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+                [{ script: "sub" }, { script: "super" }], // superscript/subscript
+                [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+                [{ direction: "rtl" }], // text direction
+
+                [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+                [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+                [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+                [{ font: [] }],
+                [{ align: [] }],
+
+                ["clean"], // remove formatting button
+            ],
+        },
+        theme: "snow",
+    }));

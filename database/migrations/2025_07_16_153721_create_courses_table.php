@@ -23,7 +23,7 @@ return new class extends Migration
             $table->enum('level', ["beginner","intermediate","advanced"]);
             $table->integer('duration');
             $table->longText('extra_description');
-            $table->boolean('is_published');
+            $table->boolean('is_published')->default(false);
             $table->string('created_by');
             $table->string('modified_by');
             $table->timestamps();

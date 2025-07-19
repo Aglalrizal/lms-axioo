@@ -125,6 +125,9 @@
 </section>
 
 <script>
+    setInterval(() => {
+        $wire.$refresh()
+    }, 2000)
     document.addEventListener('livewire:initialized', () => {
         @this.on('refresh-faqs', (event) => {
             var myFaqItemModalEl = document.querySelector('#faqItemModal')

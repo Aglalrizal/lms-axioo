@@ -6,7 +6,6 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    @yield('csrf-token')
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/images/favicon/favicon.ico') }}" />
 
@@ -24,7 +23,7 @@
 
     <link rel="stylesheet" href="{{ asset('assets/libs/tiny-slider/dist/tiny-slider.css') }}" />
     <title>Homepage | Axioo</title>
-    @stack('scripts')
+    @livewireStyles
 </head>
 
 <body class="bg-white">
@@ -46,10 +45,11 @@
     <script src={{ asset('assets/js/vendors/validation.js') }}></script>
     <script src={{ asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}></script>
     <script src={{ asset('assets/js/vendors/choice.js') }}></script>
-    @yield('scripts')
+    @stack('scripts')
 
     <!-- Custom JS -->
     <script src="{{ asset('assets/js/script.js') }}"></script>
+    @livewireScripts
 </body>
 
 </html>

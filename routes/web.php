@@ -11,6 +11,8 @@ Route::middleware(['auth', 'role:super-admin|admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/user/{role}', \App\Livewire\Admin\User\Index::class)->name('admin.user');
     Route::get('/admin/user/{username}/profile', \App\Livewire\Admin\User\ManageProfile::class)->name('admin.user.profile');
+    Route::get('/admin/course/course', \App\Livewire\Admin\Course\Index::class)->name('admin.course.all');
+    Route::get('/admin/course/course/create', \App\Livewire\Admin\Course\CreateCourse::class)->name('admin.course.create');
     Route::get('/admin/course/category', \App\Livewire\Admin\Course\CourseCategory::class)->name('admin.course.category');
     Route::get('/admin/cms/support-tickets', [SupportTicketController::class, 'index'])->name('admin.cms.support-ticket.index');
     Route::get('/admin/cms/support-tickets/{ticket}', [SupportTicketController::class, 'show'])->name('admin.cms.support-ticket.show');

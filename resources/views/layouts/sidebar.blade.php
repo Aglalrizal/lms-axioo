@@ -53,7 +53,7 @@
                     data-bs-parent="#sideNavbar">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link " href="../../pages/dashboard/admin-course-overview.html">All Courses</a>
+                            <a class="nav-link " href="{{ route('admin.course.all') }}">All Courses</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.course.category') }}">Courses
