@@ -35,7 +35,7 @@
                         </a>
 
                         <div class="ms-2">
-                            <button @click="$dispatch('edit-mode',{id:{{ $category->id }}})" type="button"
+                            <button @click="$dispatch('edit-category-mode',{id:{{ $category->id }}})" type="button"
                                 class="me-1 text-inherit btn btn-sm p-1" data-bs-toggle="modal"
                                 data-bs-target="#faqCategoryModal"><i class="fe fe-edit fs-6"></i></button>
                             <button wire:click="$dispatch('delete-faq-category',{id: {{ $category->id }}})"
@@ -73,7 +73,7 @@
                                             </h5>
                                         </a>
                                         <div class="ms-2">
-                                            <button @click="$dispatch('edit-mode',{id:{{ $faq->id }}})"
+                                            <button @click="$dispatch('edit-faq-item-mode',{id:{{ $faq->id }}})"
                                                 type="button" class="me-1 text-inherit btn btn-sm p-1"
                                                 data-bs-toggle="modal" data-bs-target="#faqItemModal"><i
                                                     class="fe fe-edit fs-6"></i></button>
@@ -120,7 +120,7 @@
     </div>
 
     <livewire:admin.faqs.create-faq-category />
-    <livewire:admin.faqs.create-faqs />
+    <livewire:admin.faqs.create-faqs :key="'faq-form-' . now()->timestamp" />
 
 </section>
 
@@ -135,16 +135,18 @@
 
             faqItemModal.hide();
             faqCategoryModal.hide();
-            @this.dispatch('reset-modal');
+            @this.dispatch('reset-faq-item-modal');
+            @this.dispatch('reset-category-modal');
         })
 
         var myFaqItemModalEl = document.getElementById('faqItemModal')
         myFaqItemModalEl.addEventListener('hidden.bs.modal', (event) => {
-            @this.dispatch('reset-modal');
+            @this.dispatch('reset-faq-item-modal');
         })
         var myFaqCategoryModalEl = document.getElementById('faqCategoryModal')
         myFaqCategoryModalEl.addEventListener('hidden.bs.modal', (event) => {
-            @this.dispatch('reset-modal');
+            @this.dispatch('reset-category-modal');
+            @this.dispatch('refresh-categories');
         })
     })
 </script>

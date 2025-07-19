@@ -2,14 +2,6 @@
     <!-- card body  -->
     <div class="card-body p-5 d-flex flex-column gap-4">
         <h2 class="mb-0 fw-semibold">Submit a Request</h2>
-        @if (session()->has('message'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('message') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true"></span>
-                </button>
-            </div>
-        @endif
         <!-- form  -->
         <form wire:submit="submit" class="needs-validation" novalidate>
             <!-- input  -->
@@ -67,7 +59,7 @@
                 @enderror
             </div>
             <!-- button  -->
-            <button class="btn btn-primary" type="submit">Submit</button>
+            <button wire:loading.attr="disabled" class="btn btn-primary" type="submit">Submit</button>
         </form>
     </div>
 </div>

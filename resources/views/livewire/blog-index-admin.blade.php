@@ -4,14 +4,14 @@
         <div class="col-lg-12 col-md-12 col-12">
             <div class="border-bottom pb-3 mb-3 d-flex align-items-center justify-content-between">
                 <div class="d-flex flex-column gap-1">
-                    <h1 class="mb-0 h2 fw-bold">All Support Tickets</h1>
+                    <h1 class="mb-0 h2 fw-bold">All Posts</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
                                 <a href="../dashboard/admin-dashboard.html">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item"><a href="#">CMS</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">All Support Tickets</li>
+                            <li class="breadcrumb-item active" aria-current="page">All Posts</li>
                         </ol>
                     </nav>
                 </div>
@@ -31,25 +31,14 @@
                                 wire:click="setShow('all')">All</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" @click=" selected = 'open' "
-                                :class="selected === 'open' ? 'active' : ''"
-                                wire:click="setShow('open')">Open</button>
+                            <button class="nav-link" @click=" selected = 'published' "
+                                :class="selected === 'published' ? 'active' : ''"
+                                wire:click="setShow('published')">Published</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" @click=" selected = 'inProgress' "
-                                :class="selected === 'inProgress' ? 'active' : ''"
-                                wire:click="setShow('in-progress')">In
-                                Progress</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" @click=" selected = 'resolved' "
-                                :class="selected === 'resolved' ? 'active' : ''"
-                                wire:click="setShow('resolved')">Resolved</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" @click=" selected = 'closed' "
-                                :class="selected === 'closed' ? 'active' : ''"
-                                wire:click="setShow('closed')">Closed</button>
+                            <button class="nav-link" @click=" selected = 'drafted' "
+                                :class="selected === 'drafted' ? 'active' : ''"
+                                wire:click="setShow('drafted')">Drafted</button>
                         </li>
                         <li class="nav-item">
                             <button class="nav-link" @click=" selected = 'deleted' "
@@ -88,7 +77,7 @@
                                                 </div>
                                             </th> --}}
                                             <th>Title</th>
-                                            <th>Subject</th>
+                                            <th>Category</th>
                                             <th>Date</th>
                                             <th>Email</th>
                                             <th>Status</th>
@@ -97,8 +86,8 @@
                                     </thead>
                                     <tbody>
                                         <!-- Table body -->
-                                        @forelse ($tickets as $ticket)
-                                            <tr wire:key="ticket-{{ $ticket->id }}">
+                                        @forelse ($blogs as $blog)
+                                            <tr wire:key="ticket-{{ $blog->id }}">
                                                 {{-- <td>
                                                     <div class="form-check">
                                                         <input type="checkbox" class="form-check-input"
@@ -108,49 +97,41 @@
                                                 </td> --}}
                                                 <td>
                                                     <h5 class="mb-0">
-                                                        <a href="support-tickets/{{ $ticket->id }}"
-                                                            class="text-inherit">{{ $ticket->title }}</a>
+                                                        <a href="blogs/{{ $blog->id }}/edit"
+                                                            class="text-inherit">{{ $blog->title }}</a>
                                                     </h5>
                                                 </td>
                                                 <td>
-                                                    <a href="support-tickets/{{ $ticket->id }}"
-                                                        class="text-inherit">{{ $ticket->subject }}</a>
+                                                    <a href="blogs/{{ $blog->id }}/edit"
+                                                        class="text-inherit">{{ $blog->category->name }}</a>
                                                 </td>
 
                                                 <td>
-                                                    @if ($ticket->created_at->lessThan(now()->subDays(2)))
-                                                        {{ $ticket->created_at->format('d M Y') }}
+                                                    @if ($blog->created_at->lessThan(now()->subDays(2)))
+                                                        {{ $blog->created_at->format('d M Y') }}
                                                     @else
-                                                        {{ $ticket->created_at->diffForHumans() }}
+                                                        {{ $blog->created_at->diffForHumans() }}
                                                     @endif
                                                 </td>
 
                                                 <td>
                                                     <div class="d-flex align-items-center flex-row gap-2">
-                                                        <h5 class="mb-0">{{ $ticket->email }}</h5>
+                                                        <h5 class="mb-0">{{ $blog->author->username }}</h5>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    @if ($ticket->status === 'open')
-                                                        <span
-                                                            class="badge-dot bg-warning me-1 d-inline-block align-middle"></span>
-                                                        {{ $ticket->status }}
-                                                    @elseif ($ticket->status === 'in-progress')
-                                                        <span
-                                                            class="badge-dot bg-info me-1 d-inline-block align-middle"></span>
-                                                        {{ $ticket->status }}
-                                                    @elseif ($ticket->status === 'resolved')
+                                                    @if ($blog->status === 'published')
                                                         <span
                                                             class="badge-dot bg-success me-1 d-inline-block align-middle"></span>
-                                                        {{ $ticket->status }}
-                                                    @elseif ($ticket->status === 'closed')
+                                                        {{ $blog->status }}
+                                                    @elseif ($blog->status === 'drafted')
                                                         <span
-                                                            class="badge-dot bg-danger me-1 d-inline-block align-middle"></span>
-                                                        {{ $ticket->status }}
+                                                            class="badge-dot bg-warning me-1 d-inline-block align-middle"></span>
+                                                        {{ $blog->status }}
                                                     @else
                                                         <span
                                                             class="badge-dot bg-warning me-1 d-inline-block align-middle"></span>
-                                                        {{ $ticket->status }}
+                                                        {{ $blog->status }}
                                                     @endif
                                                 </td>
                                                 <td>
@@ -167,16 +148,17 @@
                                                                 <i class="fe fe-edit dropdown-item-icon"></i>
                                                                 Change Status
                                                             </a>
-                                                            @if ($ticket->deleted_at)
-                                                                <a wire:click="confirmation({{ $ticket->id }}, 'restore')"
+                                                            @if ($blog->deleted_at)
+                                                                <a wire:click="restore({{ $blog->id }})"
+                                                                    wire:confirm="Are you sure you want to restore this ticket?"
                                                                     wire:loading.attr="disabled" class="dropdown-item">
                                                                     <i class="fe fe-rotate-cw dropdown-item-icon"></i>
                                                                     Restore
                                                                 </a>
                                                             @else
-                                                                <a wire:click="confirmation({{ $ticket->id }}, 'delete')"
-                                                                    wire:loading.attr="disabled"
-                                                                    class="dropdown-item">
+                                                                <a wire:click="softDelete({{ $blog->id }})"
+                                                                    wire:confirm="Are you sure you want to delete this ticket?"
+                                                                    wire:loading.attr="disabled" class="dropdown-item">
                                                                     <i class="fe fe-trash dropdown-item-icon"></i>
                                                                     Delete
                                                                 </a>
@@ -203,7 +185,7 @@
                     </div>
                     <!-- Card Footer -->
                     <div class="card-footer">
-                        {{ $tickets->links(data: ['scrollTo' => false]) }}
+                        {{ $blogs->links(data: ['scrollTo' => false]) }}
                     </div>
                 </div>
             </div>

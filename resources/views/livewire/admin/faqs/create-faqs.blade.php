@@ -6,14 +6,14 @@
                 <h1 class="modal-title fs-5" id="faqItemModalLabel">{{ $formtitle }}</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form>
+            <form wire:submit="{{ $editform ? 'update' : 'save' }}">
+                <div class="modal-body">
                     <div class="mb-3" wire:ignore>
                         <label for="faq_category_id" class="form-label">Category</label>
                         <select class="form-select text-dark" id="faq_category_id" wire:model="faq_category_id"
                             required>
                             <option value="" disabled>-- Select Category --</option>
-                            @foreach (\App\Models\FaqCategory::all() as $category)
+                            @foreach ($categories as $category)
                                 <option class="text-dark" value="{{ $category->id }}">
                                     {{ Str::title($category->name) }}
                                 </option>
@@ -43,17 +43,19 @@
                                 id="status">
                         </div>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                @if ($editform)
+                </div>
+                <div class="modal-footer">
+                    {{-- @if ($editform)
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button wire:click="update" type="button" class="btn btn-primary">Update</button>
-                @else
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    @else
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button wire:click="save" type="button" class="btn btn-primary">Save changes</button>
-                @endif
-            </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    @endif --}}
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

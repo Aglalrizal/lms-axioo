@@ -2,16 +2,23 @@
 
 namespace App\Livewire;
 
-use App\Models\SupportTicket;
 use Livewire\Component;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
+use App\Models\SupportTicket;
+use Flasher\SweetAlert\Laravel\Facade\SweetAlert;
 
 
 class SupportTicketIndex extends Component
 {
     use WithPagination;
 
+    protected $paginationTheme = 'bootstrap';
+
     public $isShowing = 'all';
+    public $query = '';
+    public $ticketId;
+    public $ticketAction;
 
     public function setShow(string $status): void
     {
@@ -19,21 +26,48 @@ class SupportTicketIndex extends Component
         $this->resetPage(pageName: 'tickets_page');
     }
 
-    public function softDelete(SupportTicket $ticket)
+    public function search()
     {
-        $ticket->delete();
+        $this->resetPage();
     }
 
-    // public function restore(SupportTicket $ticket)
-    // {
-    //     $ticket->restore();
-    // }
-
-    public function restore(int $ticketId): void
+    public function confirmation($id, $action)
     {
-        $ticket = SupportTicket::withTrashed()->find($ticketId);
+        $this->ticketId = $id;
+        $this->ticketAction = $action;
 
-        $ticket->restore();
+        sweetalert()
+            ->showDenyButton()
+            ->option('confirmButtonText', 'Yes, ' . $action . ' it!')
+            ->option('denyButtonText', 'Cancel')
+            ->option('id', $id)
+            ->warning('Are you sure you want to ' . $action . ' this user?');
+    }
+
+    #[On('sweetalert:confirmed')]
+    public function actionOnConfirm()
+    {
+        if ($this->ticketAction === 'delete') {
+            SupportTicket::findOrFail($this->ticketId)->delete();
+            flash()->success('Ticket deleted successfully.');
+        } else {
+            SupportTicket::withTrashed()->findOrFail($this->ticketId)->restore();
+            flash()->success('Ticket restored successfully.');
+        }
+    }
+
+    #[On('sweetalert:denied')]
+    public function actionOnCancel()
+    {
+        $this->ticketId = null;
+
+        if ($this->ticketAction === 'delete') {
+            flash()->info('Ticket deletion cancelled.');
+        } else {
+            flash()->info('Ticket restoration cancelled.');
+        }
+
+        $this->ticketAction = null;
     }
 
     public function render()
@@ -52,8 +86,9 @@ class SupportTicketIndex extends Component
 
         return view('livewire.support-ticket-index', [
             'tickets' => $query
+                ->whereAny(['title', 'email'], 'like', '%' . $this->query . '%')
                 ->orderBy('created_at', 'desc')
-                ->simplePaginate(10, pageName: 'tickets_page'),
+                ->paginate(10, pageName: 'tickets_page'),
         ]);
     }
 }

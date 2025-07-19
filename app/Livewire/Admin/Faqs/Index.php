@@ -52,7 +52,7 @@ class Index extends Component
         if ($this->categoryToDelete) {
             $category = FaqCategory::find($this->categoryToDelete);
             if ($category) {
-                $category->delete(); // Akan error kalau ada relasi FAQ yang masih nyangkut, hati-hati
+                $category->delete();
                 flash()->success('FAQ Category deleted successfully!');
             } else {
                 flash()->error('FAQ Category not found.');
@@ -76,12 +76,12 @@ class Index extends Component
         }
     }
 
-
     #[On('sweetalert:denied')]
     public function cancelDelete()
     {
         if($this->categoryToDelete){
             $this->categoryToDelete = null;
+            $this->dispatch('refresh-categories')->to(CreateFaqs::class);
             flash()->info('Category Faq deletion cancelled.');
         }
         if($this->faqToDelete){
