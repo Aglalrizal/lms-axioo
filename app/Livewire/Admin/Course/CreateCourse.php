@@ -2,67 +2,41 @@
 
 namespace App\Livewire\Admin\Course;
 
-use App\Models\User;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Rule;
+use App\Livewire\Admin\Course\Steps\StepOne;
+use App\Models\Course;
 use Livewire\Component;
-use App\Models\CourseCategory;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Layout;
-use Livewire\WithFileUploads;
 
 #[Layout('layouts.dashboard')]
 class CreateCourse extends Component
 {
-    use WithFileUploads;
+    public $step = 1;
+    public $slug;
 
-    #[Rule('required')]
-    public $selectedCategory = '';
-    #[Rule('required')]
-    public $selectedInstructor = '';
-    #[Rule('required')]
-    public $title;
-    #[Rule('required')]
-    public $description;
-    #[Rule('required')]
-    public $courseLevel;
-    public $categories;
-    public $instructors;
+    public $course;
 
-    public $currentStep = 1;
-
-    public $courseImage = '';
-
+    #[On('next')]
     public function next(){
-
+        $this->step++;
     }
-    #[On('go-to')]
-    public function goTo($step){
-        if($step == 1){
-            $this->currentStep = $step;
-            $this->dispatch('init-step-one-js');
-            $this->dispatch('init-quill');
-        }else if($step == 2){
-            $this->currentStep = $step;
-        }
-
-
+    #[On('back')]
+    public function back(){
+        $this->step--;
     }
 
-    public function stepOne(){
-        $this->validate([
-        'title' => 'required',
-        'description' => 'required',
-        'courseLevel' => 'required',
-        'selectedInstructor' => 'required',
-        'selectedCategory' => 'required'
-        ]);
-        $this->currentStep = 2;
+    #[On('set-course')]
+    public function setCourse($slug){
+        $this->course = Course::where('slug', $slug)->firstOrFail();
+    }
+
+    public function mount($slug = null)
+    {
+        $this->slug = $slug;
     }
 
     public function render()
     {
-        $this->categories = CourseCategory::all();
-        $this->instructors = User::role('instructor')->get();
         return view('livewire.admin.course.create-course');
     }
 }

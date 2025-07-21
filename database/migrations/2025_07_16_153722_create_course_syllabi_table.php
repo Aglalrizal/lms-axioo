@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('course_id')->constrained();
             $table->string('title');
             $table->integer('order');
-            $table->boolean('is_completed');
+            $table->boolean('is_completed')->default(false);
             $table->string('created_by');
             $table->string('modified_by');
             $table->timestamps();

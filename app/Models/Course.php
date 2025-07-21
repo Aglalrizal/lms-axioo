@@ -2,13 +2,28 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Course extends Model
 {
-    use HasFactory;
+    use HasFactory, Sluggable;
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -17,6 +32,7 @@ class Course extends Model
      */
     protected $fillable = [
         'title',
+        'slug',
         'teacher_id',
         'course_category_id',
         'description',
@@ -52,5 +68,8 @@ class Course extends Model
     public function courseCategory(): BelongsTo
     {
         return $this->belongsTo(CourseCategory::class);
+    }
+    public function syllabus(){
+        return $this->hasMany(CourseSyllabus::class);
     }
 }
