@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\SupportTicket;
-use Flasher\SweetAlert\Laravel\Facade\SweetAlert;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -32,7 +31,7 @@ class SupportTicketCreate extends Component
             'description',
         ]));
 
-        SweetAlert::success('Support ticket created successfully.');
+        sweetalert()->success('Tiket berhasil dikirim.');
 
         $this->reset();
     }

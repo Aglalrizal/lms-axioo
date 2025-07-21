@@ -15,7 +15,6 @@ class BlogIndexPublic extends Component
 
     public $isShowing = 'berita';
 
-
     public function setShow(string $category): void
     {
         $this->isShowing = $category;
@@ -27,6 +26,7 @@ class BlogIndexPublic extends Component
         return view('livewire.blog-index-public', [
             'blogs' => Blog::with(['author', 'category'])
                 ->whereRelation('category', 'name', $this->isShowing)
+                ->where('status', 'published')
                 ->orderBy('created_at', 'desc')
                 ->paginate(9, pageName: 'posts_page'),
         ]);

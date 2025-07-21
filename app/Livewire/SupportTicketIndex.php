@@ -41,7 +41,7 @@ class SupportTicketIndex extends Component
             ->option('confirmButtonText', 'Yes, ' . $action . ' it!')
             ->option('denyButtonText', 'Cancel')
             ->option('id', $id)
-            ->warning('Are you sure you want to ' . $action . ' this user?');
+            ->warning('Are you sure you want to ' . $action . ' this ticket?');
     }
 
     #[On('sweetalert:confirmed')]

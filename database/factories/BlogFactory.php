@@ -21,8 +21,9 @@ class BlogFactory extends Factory
 
         return [
             'title' => fake()->sentence(),
+            'slug' => fake()->slug(),
             'content' => fake()->paragraphs(4, true),
-            'status' => fake()->randomElement(['published', 'drafted']),
+            'status' => fake()->randomElement(['published', 'drafted', 'scheduled']),
             'user_id' => rand(1, 2),
             'blog_category_id' => $blogCategoryId,
         ];

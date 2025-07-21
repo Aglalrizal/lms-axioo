@@ -27,7 +27,7 @@
     @stack('scripts')
 </head>
 
-<body class="bg-white">
+<body>
     @yield('container')
 
     <!-- Scripts -->

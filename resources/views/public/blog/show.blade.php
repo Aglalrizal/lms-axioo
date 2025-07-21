@@ -24,8 +24,8 @@
             <div class="row justify-content-center">
                 <div class="col-xl-10 col-lg-10 col-md-12 col-12 mb-2">
                     <!-- Descriptions -->
-                    <div style="font-size: 1rem;">
-                        {{ $blog->content }}
+                    <div>
+                        {!! $blog->content !!}
                     </div>
 
                     <!-- Media -->

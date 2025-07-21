@@ -15,6 +15,9 @@
                         </ol>
                     </nav>
                 </div>
+                <div>
+                    <a href="/admin/blogs/create" class="btn btn-primary">Create Post</a>
+                </div>
             </div>
         </div>
     </div>
@@ -36,14 +39,14 @@
                                 wire:click="setShow('published')">Published</button>
                         </li>
                         <li class="nav-item">
+                            <button class="nav-link" @click=" selected = 'scheduled' "
+                                :class="selected === 'scheduled' ? 'active' : ''"
+                                wire:click="setShow('scheduled')">Scheduled</button>
+                        </li>
+                        <li class="nav-item">
                             <button class="nav-link" @click=" selected = 'drafted' "
                                 :class="selected === 'drafted' ? 'active' : ''"
                                 wire:click="setShow('drafted')">Drafted</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" @click=" selected = 'deleted' "
-                                :class="selected === 'deleted' ? 'active' : ''"
-                                wire:click="setShow('deleted')">Deleted</button>
                         </li>
                     </ul>
 
@@ -130,7 +133,7 @@
                                                         {{ $blog->status }}
                                                     @else
                                                         <span
-                                                            class="badge-dot bg-warning me-1 d-inline-block align-middle"></span>
+                                                            class="badge-dot bg-info me-1 d-inline-block align-middle"></span>
                                                         {{ $blog->status }}
                                                     @endif
                                                 </td>
@@ -144,26 +147,11 @@
                                                         </a>
                                                         <span class="dropdown-menu" aria-labelledby="courseDropdown1">
                                                             <span class="dropdown-header">Settings</span>
-                                                            <a class="dropdown-item" href="#">
-                                                                <i class="fe fe-edit dropdown-item-icon"></i>
-                                                                Change Status
+                                                            <a wire:click="confirmation({{ $blog->id }})"
+                                                                wire:loading.attr="disabled" class="dropdown-item">
+                                                                <i class="fe fe-trash dropdown-item-icon"></i>
+                                                                Delete
                                                             </a>
-                                                            @if ($blog->deleted_at)
-                                                                <a wire:click="restore({{ $blog->id }})"
-                                                                    wire:confirm="Are you sure you want to restore this ticket?"
-                                                                    wire:loading.attr="disabled" class="dropdown-item">
-                                                                    <i class="fe fe-rotate-cw dropdown-item-icon"></i>
-                                                                    Restore
-                                                                </a>
-                                                            @else
-                                                                <a wire:click="softDelete({{ $blog->id }})"
-                                                                    wire:confirm="Are you sure you want to delete this ticket?"
-                                                                    wire:loading.attr="disabled" class="dropdown-item">
-                                                                    <i class="fe fe-trash dropdown-item-icon"></i>
-                                                                    Delete
-                                                                </a>
-                                                            @endif
-
                                                         </span>
                                                     </span>
                                                 </td>
