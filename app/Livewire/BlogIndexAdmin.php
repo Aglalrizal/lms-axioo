@@ -4,8 +4,8 @@ namespace App\Livewire;
 
 use App\Models\Blog;
 use Livewire\Component;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
-use Flasher\SweetAlert\Laravel\Facade\SweetAlert;
 
 class BlogIndexAdmin extends Component
 {
@@ -15,6 +15,7 @@ class BlogIndexAdmin extends Component
 
     public $isShowing = 'all';
     public $query = '';
+    public $blogId;
 
     public function setShow(string $status): void
     {
@@ -27,31 +28,40 @@ class BlogIndexAdmin extends Component
         $this->resetPage();
     }
 
-    public function softDelete(Blog $blog)
+    public function confirmation($id)
     {
-        $blog->delete();
-        SweetAlert::success('Ticket deleted successfully.');
+        $this->blogId = $id;
+
+        sweetalert()
+            ->showDenyButton()
+            ->option('confirmButtonText', 'Yes, delete it!')
+            ->option('denyButtonText', 'Cancel')
+            ->option('id', $id)
+            ->warning('Are you sure you want to delete this blog?');
     }
 
-    public function restore(int $blogId): void
+    #[On('sweetalert:confirmed')]
+    public function actionOnConfirm()
     {
-        $blog = Blog::withTrashed()->find($blogId);
-        $blog->restore();
-        SweetAlert::success('Ticket restored successfully.');
+        Blog::findOrFail($this->blogId)->delete();
+        flash()->success('Ticket deleted successfully.');
     }
+
+    #[On('sweetalert:denied')]
+    public function actionOnCancel()
+    {
+        $this->blogId = null;
+
+        flash()->info('Blog deletion cancelled.');
+    }
+
 
     public function render()
     {
         $query = Blog::query();
 
-        if ($this->isShowing === 'deleted') {
-            $query->onlyTrashed();
-        } else {
-            $query->whereNull('deleted_at');
-
-            if ($this->isShowing !== 'all') {
-                $query->where('status', $this->isShowing);
-            }
+        if ($this->isShowing !== 'all') {
+            $query->where('status', $this->isShowing);
         }
 
         return view('livewire.blog-index-admin', [

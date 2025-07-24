@@ -16,10 +16,11 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('blog_category_id')->constrained()->onDelete('cascade');
             $table->string('title');
+            $table->string('slug');
             // IMAGE HERE
-            $table->text('content');
-            $table->enum('status', ['published', 'drafted'])->default('drafted');
-            $table->softDeletes();
+            $table->json('content');
+            $table->enum('status', ['published', 'drafted', 'scheduled']);
+            // $table->softDeletes();
             $table->timestamps();
         });
     }

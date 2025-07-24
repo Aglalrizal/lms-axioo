@@ -108,12 +108,14 @@
                                                 </td> --}}
                                                 <td>
                                                     <h5 class="mb-0">
-                                                        <a href="support-tickets/{{ $ticket->id }}"
+                                                        <a @if ($ticket->deleted_at) href="#"
+                                                        @else href="support-tickets/{{ $ticket->id }}" @endif
                                                             class="text-inherit">{{ $ticket->title }}</a>
                                                     </h5>
                                                 </td>
                                                 <td>
-                                                    <a href="support-tickets/{{ $ticket->id }}"
+                                                    <a @if ($ticket->deleted_at) href="#"
+                                                        @else href="support-tickets/{{ $ticket->id }}" @endif
                                                         class="text-inherit">{{ $ticket->subject }}</a>
                                                 </td>
 

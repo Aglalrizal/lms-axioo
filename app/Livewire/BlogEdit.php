@@ -5,13 +5,12 @@ namespace App\Livewire;
 use App\Models\Blog;
 use Livewire\Component;
 use App\Models\BlogCategory;
-use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
-class BlogCreate extends Component
+class BlogEdit extends Component
 {
-    // public $date;
+    public $blog;
     public $title;
     public $slug;
     public $blog_category_id;
@@ -32,36 +31,40 @@ class BlogCreate extends Component
                 'required',
                 Rule::in(BlogCategory::pluck('id')->toArray())
             ],
-            'content' => 'required'
+            'content' => 'required|min:32|max:2000'
         ];
+    }
+
+    public function mount($blog)
+    {
+        $this->title = $blog->title;
+        $this->slug = $blog->slug;
+        $this->blog_category_id = $blog->blog_category_id;
+        $this->content = $blog->content;
+
+        $this->blog = $blog->load('author');
     }
 
     public function submit()
     {
-        $validatedData = $this->validate();
+        $this->validate();
 
-        // dd($this->content);
-
-        $userId = Auth::id();
-
-        $blogData = array_merge($validatedData, [
-            'user_id' => $userId,
-        ]);
-
-        Blog::create($blogData);
-
-        $this->reset();
+        $this->blog->update(
+            $this->only([
+                'title',
+                'slug',
+                'blog_category_id',
+                'content'
+            ])
+        );
 
         flash()->success('Blog berhasil dibuat.');
     }
 
     public function render()
     {
-        return view(
-            'livewire.blog-create',
-            [
-                'categories' => BlogCategory::get()
-            ]
-        );
+        return view('livewire.blog-edit', [
+            'categories' => BlogCategory::get(),
+        ]);
     }
 }

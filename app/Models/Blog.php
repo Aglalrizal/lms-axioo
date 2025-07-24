@@ -9,14 +9,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Blog extends Model
 {
     /** @use HasFactory<\Database\Factories\BlogFactory> */
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'user_id',
         'blog_category_id',
         'title',
+        'slug',
         'content',
         'status',
+    ];
+
+    protected $casts = [
+        'content' => 'array', // Ini akan mengonversi JSON string di DB ke array PHP, dan sebaliknya
     ];
 
     public function category()

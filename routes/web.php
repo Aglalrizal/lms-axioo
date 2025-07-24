@@ -18,6 +18,7 @@ Route::middleware(['auth', 'role:super-admin|admin'])->group(function () {
     Route::get('admin/report/activity-log', \App\Livewire\Admin\Reports\ActivityLog\Index::class)->name('admin.report.activity-log');
     Route::get('/admin/blogs', [BlogController::class, 'index_admin'])->name('admin.blog.index');
     Route::get('/admin/blogs/create', [BlogController::class, 'create'])->name('admin.blog.create');
+    Route::get('/admin/blogs/{blog}/edit', [BlogController::class, 'edit'])->name('admin.blog.edit');
 });
 Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
     Route::get('admin/faqs', \App\Livewire\Admin\Faqs\Index::class)->name('admin.faqs');

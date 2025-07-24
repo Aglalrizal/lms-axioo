@@ -56,6 +56,6 @@ class DatabaseSeeder extends Seeder
         });
 
         SupportTicket::factory(50)->create();
-        Blog::factory(50)->create();
+        // Blog::factory(50)->create();
     }
 }
