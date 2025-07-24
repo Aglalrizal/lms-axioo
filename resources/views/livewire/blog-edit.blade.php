@@ -31,7 +31,7 @@
                 <div class="card-header">
                     <h4 class="mb-0">Create Post</h4>
                 </div>
-                <form wire:submit="submit" class="needs-validation" novalidate>
+                <form wire:submit="update" class="needs-validation" novalidate>
                     <!-- Card body -->
                     <div class="card-body">
 
@@ -52,10 +52,9 @@
                                     <label for="postTitle" class="form-label">Title</label>
                                     <input wire:model="title" type="text" id="postTitle"
                                         class="form-control text-dark" placeholder="Post Title" required />
-                                    <small>Keep your post titles under 60 characters. Write heading that describe the
-                                        topic content.
-                                        Contextualize for Your Audience.</small>
-                                    <div class="invalid-feedback">Please enter title.</div>
+                                    @error('title')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <!-- Slug -->
                                 <div class="mb-3 col-md-9">
@@ -66,7 +65,9 @@
                                         <input wire:model="slug" type="text" class="form-control" id="basic-url"
                                             aria-describedby="basic-addon3" />
                                     </div>
-                                    <small>Field must contain an unique value</small>
+                                    @error('slug')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 {{-- <!-- Excerpt -->
                                 <div class="mb-3 col-md-9">
@@ -84,7 +85,9 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <div class="invalid-feedback">Please choose category.</div>
+                                    @error('blog_category_id')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -205,15 +208,14 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const blog = @json($blog);
-            quill.setContents(blog['content']);
+            console.log(blog)
+            quill.clipboard.dangerouslyPasteHTML(blog['content']);
         });
 
         document.getElementById('publish-btn').addEventListener('click', function() {
-            // @this.set('content', quill.getContents());
-            const delta = quill.getContents();
-            JSON.stringify(delta)
-
-            @this.set('content', delta);
+            const content = quill.getSemanticHTML();
+            console.log(content)
+            @this.set('content', content);
         });
     </script>
 </section>

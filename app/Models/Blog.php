@@ -20,10 +20,6 @@ class Blog extends Model
         'status',
     ];
 
-    protected $casts = [
-        'content' => 'array', // Ini akan mengonversi JSON string di DB ke array PHP, dan sebaliknya
-    ];
-
     public function category()
     {
         return $this->belongsTo(BlogCategory::class, 'blog_category_id');

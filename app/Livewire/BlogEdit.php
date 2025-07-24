@@ -2,14 +2,14 @@
 
 namespace App\Livewire;
 
-use App\Models\Blog;
 use Livewire\Component;
 use App\Models\BlogCategory;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Reactive;
 
 class BlogEdit extends Component
 {
+    // #[Reactive]
     public $blog;
     public $title;
     public $slug;
@@ -19,19 +19,30 @@ class BlogEdit extends Component
     protected function rules()
     {
         return [
-            'title' => 'required|max:60|min:5|string',
+            'title' => 'required|max:60|string',
             'slug' => [
                 'required',
                 'string',
                 'max:72',
-                'min:5',
-                Rule::unique('blogs')
+                Rule::unique('blogs')->ignore($this->blog),
             ],
             'blog_category_id' => [
                 'required',
                 Rule::in(BlogCategory::pluck('id')->toArray())
             ],
-            'content' => 'required|min:32|max:2000'
+            'content' => 'required'
+        ];
+    }
+
+    protected function messages()
+    {
+        return [
+            'title.required' => 'The :attribute are missing.',
+            'title.max' => 'The :attribute is too large.',
+            'slug.required' => 'The :attribute are missing.',
+            'slug.max' => 'The :attribute is too large.',
+            'slug.unique' => 'The :attribute has already been taken.',
+            'content.required' => 'The :attribute are missing.',
         ];
     }
 
@@ -45,7 +56,7 @@ class BlogEdit extends Component
         $this->blog = $blog->load('author');
     }
 
-    public function submit()
+    public function update()
     {
         $this->validate();
 
@@ -59,6 +70,8 @@ class BlogEdit extends Component
         );
 
         flash()->success('Blog berhasil dibuat.');
+
+        $this->resetExcept('blog');
     }
 
     public function render()

@@ -20,12 +20,11 @@ class BlogCreate extends Component
     protected function rules()
     {
         return [
-            'title' => 'required|max:60|min:5|string',
+            'title' => 'required|max:60|string',
             'slug' => [
                 'required',
                 'string',
                 'max:72',
-                'min:5',
                 Rule::unique('blogs')
             ],
             'blog_category_id' => [
@@ -36,23 +35,29 @@ class BlogCreate extends Component
         ];
     }
 
+    protected function messages()
+    {
+        return [
+            'title.required' => 'The :attribute are missing.',
+            'title.max' => 'The :attribute is too large.',
+            'slug.required' => 'The :attribute are missing.',
+            'slug.max' => 'The :attribute is too large.',
+            'slug.unique' => 'The :attribute has already been taken.',
+            'content.required' => 'The :attribute are missing.',
+        ];
+    }
+
     public function submit()
     {
         $validatedData = $this->validate();
 
-        // dd($this->content);
+        $validatedData['user_id'] = Auth::id();
 
-        $userId = Auth::id();
-
-        $blogData = array_merge($validatedData, [
-            'user_id' => $userId,
-        ]);
-
-        Blog::create($blogData);
-
-        $this->reset();
+        Blog::create($validatedData);
 
         flash()->success('Blog berhasil dibuat.');
+
+        return $this->reset();
     }
 
     public function render()

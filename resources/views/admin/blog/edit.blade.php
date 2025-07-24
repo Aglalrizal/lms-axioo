@@ -6,7 +6,7 @@
 @endsection
 
 @section('content')
-    <livewire:blog-edit :blog="$blog" />
+    <livewire:blog-edit :$blog />
 @endsection
 
 @section('scripts')

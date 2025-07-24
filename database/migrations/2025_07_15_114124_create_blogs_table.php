@@ -18,9 +18,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
             // IMAGE HERE
-            $table->json('content');
+            $table->text('content');
             $table->enum('status', ['published', 'drafted', 'scheduled']);
-            // $table->softDeletes();
             $table->timestamps();
         });
     }
