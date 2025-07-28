@@ -29,6 +29,7 @@ class BlogController extends Controller
 
     public function edit(Blog $blog)
     {
+        $blog->load('author');
         return view('admin.blog.edit', ['blog' => $blog]);
     }
 }
