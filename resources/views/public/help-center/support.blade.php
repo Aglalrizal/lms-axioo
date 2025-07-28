@@ -58,3 +58,9 @@
         </section>
     </main>
 @endsection
+
+@section('scripts')
+    <script src={{ asset('assets/js/vendors/validation.js') }}></script>
+    <script src={{ asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}></script>
+    <script src={{ asset('assets/js/vendors/choice.js') }}></script>
+@endsection

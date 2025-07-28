@@ -18,18 +18,8 @@ class Create extends Component
 
     public $user;
 
-    // #[Rule([
-    //     'required', 
-    //     'string',
-    //     'min:3',
-    //     'max:20',
-    //     'unique:users,username',
-    //     'regex:/^[a-zA-Z0-9_]+$/'
-    //     ])]
     public $username;
-    // #[Rule(['required', 'email', 'min:3', 'max:50'])]
     public $email;
-    // #[Rule(['required', 'min:8'])]
     public $password;
     public function rules()
     {

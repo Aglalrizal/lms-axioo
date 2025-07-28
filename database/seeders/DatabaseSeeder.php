@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\CourseCategory;
+use App\Models\Blog;
 use App\Models\SupportTicket;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(FaqCategorySeeder::class);
         $this->call(FaqSeeder::class);
+        $this->call(BlogCategorySeeder::class);
 
         CourseCategory::factory(5)->create();
 
@@ -31,10 +33,17 @@ class DatabaseSeeder extends Seeder
             'email' => 'super@admin.com',
             'password' => Hash::make('password')
         ]);
+        $admin2 = User::factory()->create([
+            'username' => 'Admin 2',
+            'email' => 'super2@admin.com',
+            'password' => Hash::make('password')
+        ]);
         $admin->assignRole('super-admin');
+        $admin2->assignRole('super-admin');
         $manageFaq = Permission::firstOrCreate(['name' => 'manage faqs']);
         $admin->givePermissionTo($manageFaq);
-        
+        $admin2->givePermissionTo($manageFaq);
+
         // dummy akun admin
         User::factory(3)->create()->each(function ($user) {
             $user->assignRole('admin');
@@ -50,5 +59,6 @@ class DatabaseSeeder extends Seeder
         });
 
         SupportTicket::factory(50)->create();
+        // Blog::factory(50)->create();
     }
 }

@@ -2,6 +2,35 @@
 @section('content') --}}
 <section class="container-fluid p-4">
     <div class="card rounded-3">
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Ganti Status Tiket</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <select wire:model="status" class="form-select" id="selectSubject" required>
+                                <option value="open">Open</option>
+                                <option value="in-progress">In-Progress</option>
+                                <option value="resolved">Resolved</option>
+                                <option value="closed">Closed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button wire:click="updateStatus" type="button" data-bs-dismiss="modal"
+                            class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- card header -->
         <div class="card-header">
             <div class="d-md-flex justify-content-between align-items-center">
@@ -33,16 +62,16 @@
                 <!-- button -->
                 <div class="d-flex align-items-center">
                     <div class="ms-2">
-                        <button type="button" class="btn btn-outline-secondary btn-sm fs-5" data-bs-toggle="tooltip"
-                            data-bs-placement="top"> <i class=" fe fe-toggle-left me-1  "></i> Change
-                            State</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm fs-5" data-bs-toggle="modal"
+                            data-bs-target="#exampleModalCenter"> <i class=" fe fe-toggle-left me-1  "></i>Ubah Status
+                        </button>
                     </div>
                     <div class="ms-2">
                         {{-- <div class="btn-group" role="group" aria-label="Basic example"> --}}
-                        <button wire:click="softDelete({{ $ticket->id }})"
+                        <button wire:click="confirmation({{ $ticket->id }}, 'delete')"
                             wire:confirm="Are you sure you want to delete this ticket?" type="button"
                             class="btn btn-outline-secondary btn-sm fs-5" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="Delete"><i class=" fe fe-trash-2 "></i></button>
+                            data-bs-placement="top" title="Hapus"><i class=" fe fe-trash-2 "></i></button>
                         {{-- </div> --}}
                     </div>
                 </div>
@@ -50,20 +79,15 @@
         </div>
         <!-- card body -->
         <div class="card-body">
-            <div class="d-xl-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center mb-3 mb-xl-0">
-                    <!-- sidebar -->
-                    <div class=" lh-1">
-                        <h5 class="mb-1">{{ $ticket->title }}</h5>
-                        <p class="mb-0 fs-6">{{ $ticket->full_name }} - {{ $ticket->email }}
-                        </p>
-                    </div>
-
+            <div class="d-xl-flex justify-content-between align-items-start ">
+                <div class=" lh-1">
+                    <h5 class="mb-1 fs-3">{{ $ticket->title }}</h5>
+                    <p class="mb-0">{{ $ticket->full_name }} - {{ $ticket->email }}
+                    </p>
                 </div>
-                <!-- text -->
 
                 <div>
-                    <small>{{ $ticket->created_at->format('d M Y, H:i') }}
+                    <small class="text-gray-500">{{ $ticket->created_at->format('d M Y, H:i') }}
                         ({{ $ticket->created_at->diffForHumans() }})</small>
                 </div>
 

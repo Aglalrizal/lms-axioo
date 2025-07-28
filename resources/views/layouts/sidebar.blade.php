@@ -79,6 +79,9 @@
                             <a class="nav-link " href="{{ route('admin.cms.support-ticket.index') }}">Support
                                 Tickets</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="{{ route('admin.blog.index') }}">Blogs</a>
+                        </li>
                     </ul>
                 </div>
             </li>

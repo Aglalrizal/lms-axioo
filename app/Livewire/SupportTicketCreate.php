@@ -31,7 +31,7 @@ class SupportTicketCreate extends Component
             'description',
         ]));
 
-        session()->flash('message', 'Support ticket created successfully.');
+        sweetalert()->success('Tiket berhasil dikirim.');
 
         $this->reset();
     }

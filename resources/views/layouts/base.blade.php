@@ -27,28 +27,29 @@
     @livewireStyles
 </head>
 
-<body class="bg-white">
+<body>
     @yield('container')
 
     <!-- Scripts -->
     <!-- Libs JS -->
-    <script src="{{ asset('assets/libs/@popperjs/core/dist/umd/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/simplebar/dist/simplebar.min.js') }}"></script>
+    <script src={{ asset('assets/libs/@popperjs/core/dist/umd/popper.min.js') }}></script>
+    <script src={{ asset('assets/libs/bootstrap/dist/js/bootstrap.min.js') }}></script>
+    <script src={{ asset('assets/libs/simplebar/dist/simplebar.min.js') }}></script>
 
     <!-- Theme JS -->
-    <script src="{{ asset('assets/js/theme.min.js') }}"></script>
-
-    <script src="{{ asset('assets/libs/tiny-slider/dist/min/tiny-slider.js') }}"></script>
-    <script src="{{ asset('assets/js/vendors/tnsSlider.js') }}"></script>
+    <script src={{ asset('assets/js/theme.min.js') }}></script>
+    <script src={{ asset('assets/libs/tiny-slider/dist/min/tiny-slider.js') }}></script>
+    <script src={{ asset('assets/js/vendors/tnsSlider.js') }}></script>
 
     {{-- From: Help Center Support --}}
     <script src={{ asset('assets/js/vendors/validation.js') }}></script>
     <script src={{ asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}></script>
     <script src={{ asset('assets/js/vendors/choice.js') }}></script>
     @stack('scripts')
+    @yield('scripts')
 
     <!-- Custom JS -->
+    <script src={{ asset('assets/js/script.js') }}></script>
     <script src="{{ asset('assets/js/script.js') }}"></script>
     @livewireScripts
 </body>

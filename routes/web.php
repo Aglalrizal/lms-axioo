@@ -2,14 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SupportTicketController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\FaqController as UserFaq;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
+use App\Http\Controllers\SupportTicketController;
+use App\Http\Controllers\BlogController;
 
 Route::middleware(['auth', 'role:super-admin|admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/user/{role}', \App\Livewire\Admin\User\Index::class)->name('admin.user');
+    Route::get('/admin/user/create/import', \App\Livewire\Admin\User\Import::class)->name('admin.user.import');
     Route::get('/admin/user/{username}/profile', \App\Livewire\Admin\User\ManageProfile::class)->name('admin.user.profile');
     Route::get('/admin/course/', \App\Livewire\Admin\Course\Index::class)->name('admin.course.all');
     Route::get('/admin/course/create/{slug?}', \App\Livewire\Admin\Course\CreateCourse::class)->name('admin.course.create');
@@ -18,8 +20,10 @@ Route::middleware(['auth', 'role:super-admin|admin'])->group(function () {
     Route::get('/admin/cms/support-tickets/{ticket}', [SupportTicketController::class, 'show'])->name('admin.cms.support-ticket.show');
     Route::get('admin/report/activity-log', \App\Livewire\Admin\Reports\ActivityLog\Index::class)->name('admin.report.activity-log');
     Route::get('admin/quiz', \App\Livewire\Quiz\Index::class)->name('quiz.index');
-}); 
-
+    Route::get('/admin/blogs', [BlogController::class, 'index_admin'])->name('admin.blog.index');
+    Route::get('/admin/blogs/create', [BlogController::class, 'create'])->name('admin.blog.create');
+    Route::get('/admin/blogs/{blog}/edit', [BlogController::class, 'edit'])->name('admin.blog.edit');
+});
 Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
     Route::get('admin/cms/faqs', \App\Livewire\Admin\Faqs\Index::class)->name('admin.cms.faqs');
 });
@@ -27,6 +31,8 @@ Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
 Route::get('/help-center', [UserFaq::class, 'show_most_asked'])->name('public.help-center');
 Route::get('/help-center/faqs', [UserFaq::class, 'show'])->name('public.help-center.faqs');
 Route::get('/help-center/support', [SupportTicketController::class, 'create'])->name('public.help-center.support');
+Route::get('/blogs', [BlogController::class, 'index_public'])->name('public.blog.index');
+Route::get('/blogs/{blog}', [BlogController::class, 'show'])->name('public.blog.show');
 
 Route::get('/', function () {
     return view('public.landing');
