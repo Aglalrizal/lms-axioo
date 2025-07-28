@@ -2,55 +2,31 @@
 
 namespace App\Livewire;
 
-use App\Models\Blog;
+use App\Livewire\Forms\BlogForm;
 use Livewire\Component;
 use App\Models\BlogCategory;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
+use Livewire\WithFileUploads;
 
 class BlogCreate extends Component
 {
-    // public $date;
-    public $title;
-    public $slug;
-    public $blog_category_id;
-    public $content;
+    use WithFileUploads;
 
-    protected function rules()
+    public BlogForm $form;
+
+    #[On('status')]
+    public function changeStatus($status)
     {
-        return [
-            'title' => 'required|max:60|min:5|string',
-            'slug' => [
-                'required',
-                'string',
-                'max:72',
-                'min:5',
-                Rule::unique('blogs')
-            ],
-            'blog_category_id' => [
-                'required',
-                Rule::in(BlogCategory::pluck('id')->toArray())
-            ],
-            'content' => 'required'
-        ];
+        $this->form->status = $status;
     }
 
-    public function submit()
+    public function save()
     {
-        $validatedData = $this->validate();
+        $this->form->store();
 
-        // dd($this->content);
+        $this->redirect('/admin/blogs');
 
-        $userId = Auth::id();
-
-        $blogData = array_merge($validatedData, [
-            'user_id' => $userId,
-        ]);
-
-        Blog::create($blogData);
-
-        $this->reset();
+        $this->form->reset();
 
         flash()->success('Blog berhasil dibuat.');
     }

@@ -9,8 +9,6 @@
     <livewire:blog-create />
 @endsection
 
-
-
 @section('scripts')
     <script src={{ asset('assets/libs/dropzone/dist/min/dropzone.min.js') }}></script>
     <script src={{ asset('assets/libs/flatpickr/dist/flatpickr.min.js') }}></script>

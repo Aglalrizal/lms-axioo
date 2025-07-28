@@ -18,10 +18,8 @@ class Blog extends Model
         'slug',
         'content',
         'status',
-    ];
-
-    protected $casts = [
-        'content' => 'array', // Ini akan mengonversi JSON string di DB ke array PHP, dan sebaliknya
+        'excerpt',
+        'photo_path'
     ];
 
     public function category()
