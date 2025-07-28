@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -26,7 +27,7 @@ class User extends Authenticatable
 
     public function getDescriptionForEvent(string $eventName): string
     {
-        $actor = auth()->user()?->username ?? 'System';
+        $actor = Auth::user()?->username ?? 'System';
 
         return match ($eventName) {
             'created' => "[{$actor}] created user \"{$this->username}\"",

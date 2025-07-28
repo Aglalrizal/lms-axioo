@@ -50,7 +50,8 @@
                                     <tr>
                                         <td class="text-left">
                                             <a href="#" class="text-inherit">
-                                                <h5 class="mb-0 text-primary-hover">{{ $category->name }}</h5>
+                                                <h5 class="mb-0 text-primary-hover">{{ Str::title($category->name) }}
+                                                </h5>
                                             </a>
                                         </td>
                                         <td class="text-center">{{ $category->courses->count() }}</td>
