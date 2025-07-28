@@ -13,15 +13,19 @@ Route::middleware(['auth', 'role:super-admin|admin'])->group(function () {
     Route::get('/admin/user/{role}', \App\Livewire\Admin\User\Index::class)->name('admin.user');
     Route::get('/admin/user/create/import', \App\Livewire\Admin\User\Import::class)->name('admin.user.import');
     Route::get('/admin/user/{username}/profile', \App\Livewire\Admin\User\ManageProfile::class)->name('admin.user.profile');
-    Route::get('/admin/support-tickets', [SupportTicketController::class, 'index'])->name('admin.support-ticket.index');
-    Route::get('/admin/support-tickets/{ticket}', [SupportTicketController::class, 'show'])->name('admin.support-ticket.show');
+    Route::get('/admin/course/', \App\Livewire\Admin\Course\Index::class)->name('admin.course.all');
+    Route::get('/admin/course/create/{slug?}', \App\Livewire\Admin\Course\CreateCourse::class)->name('admin.course.create');
+    Route::get('/admin/course/category', \App\Livewire\Admin\Course\CourseCategory::class)->name('admin.course.category');
+    Route::get('/admin/cms/support-tickets', [SupportTicketController::class, 'index'])->name('admin.cms.support-ticket.index');
+    Route::get('/admin/cms/support-tickets/{ticket}', [SupportTicketController::class, 'show'])->name('admin.cms.support-ticket.show');
     Route::get('admin/report/activity-log', \App\Livewire\Admin\Reports\ActivityLog\Index::class)->name('admin.report.activity-log');
+    Route::get('admin/quiz', \App\Livewire\Quiz\Index::class)->name('quiz.index');
     Route::get('/admin/blogs', [BlogController::class, 'index_admin'])->name('admin.blog.index');
     Route::get('/admin/blogs/create', [BlogController::class, 'create'])->name('admin.blog.create');
     Route::get('/admin/blogs/{blog}/edit', [BlogController::class, 'edit'])->name('admin.blog.edit');
 });
 Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
-    Route::get('admin/faqs', \App\Livewire\Admin\Faqs\Index::class)->name('admin.faqs');
+    Route::get('admin/cms/faqs', \App\Livewire\Admin\Faqs\Index::class)->name('admin.cms.faqs');
 });
 
 Route::get('/help-center', [UserFaq::class, 'show_most_asked'])->name('public.help-center');

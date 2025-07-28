@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     @yield('styles')
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    @yield('csrf-token')
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/images/favicon/favicon.ico') }}" />
 
@@ -23,8 +22,9 @@
     <link rel="canonical" href="https://geeksui.codescandy.com/geeks/index.html" />
 
     <link rel="stylesheet" href="{{ asset('assets/libs/tiny-slider/dist/tiny-slider.css') }}" />
+
     <title>Homepage | Axioo</title>
-    @stack('scripts')
+    @livewireStyles
 </head>
 
 <body>
@@ -41,10 +41,17 @@
     <script src={{ asset('assets/libs/tiny-slider/dist/min/tiny-slider.js') }}></script>
     <script src={{ asset('assets/js/vendors/tnsSlider.js') }}></script>
 
+    {{-- From: Help Center Support --}}
+    <script src={{ asset('assets/js/vendors/validation.js') }}></script>
+    <script src={{ asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}></script>
+    <script src={{ asset('assets/js/vendors/choice.js') }}></script>
+    @stack('scripts')
     @yield('scripts')
 
     <!-- Custom JS -->
     <script src={{ asset('assets/js/script.js') }}></script>
+    <script src="{{ asset('assets/js/script.js') }}"></script>
+    @livewireScripts
 </body>
 
 </html>

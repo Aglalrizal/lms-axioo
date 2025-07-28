@@ -26,16 +26,16 @@
                             <span class="d-inline-block rounded-circle bg-secondary me-2"
                                 style="width: 12px; height: 12px;"></span>
                         @endif
-                        <a href="javascript:void(0)" class="text-dark text-decoration-none flex-grow-1"
-                            data-bs-toggle="collapse" data-bs-target="#faq-category-{{ $category->id }}"
-                            aria-expanded="false" aria-controls="faq-category-{{ $category->id }}">
+                        <a class="text-dark text-decoration-none flex-grow-1" data-bs-toggle="collapse"
+                            data-bs-target="#faq-category-{{ $category->id }}" aria-expanded="false"
+                            aria-controls="faq-category-{{ $category->id }}">
                             <h4 class="mb-0 text-truncate text-wrap">
                                 {{ Str::title($category->name) }}
                             </h4>
                         </a>
 
                         <div class="ms-2">
-                            <button @click="$dispatch('edit-category-mode',{id:{{ $category->id }}})" type="button"
+                            <button wire:click="$dispatch('edit-category-mode',{id:{{ $category->id }}})" type="button"
                                 class="me-1 text-inherit btn btn-sm p-1" data-bs-toggle="modal"
                                 data-bs-target="#faqCategoryModal"><i class="fe fe-edit fs-6"></i></button>
                             <button wire:click="$dispatch('delete-faq-category',{id: {{ $category->id }}})"
@@ -125,6 +125,9 @@
 </section>
 
 <script>
+    setInterval(() => {
+        $wire.$refresh()
+    }, 2000)
     document.addEventListener('livewire:initialized', () => {
         @this.on('refresh-faqs', (event) => {
             var myFaqItemModalEl = document.querySelector('#faqItemModal')

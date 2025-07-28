@@ -39,7 +39,7 @@ class CreateFaqs extends Component
         $data['order'] = $lastOrder + 1;
         Faq::create($data);
         $this->dispatch('refresh-faqs');
-        flash()->success('Berhasil menambah FAQ!');
+        flash()->success('Berhasil menambah FAQ!', [], 'Sukses');
         $this->reset();
     }
     #[On('reset-faq-item-modal')]

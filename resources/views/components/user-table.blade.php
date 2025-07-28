@@ -63,10 +63,6 @@
 
                                     <td>
                                         <div class="hstack gap-4">
-                                            {{-- <a href="#" data-bs-toggle="tooltip" data-placement="top"
-                                                        title="Message"><i class="fe fe-mail"></i></a>
-                                                    <a href="#" data-bs-toggle="tooltip" data-placement="top"
-                                                        title="Delete"><i class="fe fe-trash"></i></a> --}}
                                             <span class="dropdown dropstart">
                                                 <a class="btn-icon btn btn-ghost btn-sm rounded-circle" href="#"
                                                     role="button" data-bs-toggle="dropdown" data-bs-offset="-20,20"

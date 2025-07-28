@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CourseCategory;
 use App\Models\Blog;
 use App\Models\SupportTicket;
 use App\Models\User;
@@ -23,6 +24,8 @@ class DatabaseSeeder extends Seeder
         $this->call(FaqCategorySeeder::class);
         $this->call(FaqSeeder::class);
         $this->call(BlogCategorySeeder::class);
+
+        CourseCategory::factory(5)->create();
 
         //akun admin
         $admin = User::factory()->create([

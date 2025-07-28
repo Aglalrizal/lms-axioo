@@ -1,0 +1,87 @@
+models:
+  CourseCategory:
+    name: string
+    relationships:
+      hasMany: Course
+
+  Course:
+    title: string
+    teacher_id: id foreign:users
+    course_category_id: id foreign:course_categories
+    description: longtext
+    thumbnail: string
+    level: enum:beginner,intermediate,advanced
+    duration: integer
+    extra_description: longtext
+    is_published: boolean default:0
+    created_by: string
+    modified_by: string
+    timestamps: true
+
+  CourseSyllabus:
+    course_id: id foreign:courses
+    title: string
+    order: integer
+    is_completed: boolean
+    created_by: string
+    modified_by: string
+    timestamps: true
+
+  CourseContent:
+    course_syllabus_id: id foreign:course_syllabus
+    title: string
+    content: longtext
+    video_url: string
+    order: integer
+    is_free_preview: boolean
+    is_assessment: boolean
+    is_completed: boolean
+    created_by: string
+    modified_by: string
+    timestamps: true
+
+  Quiz:
+    course_syllabus_id: id foreign:course_syllabus
+    title: string
+    number_of_questions: integer
+    duration: integer # in minutes
+    created_by: string
+    modified_by: string
+    timestamps: true
+
+  QuizQuestion:
+    quiz_id: id foreign:quizzes
+    question: longtext
+    question_type: enum:multiple_choice,short_answer,true_false
+    score: integer
+    order: integer
+    created_by: string
+    modified_by: string
+    timestamps: true
+
+  QuizChoice:
+    question_id: id foreign:quiz_questions
+    answer_option: string
+    is_correct: boolean
+    created_by: string
+    modified_by: string
+    timestamps: true
+
+  QuizAttempt:
+    quiz_id: id foreign:quizzes
+    user_id: id foreign:users
+    start_time: timestamp
+    end_time: timestamp
+    total_score: integer
+    status: enum:in_progress,submitted,graded
+    timestamps: true
+
+  QuizAnswer:
+    quiz_attempt_id: id foreign:quiz_attempts
+    quiz_question_id: id foreign:quiz_questions
+    answer: longtext
+    is_correct: boolean
+    score: integer
+    timestamps: true
+
+controllers:
