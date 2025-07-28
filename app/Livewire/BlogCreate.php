@@ -2,62 +2,33 @@
 
 namespace App\Livewire;
 
-use App\Models\Blog;
+use App\Livewire\Forms\BlogForm;
 use Livewire\Component;
 use App\Models\BlogCategory;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
+use Livewire\WithFileUploads;
 
 class BlogCreate extends Component
 {
-    // public $date;
-    public $title;
-    public $slug;
-    public $blog_category_id;
-    public $content;
+    use WithFileUploads;
 
-    protected function rules()
+    public BlogForm $form;
+
+    #[On('status')]
+    public function changeStatus($status)
     {
-        return [
-            'title' => 'required|max:60|string',
-            'slug' => [
-                'required',
-                'string',
-                'max:72',
-                Rule::unique('blogs')
-            ],
-            'blog_category_id' => [
-                'required',
-                Rule::in(BlogCategory::pluck('id')->toArray())
-            ],
-            'content' => 'required'
-        ];
+        $this->form->status = $status;
     }
 
-    protected function messages()
+    public function save()
     {
-        return [
-            'title.required' => 'The :attribute are missing.',
-            'title.max' => 'The :attribute is too large.',
-            'slug.required' => 'The :attribute are missing.',
-            'slug.max' => 'The :attribute is too large.',
-            'slug.unique' => 'The :attribute has already been taken.',
-            'content.required' => 'The :attribute are missing.',
-        ];
-    }
+        $this->form->store();
 
-    public function submit()
-    {
-        $validatedData = $this->validate();
+        $this->redirect('/admin/blogs');
 
-        $validatedData['user_id'] = Auth::id();
-
-        Blog::create($validatedData);
+        $this->form->reset();
 
         flash()->success('Blog berhasil dibuat.');
-
-        return $this->reset();
     }
 
     public function render()

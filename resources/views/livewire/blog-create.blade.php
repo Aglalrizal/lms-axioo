@@ -31,27 +31,24 @@
                 <div class="card-header">
                     <h4 class="mb-0">Create Post</h4>
                 </div>
-                <form wire:submit="submit">
+                <form wire:submit="save()">
                     <!-- Card body -->
                     <div class="card-body">
-                        <div id="my-dropzone" class="dropzone border-dashed rounded-2 min-h-0"></div>
+                        <label class="form-label">Thumbnail</label>
+                        <div wire:ignore id="my-dropzone" class="dropzone border-dashed rounded-2 min-h-0"></div>
+                        @error('form.photo')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                         <!-- Add the "Upload" button -->
                         <div class="mt-4">
                             <!-- Form -->
                             <div class="row">
-                                {{-- <!-- Date -->
-                                <div class="mb-3 col-md-4">
-                                    <label for="selectDate" class="form-label">Date</label>
-                                    <input wire:model="date" type="text" id="selectDate"
-                                        class="form-control text-dark flatpickr" placeholder="Select Date" required />
-                                    <div class="invalid-feedback">Please enter valid date.</div>
-                                </div> --}}
                                 <div class="mb-3 ">
                                     <!-- Title -->
                                     <label for="postTitle" class="form-label">Title</label>
-                                    <input wire:model="title" type="text" id="postTitle"
+                                    <input wire:model="form.title" type="text" id="postTitle"
                                         class="form-control text-dark" placeholder="Post Title" required />
-                                    @error('title')
+                                    @error('form.title')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -61,23 +58,18 @@
                                     <div class="input-group mb-1">
                                         <span class="input-group-text"
                                             id="basic-addon3">http://lms-axioo.com/blogs/</span>
-                                        <input wire:model="slug" type="text" class="form-control" id="basic-url"
+                                        <input wire:model="form.slug" type="text" class="form-control" id="basic-url"
                                             aria-describedby="basic-addon3" />
                                     </div>
-                                    @error('slug')
+                                    @error('form.slug')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                {{-- <!-- Excerpt -->
-                                <div class="mb-3 ">
-                                    <label for="Excerpt" class="form-label">Excerpt</label>
-                                    <textarea rows="3" id="Excerpt" class="form-control text-dark" placeholder="Excerpt"></textarea>
-                                    <small>A short extract from writing.</small>
-                                </div> --}}
                                 <!-- Category -->
                                 <div class="mb-3 ">
                                     <label class="form-label" for="category">Category</label>
-                                    <select wire:model="blog_category_id" class="form-select" id="category" required>
+                                    <select wire:model="form.blog_category_id" class="form-select" id="category"
+                                        required>
                                         <option selected value="">Select</option>
 
                                         @foreach ($categories as $category)
@@ -85,31 +77,35 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('category')
+                                    @error('form.category')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
                         </div>
                         <!-- Editor -->
-                        <div class="mt-2 mb-4">
+                        <label class="form-label">Content</label>
+                        <div class="mt-2 mb-4" wire:ignore>
                             <div id="editor">
-
                             </div>
                         </div>
                         <!-- button -->
-                        <button type="submit" id="publish-btn" class="btn btn-primary">Publish</button>
-                        <button type="submit" class="btn btn-outline-secondary">Save to Draft</button>
+                        <button wire:click="$dispatch('status', { status: 'published' })" type="submit"
+                            id="publish-btn" class="btn btn-primary">Publish</button>
+                        <button wire:click="$dispatch('status', { status: 'drafted' })" type="submit" id="draft-btn"
+                            class="btn btn-outline-secondary">Save to Draft</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
     <script>
-        document.getElementById('publish-btn').addEventListener('click', function() {
+        function setContent() {
             const content = quill.getSemanticHTML();
             console.log(content)
-            @this.set('content', content);
-        });
+            @this.set('form.content', content);
+        }
+        document.getElementById('publish-btn').addEventListener('click', setContent);
+        document.getElementById('draft-btn').addEventListener('click', setContent);
     </script>
 </section>

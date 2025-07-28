@@ -18,6 +18,8 @@ class Blog extends Model
         'slug',
         'content',
         'status',
+        'excerpt',
+        'photo_path'
     ];
 
     public function category()

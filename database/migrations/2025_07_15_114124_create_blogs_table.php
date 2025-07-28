@@ -17,9 +17,9 @@ return new class extends Migration
             $table->foreignId('blog_category_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->string('slug');
-            // IMAGE HERE
             $table->text('content');
-            $table->enum('status', ['published', 'drafted', 'scheduled']);
+            $table->text('excerpt');
+            $table->enum('status', ['published', 'drafted']);
             $table->timestamps();
         });
     }

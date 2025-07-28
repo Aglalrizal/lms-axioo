@@ -3,81 +3,36 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 use App\Models\BlogCategory;
-use Illuminate\Validation\Rule;
-use Livewire\Attributes\Reactive;
+use Livewire\WithFileUploads;
+use App\Livewire\Forms\BlogForm;
 
 class BlogEdit extends Component
 {
-    // #[Reactive]
+    use WithFileUploads;
+
+    public BlogForm $form;
     public $blog;
-    public $title;
-    public $slug;
-    public $blog_category_id;
-    public $content;
-
-    protected function rules()
-    {
-        return [
-            'title' => 'required|max:60|string',
-            'slug' => [
-                'required',
-                'string',
-                'max:72',
-                Rule::unique('blogs')->ignore($this->blog),
-            ],
-            'blog_category_id' => [
-                'required',
-                Rule::in(BlogCategory::pluck('id')->toArray())
-            ],
-            'content' => 'required'
-        ];
-    }
-
-    protected function messages()
-    {
-        return [
-            'title.required' => 'The :attribute are missing.',
-            'title.max' => 'The :attribute is too large.',
-            'slug.required' => 'The :attribute are missing.',
-            'slug.max' => 'The :attribute is too large.',
-            'slug.unique' => 'The :attribute has already been taken.',
-            'content.required' => 'The :attribute are missing.',
-        ];
-    }
 
     public function mount($blog)
     {
-        $this->title = $blog->title;
-        $this->slug = $blog->slug;
-        $this->blog_category_id = $blog->blog_category_id;
-        $this->content = $blog->content;
-
-        $this->blog = $blog->load('author');
+        $this->form->setBlog($blog);
     }
 
-    public function update()
+    public function save()
     {
-        $this->validate();
+        $this->form->update();
 
-        $this->blog->update(
-            $this->only([
-                'title',
-                'slug',
-                'blog_category_id',
-                'content'
-            ])
-        );
-
-        flash()->success('Blog berhasil dibuat.');
-
-        $this->resetExcept('blog');
+        flash()->success('Blog berhasil di update.');
     }
+
 
     public function render()
     {
         return view('livewire.blog-edit', [
             'categories' => BlogCategory::get(),
+            'oldPhotoUrl' => $this->form->photo_path,
         ]);
     }
 }
