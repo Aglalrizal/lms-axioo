@@ -12,7 +12,7 @@ class Index extends Component
 {
     public $courses;
     public function mount(){
-        $this->courses = Course::with(['teacher', 'syllabus.contents'])->latest()->get();
+        $this->courses = Course::with(['courseCategory','teacher', 'syllabus.contents'])->latest()->get();
     }
     public function render()
     {

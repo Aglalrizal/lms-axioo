@@ -16,10 +16,10 @@ class Quiz extends Model
      * @var array
      */
     protected $fillable = [
-        'course_syllabus_id',
+        'course_content_id',
         'title',
-        'number_of_questions',
         'duration',
+        'number_of_questions',
         'created_by',
         'modified_by',
     ];
@@ -33,12 +33,15 @@ class Quiz extends Model
     {
         return [
             'id' => 'integer',
-            'course_syllabus_id' => 'integer',
+            'course_content_id' => 'integer',
         ];
     }
 
-    public function courseSyllabus(): BelongsTo
+    public function courseContent(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\CourseSyllabus::class);
+        return $this->belongsTo(\App\Models\CourseContent::class);
+    }
+    public function questions() {
+        return $this->hasMany(\App\Models\QuizQuestion::class);
     }
 }

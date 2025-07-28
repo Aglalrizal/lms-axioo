@@ -15,7 +15,7 @@ return new class extends Migration
 
         Schema::create('quiz_questions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('quiz_id')->constrained();
+            $table->foreignId('quiz_id')->constrained()->cascadeOnDelete();
             $table->longText('question');
             $table->enum('question_type', ["multiple_choice","short_answer","true_false"]);
             $table->integer('score');

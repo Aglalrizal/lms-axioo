@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     @yield('styles')
@@ -22,6 +22,7 @@
     <link rel="canonical" href="https://geeksui.codescandy.com/geeks/index.html" />
 
     <link rel="stylesheet" href="{{ asset('assets/libs/tiny-slider/dist/tiny-slider.css') }}" />
+
     <title>Homepage | Axioo</title>
     @livewireStyles
 </head>

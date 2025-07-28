@@ -15,7 +15,7 @@ return new class extends Migration
 
         Schema::create('course_syllabi', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_id')->constrained();
+            $table->foreignId('course_id')->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->integer('order');
             $table->boolean('is_completed')->default(false);

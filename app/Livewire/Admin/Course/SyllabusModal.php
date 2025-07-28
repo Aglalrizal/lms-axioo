@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use App\Models\CourseSyllabus;
+use Illuminate\Support\Facades\Auth;
 
 class SyllabusModal extends Component
 {
@@ -28,8 +29,8 @@ class SyllabusModal extends Component
         $data = $this->validate();
         $data['course_id'] = $this->courseId;  
         $data['order'] = CourseSyllabus::max('order') + 1;
-        $data['created_by'] = auth()->user()->username;
-        $data['modified_by'] = auth()->user()->username;
+        $data['created_by'] = Auth::user()->username;
+        $data['modified_by'] = Auth::user()->username;
         CourseSyllabus::create($data);
         $this->dispatch('refresh-syllabus');
         flash()->success('Berhasil menambah Course Syllabus!');

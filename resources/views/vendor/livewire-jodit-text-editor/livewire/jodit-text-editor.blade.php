@@ -7,6 +7,7 @@
         const buttons = @json($buttons);
 
         const editor = Jodit.make('#' + @js($joditId), {
+            "placeholder": '',
             "autofocus": false,
             "toolbarSticky": true,
             "uploader": {

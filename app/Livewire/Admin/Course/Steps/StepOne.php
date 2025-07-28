@@ -8,6 +8,7 @@ use Livewire\Component;
 use Livewire\Attributes\Rule;
 use App\Models\CourseCategory;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Auth;
 
 #[Layout('layouts.dashboard')]
 class StepOne extends Component
@@ -25,6 +26,10 @@ class StepOne extends Component
     #[Rule('required')]
     public $courseLevel;
     #[Rule('required')]
+    public $courseType;
+    #[Rule('required')]
+    public $duration;
+    #[Rule('required')]
     public $description;
     
     public ?Course $course = null;
@@ -39,6 +44,7 @@ class StepOne extends Component
                 $this->title = $this->course->title;
                 $this->courseCategory = $this->course->course_category_id;
                 $this->courseInstructor = $this->course->teacher_id;
+                $this->duration = $this->course->duration;
                 $this->description = $this->course->description;
                 $this->dispatch('update-jodit-content', [$this->description]);
                 $this->dispatch('init-category', [
@@ -48,6 +54,7 @@ class StepOne extends Component
                     $this->courseInstructor
                 ]);
                 $this->courseLevel = $this->course->level;
+                $this->courseType = $this->course->course_type;
             }
         }
 
@@ -66,11 +73,13 @@ class StepOne extends Component
                     'title' => $data['title'],
                     'course_category_id' => $data['courseCategory'],
                     'teacher_id' => $data['courseInstructor'],
-                    'modified_by' => auth()->user()->username,
+                    'modified_by' => Auth::user()->username,
                     'level' => $data['courseLevel'],
+                    'course_type' => $data['courseType'],
                     'description' => $data['description'],
+                    'duration' => $data['duration'],
                 ]);
-                flash()->success('Berhasil memperbarui course!');
+                flash()->success('Kursus Berhasil Diperbarui!', 'Sukses');
                 $this->slug = $this->course->slug;
                 $this->dispatch('set-course', ['slug' => $this->course->slug]);
                 return redirect()->route('admin.course.create', ['slug' => $this->slug]);
@@ -79,27 +88,31 @@ class StepOne extends Component
                     'title' => $data['title'],
                     'course_category_id' => $data['courseCategory'],
                     'teacher_id' => $data['courseInstructor'],
-                    'modified_by' => auth()->user()->username,
+                    'modified_by' => Auth::user()->username,
                     'level' => $data['courseLevel'],
+                    'course_type' => $data['courseType'],
                     'description' => $data['description'],
+                    'duration' => $data['duration'],
                 ]);
-                flash()->success('Berhasil memperbarui course!');
+                flash()->success('Kursus Berhasil Diperbarui!', [],'Sukses');
             }
         } else {
             $this->course = Course::create([
                 'title' => $data['title'],
                 'course_category_id' => $data['courseCategory'],
                 'teacher_id' => $data['courseInstructor'],
-                'created_by' => auth()->user()->username,
-                'modified_by' => auth()->user()->username,
+                'created_by' => Auth::user()->username,
+                'modified_by' => Auth::user()->username,
                 'level' => $data['courseLevel'],
+                'course_type' => $data['courseType'],
                 'is_published' => 0,
                 'description' => $data['description'],
+                'duration' => $data['duration'],
             ]);
-            flash()->success('Berhasil menyimpan course!');
+            flash()->success('Kursus Berhasil Disimpan!', [], 'Sukses');
             $this->slug = $this->course->slug;
             $this->dispatch('set-course', ['slug' => $this->course->slug]);
-            return redirect()->route('admin.course.create', ['slug' => $this->slug])->with('success', 'Berhasil menyimpan course!');
+            return $this->redirect(route('admin.course.create', ['slug' => $this->slug]), true);
         }
     }
     public function render()

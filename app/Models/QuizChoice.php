@@ -27,7 +27,7 @@ class QuizChoice extends Model
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
-     */
+     */   
     protected function casts(): array
     {
         return [
@@ -39,6 +39,6 @@ class QuizChoice extends Model
 
     public function question(): BelongsTo
     {
-        return $this->belongsTo(QuizQuestion::class);
+        return $this->belongsTo(QuizQuestion::class, 'question_id');
     }
 }

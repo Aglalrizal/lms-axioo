@@ -56,9 +56,11 @@
                                     <table class="table mb-0 text-nowrap table-centered table-hover">
                                         <thead class="table-light">
                                             <tr>
-                                                <th>Courses</th>
-                                                <th>Instructor</th>
-                                                <th>STATUS</th>
+                                                <th>Nama Kursus</th>
+                                                <th>Kategori</th>
+                                                <th>Instruktur</th>
+                                                <th>Tipe Kursus</th>
+                                                <th>Status</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -84,6 +86,13 @@
                                                     </td>
                                                     <td>
                                                         <div class="d-flex align-items-center flex-row gap-2">
+                                                            <h5 class="mb-0">
+                                                                {{ Str::title($course->courseCategory->name) }}
+                                                            </h5>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center flex-row gap-2">
                                                             <img src="{{ optional($course->teacher)->profile_picture
                                                                 ? asset('storage/' . $course->teacher->profile_picture)
                                                                 : 'https://ui-avatars.com/api/?background=random&name=' . urlencode(optional($course->teacher)->first_name) }}"
@@ -92,6 +101,24 @@
                                                             <h5 class="mb-0">
                                                                 {{ $course->teacher->first_name . ' ' . $course->teacher->surname }}
                                                             </h5>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center flex-row gap-2">
+                                                            @switch($course->course_type)
+                                                                @case('free')
+                                                                    <span class="badge bg-success">Gratis</span>
+                                                                @break
+
+                                                                @case('free_trial')
+                                                                    <span class="badge bg-warning text-dark">Gratis
+                                                                        Percobaan</span>
+                                                                @break
+
+                                                                @case('paid')
+                                                                    <span class="badge bg-primary">Berbayar</span>
+                                                                @break
+                                                            @endswitch
                                                         </div>
                                                     </td>
                                                     <td>
@@ -132,19 +159,19 @@
                                                         </span>
                                                     </td>
                                                 </tr>
-                                            @empty
-                                                <tr>
-                                                    Belum ada course.
-                                                </tr>
-                                            @endforelse
-                                        </tbody>
-                                    </table>
-                                </div>
-                            @else
-                                <p class="text-center">Belum ada course.</p>
-                            @endif
-                        </div>
-                        {{-- <!--Tab pane -->
+                                                @empty
+                                                    <tr>
+                                                        Belum ada course.
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @else
+                                    <p class="text-center">Belum ada course.</p>
+                                @endif
+                            </div>
+                            {{-- <!--Tab pane -->
                         <div class="tab-pane fade" id="approved" role="tabpanel" aria-labelledby="approved-tab">
                             <div class="table-responsive border-0 overflow-y-hidden">
                                 <table class="table mb-0 text-nowrap table-centered table-hover">
@@ -576,11 +603,11 @@
                                 </table>
                             </div>
                         </div> --}}
+                        </div>
                     </div>
-                </div>
-                <!-- Card Footer -->
-                <div class="card-footer">
-                    {{-- <nav aria-label="Page navigation example">
+                    <!-- Card Footer -->
+                    <div class="card-footer">
+                        {{-- <nav aria-label="Page navigation example">
                         <ul class="pagination justify-content-center mb-0">
                             <li class="page-item">
                                 <a class="page-link disabled" href="#">
@@ -607,8 +634,8 @@
                             </li>
                         </ul>
                     </nav> --}}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>

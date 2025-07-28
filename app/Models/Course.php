@@ -38,6 +38,7 @@ class Course extends Model
         'description',
         'thumbnail',
         'level',
+        'course_type',
         'duration',
         'extra_description',
         'is_published',

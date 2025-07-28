@@ -13,14 +13,11 @@ Route::middleware(['auth', 'role:super-admin|admin'])->group(function () {
     Route::get('/admin/user/{username}/profile', \App\Livewire\Admin\User\ManageProfile::class)->name('admin.user.profile');
     Route::get('/admin/course/', \App\Livewire\Admin\Course\Index::class)->name('admin.course.all');
     Route::get('/admin/course/create/{slug?}', \App\Livewire\Admin\Course\CreateCourse::class)->name('admin.course.create');
-    Route::get('/admin/course/create/step-1', \App\Livewire\Admin\Course\Steps\StepOne::class)->name('admin.course.create.step.one');
-    Route::get('/admin/course/create/step-2', \App\Livewire\Admin\Course\Steps\StepTwo::class)->name('admin.course.create.step.two');
-    Route::get('/admin/course/create/step-3', \App\Livewire\Admin\Course\Steps\StepThree::class)->name('admin.course.create.step.three');
-    Route::get('/admin/course/create/step-4', \App\Livewire\Admin\Course\Steps\StepFour::class)->name('admin.course.create.step.four');
     Route::get('/admin/course/category', \App\Livewire\Admin\Course\CourseCategory::class)->name('admin.course.category');
     Route::get('/admin/cms/support-tickets', [SupportTicketController::class, 'index'])->name('admin.cms.support-ticket.index');
     Route::get('/admin/cms/support-tickets/{ticket}', [SupportTicketController::class, 'show'])->name('admin.cms.support-ticket.show');
     Route::get('admin/report/activity-log', \App\Livewire\Admin\Reports\ActivityLog\Index::class)->name('admin.report.activity-log');
+    Route::get('admin/quiz', \App\Livewire\Quiz\Index::class)->name('quiz.index');
 }); 
 
 Route::middleware(['auth', 'permission:manage faqs'])->group(function () {

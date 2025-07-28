@@ -15,14 +15,14 @@ return new class extends Migration
 
         Schema::create('course_contents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_syllabus_id')->constrained();
+            $table->foreignId('course_syllabus_id')->constrained()->cascadeOnDelete();
             $table->string('title');
-            $table->longText('content');
-            $table->string('video_url');
+            $table->longText('content')->nullable();
+            $table->string('video_url')->nullable();
             $table->integer('order');
             $table->boolean('is_free_preview');
             $table->boolean('is_assessment');
-            $table->boolean('is_completed');
+            $table->foreignId('quiz_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('created_by');
             $table->string('modified_by');
             $table->timestamps();

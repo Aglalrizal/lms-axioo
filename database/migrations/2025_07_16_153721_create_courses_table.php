@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug')->nullable();
             $table->foreignId('teacher_id')->constrained('users');
-            $table->foreignId('course_category_id')->constrained();
+            $table->foreignId('course_category_id')->constrained()->cascadeOnDelete();
             $table->longText('description')->nullable();
             $table->string('thumbnail')->nullable();
+            $table->enum('course_type', ["free_trial","free","paid"]);
             $table->enum('level', ["beginner","intermediate","advanced"]);
             $table->integer('duration')->nullable();
             $table->longText('extra_description')->nullable();

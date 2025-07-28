@@ -24,6 +24,7 @@ class CourseContent extends Model
         'is_free_preview',
         'is_assessment',
         'is_completed',
+        'quiz_id',
         'created_by',
         'modified_by',
     ];
@@ -47,5 +48,8 @@ class CourseContent extends Model
     public function courseSyllabus(): BelongsTo
     {
         return $this->belongsTo(\App\Models\CourseSyllabus::class);
+    }
+    public function quiz(){
+        return $this->hasOne(Quiz::class);
     }
 }

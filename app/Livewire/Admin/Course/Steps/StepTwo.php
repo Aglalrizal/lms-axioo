@@ -44,7 +44,7 @@ class StepTwo extends Component
         $this->course->update([
             'thumbnail' => $validated['courseImage'],
         ]);
-        $this->reset();
+        $this->reset(['courseImage', 'currentImage', 'course']);
         $this->currentImage = $validated['courseImage'];
         flash()->success('Berhasil menyimpan gambar!');
     }

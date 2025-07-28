@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Course\Steps;
 
 use App\Models\Course;
+use App\Models\CourseContent;
 use App\Models\CourseSyllabus;
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -15,20 +16,75 @@ class StepThree extends Component
     public $course;
     public $step = 3;
     public $syllabusToDelete;
+    public $courseContentToDelete;
+
+    public $isAddContent = false;
+    public $isAddQuiz = false;
+    public $syllabusId;
+    public $courseContentId;
+
+    #[On('open-add-content')]
+    public function openAddContent($syllabusId, $courseContentId = null)
+    {
+        $this->isAddContent = true;
+        $this->isAddQuiz = false;
+        $this->syllabusId = $syllabusId;
+        $this->courseContentId = $courseContentId;
+    }
+
+    #[On('open-add-quiz')]
+    public function openAddQuiz($syllabusId, $courseContentId = null)
+    {
+        $this->isAddQuiz = true;
+        $this->isAddContent = false;
+        $this->syllabusId = $syllabusId;
+        $this->courseContentId = $courseContentId;
+    }
+    #[On('close-add-content')]
+    public function closeCourseContentPage(){
+        $this->reset(['syllabusId', 'courseContentId']);
+        $this->isAddContent = false;
+        $this->isAddQuiz = false;
+    }
+    #[On('close-add-quiz')]
+    public function closeCourseQuizPage(){
+        $this->reset(['syllabusId', 'courseContentId']);
+        $this->isAddQuiz = false;
+        $this->isAddContent = false;
+    }
+
+    // #[On('done-loading-content')]
+    // public function doneLoadingContent(){
+    //     sleep(1);
+    //     $this->isLoadingContent = false;
+    //     $this->isAddContent = false;
+    // }
 
     #[On('delete-syllabus')]
-    public function confirmDelete($id)
+    public function confirmDeleteSyllabus($id)
     {
         $this->syllabusToDelete = $id;
 
         sweetalert()
             ->showDenyButton()
-            ->option('confirmButtonText', 'Yes, delete it!')
-            ->option('denyButtonText', 'Cancel')
+            ->option('confirmButtonText', 'Iya, hapus!')
+            ->option('denyButtonText', 'Batal')
             ->option('id', $id) 
-            ->warning('Are you sure you want to delete this syllabus?', ['Confirm Deletion']);
+            ->warning('Apakah kamu yakin ingin menghapus silabus ini?', ['Confirm Deletion']);
     }
+    #[On('delete-course-content')]
+    public function confirmDeleteCourseContent($id)
+    {
+        $this->courseContentToDelete = $id;
 
+        sweetalert()
+            ->showDenyButton()
+            ->option('confirmButtonText', 'Iya, hapus!')
+            ->option('denyButtonText', 'Batal')
+            ->option('id', $id) 
+            ->warning('Apakah kamu yakin ingin menghapus konten ini?', ['Confirm Deletion']);
+    }
+    
     #[On('sweetalert:confirmed')]
     public function delete(array $payload)
     {
@@ -36,27 +92,28 @@ class StepThree extends Component
             $syllabus = CourseSyllabus::find($this->syllabusToDelete);
             if ($syllabus) {
                 $syllabus->delete();
-                flash()->success('Syllabus deleted successfully!');
+                flash()->success('Silabus berhasil dihapus!', [], 'Sukses');
             } else {
-                flash()->error('Syllabus not found.');
+                flash()->error('Silabus tidak ditemukan.');
             }
 
             $this->syllabusToDelete = null;
             $this->refreshSyllabus();
             return;
         }
-        // if ($this->faqToDelete) {
-        //     $faq = Faq::find($this->faqToDelete);
-        //     if ($faq) {
-        //         $faq->delete();
-        //         flash()->success('FAQ deleted successfully!');
-        //     } else {
-        //         flash()->error('FAQ not found.');
-        //     }
+        if ($this->courseContentToDelete) {
+            $courseContent = CourseContent::find($this->courseContentToDelete);
+            
+            if ($courseContent) {
+                $courseContent->delete();
+                flash()->success('Konten berhasil dihapus.', [], 'Sukses');
+            } else {
+                flash()->error('Konten tidak ditemukan.');
+            }
 
-        //     $this->faqToDelete = null;
-        //     $this->refreshFaqs();
-        //}
+            $this->courseContentToDelete = null;
+            $this->refreshSyllabus();
+        }
     }
 
     #[On('sweetalert:denied')]
@@ -65,12 +122,12 @@ class StepThree extends Component
         if($this->syllabusToDelete){
             $this->syllabusToDelete = null;
             // $this->dispatch('refresh-categories')->to(CreateFaqs::class);
-            flash()->info('Syllabus deletion cancelled.');
+            flash()->info('Membatalkan penghapusan silabus.', [], 'Informasi');
         }
-        // if($this->faqToDelete){
-        //     $this->faqToDelete = null;
-        //     flash()->info('Faq deletion cancelled.');
-        // }
+        if($this->courseContentToDelete){
+            $this->courseContentToDelete = null;
+            flash()->info('Membatalkan penghapusan konten.', [], 'Informasi');
+        }
     }
 
     #[On('refresh-syllabus')]
