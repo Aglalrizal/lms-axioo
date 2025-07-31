@@ -19,31 +19,36 @@
             <!-- Card -->
             <div class="card rounded-3">
                 <!-- Card header -->
-                <div class="card-header p-0">
-                    <div>
-                        <!-- Nav -->
-                        <ul class="nav nav-lb-tab border-bottom-0" id="tab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="courses-tab" data-bs-toggle="pill" href="#courses"
-                                    role="tab" aria-controls="courses" aria-selected="true">All</a>
-                            </li>
-                            {{-- <li class="nav-item">
-                                <a class="nav-link" id="approved-tab" data-bs-toggle="pill" href="#approved"
-                                    role="tab" aria-controls="approved" aria-selected="false">Approved</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pending-tab" data-bs-toggle="pill" href="#pending"
-                                    role="tab" aria-controls="pending" aria-selected="false">Pending</a>
-                            </li> --}}
-                        </ul>
-                    </div>
-                </div>
                 <div class="p-4 row">
                     <!-- Form -->
-                    <form class="d-flex align-items-center col-12 col-md-12 col-lg-12">
+                    <div class="d-flex align-items-center col-12 col-md-12 col-lg-12">
                         <span class="position-absolute ps-3 search-icon"><i class="fe fe-search"></i></span>
-                        <input type="search" class="form-control ps-6" placeholder="Search Course" />
-                    </form>
+                        <input type="search" class="form-control ps-6" placeholder="Search Course"
+                            wire.model.live="search" />
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center my-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <div>
+                                <select wire:model.live="filterType" class="form-select">
+                                    <option value="">Filter: Semua Tipe</option>
+                                    <option value="free_trial">Gratis Percobaan</option>
+                                    <option value="free">Gratis</option>
+                                    <option value="paid">Berbayar</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <select wire:model.live="sortBy" class="form-select">
+                                <option value="title">Judul</option>
+                                <option value="created_at">Tanggal Dibuat</option>
+                            </select>
+
+                            <select wire:model.live="sortDirection" class="form-select">
+                                <option value="asc">A-Z / Terlama</option>
+                                <option value="desc">Z-A / Terbaru</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <!-- Table -->

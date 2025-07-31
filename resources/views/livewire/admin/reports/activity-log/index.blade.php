@@ -18,6 +18,31 @@
                 <!-- card header -->
                 <div class="card-header">
                     <input wire:model.live="search" class="form-control" placeholder="Search Activity" />
+                    <div class="d-flex justify-content-between align-items-center my-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="col-md-4">
+                                <input type="date" id="startDate" class="form-control" wire:model.defer="startDate"
+                                    wire:change="$refresh">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="date" id="endDate" class="form-control" wire:model.defer="endDate"
+                                    wire:change="$refresh">
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-secondary" wire:click="resetDate">Reset</button>
+                            </div>
+                        </div>
+                        {{-- <div class="d-flex align-items-center gap-2">
+                            <select wire:model.lazy="sortBy" class="form-select">
+                                <option value="created_at">Waktu</option>
+                            </select>
+
+                            <select wire:model.lazy="sortDirection" class="form-select">
+                                <option value="asc">Terlama</option>
+                                <option value="desc">Terbaru</option>
+                            </select>
+                        </div> --}}
+                    </div>
                 </div>
                 <!-- table -->
                 <div class="table-responsive">
