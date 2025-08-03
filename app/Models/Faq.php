@@ -6,11 +6,13 @@ use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Faq extends Model
 {
     /** @use HasFactory<\Database\Factories\FaqFactory> */
-    use HasFactory, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     public function getActivitylogOptions(): LogOptions
     {
@@ -21,7 +23,7 @@ class Faq extends Model
 
     public function getDescriptionForEvent(string $eventName): string
     {
-        $user = auth()->user()?->username ?? 'Sistem';
+        $user = Auth::user()?->username ?? 'Sistem';
         $category = $this->category?->name ?? '-';
 
         return match ($eventName) {

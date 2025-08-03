@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('faq_category_id')->constrained()->onDelete('cascade');
             $table->integer('order');
             $table->boolean('is_active')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

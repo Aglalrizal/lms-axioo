@@ -25,6 +25,7 @@ return new class extends Migration
             $table->foreignId('quiz_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('created_by');
             $table->string('modified_by');
+            $table->softDeletes();
             $table->timestamps();
         });
 

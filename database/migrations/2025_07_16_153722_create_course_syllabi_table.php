@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('is_completed')->default(false);
             $table->string('created_by');
             $table->string('modified_by');
+            $table->softDeletes();
             $table->timestamps();
         });
 

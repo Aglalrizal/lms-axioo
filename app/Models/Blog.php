@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Blog extends Model
 {
     /** @use HasFactory<\Database\Factories\BlogFactory> */
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'user_id',

@@ -20,7 +20,8 @@ return new class extends Migration
             $table->longText('answer');
             $table->boolean('is_correct');
             $table->integer('score');
-            $table->timestamps();
+            $table->softDeletes();
+            $table->timestamps();  
         });
 
         Schema::enableForeignKeyConstraints();

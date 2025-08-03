@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('order');
             $table->string('created_by');
             $table->string('modified_by');
+            $table->softDeletes();
             $table->timestamps();
         });
 
