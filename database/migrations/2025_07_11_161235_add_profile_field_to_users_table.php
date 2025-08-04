@@ -12,16 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('profile_picture')->nullable();
-            $table->string('id_number')->nullable()->after('profile_picture');
+            $table->string('profile_picture_path')->nullable();
+            $table->string('id_number')->nullable()->after('profile_picture_path');
             $table->string('phone_number')->nullable()->after('id_number');
             $table->string('first_name')->nullable()->after('phone_number');
             $table->string('surname')->nullable()->after('first_name');
             $table->date('date_of_birth')->nullable()->after('surname');
             $table->string('place_of_birth')->nullable()->after('date_of_birth');
-            $table->string('education')->nullable()->after('place_of_birth');
+            $table->string('city')->nullable()->after('place_of_birth');
+            $table->text('address')->nullable()->after('city');
+            $table->string('education')->nullable()->after('address');
             $table->string('institution')->nullable()->after('education');
-            $table->text('address')->nullable()->after('institution');
+            $table->string('major')->nullable()->after('institution');
         });
     }
 
@@ -39,9 +41,11 @@ return new class extends Migration
                 'surname',
                 'date_of_birth',
                 'place_of_birth',
+                'city',
+                'address',
                 'education',
                 'institution',
-                'address',
+                'major'
             ]);
         });
     }
