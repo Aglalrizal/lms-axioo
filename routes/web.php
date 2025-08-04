@@ -23,6 +23,7 @@ Route::middleware(['auth', 'role:super-admin|admin'])->group(function () {
     Route::get('/admin/blogs', [BlogController::class, 'index_admin'])->name('admin.blog.index');
     Route::get('/admin/blogs/create', [BlogController::class, 'create'])->name('admin.blog.create');
     Route::get('/admin/blogs/{blog}/edit', [BlogController::class, 'edit'])->name('admin.blog.edit');
+    Route::get('admin/quiz', \App\Livewire\Quiz\Index::class)->name('quiz.index');
 });
 
 Route::middleware(['auth', 'permission:manage faqs'])->group(function () {

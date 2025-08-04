@@ -11,8 +11,7 @@
                             <div class="d-flex align-items-center">
                                 <!-- quiz content -->
                                 <div class="ms-3">
-                                    <h3 class="mb-2"><a href="#"
-                                            class="text-inherit">{{ Str::title($quiz->title) }}</a></h3>
+                                    <h3 class="mb-2"><a href="#" class="text-inherit">{{ $quiz->title }}</a></h3>
                                     <div>
                                         <span>
                                             <span class="align-middle"><i class="fe fe-list"></i></span>
@@ -56,13 +55,25 @@
                                 <small class="d-block mt-2 text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+                        <div class="mb-3">
+                            <label for="syllabusId" class="form-label">Silabus</label>
+                            <select class="form-select text-dark" wire:model="syllabusId" id="syllabusId">
+                                <option value="">Pilih Syllabus</option>
+                                @foreach (App\Models\Course::findOrFail($courseId)->syllabus as $syllabus)
+                                    <option value="{{ $syllabus->id }}">{{ $syllabus->title }}</option>
+                                @endforeach
+                            </select>
+                            @error('syllabusId')
+                                <small class="d-block mt-2 text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
                         <div class="row">
                             <div class="col-6 mb-3">
                                 <label for="duration" class="form-label">Durasi <small
                                         class="text-muted text-sm">(menit)</small></label>
                                 <input id="duration" wire:model="duration"
                                     class="form-control @error('duration') is-invalid @enderror" type="number"
-                                    min="0" />
+                                    min="0" x-on:keydown.arrow-up.prevent x-on:keydown.arrow-down.prevent />
                                 @error('duration')
                                     <small class="d-block mt-2 text-danger">{{ $message }}</small>
                                 @enderror
@@ -71,7 +82,8 @@
                                 <label for="number_of_questions" class="form-label">Jumlah Soal</label>
                                 <input id="number_of_questions" wire:model="number_of_questions"
                                     class="form-control @error('number_of_questions') is-invalid @enderror"
-                                    type="number" min="0" />
+                                    type="number" min="0" x-on:keydown.arrow-up.prevent
+                                    x-on:keydown.arrow-down.prevent />
                                 @error('number_of_questions')
                                     <small class="d-block mt-2 text-danger">{{ $message }}</small>
                                 @enderror
@@ -132,9 +144,9 @@
                             <div class="list-group-item list-group-item-action" aria-current="true">
                                 <!-- form check -->
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="question_{{ $question->id }}"
-                                        id="choice_{{ $choice->id }}" {{ $choice->is_correct ? 'checked' : '' }}
-                                        disabled>
+                                    <input class="form-check-input" type="radio"
+                                        name="question_{{ $question->id }}" id="choice_{{ $choice->id }}"
+                                        {{ $choice->is_correct ? 'checked' : '' }} disabled>
                                     <label class="form-check-label"
                                         for="flexRadioDefault5">{{ $choice->answer_option }}</label>
                                 </div>
@@ -167,8 +179,7 @@
     @endif
     <div>
         <div class="card-footer">
-            <button type="button" wire:click="backToStepThree" class="btn btn-outline-secondary">Kembali ke
-                kurikulum</button>
+            <button type="button" wire:click="back" class="btn btn-outline-secondary">Kembali</button>
         </div>
     </div>
 </div>

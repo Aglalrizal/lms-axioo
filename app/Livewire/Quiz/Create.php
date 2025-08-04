@@ -33,6 +33,7 @@ class Create extends Component
     public $showQuizInfo = false;
     public $quizId;
 
+    public $courseId;
     public $questionToDelete;
     
     public function toogleQuizForm(){
@@ -78,7 +79,6 @@ class Create extends Component
         $data = $this->validate();
 
         if ($this->courseContentId) {
-            // UPDATE
             $this->courseContent = CourseContent::findOrFail($this->courseContentId);
             $this->courseContent->update([
                 'title' => $data['title'],
@@ -105,7 +105,8 @@ class Create extends Component
                     'quiz_id' => $this->quiz->id,
                 ]);
             }
-
+            $this->courseContent->refresh();
+            $this->quiz = $this->courseContent->quiz;
             flash()->success('Kuis berhasil diperbarui!', [], 'Sukses');
         } else {
             $lastOrder = CourseContent::where('course_syllabus_id', $this->syllabusId)->max('order') ?? 0;
@@ -133,13 +134,12 @@ class Create extends Component
             $this->courseContent->update([
                 'quiz_id' => $this->quiz->id,
             ]);
-
             flash()->success('Kuis berhasil disimpan!', [], 'Sukses');
         }
-
+        $this->dispatch('refresh-list');
         $this->toogleQuizForm();
     }
-        public function backToStepThree(){
+    public function back(){
         $this->dispatch('close-add-quiz');
     }
     #[On('delete-question')]

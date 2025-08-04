@@ -21,6 +21,7 @@ return new class extends Migration
             $table->timestamp('end_time');
             $table->integer('total_score');
             $table->enum('status', ["in_progress","submitted","graded"]);
+            $table->softDeletes();
             $table->timestamps();
         });
 

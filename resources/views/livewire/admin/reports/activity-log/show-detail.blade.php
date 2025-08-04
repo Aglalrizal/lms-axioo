@@ -12,7 +12,7 @@
                         <p><strong>Deskripsi:</strong> {{ $log->description }}</p>
                         <p><strong>Pada:</strong> {{ $log->created_at->format('d M Y H:i') }}</p>
                         <hr>
-                        @php $changes = $log->changes(); @endphp
+                        {{-- @php $changes = $log->changes(); @endphp
                         @if ($changes)
                             <ul class="list-group">
                                 @foreach ($changes['attributes'] ?? [] as $key => $new)
@@ -28,7 +28,8 @@
                             </ul>
                         @else
                             <p class="text-muted">No changes recorded.</p>
-                        @endif
+                        @endif --}}
+                        <pre>{{ json_encode($log->properties, JSON_PRETTY_PRINT) }}</pre>
                     </div>
                 @else
                     <div class="modal-body text-center text-muted py-5">

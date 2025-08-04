@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('excerpt');
             $table->enum('status', ['published', 'drafted']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

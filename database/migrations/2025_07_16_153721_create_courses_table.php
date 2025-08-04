@@ -28,6 +28,7 @@ return new class extends Migration
             $table->boolean('is_published')->default(false);
             $table->string('created_by')->nullable();
             $table->string('modified_by')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
 

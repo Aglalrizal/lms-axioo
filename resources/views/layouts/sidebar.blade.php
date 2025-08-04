@@ -64,26 +64,10 @@
             </li>
             <!-- Nav item -->
             <li class="nav-item">
-                <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navCMS"
-                    aria-expanded="false" aria-controls="navCMS">
+                <a class="nav-link {{ Route::is('*quiz*') ? 'active' : '' }}" href="{{ route('quiz.index') }}">
                     <i class="nav-icon fe fe-book-open me-2"></i>
-                    CMS
+                    Quiz
                 </a>
-                <div id="navCMS" class="collapse {{ request()->is('admin/cms/*') ? 'show' : '' }}"
-                    data-bs-parent="#sideNavbar">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link " href="{{ route('admin.cms.faqs') }}">FAQs</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="{{ route('admin.cms.support-ticket.index') }}">Support
-                                Tickets</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="{{ route('admin.blog.index') }}">Blogs</a>
-                        </li>
-                    </ul>
-                </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navReport"

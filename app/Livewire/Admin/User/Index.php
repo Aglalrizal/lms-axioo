@@ -19,6 +19,8 @@ class Index extends Component
 
     public $role;
     public $search = '';
+    public $sortBy = 'username';
+    public $sortDirection = 'asc';
     protected $paginationTheme = 'bootstrap';
     public $userToDelete;
 
@@ -80,7 +82,7 @@ class Index extends Component
             $query->where('username', 'like', '%' . $this->search . '%')
                     ->orWhere('email', 'like', '%' . $this->search . '%');
         })
-        ->orderBy('created_at', 'desc')
+        ->orderBy($this->sortBy, $this->sortDirection)
         ->paginate(10);
         return view('livewire.admin.user.index', [
             'users' => $users,

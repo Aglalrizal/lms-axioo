@@ -33,6 +33,21 @@
                 <div class="card-header">
                     <input wire:model.live="search" class="form-control"
                         placeholder="Search {{ Str::of($role)->replace('-', ' ')->title() }}" />
+                    <div class="d-flex justify-content-between align-items-center my-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <select wire:model.live="sortBy" class="form-select">
+                                <option value="username">Username</option>
+                                <option value="created_at">Tanggal Dibuat</option>
+                                <option value="first_name">Nama</option>
+                                <option value="Email">Email</option>
+                            </select>
+
+                            <select wire:model.live="sortDirection" class="form-select">
+                                <option value="asc">A-Z / Terlama</option>
+                                <option value="desc">Z-A / Terbaru</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <!-- table -->
                 <div class="table-responsive">
@@ -40,6 +55,7 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Username</th>
+                                <th>Nama</th>
                                 <th>Email</th>
                                 <th>Joined</th>
                                 <th></th>
@@ -58,6 +74,7 @@
                                             <h5 class="mb-0">{{ $user->username }}</h5>
                                         </div>
                                     </td>
+                                    <td>{{ Str::title($user->first_name . ' ' . $user->surname) }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->created_at->translatedFormat('d F, Y') }}</td>
 

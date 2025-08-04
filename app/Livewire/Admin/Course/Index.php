@@ -7,15 +7,27 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('layouts.dashboard')]
-
 class Index extends Component
 {
-    public $courses;
-    public function mount(){
-        $this->courses = Course::with(['courseCategory','teacher', 'syllabus.contents'])->latest()->get();
-    }
+    public $search = '';
+    public $filterType = '';
+    public $sortBy = 'title';
+    public $sortDirection = 'asc';
+
     public function render()
     {
-        return view('livewire.admin.course.index');
+        $courses = Course::with(['courseCategory','teacher', 'syllabus.contents'])
+            ->when($this->search, function ($query) {
+                $query->where('title', 'like', '%' . $this->search . '%');
+            })
+            ->when($this->filterType, function ($query) {
+                $query->where('course_type', $this->filterType); 
+            })
+            ->orderBy($this->sortBy, $this->sortDirection)
+            ->get();
+
+        return view('livewire.admin.course.index', [
+            'courses' => $courses
+        ]);
     }
 }
