@@ -16,7 +16,7 @@ class UserProfile extends Component
 {
     use WithFileUploads;
 
-    public User $user;
+    public ?User $user;
 
     public $photo, $first_name, $surname, $email, $id_number, $phone_number, $place_of_birth, $date_of_birth, $city, $address, $education, $institution, $major;
     public $profile_picture_path = '';
@@ -73,8 +73,10 @@ class UserProfile extends Component
         return $messages;
     }
 
-    public function mount(User $user)
+    public function mount()
     {
+        $user = auth()->user();
+
         $this->user = $user;
         $this->profile_picture_path = $user->profile_picture_path;
         $this->first_name = $user->first_name;

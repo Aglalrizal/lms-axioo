@@ -14,44 +14,48 @@
         <div class="collapse navbar-collapse" id="sidenavNavbar">
             <div class="navbar-nav flex-column mt-4 mt-lg-0 d-flex flex-column gap-3">
                 <div class="text-center ">
-                    <img src="{{ asset('../assets/images/avatar/avatar-1.jpg') }}" class="rounded-circle avatar-xl mb-3"
-                        alt="">
-                    <p class="mb-0 fw-bold">John doe</p>
-                    <p class="mb-0">itsjohndoe</p>
+                    <img @if ($user->profile_picture_path) src="{{ asset($user->profile_picture_path) }}"
+                    @else src="{{ asset('../assets/images/avatar/avatar-1.jpg') }}" @endif
+                        class="rounded-circle avatar-xl mb-3" alt="">
+                    <p class="mb-0 fw-bold">{{ $user->first_name }} {{ $user->surname }}</p>
+                    <p class="mb-0">{{ $user->username }}</p>
                 </div>
                 <ul class="list-unstyled mb-0">
                     <!-- Nav item -->
 
                     <li class="nav-item">
-                        <a class="nav-link active" href="../pages/dashboard-student.html">
+                        <a class="nav-link @if (request()->routeIs('user.dashboard.index')) active @endif"
+                            href="{{ route('user.dashboard.index') }}">
                             <i class="fe fe-home nav-icon"></i>
                             Dashboard
                         </a>
                     </li>
                     <!-- Nav item -->
                     <li class="nav-item">
-                        <a class="nav-link" href="../pages/my-learning.html">
+                        <a class="nav-link @if (request()->routeIs('user.dashboard.courses')) active @endif"
+                            href="{{ route('user.dashboard.courses') }}">
                             <i class="fe fe-award nav-icon"></i>
                             Kursus saya
                         </a>
                     </li>
                     <!-- Nav item -->
                     <li class="nav-item">
-                        <a class="nav-link" href="../pages/project-blank.html">
+                        <a class="nav-link @if (request()->routeIs('user.dashboard.certificates')) active @endif"
+                            href="{{ route('user.dashboard.certificates') }}">
                             <i class="fe fe-file-text nav-icon"></i>
                             Sertifikat
                         </a>
                     </li>
                     <!-- Nav item -->
                     <li class="nav-item">
-                        <a class="nav-link" href="../pages/billing-info.html">
+                        <a class="nav-link" href="#">
                             <i class="fe fe-folder nav-icon"></i>
                             Program
                         </a>
                     </li>
                     <!-- Nav item -->
                     <li class="nav-item">
-                        <a class="nav-link" href="../pages/payment-method.html">
+                        <a class="nav-link" href="#">
                             <i class="fe fe-credit-card nav-icon"></i>
                             Transaksi
                         </a>
@@ -62,15 +66,17 @@
                     <span class="navbar-header">Account Settings</span>
                     <ul class="list-unstyled mb-0">
                         <!-- Nav item -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="../pages/profile-edit.html">
+                        <li class="nav-item ">
+                            <a class="nav-link @if (request()->routeIs('user.dashboard.account')) active @endif"
+                                href="{{ route('user.dashboard.account') }}">
                                 <i class="fe fe-settings nav-icon"></i>
                                 Akun
                             </a>
                         </li>
                         <!-- Nav item -->
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/linked-accounts.html">
+                            <a class="nav-link @if (request()->routeIs('user.dashboard.profile')) active @endif"
+                                href="{{ route('user.dashboard.profile') }}">
                                 <i class="fe fe-user nav-icon"></i>
                                 Profil
                             </a>

@@ -31,8 +31,10 @@ Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', \App\Livewire\User\UserDashboard::class)->name('user.dashboard.index');
-    Route::get('/dashboard/profile/{user}', \App\Livewire\User\UserProfile::class)->name('user.dashboard.profile');
-    Route::get('/dashboard/account/{user}', \App\Livewire\User\UserAccount::class)->name('user.dashboard.account');
+    Route::get('/dashboard/courses', \App\Livewire\User\UserCourses::class)->name('user.dashboard.courses');
+    Route::get('/dashboard/certificates', \App\Livewire\User\UserCertificates::class)->name('user.dashboard.certificates');
+    Route::get('/dashboard/profile', \App\Livewire\User\UserProfile::class)->name('user.dashboard.profile');
+    Route::get('/dashboard/account', \App\Livewire\User\UserAccount::class)->name('user.dashboard.account');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

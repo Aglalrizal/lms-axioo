@@ -9,8 +9,6 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 
-use function Flasher\Prime\flash;
-
 #[Layout('layouts.authenticated.dashboard')]
 
 class UserAccount extends Component
@@ -25,6 +23,11 @@ class UserAccount extends Component
     public $old_password;
     #[Validate('required')]
     public $new_password;
+
+    public function mount()
+    {
+        $this->user = auth()->user();
+    }
 
     public function resetField()
     {

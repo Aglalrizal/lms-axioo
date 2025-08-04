@@ -121,6 +121,7 @@ class UserDashboard extends Component
     public function render()
     {
         return view('livewire.user-dashboard', [
+            'user' => auth()->user(),
             'rencanaBelajar' => StudyPlan::where('user_id', auth()->id())->get(),
         ]);
     }

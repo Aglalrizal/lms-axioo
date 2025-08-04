@@ -1,5 +1,5 @@
 <div>
-    <p class="display-4">Halo, John Doe</p>
+    <p class="display-4">Halo, {{ $user->first_name }} {{ $user->surname }}</p>
     <p>Selamat datang di Dashboard Student</p>
 
     <div class="row">
@@ -93,8 +93,8 @@
                             <div class="card mb-2 mb-lg-0">
                                 <!-- card body -->
                                 <a href="#!">
-                                    <img src="../assets/images/education/edu-webinar-1.jpg" alt="webinar-1"
-                                        class="img-fluid w-100 rounded-top-3">
+                                    <img src="{{ asset('../assets/images/education/edu-webinar-1.jpg') }}"
+                                        alt="webinar-1" class="img-fluid w-100 rounded-top-3">
                                 </a>
                                 <div class="card-body">
                                     <h3 class="mb-2 text-truncate">

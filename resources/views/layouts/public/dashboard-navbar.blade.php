@@ -9,7 +9,9 @@
                     <a class="rounded-circle" href="#" data-bs-toggle="dropdown" data-bs-display="static"
                         aria-expanded="false">
                         <div class="avatar avatar-md avatar-indicators avatar-online">
-                            <img alt="avatar" src="{{ asset('../assets/images/avatar/avatar-1.jpg') }}"
+                            <img alt="avatar"
+                                @if ($user->profile_picture_path) src="{{ asset($user->profile_picture_path) }}"
+                            @else src="{{ asset('../assets/images/avatar/avatar-1.jpg') }}" @endif
                                 class="rounded-circle">
                         </div>
                     </a>
@@ -17,12 +19,14 @@
                         <div class="dropdown-item">
                             <div class="d-flex">
                                 <div class="avatar avatar-md avatar-indicators avatar-online">
-                                    <img alt="avatar" src="{{ asset('../assets/images/avatar/avatar-1.jpg') }}"
+                                    <img alt="avatar"
+                                        @if ($user->profile_picture_path) src="{{ asset($user->profile_picture_path) }}"
+                                    @else src="{{ asset('../assets/images/avatar/avatar-1.jpg') }}" @endif
                                         class="rounded-circle">
                                 </div>
                                 <div class="ms-3 lh-1">
-                                    <h5 class="mb-1">Annette Black</h5>
-                                    <p class="mb-0">annette@geeksui.com</p>
+                                    <h5 class="mb-1">{{ $user->first_name }} {{ $user->surname }}</h5>
+                                    <p class="mb-0">{{ $user->email }}</p>
                                 </div>
                             </div>
                         </div>

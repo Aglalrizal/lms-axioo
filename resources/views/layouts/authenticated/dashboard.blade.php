@@ -1,10 +1,10 @@
 @extends('layouts.base')
 @section('container')
     {{-- Navbar --}}
-    @include('layouts.public.dashboard-navbar')
+    @include('layouts.public.dashboard-navbar', ['user' => Auth::user()])
 
     {{-- Sidebar --}}
-    @include('layouts.authenticated.sidebar')
+    @include('layouts.authenticated.sidebar', ['user' => Auth::user()])
 
     <!-- Page Content -->
     <div class="db-content">
