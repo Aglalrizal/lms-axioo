@@ -39,7 +39,12 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password')
         ]);
         $admin->assignRole('super-admin');
-        $admin2->assignRole('super-admin');
+        $instructor = User::factory()->create([
+            'username' => 'Instructor',
+            'email' => 'instructor@test.com',
+            'password' => Hash::make('password')
+        ]);
+        $instructor->assignRole('instructor');
         $manageFaq = Permission::firstOrCreate(['name' => 'manage faqs']);
         $admin->givePermissionTo($manageFaq);
         $admin2->givePermissionTo($manageFaq);
