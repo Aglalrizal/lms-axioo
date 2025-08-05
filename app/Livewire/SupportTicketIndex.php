@@ -7,7 +7,10 @@ use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use App\Models\SupportTicket;
 use Flasher\SweetAlert\Laravel\Facade\SweetAlert;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
 
+#[Layout('layouts.dashboard')]
 
 class SupportTicketIndex extends Component
 {
@@ -28,7 +31,15 @@ class SupportTicketIndex extends Component
 
     public function search()
     {
+        // Refresh component when searching
         $this->resetPage();
+    }
+
+    private function roleCheck()
+    {
+        if (! Auth::user()->hasRole(['super-admin', 'admin'])) {
+            abort(403);
+        }
     }
 
     public function confirmation($id, $action)
@@ -47,6 +58,8 @@ class SupportTicketIndex extends Component
     #[On('sweetalert:confirmed')]
     public function actionOnConfirm()
     {
+        $this->roleCheck();
+
         if ($this->ticketAction === 'delete') {
             SupportTicket::findOrFail($this->ticketId)->delete();
             flash()->success('Ticket deleted successfully.');
@@ -60,13 +73,6 @@ class SupportTicketIndex extends Component
     public function actionOnCancel()
     {
         $this->ticketId = null;
-
-        if ($this->ticketAction === 'delete') {
-            flash()->info('Ticket deletion cancelled.');
-        } else {
-            flash()->info('Ticket restoration cancelled.');
-        }
-
         $this->ticketAction = null;
     }
 
