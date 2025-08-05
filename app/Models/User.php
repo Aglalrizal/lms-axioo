@@ -34,7 +34,7 @@ class User extends Authenticatable
             'created' => "[{$actor}] created user \"{$this->username}\"",
             'updated' => "[{$actor}] updated user \"{$this->username}\"",
             'deleted' => "[{$actor}] deleted user \"{$this->username}\"",
-            default => ucfirst($eventName)." user \"{$this->username}\"",
+            default => ucfirst($eventName) . " user \"{$this->username}\"",
         };
     }
 
@@ -47,16 +47,18 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
-        'profile_picture',
+        'profile_picture_path',
         'id_number',
         'phone_number',
         'first_name',
         'surname',
         'date_of_birth',
         'place_of_birth',
+        'city',
+        'address',
         'education',
         'institution',
-        'address',
+        'major'
     ];
 
     /**
@@ -87,5 +89,10 @@ class User extends Authenticatable
     public function posts()
     {
         return $this->hasMany(Blog::class);
+    }
+
+    public function studyPlans()
+    {
+        return $this->hasMany(StudyPlan::class);
     }
 }

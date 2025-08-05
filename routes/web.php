@@ -25,13 +25,27 @@ Route::middleware(['auth', 'role:super-admin|admin'])->group(function () {
     Route::get('/admin/blogs/{blog}/edit', [BlogController::class, 'edit'])->name('admin.blog.edit');
     Route::get('admin/quiz', \App\Livewire\Quiz\Index::class)->name('quiz.index');
 });
+
 Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
     Route::get('admin/cms/faqs', \App\Livewire\Admin\Faqs\Index::class)->name('admin.cms.faqs');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', \App\Livewire\User\UserDashboard::class)->name('user.dashboard.index');
+    Route::get('/dashboard/courses', \App\Livewire\User\UserCourses::class)->name('user.dashboard.courses');
+    Route::get('/dashboard/certificates', \App\Livewire\User\UserCertificates::class)->name('user.dashboard.certificates');
+    Route::get('/dashboard/profile', \App\Livewire\User\UserProfile::class)->name('user.dashboard.profile');
+    Route::get('/dashboard/account', \App\Livewire\User\UserAccount::class)->name('user.dashboard.account');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 Route::get('/help-center', [UserFaq::class, 'show_most_asked'])->name('public.help-center');
 Route::get('/help-center/faqs', [UserFaq::class, 'show'])->name('public.help-center.faqs');
 Route::get('/help-center/support', [SupportTicketController::class, 'create'])->name('public.help-center.support');
+
 Route::get('/blogs', [BlogController::class, 'index_public'])->name('public.blog.index');
 Route::get('/blogs/{blog}', [BlogController::class, 'show'])->name('public.blog.show');
 
@@ -51,11 +65,8 @@ Route::get('/help-center/guide/{slug}', function () {
 //     return view('admin.dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+
+
 Route::middleware('guest')->group(function () {
     Route::get('auth/{provider}', [SocialiteController::class, 'redirectToProvider'])->name('auth.redirect');
     Route::get('auth/{provider}/callback', [SocialiteController::class, 'handleProviderCallback'])->name('auth.callback');

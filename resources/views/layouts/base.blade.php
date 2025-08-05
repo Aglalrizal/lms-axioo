@@ -41,10 +41,6 @@
     <script src={{ asset('assets/libs/tiny-slider/dist/min/tiny-slider.js') }}></script>
     <script src={{ asset('assets/js/vendors/tnsSlider.js') }}></script>
 
-    {{-- From: Help Center Support --}}
-    <script src={{ asset('assets/js/vendors/validation.js') }}></script>
-    <script src={{ asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}></script>
-    <script src={{ asset('assets/js/vendors/choice.js') }}></script>
     @stack('scripts')
     @yield('scripts')
 

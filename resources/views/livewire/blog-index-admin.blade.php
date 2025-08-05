@@ -39,11 +39,6 @@
                                 wire:click="setShow('published')">Published</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" @click=" selected = 'scheduled' "
-                                :class="selected === 'scheduled' ? 'active' : ''"
-                                wire:click="setShow('scheduled')">Scheduled</button>
-                        </li>
-                        <li class="nav-item">
                             <button class="nav-link" @click=" selected = 'drafted' "
                                 :class="selected === 'drafted' ? 'active' : ''"
                                 wire:click="setShow('drafted')">Drafted</button>
@@ -90,7 +85,7 @@
                                     <tbody>
                                         <!-- Table body -->
                                         @forelse ($blogs as $blog)
-                                            <tr wire:key="ticket-{{ $blog->id }}">
+                                            <tr wire:key="{{ $blog->id }}">
                                                 {{-- <td>
                                                     <div class="form-check">
                                                         <input type="checkbox" class="form-check-input"
@@ -161,7 +156,7 @@
                                                 <td colspan="7" class="text-center">
                                                     <div class="d-flex justify-content-center align-items-center">
                                                         <i class="fe fe-alert-triangle me-2"></i>
-                                                        <span>No tickets found.</span>
+                                                        <span>Belum ada blog yang dibuat.</span>
                                                     </div>
                                                 </td>
                                             </tr>
