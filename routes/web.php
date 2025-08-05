@@ -8,22 +8,29 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\SupportTicketController;
 use App\Http\Controllers\BlogController;
 
-Route::middleware(['auth', 'role:super-admin|admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/user/{role}', \App\Livewire\Admin\User\Index::class)->name('admin.user');
-    Route::get('/admin/user/create/import', \App\Livewire\Admin\User\Import::class)->name('admin.user.import');
-    Route::get('/admin/user/{username}/profile', \App\Livewire\Admin\User\ManageProfile::class)->name('admin.user.profile');
-    Route::get('/admin/course/', \App\Livewire\Admin\Course\Index::class)->name('admin.course.all');
-    Route::get('/admin/course/create/{slug?}', \App\Livewire\Admin\Course\CreateCourse::class)->name('admin.course.create');
-    Route::get('/admin/course/category', \App\Livewire\Admin\Course\CourseCategory::class)->name('admin.course.category');
-    Route::get('/admin/cms/support-tickets', [SupportTicketController::class, 'index'])->name('admin.cms.support-ticket.index');
-    Route::get('/admin/cms/support-tickets/{ticket}', [SupportTicketController::class, 'show'])->name('admin.cms.support-ticket.show');
-    Route::get('admin/report/activity-log', \App\Livewire\Admin\Reports\ActivityLog\Index::class)->name('admin.report.activity-log');
-    Route::get('admin/quiz', \App\Livewire\Quiz\Index::class)->name('quiz.index');
-    Route::get('/admin/blogs', [BlogController::class, 'index_admin'])->name('admin.blog.index');
-    Route::get('/admin/blogs/create', [BlogController::class, 'create'])->name('admin.blog.create');
-    Route::get('/admin/blogs/{blog}/edit', [BlogController::class, 'edit'])->name('admin.blog.edit');
-    Route::get('admin/quiz', \App\Livewire\Quiz\Index::class)->name('quiz.index');
+Route::middleware(['auth'])->group(function () {
+    Route::middleware(['role:super-admin|admin'])->group(function (){
+        Route::get('/admin/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard');
+        Route::get('/admin/user/{role}', \App\Livewire\Admin\User\Index::class)->name('admin.user');
+        Route::get('/admin/user/create/import', \App\Livewire\Admin\User\Import::class)->name('admin.user.import');
+        Route::get('/admin/user/{username}/profile', \App\Livewire\Admin\User\ManageProfile::class)->name('admin.user.profile');
+        Route::get('/admin/course/', \App\Livewire\Admin\Course\Index::class)->name('admin.course.all');
+        Route::get('/admin/course/create/{slug?}', \App\Livewire\Admin\Course\CreateCourse::class)->name('admin.course.create');
+        Route::get('/admin/course/category', \App\Livewire\Admin\Course\CourseCategory::class)->name('admin.course.category');
+        Route::get('/admin/cms/support-tickets', [SupportTicketController::class, 'index'])->name('admin.cms.support-ticket.index');
+        Route::get('/admin/cms/support-tickets/{ticket}', [SupportTicketController::class, 'show'])->name('admin.cms.support-ticket.show');
+        Route::get('admin/report/activity-log', \App\Livewire\Admin\Reports\ActivityLog\Index::class)->name('admin.report.activity-log');
+        Route::get('admin/quiz', \App\Livewire\Quiz\Index::class)->name('quiz.index');
+        Route::get('/admin/blogs', [BlogController::class, 'index_admin'])->name('admin.blog.index');
+        Route::get('/admin/blogs/create', [BlogController::class, 'create'])->name('admin.blog.create');
+        Route::get('/admin/blogs/{blog}/edit', [BlogController::class, 'edit'])->name('admin.blog.edit');
+        Route::get('admin/quiz', \App\Livewire\Quiz\Index::class)->name('quiz.index');
+    });
+    Route::middleware('role:instructor')->group(function(){
+        Route::get('/instructor/dashboard', \App\Livewire\Instructor\Dashboard::class)->name('instructor.dashboard');
+        Route::get('/instructor/{username}/profile', \App\Livewire\ProfileCard::class)->name('instructor.profile');
+        Route::get('/instructor/course', \App\Livewire\Instructor\Course\Index::class)->name('instructor.course');
+    });
 });
 
 Route::middleware(['auth', 'permission:manage faqs'])->group(function () {

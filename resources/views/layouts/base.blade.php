@@ -45,7 +45,6 @@
     @yield('scripts')
 
     <!-- Custom JS -->
-    <script src="{{ asset('assets/js/script.js') }}"></script>
     @livewireScripts
 </body>
 

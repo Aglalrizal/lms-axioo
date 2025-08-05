@@ -6,7 +6,9 @@ use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\Layout;
 
+#[Layout('layouts.dashboard')]
 class ProfileCard extends Component
 {
     use WithFileUploads;
@@ -34,9 +36,9 @@ class ProfileCard extends Component
         ];
     }
 
-    public function mount($user)
+    public function mount($username)
     {
-        $this->user = \App\Models\User::where('username', $user->username)->firstOrFail();
+        $this->user = \App\Models\User::where('username', $username)->firstOrFail();
 
         $this->first_name = Str::title($this->user->first_name);
         $this->surname = Str::title($this->user->surname);

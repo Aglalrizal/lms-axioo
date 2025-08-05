@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Quiz;
 
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Models\QuizQuestion;
@@ -10,6 +11,7 @@ use App\Models\CourseContent;
 use Livewire\Attributes\Rule;
 use Illuminate\Support\Facades\Auth;
 
+#[Layout('layouts.dashboard')]
 class Create extends Component
 {
     use WithPagination;
@@ -41,10 +43,10 @@ class Create extends Component
     }
     public function mount($courseContentId = null)
     {
-        $this->courseContentId = $courseContentId;
-
+        
         if ($courseContentId) {
-            $this->courseContent = CourseContent::with('quiz')->findOrFail($courseContentId);
+            $this->courseContentId = $courseContentId;
+            $this->courseContent = CourseContent::with('quiz.questions')->findOrFail($courseContentId);
             $this->quiz = $this->courseContent->quiz;
             $this->title = $this->courseContent->title;
             $this->content = $this->courseContent->content;
@@ -85,7 +87,14 @@ class Create extends Component
                 'content' => $data['content'],
                 'modified_by' => Auth::user()->username,
             ]);
-
+            if($this->courseContent->course_syllabus_id != $this->syllabusId){
+                $lastOrder = CourseContent::where('course_syllabus_id', $this->syllabusId)->max('order') ?? 0;
+                $data['order'] = $lastOrder + 1;
+                $this->courseContent->update([
+                    'course_syllabus_id' => $this->syllabusId,
+                    'order' => $data['order'] 
+                ]);
+            }
             if ($this->courseContent->quiz) {
                 $this->courseContent->quiz->update([
                     'title' => $data['title'],

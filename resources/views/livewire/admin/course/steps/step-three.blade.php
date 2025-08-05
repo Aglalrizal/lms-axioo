@@ -2,13 +2,13 @@
     @if ($isAddContent)
         <livewire:course.course-content wire:key="add-content" :syllabus_id="$syllabusId" :courseContentId="$courseContentId ?? null" />
     @elseif ($isAddQuiz)
-        <livewire:quiz.create wire:key="add-quiz" :syllabus_id="$syllabusId" :courseContentId="$courseContentId ?? null" />
+        <livewire:quiz.create wire:key="open-quiz" :courseId="$course->id ?? null" :syllabus_id="$syllabusId ?? null" :courseContentId="$courseContentId ?? null" />
     @else
         <div wire:key="list-content">
             <!-- Card -->
             <div class="card mb-3">
                 <div class="card-header border-bottom px-4 py-3">
-                    <h4 class="mb-0">Curriculum</h4>
+                    <h4 class="mb-0">Kurikulum</h4>
                 </div>
                 <!-- Card body -->
                 <div class="card-body">
@@ -94,7 +94,17 @@
             </div>
             <!-- Button -->
             <div class="card-footer">
-                <x-course-multi-step-nav :step="$step" :slug="$slug" />
+                @role(['super-admin', 'admin'])
+                    <x-course-multi-step-nav :step="$step" :slug="$slug" />
+                    @elserole('instructor')
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <a wire:click="$set('selectedCourse', 'null')" type="button" class="btn btn-secondary">Kembali
+                                ke
+                                Daftar Kursus</a>
+                        </div>
+                    </div>
+                @endrole
             </div>
         </div>
     @endif
