@@ -30,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/instructor/dashboard', \App\Livewire\Instructor\Dashboard::class)->name('instructor.dashboard');
         Route::get('/instructor/{username}/profile', \App\Livewire\ProfileCard::class)->name('instructor.profile');
         Route::get('/instructor/course', \App\Livewire\Instructor\Course\Index::class)->name('instructor.course');
+        Route::get('/instructor/account', \App\Livewire\AccountCard::class)->name('instructor.account');
     });
 });
 
@@ -43,10 +44,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/certificates', \App\Livewire\User\UserCertificates::class)->name('user.dashboard.certificates');
     Route::get('/dashboard/profile', \App\Livewire\User\UserProfile::class)->name('user.dashboard.profile');
     Route::get('/dashboard/account', \App\Livewire\User\UserAccount::class)->name('user.dashboard.account');
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 Route::get('/help-center', [UserFaq::class, 'show_most_asked'])->name('public.help-center');
