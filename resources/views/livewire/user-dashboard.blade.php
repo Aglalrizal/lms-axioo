@@ -192,7 +192,7 @@
     </div>
 
 
-    <!-- Livewire Modal -->
+    <!-- Modal -->
     @if ($showModal)
         <div class="modal show fade" style="display: block;" tabindex="-1" role="dialog"
             aria-labelledby="rencanaBelajarModal" aria-hidden="true">
@@ -243,13 +243,13 @@
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer justify-content-between">
+                    <div class="modal-footer justify-content-between ">
                         @if ($action === 'update')
                             <button type="button" class="btn btn-outline-danger"
                                 wire:click="confirmation">Hapus</button>
                         @endif
 
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-2 flex-grow-1 justify-content-end">
                             <button type="button" class="btn btn-outline-secondary"
                                 wire:click="closeModal">Batal</button>
                             @if ($action === 'update')
