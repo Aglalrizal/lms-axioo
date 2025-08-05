@@ -1,5 +1,3 @@
-{{-- @extends('layouts.dashboard')
-@section('content') --}}
 <section class="container-fluid p-4">
     <div class="card rounded-3">
         <!-- Modal -->
@@ -68,8 +66,7 @@
                     </div>
                     <div class="ms-2">
                         {{-- <div class="btn-group" role="group" aria-label="Basic example"> --}}
-                        <button wire:click="confirmation({{ $ticket->id }}, 'delete')"
-                            wire:confirm="Are you sure you want to delete this ticket?" type="button"
+                        <button wire:click="confirmation({{ $ticket->id }}, 'delete')" type="button"
                             class="btn btn-outline-secondary btn-sm fs-5" data-bs-toggle="tooltip"
                             data-bs-placement="top" title="Hapus"><i class=" fe fe-trash-2 "></i></button>
                         {{-- </div> --}}

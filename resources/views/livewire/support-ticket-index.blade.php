@@ -109,13 +109,13 @@
                                                 <td>
                                                     <h5 class="mb-0">
                                                         <a @if ($ticket->deleted_at) href="#"
-                                                        @else href="support-tickets/{{ $ticket->id }}" @endif
+                                                        @else href="{{ route('admin.cms.support-ticket.show', $ticket->id) }}" @endif
                                                             class="text-inherit">{{ $ticket->title }}</a>
                                                     </h5>
                                                 </td>
                                                 <td>
                                                     <a @if ($ticket->deleted_at) href="#"
-                                                        @else href="support-tickets/{{ $ticket->id }}" @endif
+                                                        @else href="{{ route('admin.cms.support-ticket.show', $ticket->id) }}" @endif
                                                         class="text-inherit">{{ $ticket->subject }}</a>
                                                 </td>
 
