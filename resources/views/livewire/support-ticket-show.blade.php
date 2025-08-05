@@ -66,9 +66,9 @@
                     </div>
                     <div class="ms-2">
                         {{-- <div class="btn-group" role="group" aria-label="Basic example"> --}}
-                        <button wire:click="confirmation({{ $ticket->id }}, 'delete')" type="button"
-                            class="btn btn-outline-secondary btn-sm fs-5" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="Hapus"><i class=" fe fe-trash-2 "></i></button>
+                        <button wire:click="confirmation" type="button" class="btn btn-outline-secondary btn-sm fs-5"
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus"><i
+                                class=" fe fe-trash-2 "></i></button>
                         {{-- </div> --}}
                     </div>
                 </div>

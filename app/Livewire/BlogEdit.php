@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Blog;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Models\BlogCategory;
@@ -12,12 +13,12 @@ class BlogEdit extends Component
 {
     use WithFileUploads;
 
+    public Blog $blog;
     public BlogForm $form;
-    public $blog;
 
-    public function mount($blog)
+    public function mount()
     {
-        $this->form->setBlog($blog);
+        $this->form->setBlog($this->blog->load('author'));
     }
 
     public function save()
@@ -26,7 +27,6 @@ class BlogEdit extends Component
 
         flash()->success('Blog berhasil di update.');
     }
-
 
     public function render()
     {

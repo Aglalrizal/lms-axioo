@@ -66,9 +66,11 @@
                                             <p class="fs-6 mb-0">{{ $blog->created_at->format('d M Y') }}</p>
                                         </div>
                                     </div>
-                                    <h3><a href="/blogs/{{ $blog->id }}"
-                                            class="text-inherit">{{ $blog->title }}</a></h3>
-                                    <p>{{ str($blog->content)->limit(128, '...') }}</p>
+                                    <h3>
+                                        <a href="/blogs/{{ $blog->id }}"
+                                            class="text-inherit">{{ $blog->title }}</a>
+                                    </h3>
+                                    <p>{{ $blog->excerpt }}</p>
                                     <!-- Media content -->
                                     <div class="d-flex justify-content-center">
                                         <a href="/blogs/{{ $blog->id }}"
