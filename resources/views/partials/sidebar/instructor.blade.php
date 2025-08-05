@@ -27,7 +27,7 @@
             </ul>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link " href="{{ route('admin.report.activity-log') }}">Akun</a>
+                    <a class="nav-link " href="{{ route('instructor.account') }}">Akun</a>
                 </li>
             </ul>
         </div>

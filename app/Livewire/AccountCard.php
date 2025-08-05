@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Livewire\User;
+namespace App\Livewire;
 
-use App\Models\User;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
+use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Livewire\Component;
-use Livewire\Attributes\Layout;
-use Livewire\Attributes\Validate;
 
-#[Layout('layouts.authenticated.dashboard')]
-
-class UserAccount extends Component
+#[Layout('layouts.dashboard')]
+class AccountCard extends Component
 {
-    public ?User $user;
+    public $user;
 
     #[Validate('required|email')]
     public $old_email;
@@ -85,6 +83,6 @@ class UserAccount extends Component
 
     public function render()
     {
-        return view('livewire.user-account');
+        return view('livewire.account-card');
     }
 }
