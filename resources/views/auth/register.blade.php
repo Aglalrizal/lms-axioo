@@ -82,3 +82,9 @@
         </div>
     </section>
 @endsection
+@section('scripts')
+    <script src="{{ asset('assets/js/script.js') }}"></script>
+    <script>
+        setUpPasswordToggle()
+    </script>
+@endsection
