@@ -10,7 +10,6 @@
                             <li class="breadcrumb-item">
                                 <a href="../dashboard/admin-dashboard.html">Dashboard</a>
                             </li>
-                            <li class="breadcrumb-item"><a href="#">CMS</a></li>
                             <li class="breadcrumb-item active" aria-current="page">All Support Tickets</li>
                         </ol>
                     </nav>
@@ -109,13 +108,13 @@
                                                 <td>
                                                     <h5 class="mb-0">
                                                         <a @if ($ticket->deleted_at) href="#"
-                                                        @else href="{{ route('admin.cms.support-ticket.show', $ticket->id) }}" @endif
+                                                        @else href="{{ route('admin.support-ticket.show', $ticket->id) }}" @endif
                                                             class="text-inherit">{{ $ticket->title }}</a>
                                                     </h5>
                                                 </td>
                                                 <td>
                                                     <a @if ($ticket->deleted_at) href="#"
-                                                        @else href="{{ route('admin.cms.support-ticket.show', $ticket->id) }}" @endif
+                                                        @else href="{{ route('admin.support-ticket.show', $ticket->id) }}" @endif
                                                         class="text-inherit">{{ $ticket->subject }}</a>
                                                 </td>
 
@@ -177,8 +176,7 @@
                                                                 </a>
                                                             @else
                                                                 <a wire:click="confirmation({{ $ticket->id }}, 'delete')"
-                                                                    wire:loading.attr="disabled"
-                                                                    class="dropdown-item">
+                                                                    wire:loading.attr="disabled" class="dropdown-item">
                                                                     <i class="fe fe-trash dropdown-item-icon"></i>
                                                                     Delete
                                                                 </a>

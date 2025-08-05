@@ -61,7 +61,7 @@ class SupportTicketShow extends Component
 
         $this->ticket->delete();
 
-        $this->redirect(route('admin.cms.support-ticket.index'));
+        $this->redirect(route('admin.support-ticket.index'));
     }
 
 
