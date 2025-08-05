@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-12">
             <!-- card -->
-            <livewire:profile-card :user="$user" />
+            <livewire:profile-card :username="$user->username" />
         </div>
     </div>
 </section>
