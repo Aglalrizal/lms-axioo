@@ -43,10 +43,7 @@ class UserDashboard extends Component
         if ($studyPlanId) {
             $this->studyPlan = StudyPlan::findOrFail($studyPlanId);
 
-            if ($this->studyPlan->user_id !== auth()->id()) {
-                flash()->error('Anda tidak memiliki akses untuk mengedit rencana belajar ini.');
-                return;
-            }
+            $this->authorize('view', $this->studyPlan);
 
             $this->kelas = $this->studyPlan->kelas;
             $this->program = $this->studyPlan->program;
@@ -111,6 +108,8 @@ class UserDashboard extends Component
     #[On('sweetalert:confirmed')]
     public function delete()
     {
+        $this->authorize('delete', $this->studyPlan);
+
         $this->studyPlan->delete();
 
         flash()->success('Rencana belajar berhasil dihapus!');
