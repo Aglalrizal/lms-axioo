@@ -36,11 +36,36 @@
             </ul>
         </div>
     </li>
+    <li class="nav-item">
+        <a class="nav-link " href="#" data-bs-toggle="collapse" data-bs-target="#navCMS" aria-expanded="false"
+            aria-controls="navCMS">
+            <i class="nav-icon fe fe-settings me-2"></i>
+            CMS
+        </a>
+        <div id="navCMS" class="collapse {{ request()->is('admin/cms/*') ? 'show' : '' }}"
+            data-bs-parent="#sideNavbar">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ route('admin.cms.blog.index') }}">Blogs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.cms.faqs') }}">Faqs</a>
+                </li>
+            </ul>
+        </div>
+    </li>
     <!-- Nav item -->
     <li class="nav-item">
         <a class="nav-link {{ Route::is('*quiz*') ? 'active' : '' }}" href="{{ route('quiz.index') }}">
             <i class="nav-icon fe fe-book-open me-2"></i>
             Quiz
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ Route::is('*support-tickets*') ? 'active' : '' }}"
+            href="{{ route('admin.support-ticket.index') }}">
+            <i class="nav-icon fe fe-inbox me-2"></i>
+            Support Tickets
         </a>
     </li>
     <li class="nav-item">
