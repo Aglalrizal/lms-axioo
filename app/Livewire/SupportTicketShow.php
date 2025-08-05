@@ -3,24 +3,37 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 use App\Models\SupportTicket;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\Auth;
+
+#[Layout('layouts.dashboard')]
 
 class SupportTicketShow extends Component
 {
-    public $ticket;
+    public ?SupportTicket $ticket;
 
     #[Validate('required|in:open,in-progress,resolved,closed')]
     public $status;
 
-    public function mount($ticket = null)
+    public function mount()
     {
-        $this->ticket = $ticket;
-        $this->status = $ticket->status;
+        $this->status = $this->ticket->status;
+    }
+
+    private function roleCheck()
+    {
+        if (! Auth::user()->hasRole(['super-admin', 'admin'])) {
+            abort(403);
+        }
     }
 
     public function updateStatus()
     {
+        $this->roleCheck();
+
         $this->validate();
 
         $this->ticket->update(
@@ -32,9 +45,21 @@ class SupportTicketShow extends Component
         flash()->success('Status berhasi diubah.');
     }
 
-    public function softDelete(SupportTicket $ticket)
+    public function confirmation()
     {
-        $ticket->delete();
+        sweetalert()
+            ->showDenyButton()
+            ->option('confirmButtonText', 'Ya, Hapus Tiket!')
+            ->option('denyButtonText', 'Batal')
+            ->warning('Apakah Anda yakin ingin menghapus tiket ini?');
+    }
+
+    #[On('sweetalert:confirmed')]
+    public function softDelete()
+    {
+        $this->roleCheck();
+
+        $this->ticket->delete();
 
         $this->redirect(route('admin.support-ticket.index'));
     }
