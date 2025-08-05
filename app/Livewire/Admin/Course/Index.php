@@ -24,7 +24,7 @@ class Index extends Component
                 $query->where('course_type', $this->filterType); 
             })
             ->orderBy($this->sortBy, $this->sortDirection)
-            ->get();
+            ->paginate(5);
 
         return view('livewire.admin.course.index', [
             'courses' => $courses

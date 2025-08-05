@@ -5,11 +5,10 @@
             <div
                 class="border-bottom pb-3 mb-3 d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between">
                 <div class="d-flex flex-column gap-1">
-                    <h1 class="mb-0 h2 fw-bold">Courses</h1>
+                    <h1 class="mb-0 h2 fw-bold">Kursus</h1>
                 </div>
                 <div>
-                    <a href="{{ route('admin.course.create') }}" class="btn btn-primary">Add New
-                        Courses</a>
+                    <a href="{{ route('admin.course.create') }}" class="btn btn-primary">Tambah Kursus</a>
                 </div>
             </div>
         </div>
@@ -179,6 +178,7 @@
                     </div>
                     <!-- Card Footer -->
                     <div class="card-footer">
+                        {{ $courses->links() }}
                     </div>
                 </div>
             </div>
