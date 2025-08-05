@@ -3,9 +3,12 @@
 namespace App\Livewire;
 
 use App\Models\Blog;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
+
+#[Layout('layouts.dashboard')]
 
 class BlogIndexAdmin extends Component
 {
@@ -51,8 +54,6 @@ class BlogIndexAdmin extends Component
     public function actionOnCancel()
     {
         $this->blogId = null;
-
-        flash()->info('Blog deletion cancelled.');
     }
 
 

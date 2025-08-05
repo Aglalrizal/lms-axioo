@@ -35,13 +35,6 @@ class SupportTicketIndex extends Component
         $this->resetPage();
     }
 
-    private function roleCheck()
-    {
-        if (! Auth::user()->hasRole(['super-admin', 'admin'])) {
-            abort(403);
-        }
-    }
-
     public function confirmation($id, $action)
     {
         $this->ticketId = $id;
@@ -58,8 +51,6 @@ class SupportTicketIndex extends Component
     #[On('sweetalert:confirmed')]
     public function actionOnConfirm()
     {
-        $this->roleCheck();
-
         if ($this->ticketAction === 'delete') {
             SupportTicket::findOrFail($this->ticketId)->delete();
             flash()->success('Ticket deleted successfully.');
