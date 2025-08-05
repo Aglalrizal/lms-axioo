@@ -44,6 +44,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'instructor@test.com',
             'password' => Hash::make('password')
         ]);
+        $student = User::factory()->create([
+            'username' => 'student',
+            'email' => 'student@test.com',
+            'password' => Hash::make('password')
+        ]);
+        $student->assignRole('student');
         $instructor->assignRole('instructor');
         $manageFaq = Permission::firstOrCreate(['name' => 'manage faqs']);
         $admin->givePermissionTo($manageFaq);
