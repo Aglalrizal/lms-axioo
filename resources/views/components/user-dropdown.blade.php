@@ -28,8 +28,17 @@
         <div class="dropdown-divider"></div>
 
         <ul class="list-unstyled">
+            @php
+                $userRole = auth()->user()->getRoleNames()->first();
+                $goto = '';
+                if ($userRole == 'admin' || $userRole == 'super-admin') {
+                    $goto = route('admin.dashboard');
+                } elseif ($userRole == 'instructor') {
+                    $goto = route('instructor.dashboard');
+                }
+            @endphp
             <li>
-                <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                <a class="dropdown-item" href="{{ $goto }}">
                     <i class="fe fe-home me-2"></i> Dashboard
                 </a>
             </li>
