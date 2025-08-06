@@ -11,6 +11,10 @@ class Blog extends Model
     /** @use HasFactory<\Database\Factories\BlogFactory> */
     use HasFactory, SoftDeletes;
 
+    protected $casts = [
+        'published_at' => 'datetime'
+    ];
+
     protected $fillable = [
         'user_id',
         'blog_category_id',
@@ -19,7 +23,8 @@ class Blog extends Model
         'content',
         'status',
         'excerpt',
-        'photo_path'
+        'photo_path',
+        'published_at'
     ];
 
     public function category()

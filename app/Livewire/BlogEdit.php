@@ -30,6 +30,25 @@ class BlogEdit extends Component
         }
     }
 
+    public function publish()
+    {
+        $this->form->publish();
+    }
+
+    public function unpublish()
+    {
+        $this->blog->update(['status' => 'drafted']);
+
+        flash()->success('Blog telah dimasukkan ke draft.');
+    }
+
+    public function delete()
+    {
+        $this->blog->delete();
+
+        flash()->success('Blog berhasil dihapus.');
+    }
+
     public function save()
     {
         $this->form->update();

@@ -17,7 +17,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="admin-dashboard.html">Dashboard</a>
+                                <a href="#">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item"><a href="#">CMS</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Edit Post</li>
@@ -25,7 +25,7 @@
                     </nav>
                 </div>
                 <div>
-                    <a href="/admin/blogs" class="btn btn-outline-secondary">Back to All Post</a>
+                    <a href="{{ route('admin.cms.blog.index') }}" class="btn btn-outline-secondary">Back to All Post</a>
                 </div>
             </div>
         </div>
@@ -64,8 +64,11 @@
                             onclick="document.querySelector('#photo').click()">
                             <i class="fe fe-upload me-2"></i>
                             Upload Foto</button>
-
                         {{-- <div wire:ignore id="my-dropzone" class="dropzone border-dashed rounded-2 min-h-0"></div> --}}
+                        @error('form.photo')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+
                         <!-- Add the "Upload" button -->
                         <div class="mt-4">
                             <!-- Form -->
@@ -139,31 +142,34 @@
                         <li class="list-group-item">
                             <span class="text-body">Status</span>
                             <h5 class="mb-0">
-                                <span class="badge-dot bg-success d-inline-block me-1"></span>
+                                <span
+                                    class="badge-dot @if ($blog->status == 'published') bg-success @else bg-warning @endif d-inline-block me-1"></span>
                                 {{ $blog->status }}
                             </h5>
                         </li>
                         <li class="list-group-item d-flex flex-column gap-2">
-                            <span class="text-body">Created by</span>
+                            <span class="text-body">Dibuat Oleh</span>
                             <div class="d-flex flex-row gap-2">
                                 <img src="../../assets/images/avatar/avatar-1.jpg" alt=""
                                     class="avatar-sm rounded-circle" />
-                                <div class="">
-                                    <h5 class="mb-n1">Geeks Courses</h5>
-                                    <small>{{ $blog->author->username }}</small>
+                                <div>
+                                    <h5 class="mb-n1">{{ $blog->author->username }}</h5>
                                 </div>
                             </div>
                         </li>
                         <li class="list-group-item">
-                            <span class="text-body">Created at</span>
+                            <span class="text-body">Dibuat</span>
                             <h5 class="mb-0">{{ $blog->created_at->format('H:i, d M Y') }}</h5>
                         </li>
                         <li class="list-group-item">
-                            <span class="text-body">First published at</span>
-                            <h5 class="mb-0">-</h5>
+                            <span class="text-body">Terakhir Di Publish</span>
+                            <h5 class="mb-0">
+                                {{ $blog->published_at ? $blog->published_at->format('H:i, d M Y') : '-' }}
+                                <span>{{ $blog->status === 'drafted' ? '(Drafted)' : '' }}</span>
+                            </h5>
                         </li>
                         <li class="list-group-item">
-                            <span class="text-body">Last update</span>
+                            <span class="text-body">Terakhir Diperbarui</span>
                             <h5 class="mb-0">
                                 @if ($blog->updated_at == $blog->created_at)
                                     -
@@ -172,10 +178,6 @@
                                 @endif
 
                             </h5>
-                        </li>
-                        <li class="list-group-item">
-                            <span class="text-body">Last Published</span>
-                            <h5 class="mb-0">-</h5>
                         </li>
                     </ul>
                     <!-- Card -->
@@ -187,18 +189,24 @@
                     </div>
                     <!-- List group -->
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span class="text-body">Unpublish</span>
-                            <a href="#" class="text-inherit"><i class="fe fe-x-circle fs-4"></i></a>
-                        </li>
-                        {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span class="text-body">Duplicate</span>
-                            <a href="#" class="text-inherit"><i class="fe fe-copy fs-4"></i></a>
-                        </li> --}}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span class="text-body">Delete</span>
-                            <a href="#"><i class="fe fe-trash text-danger fs-4"></i></a>
-                        </li>
+                        @if ($blog->status == 'drafted')
+                            <button wire:click="publish"
+                                class="btn btn-primary list-group-item d-flex justify-content-between align-items-center">
+                                <span class="text-secondary">Publish</span>
+                                <i class="fe fe-arrow-up-circle fs-4"></i>
+                            </button>
+                        @else
+                            <button wire:click="unpublish"
+                                class="btn btn-light list-group-item d-flex justify-content-between align-items-center">
+                                <span class="text-secondary">Unpublish</span>
+                                <i class="fe fe-x-circle fs-4"></i>
+                            </button>
+                        @endif
+                        <button wire:click="delete"
+                            class="btn btn-light list-group-item d-flex justify-content-between align-items-center">
+                            <span class="text-secondary">Delete</span>
+                            <i class="fe fe-trash text-danger fs-4"></i>
+                        </button>
                     </ul>
                 </div>
                 <!-- Card  -->
