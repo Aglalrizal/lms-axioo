@@ -17,7 +17,7 @@
         <form wire:submit="save">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="mb-3">Foto Profil</h5>
+                    <h4 class="mb-3 form-label">Foto Profil</h4>
                     <div class="mb-4 d-flex align-items-center gap-3">
                         <img src="{{ optional($user)->profile_picture
                             ? asset('storage/' . $user->profile_picture)
@@ -36,8 +36,8 @@
                         </div>
                     </div>
 
-                    <h5 class="mb-3 mt-4">Detail Profil</h5>
-                    <div class="row g-3">
+                    <h4 class="mb-2 mt-4">Detail Profil</h4>
+                    <div class="row">
                         <div class="col-md-6">
                             <label class="form-label">Nama Depan</label>
                             <input type="text" class="form-control" wire:model="first_name">

@@ -72,7 +72,7 @@ class Index extends Component
     {
         return view('livewire.quiz.index');
     }
-        #[On('delete-quiz')]
+    #[On('delete-quiz')]
     public function confirmDelete($id)
     {
         $this->quizToDelete = $id;
@@ -114,5 +114,4 @@ class Index extends Component
             flash()->info('Penghapusan kuis dibatalkan.');
         }
     }
-
 }

@@ -1,6 +1,6 @@
 <ul class="navbar-nav flex-column" id="sideNavbar">
     <li class="nav-item">
-        <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navProfile"
+        <a class="nav-link  collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navProfile"
             aria-expanded="false" aria-controls="navProfile">
             <i class="nav-icon fe fe-user me-2"></i>
             User
