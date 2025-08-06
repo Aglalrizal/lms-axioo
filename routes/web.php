@@ -18,8 +18,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/course/category', \App\Livewire\Admin\Course\CourseCategory::class)->name('admin.course.category');
         Route::get('/admin/support-tickets', \App\Livewire\SupportTicketIndex::class)->name('admin.support-ticket.index');
         Route::get('/admin/support-tickets/{ticket}', \App\Livewire\SupportTicketShow::class)->name('admin.support-ticket.show');
-        Route::get('admin/report/activity-log', \App\Livewire\Admin\Reports\ActivityLog\Index::class)->name('admin.report.activity-log');
-        Route::get('admin/quiz', \App\Livewire\Quiz\Index::class)->name('quiz.index');
+        Route::get('/admin/report/activity-log', \App\Livewire\Admin\Reports\ActivityLog\Index::class)->name('admin.report.activity-log');
+        Route::get('/admin/quiz', \App\Livewire\Quiz\Index::class)->name('quiz.index');
         Route::get('/admin/cms/blogs', [BlogController::class, 'index_admin'])->name('admin.cms.blog.index');
         Route::get('/admin/cms/blogs/create', [BlogController::class, 'create'])->name('admin.cms.blog.create');
         Route::get('/admin/cms/blogs/{blog}/edit', [BlogController::class, 'edit'])->name('admin.cms.blog.edit');
@@ -31,11 +31,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/instructor/account', \App\Livewire\AccountCard::class)->name('instructor.account');
     });
     Route::middleware(['role:student'])->group(function () {
-        Route::get('/dashboard', \App\Livewire\User\UserDashboard::class)->name('user.dashboard.index');
-        Route::get('/dashboard/courses', \App\Livewire\User\UserCourses::class)->name('user.dashboard.courses');
-        Route::get('/dashboard/certificates', \App\Livewire\User\UserCertificates::class)->name('user.dashboard.certificates');
-        Route::get('/dashboard/profile', \App\Livewire\User\UserProfile::class)->name('user.dashboard.profile');
-        Route::get('/dashboard/account', \App\Livewire\User\UserAccount::class)->name('user.dashboard.account');
+        Route::get('/student/dashboard', \App\Livewire\User\UserDashboard::class)->name('user.dashboard.index');
+        Route::get('/student/dashboard/courses', \App\Livewire\User\UserCourses::class)->name('user.dashboard.courses');
+        Route::get('/student/dashboard/certificates', \App\Livewire\User\UserCertificates::class)->name('user.dashboard.certificates');
+        Route::get('/student/dashboard/profile', \App\Livewire\User\UserProfile::class)->name('user.dashboard.profile');
+        Route::get('/student/dashboard/account', \App\Livewire\User\UserAccount::class)->name('user.dashboard.account');
     });
 });
 
