@@ -7,7 +7,6 @@ use Livewire\Attributes\On;
 use App\Models\SupportTicket;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\Auth;
 
 #[Layout('layouts.dashboard')]
 
@@ -21,13 +20,6 @@ class SupportTicketShow extends Component
     public function mount()
     {
         $this->status = $this->ticket->status;
-    }
-
-    private function roleCheck()
-    {
-        if (! Auth::user()->hasRole(['super-admin', 'admin'])) {
-            abort(403);
-        }
     }
 
     public function updateStatus()
@@ -57,8 +49,6 @@ class SupportTicketShow extends Component
     #[On('sweetalert:confirmed')]
     public function softDelete()
     {
-        $this->roleCheck();
-
         $this->ticket->delete();
 
         $this->redirect(route('admin.support-ticket.index'));

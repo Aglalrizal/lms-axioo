@@ -3,9 +3,11 @@
 namespace App\Livewire;
 
 use App\Models\Blog;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Flasher\SweetAlert\Laravel\Facade\SweetAlert;
+
+#[Layout('layouts.app')]
 
 class BlogIndexPublic extends Component
 {

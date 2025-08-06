@@ -2,11 +2,14 @@
 
 namespace App\Livewire;
 
-use App\Livewire\Forms\BlogForm;
 use Livewire\Component;
-use App\Models\BlogCategory;
 use Livewire\Attributes\On;
+use App\Models\BlogCategory;
 use Livewire\WithFileUploads;
+use Livewire\Attributes\Layout;
+use App\Livewire\Forms\BlogForm;
+
+#[Layout('layouts.dashboard')]
 
 class BlogCreate extends Component
 {

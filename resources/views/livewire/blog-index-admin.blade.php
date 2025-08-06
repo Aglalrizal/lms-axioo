@@ -11,12 +11,12 @@
                                 <a href="../dashboard/admin-dashboard.html">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item"><a href="#">CMS</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">All Posts</li>
+                            <li class="breadcrumb-item active" aria-current="page">Blogs</li>
                         </ol>
                     </nav>
                 </div>
                 <div>
-                    <a href="/admin/blogs/create" class="btn btn-primary">Create Post</a>
+                    <a href="{{ route('admin.cms.blog.create') }}" class="btn btn-primary">Create Post</a>
                 </div>
             </div>
         </div>

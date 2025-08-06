@@ -18,6 +18,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/course/category', \App\Livewire\Admin\Course\CourseCategory::class)->name('admin.course.category');
         Route::get('/admin/support-tickets', \App\Livewire\SupportTicketIndex::class)->name('admin.support-ticket.index');
         Route::get('/admin/support-tickets/{ticket}', \App\Livewire\SupportTicketShow::class)->name('admin.support-ticket.show');
+        Route::get('admin/report/activity-log', \App\Livewire\Admin\Reports\ActivityLog\Index::class)->name('admin.report.activity-log');
+        Route::get('admin/quiz', \App\Livewire\Quiz\Index::class)->name('quiz.index');
+        Route::get('/admin/cms/blogs', \App\Livewire\BlogIndexAdmin::class)->name('admin.cms.blog.index');
+        Route::get('/admin/cms/blogs/create', \App\Livewire\BlogCreate::class)->name('admin.cms.blog.create');
+        Route::get('/admin/cms/blogs/{blog}/edit', \App\Livewire\BlogEdit::class)->name('admin.cms.blog.edit');
         Route::get('/admin/report/activity-log', \App\Livewire\Admin\Reports\ActivityLog\Index::class)->name('admin.report.activity-log');
         Route::get('/admin/quiz', \App\Livewire\Quiz\Index::class)->name('quiz.index');
         Route::get('/admin/cms/blogs', [BlogController::class, 'index_admin'])->name('admin.cms.blog.index');
@@ -44,25 +49,9 @@ Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', \App\Livewire\User\UserDashboard::class)->name('user.dashboard.index');
-    Route::get('/dashboard/courses', \App\Livewire\User\UserCourses::class)->name('user.dashboard.courses');
-    Route::get('/dashboard/certificates', \App\Livewire\User\UserCertificates::class)->name('user.dashboard.certificates');
-    Route::get('/dashboard/profile', \App\Livewire\User\UserProfile::class)->name('user.dashboard.profile');
-    Route::get('/dashboard/account', \App\Livewire\User\UserAccount::class)->name('user.dashboard.account');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-Route::get('/help-center', [UserFaq::class, 'show_most_asked'])->name('public.help-center');
-Route::get('/help-center/faqs', [UserFaq::class, 'show'])->name('public.help-center.faqs');
-Route::get('/help-center/support', \App\Livewire\SupportTicketCreate::class)->name('public.help-center.support');
-
-Route::get('/blogs', [BlogController::class, 'index_public'])->name('public.blog.index');
-Route::get('/blogs/{blog}', [BlogController::class, 'show'])->name('public.blog.show');
-
-Route::get('/', function () {
-    return view('public.landing');
 });
 
 Route::get('/help-center/guide', function () {
@@ -73,11 +62,17 @@ Route::get('/help-center/guide/{slug}', function () {
     return view('public.help-center.guide-single');
 })->name('public.help-center.guide-single');
 
-// Route::get('/dashboard', function () {
-//     return view('admin.dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/help-center', [UserFaq::class, 'show_most_asked'])->name('public.help-center');
+Route::get('/help-center/faqs', [UserFaq::class, 'show'])->name('public.help-center.faqs');
+Route::get('/help-center/support', \App\Livewire\SupportTicketCreate::class)->name('public.help-center.support');
 
+Route::get('/blogs', \App\Livewire\BlogIndexPublic::class)->name('public.blog.index');
+Route::get('/blogs/{blog}', [BlogController::class, 'show'])->name('public.blog.show');
+
+Route::get('/', function () {
+    return view('public.landing');
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('auth/{provider}', [SocialiteController::class, 'redirectToProvider'])->name('auth.redirect');
