@@ -20,7 +20,7 @@
                                 <a href="admin-dashboard.html">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item"><a href="#">CMS</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Add New Post</li>
+                            <li class="breadcrumb-item active" aria-current="page">Edit Post</li>
                         </ol>
                     </nav>
                 </div>
@@ -36,19 +36,36 @@
             <div class="card border-0">
                 <!-- Card header -->
                 <div class="card-header">
-                    <h4 class="mb-0">Create Post</h4>
+                    <h4 class="mb-0">Edit Post</h4>
                 </div>
                 <form wire:submit="save" class="needs-validation" novalidate>
                     <!-- Card body -->
                     <div class="card-body">
-                        <div class="row mb-3">
-                            <label class="form-label">Thumbnail Saat Ini:</label>
-                            <img src="{{ Storage::url($form->photo_path) }}" alt="Thumbnail blog saat ini"
-                                class="mt-1 w-50 rounded">
+
+                        <label class="form-label ">Thumbnail</label>
+                        <div class="d-block ratio ratio-21x9 w-100 w-md-75 w-lg-50 mb-3 border rounded overflow-hidden">
+                            @if ($form->photo_path)
+                                <img src="{{ asset($form->photo_path) }}" alt="Thumbnail"
+                                    class="w-100 h-100 object-fit-cover object-position-center">
+                            @else
+                                <div class="d-flex justify-content-center align-items-center h-100">
+                                    <p class="text-center text-muted m-0 px-2">
+                                        <i class="fe fe-image mb-2 d-block fs-2"></i>
+                                        Pratinjau akan muncul di sini setelah Anda mengunggah foto.
+                                    </p>
+                                </div>
+                            @endif
                         </div>
 
-                        <label class="form-label">Upload Thumbnail Baru:</label>
-                        <div wire:ignore id="my-dropzone" class="dropzone border-dashed rounded-2 min-h-0"></div>
+                        <p class="mb-2 text-secondary   ">Gambar thumbnail sebaiknya memiliki rasio 21:9 dan berukuran
+                            tidak lebih dari 2MB.</p>
+                        <input type="file" wire:model="form.photo" id="photo" class="form-control mb-3 d-none">
+                        <button type="button" class="btn btn-outline-primary mb-2 d-block"
+                            onclick="document.querySelector('#photo').click()">
+                            <i class="fe fe-upload me-2"></i>
+                            Upload Foto</button>
+
+                        {{-- <div wire:ignore id="my-dropzone" class="dropzone border-dashed rounded-2 min-h-0"></div> --}}
                         <!-- Add the "Upload" button -->
                         <div class="mt-4">
                             <!-- Form -->
