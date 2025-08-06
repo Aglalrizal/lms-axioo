@@ -139,24 +139,24 @@
                                                             </a>
                                                             <span class="dropdown-menu"
                                                                 aria-labelledby="courseDropdown1">
-                                                                <span class="dropdown-header">Settings</span>
+                                                                <span class="dropdown-header">Pengaturan</span>
                                                                 {{-- <a class="dropdown-item"
                                                                 href="{{ route('admin.user.profile', ['username' => $user->username]) }}">
                                                                 <i class="fe fe-user dropdown-item-icon"></i>
                                                                 Profile
                                                             </a> --}}
-                                                                <button type="button" class="dropdown-item"
+                                                                {{-- <button type="button" class="dropdown-item"
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#createUserModal">
                                                                     <i class="fe fe-edit dropdown-item-icon"></i>
                                                                     Edit
-                                                                </button>
+                                                                </button> --}}
                                                                 <button
-                                                                    wire:click="$dispatch('delete-user',{id: {{ $course->id }}})"
+                                                                    wire:click="$dispatch('delete-course',{id: {{ $course->id }}})"
                                                                     class="dropdown-item text-danger">
                                                                     <i
                                                                         class="fe fe-trash dropdown-item-icon text-danger"></i>
-                                                                    Remove
+                                                                    Hapus
                                                                 </button>
                                                             </span>
                                                         </span>

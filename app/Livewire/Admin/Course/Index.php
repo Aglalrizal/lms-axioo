@@ -3,8 +3,9 @@
 namespace App\Livewire\Admin\Course;
 
 use App\Models\Course;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Layout;
 
 #[Layout('layouts.dashboard')]
 class Index extends Component
@@ -13,6 +14,12 @@ class Index extends Component
     public $filterType = '';
     public $sortBy = 'title';
     public $sortDirection = 'asc';
+
+    public $courseToDelete;
+
+    public function refresh(){
+        
+    }
 
     public function render()
     {
@@ -30,4 +37,42 @@ class Index extends Component
             'courses' => $courses
         ]);
     }
+    #[On('delete-course')]
+    public function confirmDelete($id)
+    {
+        $this->courseToDelete = $id;
+
+        sweetalert()
+            ->showDenyButton()
+            ->option('confirmButtonText', 'Iya, hapus!')
+            ->option('denyButtonText', 'Batal')
+            ->option('id', $id) 
+            ->warning('Apakah anda yakin ingin menghapus kursus ini?', ['Confirm Deletion']);
+    }
+
+    #[On('sweetalert:confirmed')]
+    public function delete(array $payload)
+    {
+        if ($this->courseToDelete) {
+            $c = Course::findOrFail($this->courseToDelete);
+            if ($c) {
+                $c->delete();
+                flash()->success('Kuis berhasil dihapus!');
+            } else {
+                flash()->error('Kuis tidak ditemukan.');
+            }
+            $this->courseToDelete = null;
+            $this->refresh();
+        }
+    }
+
+    #[On('sweetalert:denied')]
+    public function cancelDelete()
+    {
+        if($this->courseToDelete){
+            $this->courseToDelete = null;
+            flash()->info('Penghapusan kuis dibatalkan.');
+        }
+    }
+
 }

@@ -6,7 +6,7 @@
                 <div
                     class="border-bottom pb-3 mb-3 d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between">
                     <div class="d-flex flex-column gap-1">
-                        <h1 class="mb-0 h2 fw-bold">Create Course</h1>
+                        <h1 class="mb-0 h2 fw-bold">{{ $slug ? 'Edit Kursus' : 'Buat Kursus' }}</h1>
                     </div>
                 </div>
             </div>
@@ -14,36 +14,38 @@
         <div class="bs-stepper">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-12">
-                    <!-- Stepper Button -->
-                    <div class="bs-stepper-header shadow-sm">
-                        <div class="step {{ $step == 1 ? 'active' : '' }}">
-                            <div class="step-trigger">
-                                <span class="bs-stepper-circle">1</span>
-                                <span class="bs-stepper-label">Basic Information</span>
+                    @if ($slug)
+                        <!-- Stepper Button -->
+                        <div class="bs-stepper-header shadow-sm">
+                            <div class="step {{ $step == 1 ? 'active' : '' }}">
+                                <a wire:navigate wire:click="$set('step', 1)" class="step-trigger">
+                                    <span class="bs-stepper-circle">1</span>
+                                    <span class="bs-stepper-label">Informasi Dasar</span>
+                                </a>
+                            </div>
+                            <div class="bs-stepper-line"></div>
+                            <div class="step {{ $step == 2 ? 'active' : '' }}">
+                                <a wire:navigate wire:click="$set('step', 2)" class="step-trigger">
+                                    <span class="bs-stepper-circle">2</span>
+                                    <span class="bs-stepper-label">Kursus Media</span>
+                                </a>
+                            </div>
+                            <div class="bs-stepper-line"></div>
+                            <div class="step {{ $step == 3 ? 'active' : '' }}">
+                                <a wire:navigate wire:click="$set('step', 3)" class="step-trigger">
+                                    <span class="bs-stepper-circle">3</span>
+                                    <span class="bs-stepper-label">Kurikulum</span>
+                                </a>
+                            </div>
+                            <div class="bs-stepper-line"></div>
+                            <div class="step {{ $step == 4 ? 'active' : '' }}">
+                                <a wire:navigate wire:click="$set('step', 4)" class="step-trigger">
+                                    <span class="bs-stepper-circle">4</span>
+                                    <span class="bs-stepper-label">Lain-Lain</span>
+                                </a>
                             </div>
                         </div>
-                        <div class="bs-stepper-line"></div>
-                        <div class="step {{ $step == 2 ? 'active' : '' }}">
-                            <div class="step-trigger">
-                                <span class="bs-stepper-circle">2</span>
-                                <span class="bs-stepper-label">Courses Media</span>
-                            </div>
-                        </div>
-                        <div class="bs-stepper-line"></div>
-                        <div class="step {{ $step == 3 ? 'active' : '' }}">
-                            <div class="step-trigger">
-                                <span class="bs-stepper-circle">3</span>
-                                <span class="bs-stepper-label">Curriculum</span>
-                            </div>
-                        </div>
-                        <div class="bs-stepper-line"></div>
-                        <div class="step {{ $step == 4 ? 'active' : '' }}">
-                            <a wirdiv class="step-trigger">
-                                <span class="bs-stepper-circle">4</span>
-                                <span class="bs-stepper-label">Extras</span>
-                            </a>
-                        </div>
-                    </div>
+                    @endif
                     <!-- Stepper content -->
                     <div class="bs-stepper-content mt-5">
                         @if ($step === 1)
