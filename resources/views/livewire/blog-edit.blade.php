@@ -191,7 +191,7 @@
                     <ul class="list-group list-group-flush">
                         @if ($blog->status == 'drafted')
                             <button wire:click="publish"
-                                class="btn btn-primary list-group-item d-flex justify-content-between align-items-center">
+                                class="btn btn-light list-group-item d-flex justify-content-between align-items-center">
                                 <span class="text-secondary">Publish</span>
                                 <i class="fe fe-arrow-up-circle fs-4"></i>
                             </button>
