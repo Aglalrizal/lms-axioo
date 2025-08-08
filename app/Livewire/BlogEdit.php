@@ -4,10 +4,12 @@ namespace App\Livewire;
 
 use App\Models\Blog;
 use Livewire\Component;
-use Livewire\Attributes\On;
 use App\Models\BlogCategory;
 use Livewire\WithFileUploads;
+use Livewire\Attributes\Layout;
 use App\Livewire\Forms\BlogForm;
+
+#[Layout('layouts.dashboard')]
 
 class BlogEdit extends Component
 {
@@ -19,6 +21,32 @@ class BlogEdit extends Component
     public function mount()
     {
         $this->form->setBlog($this->blog->load('author'));
+    }
+
+    public function updated($property)
+    {
+        if ($property === 'form.photo') {
+            $this->form->photo_path = $this->form->photo ? $this->form->photo->temporaryUrl() : '';
+        }
+    }
+
+    public function publish()
+    {
+        $this->form->publish();
+    }
+
+    public function unpublish()
+    {
+        $this->blog->update(['status' => 'drafted']);
+
+        flash()->success('Blog telah dimasukkan ke draft.');
+    }
+
+    public function delete()
+    {
+        $this->blog->delete();
+
+        flash()->success('Blog berhasil dihapus.');
     }
 
     public function save()

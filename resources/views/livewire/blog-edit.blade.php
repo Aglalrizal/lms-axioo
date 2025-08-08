@@ -17,15 +17,15 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="admin-dashboard.html">Dashboard</a>
+                                <a href="#">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item"><a href="#">CMS</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Add New Post</li>
+                            <li class="breadcrumb-item active" aria-current="page">Edit Post</li>
                         </ol>
                     </nav>
                 </div>
                 <div>
-                    <a href="/admin/blogs" class="btn btn-outline-secondary">Back to All Post</a>
+                    <a href="{{ route('admin.cms.blog.index') }}" class="btn btn-outline-secondary">Back to All Post</a>
                 </div>
             </div>
         </div>
@@ -36,19 +36,39 @@
             <div class="card border-0">
                 <!-- Card header -->
                 <div class="card-header">
-                    <h4 class="mb-0">Create Post</h4>
+                    <h4 class="mb-0">Edit Post</h4>
                 </div>
                 <form wire:submit="save" class="needs-validation" novalidate>
                     <!-- Card body -->
                     <div class="card-body">
-                        <div class="row mb-3">
-                            <label class="form-label">Thumbnail Saat Ini:</label>
-                            <img src="{{ Storage::url($form->photo_path) }}" alt="Thumbnail blog saat ini"
-                                class="mt-1 w-50 rounded">
+
+                        <label class="form-label ">Thumbnail</label>
+                        <div class="d-block ratio ratio-21x9 w-100 w-md-75 w-lg-50 mb-3 border rounded overflow-hidden">
+                            @if ($form->photo_path)
+                                <img src="{{ asset($form->photo_path) }}" alt="Thumbnail"
+                                    class="w-100 h-100 object-fit-cover object-position-center">
+                            @else
+                                <div class="d-flex justify-content-center align-items-center h-100">
+                                    <p class="text-center text-muted m-0 px-2">
+                                        <i class="fe fe-image mb-2 d-block fs-2"></i>
+                                        Pratinjau akan muncul di sini setelah Anda mengunggah foto.
+                                    </p>
+                                </div>
+                            @endif
                         </div>
 
-                        <label class="form-label">Upload Thumbnail Baru:</label>
-                        <div wire:ignore id="my-dropzone" class="dropzone border-dashed rounded-2 min-h-0"></div>
+                        <p class="mb-2 text-secondary   ">Gambar thumbnail sebaiknya memiliki rasio 21:9 dan berukuran
+                            tidak lebih dari 2MB.</p>
+                        <input type="file" wire:model="form.photo" id="photo" class="form-control mb-3 d-none">
+                        <button type="button" class="btn btn-outline-primary mb-2 d-block"
+                            onclick="document.querySelector('#photo').click()">
+                            <i class="fe fe-upload me-2"></i>
+                            Upload Foto</button>
+                        {{-- <div wire:ignore id="my-dropzone" class="dropzone border-dashed rounded-2 min-h-0"></div> --}}
+                        @error('form.photo')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+
                         <!-- Add the "Upload" button -->
                         <div class="mt-4">
                             <!-- Form -->
@@ -122,31 +142,34 @@
                         <li class="list-group-item">
                             <span class="text-body">Status</span>
                             <h5 class="mb-0">
-                                <span class="badge-dot bg-success d-inline-block me-1"></span>
+                                <span
+                                    class="badge-dot @if ($blog->status == 'published') bg-success @else bg-warning @endif d-inline-block me-1"></span>
                                 {{ $blog->status }}
                             </h5>
                         </li>
                         <li class="list-group-item d-flex flex-column gap-2">
-                            <span class="text-body">Created by</span>
+                            <span class="text-body">Dibuat Oleh</span>
                             <div class="d-flex flex-row gap-2">
                                 <img src="../../assets/images/avatar/avatar-1.jpg" alt=""
                                     class="avatar-sm rounded-circle" />
-                                <div class="">
-                                    <h5 class="mb-n1">Geeks Courses</h5>
-                                    <small>{{ $blog->author->username }}</small>
+                                <div>
+                                    <h5 class="mb-n1">{{ $blog->author->username }}</h5>
                                 </div>
                             </div>
                         </li>
                         <li class="list-group-item">
-                            <span class="text-body">Created at</span>
+                            <span class="text-body">Dibuat</span>
                             <h5 class="mb-0">{{ $blog->created_at->format('H:i, d M Y') }}</h5>
                         </li>
                         <li class="list-group-item">
-                            <span class="text-body">First published at</span>
-                            <h5 class="mb-0">-</h5>
+                            <span class="text-body">Terakhir Di Publish</span>
+                            <h5 class="mb-0">
+                                {{ $blog->published_at ? $blog->published_at->format('H:i, d M Y') : '-' }}
+                                <span>{{ $blog->status === 'drafted' ? '(Drafted)' : '' }}</span>
+                            </h5>
                         </li>
                         <li class="list-group-item">
-                            <span class="text-body">Last update</span>
+                            <span class="text-body">Terakhir Diperbarui</span>
                             <h5 class="mb-0">
                                 @if ($blog->updated_at == $blog->created_at)
                                     -
@@ -155,10 +178,6 @@
                                 @endif
 
                             </h5>
-                        </li>
-                        <li class="list-group-item">
-                            <span class="text-body">Last Published</span>
-                            <h5 class="mb-0">-</h5>
                         </li>
                     </ul>
                     <!-- Card -->
@@ -170,18 +189,24 @@
                     </div>
                     <!-- List group -->
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span class="text-body">Unpublish</span>
-                            <a href="#" class="text-inherit"><i class="fe fe-x-circle fs-4"></i></a>
-                        </li>
-                        {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span class="text-body">Duplicate</span>
-                            <a href="#" class="text-inherit"><i class="fe fe-copy fs-4"></i></a>
-                        </li> --}}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span class="text-body">Delete</span>
-                            <a href="#"><i class="fe fe-trash text-danger fs-4"></i></a>
-                        </li>
+                        @if ($blog->status == 'drafted')
+                            <button wire:click="publish"
+                                class="btn btn-light list-group-item d-flex justify-content-between align-items-center">
+                                <span class="text-secondary">Publish</span>
+                                <i class="fe fe-arrow-up-circle fs-4"></i>
+                            </button>
+                        @else
+                            <button wire:click="unpublish"
+                                class="btn btn-light list-group-item d-flex justify-content-between align-items-center">
+                                <span class="text-secondary">Unpublish</span>
+                                <i class="fe fe-x-circle fs-4"></i>
+                            </button>
+                        @endif
+                        <button wire:click="delete"
+                            class="btn btn-light list-group-item d-flex justify-content-between align-items-center">
+                            <span class="text-secondary">Delete</span>
+                            <i class="fe fe-trash text-danger fs-4"></i>
+                        </button>
                     </ul>
                 </div>
                 <!-- Card  -->

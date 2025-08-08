@@ -17,6 +17,13 @@ class BlogCreate extends Component
 
     public BlogForm $form;
 
+    public function updated($property)
+    {
+        if ($property === 'form.photo') {
+            $this->form->photo_path = $this->form->photo ? $this->form->photo->temporaryUrl() : '';
+        }
+    }
+
     #[On('status')]
     public function changeStatus($status)
     {
@@ -27,7 +34,7 @@ class BlogCreate extends Component
     {
         $this->form->store();
 
-        $this->redirect('/admin/blogs');
+        $this->redirect(route('admin.cms.blog.index'));
 
         $this->form->reset();
 
