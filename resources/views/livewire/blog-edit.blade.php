@@ -202,9 +202,9 @@
                                 <i class="fe fe-x-circle fs-4"></i>
                             </button>
                         @endif
-                        <button wire:click="delete"
+                        <button wire:click="confirmation"
                             class="btn btn-light list-group-item d-flex justify-content-between align-items-center">
-                            <span class="text-secondary">Delete</span>
+                            <span class="text-danger">Delete</span>
                             <i class="fe fe-trash text-danger fs-4"></i>
                         </button>
                     </ul>

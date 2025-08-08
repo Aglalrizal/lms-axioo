@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Blog;
 use Livewire\Component;
+use Livewire\Attributes\On;
 use App\Models\BlogCategory;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
@@ -42,6 +43,16 @@ class BlogEdit extends Component
         flash()->success('Blog telah dimasukkan ke draft.');
     }
 
+    public function confirmation()
+    {
+        sweetalert()
+            ->showDenyButton()
+            ->option('confirmButtonText', 'Ya, Hapus Blog!')
+            ->option('denyButtonText', 'Batal')
+            ->warning('Apakah Anda yakin ingin menghapus blog ini?');
+    }
+
+    #[On('sweetalert:confirmed')]
     public function delete()
     {
         $this->blog->delete();
