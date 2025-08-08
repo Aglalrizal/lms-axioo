@@ -25,9 +25,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/cms/blogs/{blog}/edit', \App\Livewire\BlogEdit::class)->name('admin.cms.blog.edit');
         Route::get('/admin/report/activity-log', \App\Livewire\Admin\Reports\ActivityLog\Index::class)->name('admin.report.activity-log');
         Route::get('/admin/quiz', \App\Livewire\Quiz\Index::class)->name('quiz.index');
-        Route::get('/admin/cms/blogs', [BlogController::class, 'index_admin'])->name('admin.cms.blog.index');
-        Route::get('/admin/cms/blogs/create', [BlogController::class, 'create'])->name('admin.cms.blog.create');
-        Route::get('/admin/cms/blogs/{blog}/edit', [BlogController::class, 'edit'])->name('admin.cms.blog.edit');
+        Route::get('/admin/cms/blogs', \App\Livewire\BlogIndexAdmin::class)->name('admin.cms.blog.index');
+        Route::get('/admin/cms/blogs/create', \App\Livewire\BlogCreate::class)->name('admin.cms.blog.create');
+        Route::get('/admin/cms/blogs/{blog}/edit', \App\Livewire\BlogEdit::class)->name('admin.cms.blog.edit');
     });
     Route::middleware('role:instructor')->group(function () {
         Route::get('/instructor/dashboard', \App\Livewire\Instructor\Dashboard::class)->name('instructor.dashboard');
@@ -61,7 +61,6 @@ Route::get('/help-center/guide', function () {
 Route::get('/help-center/guide/{slug}', function () {
     return view('public.help-center.guide-single');
 })->name('public.help-center.guide-single');
-
 
 Route::get('/help-center', [UserFaq::class, 'show_most_asked'])->name('public.help-center');
 Route::get('/help-center/faqs', [UserFaq::class, 'show'])->name('public.help-center.faqs');
