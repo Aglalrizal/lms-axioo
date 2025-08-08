@@ -1,4 +1,4 @@
-<div>
+<section>
     @if ($isAddContent)
         <livewire:course.course-content wire:key="add-content" :syllabus_id="$syllabusId" :courseContentId="$courseContentId ?? null" />
     @elseif ($isAddQuiz)
@@ -108,30 +108,21 @@
             </div>
         </div>
     @endif
-    <livewire:admin.course.syllabus-modal :courseId="$course->id" />
-</div>
-
-@assets
-    <script src="https://cdn.jsdelivr.net/gh/livewire/sortable@v1.x.x/dist/livewire-sortable.js"></script>
-@endassets
-
+    <livewire:admin.course.syllabus-modal wire:key="syllabusModal" :courseId="$course->id" />
+</section>
 
 @script
     <script>
         Livewire.on('refresh-syllabus', () => {
-            var myCourseSyllabusModalEl = document.querySelector('#courseSyllabusModal')
-            var courseSyllabusModal = bootstrap.Modal.getOrCreateInstance(myCourseSyllabusModalEl)
+            var mySyllabusModalEl = document.querySelector('#courseSyllabusModal')
+            var syllabusModal = bootstrap.Modal.getOrCreateInstance(mySyllabusModalEl)
+            syllabusModal.hide();
+            @this.dispatch('reset-syllabus-modal');
+        })
 
-            courseSyllabusModal.hide();
-            const backdrop = document.querySelector('.modal-backdrop');
-            if (backdrop) backdrop.remove();
-            @this.dispatch('reset-course-syllabus-modal');
-        });
-        var myCourseSyllabusModalEl = document.getElementById('courseSyllabusModal')
-        myCourseSyllabusModalEl.addEventListener('hidden.bs.modal', (event) => {
-            const backdrop = document.querySelector('.modal-backdrop');
-            if (backdrop) backdrop.remove();
-            @this.dispatch('reset-course-syllabus-modal');
-        });
+        var mySyllabusModalEl = document.getElementById('courseSyllabusModal')
+        mySyllabusModalEl.addEventListener('hidden.bs.modal', (event) => {
+            @this.dispatch('reset-syllabus-modal');
+        })
     </script>
 @endscript

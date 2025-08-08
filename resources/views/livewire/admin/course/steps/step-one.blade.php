@@ -18,7 +18,8 @@
                 <div class="mb-3">
                     <label for="duration" class="form-label">Durasi Kursus <small>(jam)</small></label>
                     <input id="duration" wire:model="duration"
-                        class="form-control @error('duration') is-invalid @enderror" type="number" min="0" />
+                        class="form-control @error('duration') is-invalid @enderror" type="number" min="0"
+                        x-on:wheel.prevent x-on:keydown.arrow-up.prevent x-on:keydown.arrow-down.prevent />
                     @error('duration')
                         <small class="d-block mt-2 text-danger">{{ $message }}</small>
                     @enderror

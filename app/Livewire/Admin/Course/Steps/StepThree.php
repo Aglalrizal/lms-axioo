@@ -132,7 +132,10 @@ class StepThree extends Component
 
     #[On('refresh-syllabus')]
     public function refreshSyllabus(){
-
+        $this->course = Course::with([
+        'syllabus' => fn($q) => $q->orderBy('order'),
+        'syllabus.contents' => fn($q) => $q->orderBy('order')
+        ])->where('slug', $this->slug)->first();
     }
     public function mount(){
         $this->course = Course::with([

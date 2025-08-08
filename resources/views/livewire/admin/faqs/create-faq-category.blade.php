@@ -1,5 +1,4 @@
-<div wire:ignore.self class="modal fade" id="faqCategoryModal" tabindex="-1" aria-labelledby="faqCategoryModalLabel"
-    aria-hidden="true">
+<div wire:ignore.self class="modal fade" id="faqCategoryModal" tabindex="-1" aria-labelledby="faqCategoryModalLabel">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
