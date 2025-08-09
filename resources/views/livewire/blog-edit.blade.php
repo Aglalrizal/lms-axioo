@@ -1,7 +1,5 @@
 @assets
-    <link rel="stylesheet" href={{ asset('assets/libs/flatpickr/dist/flatpickr.min.css') }} />
     <link rel="stylesheet" href={{ asset('assets/libs/quill/dist/quill.snow.css') }} />
-    <link rel="stylesheet" href={{ asset('assets/libs/dropzone/dist/dropzone.css') }} />
 @endassets
 
 <section class="container-fluid p-4">
@@ -114,12 +112,10 @@
                         </div>
                         <!-- Editor -->
                         <div class="mt-2 mb-4" wire:ignore>
-                            <div id="editor" data-blog-content="{{ json_encode($blog) }}">
-
-                            </div>
+                            <div id="editor" data-blog-content="{{ json_encode($blog) }}"></div>
                         </div>
                         <!-- button -->
-                        <button type="submit" wire:click.debounce="$refresh" id="publish-btn"
+                        <button type="submit" wire:click.debounce="$refresh" id="save-btn"
                             class="btn btn-primary">Save</button>
                     </div>
                 </form>
@@ -209,25 +205,6 @@
                         </button>
                     </ul>
                 </div>
-                <!-- Card  -->
-                {{-- <div class="card">
-                    <!-- Card header -->
-                    <div class="card-header d-lg-flex">
-                        <h4 class="mb-0">Revision History</h4>
-                    </div>
-                    <!-- List group -->
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="mb-0">Aug 31, 12:21 PM</h5>
-                                <span class="text-body">Geeks Coures</span>
-                            </div>
-                            <div>
-                                <span class="badge bg-success badge-pill">Published</span>
-                            </div>
-                        </li>
-                    </ul>
-                </div> --}}
             </div>
         </div>
     </div>
@@ -239,22 +216,15 @@
             quill.clipboard.dangerouslyPasteHTML(blog['content']);
         });
 
-        document.getElementById('publish-btn').addEventListener('click', function() {
-            const content = quill.getSemanticHTML();
-            console.log(content)
+        document.getElementById('save-btn').addEventListener('click', function() {
+            let content = quill.getSemanticHTML();
+            const excerpt = quill.getText();
+
             @this.set('form.content', content);
-            myDropzone.processQueue();
+            @this.set('form.excerpt', excerpt);
         });
     </script>
 
-    <script src={{ asset('assets/libs/dropzone/dist/min/dropzone.min.js') }}></script>
-    <script src={{ asset('assets/libs/flatpickr/dist/flatpickr.min.js') }}></script>
-    <script src={{ asset('assets/js/vendors/flatpickr.js') }}></script>
     <script src={{ asset('assets/libs/quill/dist/quill.js') }}></script>
     <script src={{ asset('assets/js/vendors/editor.js') }}></script>
-    <script src={{ asset('assets/js/vendors/validation.js') }}></script>
-    <script src={{ asset('assets/js/vendors/dropzone.js') }}></script>
-    <script src={{ asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}></script>
-
-    <script src={{ asset('assets/js/vendors/choice.js') }}></script>
 </section>

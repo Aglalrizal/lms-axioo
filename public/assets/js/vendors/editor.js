@@ -1,21 +1,64 @@
 var quill,
     editorElement = document.querySelector("#editor");
+
+// Custom image handler for Quill - converts to base64
+function imageHandler() {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+
+    input.onchange = () => {
+        const file = input.files[0];
+        if (file) {
+            // Validate file size (max 2MB)
+            if (file.size > 2 * 1024 * 1024) {
+                alert("Ukuran gambar terlalu besar. Maksimal 2MB.");
+                return;
+            }
+
+            // Validate file type
+            if (!file.type.startsWith("image/")) {
+                alert("File harus berupa gambar.");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                const range = quill.getSelection();
+
+                // Insert image as base64
+                quill.insertEmbed(range.index, "image", reader.result, "user");
+                quill.setSelection(range.index + 1);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+}
+
 editorElement &&
     (quill = new Quill(editorElement, {
         modules: {
-            toolbar: [
-                [{ header: [1, 2, !1] }],
-                [{ font: [] }],
-                ["bold", "italic", "underline", "strike"],
-                [{ size: ["small", !1, "large", "huge"] }],
-                [{ list: "ordered" }, { list: "bullet" }],
-                [{ color: [] }, { background: [] }, { align: [] }],
-                // ["link", "image", "code-block", "video"],
-            ],
+            toolbar: {
+                container: [
+                    [{ header: [1, 2, false] }],
+                    [{ font: [] }],
+                    ["bold", "italic", "underline", "strike"],
+                    [{ size: ["small", false, "large", "huge"] }],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ color: [] }, { background: [] }, { align: [] }],
+                    ["link", "image", "code-block"],
+                    ["clean"],
+                ],
+                handlers: {
+                    image: imageHandler,
+                },
+            },
         },
         theme: "snow",
     }));
 
+//// Konten asli dari file
 // var quill,
 //     editorElement = document.querySelector("#editor");
 // editorElement &&

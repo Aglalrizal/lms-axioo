@@ -5,9 +5,9 @@
             <div class="row justify-content-center">
                 <div class="col-xl-10 col-lg-10 col-md-12 col-12 ">
                     <div class="mb-4">
-                        <p class="mb-1">{{ $blog->created_at->format('d M Y') }}</p>
-                        <h1 class="display-3 fw-bold">Getting Started The Web Development JavaScript in 2020</h1>
-                        <span class="d-inline-block">4 min read</span>
+                        <p class="mb-1">{{ $blog->published_at->format('d M Y') }}</p>
+                        <h1 class="display-3 fw-bold">{{ $blog->title }}</h1>
+                        {{-- <span class="d-inline-block">4 min read</span> --}}
                     </div>
                 </div>
             </div>
@@ -15,8 +15,7 @@
                 <div class="container">
                     <div style="height: 28rem; width: 68rem; border-radius: 50px; "
                         class="position-relative overflow-hidden mx-auto ">
-                        <img src="{{ asset('assets\images\blog_hero.jpg') }}" class="object-fit-cover w-100 h-100"
-                            alt="blogpost" />
+                        <img src="{{ asset($blog->photo_path) }}" class="object-fit-cover w-100 h-100" alt="blogpost" />
                     </div>
                 </div>
             </section>
