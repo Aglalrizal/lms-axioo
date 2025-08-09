@@ -58,6 +58,8 @@ class BlogEdit extends Component
         $this->blog->delete();
 
         flash()->success('Blog berhasil dihapus.');
+
+        return redirect()->route('dashboard.cms.blogs.index');
     }
 
     public function save()
@@ -71,7 +73,6 @@ class BlogEdit extends Component
     {
         return view('livewire.blog-edit', [
             'categories' => BlogCategory::get(),
-            'oldPhotoUrl' => $this->form->photo_path,
         ]);
     }
 }

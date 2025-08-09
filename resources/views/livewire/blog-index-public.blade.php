@@ -47,14 +47,16 @@
                     </ul>
                 </div>
                 @forelse ($blogs as $blog)
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-12" wire:key="blog-{{ $blog->id }}">
                         <!-- Card -->
                         <div class="card mb-4 shadow-sm card-lift p-3 rounded rounded-4">
                             <div class=" ">
-                                <a href="/blogs/{{ $blog->id }}">
+                                <a href="/blogs/{{ $blog->id }}"
+                                    class="ratio ratio-21x9 w-100 border border-0 rounded overflow-hidden">
                                     <!-- Img  -->
-                                    <img src="../assets/images/blog/blogpost-3.jpg"
-                                        class="card-img-top rounded rounded-3" alt="blogpost" />
+                                    <img src={{ asset($blog->photo_path) }}
+                                        class="card-img-top rounded rounded-3 w-100 h-100 object-fit-cover object-position-center"
+                                        alt="blogpost" />
                                 </a>
                                 <!-- Card body -->
                                 <div>
@@ -70,8 +72,7 @@
                                         <a href="/blogs/{{ $blog->id }}"
                                             class="text-inherit">{{ $blog->title }}</a>
                                     </h3>
-                                    <p>{{ $blog->excerpt }}</p>
-                                    <!-- Media content -->
+                                    <div class="mb-3">{{ $blog->excerpt }}</div>
                                     <div class="d-flex justify-content-center">
                                         <a href="/blogs/{{ $blog->id }}"
                                             class="btn btn-primary border border-1 rounded rounded-4 w-75">Baca

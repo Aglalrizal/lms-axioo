@@ -1,7 +1,5 @@
 @assets
-    <link rel="stylesheet" href={{ asset('assets/libs/flatpickr/dist/flatpickr.min.css') }} />
     <link rel="stylesheet" href={{ asset('assets/libs/quill/dist/quill.snow.css') }} />
-    <link rel="stylesheet" href={{ asset('assets/libs/dropzone/dist/dropzone.css') }} />
 @endassets
 
 <section class="container-fluid p-4 ">
@@ -127,23 +125,18 @@
         </div>
     </div>
     <script>
-        function setContent() {
+        function setContentAndExcerpt() {
             const content = quill.getSemanticHTML();
-            console.log(content)
+            const excerpt = quill.getText();
+
             @this.set('form.content', content);
+            @this.set('form.excerpt', excerpt);
         }
-        document.getElementById('publish-btn').addEventListener('click', setContent);
-        document.getElementById('draft-btn').addEventListener('click', setContent);
+
+        document.getElementById('publish-btn').addEventListener('click', setContentAndExcerpt);
+        document.getElementById('draft-btn').addEventListener('click', setContentAndExcerpt);
     </script>
 
-    <script src={{ asset('assets/libs/dropzone/dist/min/dropzone.min.js') }}></script>
-    <script src={{ asset('assets/libs/flatpickr/dist/flatpickr.min.js') }}></script>
-    <script src={{ asset('assets/js/vendors/flatpickr.js') }}></script>
     <script src={{ asset('assets/libs/quill/dist/quill.js') }}></script>
     <script src={{ asset('assets/js/vendors/editor.js') }}></script>
-    <script src={{ asset('assets/js/vendors/validation.js') }}></script>
-    <script src={{ asset('assets/js/vendors/dropzone.js') }}></script>
-    <script src={{ asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}></script>
-
-    <script src={{ asset('assets/js/vendors/choice.js') }}></script>
 </section>
