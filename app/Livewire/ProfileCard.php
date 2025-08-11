@@ -17,22 +17,66 @@ class ProfileCard extends Component
     public $user;
 
     public $profile_picture;
-    public $first_name, $surname, $id_number, $phone_number, $place_of_birth, $date_of_birth, $address;
-    public $education, $institution;
+    public $first_name, $surname, $id_number, $phone_number, $place_of_birth, $date_of_birth, $address, $city;
+    public $education, $institution,$major;
 
     public function rules()
     {
         return [
-            'profile_picture' => 'nullable|image|max:2048',
-            'id_number' => 'nullable|string|max:30',
-            'phone_number' => 'nullable|string|regex:/^\+?[0-9]{8,15}$/',
-            'first_name' => 'required|string|max:50',
-            'surname' => 'nullable|string|max:50',
-            'date_of_birth' => 'nullable|date',
-            'place_of_birth' => 'nullable|string|max:50',
-            'education' => 'nullable|string|max:100',
-            'institution' => 'nullable|string|max:100',
-            'address' => 'nullable|string|max:255',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+
+            'first_name'      => 'required|string|max:50',
+            'surname'         => 'nullable|string|max:50',
+
+            'id_number'       => 'nullable|string|max:30|regex:/^[A-Za-z0-9\-]+$/',
+
+            'phone_number'    => [
+                'required',
+                'string',
+                'regex:/^\+[0-9]{10,15}$/',
+            ],
+
+            'place_of_birth'  => 'nullable|string|max:50',
+            'date_of_birth'   => 'nullable|date|before:today',
+
+            'address'         => 'nullable|string|max:255',
+            'city'            => 'nullable|string|max:100',
+
+            'education'       => 'nullable|string|max:100',
+            'institution'     => 'nullable|string|max:100',
+            'major'           => 'nullable|string|max:100',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'profile_picture.image'   => 'Foto profil harus berupa gambar.',
+            'profile_picture.mimes'   => 'Foto profil hanya boleh berformat: jpeg, png, jpg, webp.',
+            'profile_picture.max'     => 'Ukuran foto profil tidak boleh lebih dari 2MB.',
+
+            'first_name.required'     => 'Nama depan wajib diisi.',
+            'first_name.max'          => 'Nama depan tidak boleh lebih dari :max karakter.',
+
+            'surname.max'             => 'Nama belakang tidak boleh lebih dari :max karakter.',
+
+            'id_number.max'           => 'Nomor identitas tidak boleh lebih dari :max karakter.',
+            'id_number.regex'         => 'Nomor identitas hanya boleh berisi huruf, angka, dan tanda strip (-).',
+
+            'phone_number.required'   => 'Nomor telepon wajib diisi.',
+            'phone_number.regex'      => 'Nomor telepon harus diawali kode negara dan hanya boleh angka. Contoh: +6281234567890.',
+
+            'place_of_birth.max'      => 'Tempat lahir tidak boleh lebih dari :max karakter.',
+
+            'date_of_birth.date'      => 'Tanggal lahir harus berupa tanggal yang valid.',
+            'date_of_birth.before'    => 'Tanggal lahir harus sebelum hari ini.',
+
+            'address.max'             => 'Alamat tidak boleh lebih dari :max karakter.',
+            'city.max'                => 'Nama kota tidak boleh lebih dari :max karakter.',
+
+            'education.max'           => 'Pendidikan tidak boleh lebih dari :max karakter.',
+            'institution.max'         => 'Institusi tidak boleh lebih dari :max karakter.',
+            'major.max'               => 'Jurusan tidak boleh lebih dari :max karakter.',
         ];
     }
 
@@ -47,8 +91,10 @@ class ProfileCard extends Component
         $this->place_of_birth = $this->user->place_of_birth;
         $this->date_of_birth = $this->user->date_of_birth;
         $this->address = $this->user->address;
+        $this->city = $this->user->city;
         $this->education = $this->user->education;
         $this->institution = $this->user->institution;
+        $this->major = $this->user->major;
     }
 
     public function render()
