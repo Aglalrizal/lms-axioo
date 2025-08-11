@@ -16,42 +16,26 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="duration" class="form-label">Durasi <small
-                            class="text-muted text-sm">(menit)</small></label>
-                    <input id="duration" wire:model="duration"
-                        class="form-control @error('duration') is-invalid @enderror" type="number" min="0" />
-                    @error('duration')
+                    <label for="video_url" class="form-label">Tautan Video
+                        <small class="fst-normal">
+                            (opsional)
+                        </small>
+                    </label>
+                    <input id="video_url" wire:model="video_url"
+                        class="form-control @error('video_url') is-invalid @enderror" type="text" />
+                    @error('video_url')
                         <small class="d-block mt-2 text-danger">{{ $message }}</small>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <div class="d-flex align-items-center">
-                        <label for="is_assessment" class="form-label m-0">Kuis</label>
+                        <label for="is_free_preview" class="form-label m-0">Gratis Pratinjau</label>
                         <div class="form-check form-switch ms-2">
-                            <input wire:model.live="is_assessment" class="form-check-input" type="checkbox"
-                                role="switch" id="is_assessment">
+                            <input wire:model="is_free_preview" class="form-check-input" type="checkbox" role="switch"
+                                id="is_free_preview">
                         </div>
                     </div>
                 </div>
-                @if (!$is_assessment)
-                    <div class="mb-3">
-                        <label for="video_url" class="form-label">Tautan Video</label>
-                        <input id="video_url" wire:model="video_url"
-                            class="form-control @error('video_url') is-invalid @enderror" type="text" />
-                        @error('video_url')
-                            <small class="d-block mt-2 text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <div class="d-flex align-items-center">
-                            <label for="is_free_preview" class="form-label m-0">Gratis Pratinjau</label>
-                            <div class="form-check form-switch ms-2">
-                                <input wire:model="is_free_preview" class="form-check-input" type="checkbox"
-                                    role="switch" id="is_free_preview">
-                            </div>
-                        </div>
-                    </div>
-                @endif
                 <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
                     <livewire:jodit-text-editor wire:model="content" />
