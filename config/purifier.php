@@ -30,6 +30,15 @@ return [
             'AutoFormat.AutoParagraph' => true,
             'AutoFormat.RemoveEmpty'   => true,
         ],
+        'course_description' => [
+        'HTML.Doctype' => 'HTML 4.01 Transitional',
+        'HTML.Allowed' => 'p,br,ul,ol,li,b,strong,i,em,u,a[href|title|target],img[src|alt|width|height],iframe[src|width|height|frameborder|allow|allowfullscreen],video[src|width|height|poster|controls],source[src|type]',
+        'HTML.SafeIframe' => true,
+        'URI.SafeIframeRegexp' => '%^(https?:)?//(www\.youtube\.com/embed/|player\.vimeo\.com/video/)%',
+        'CSS.AllowedProperties' => 'font,font-size,font-weight,font-style,font-family,text-decoration,color,background-color,text-align',
+        'AutoFormat.AutoParagraph' => true,
+        'AutoFormat.RemoveEmpty' => true,
+        ],
         'test'    => [
             'Attr.EnableID' => 'true',
         ],
