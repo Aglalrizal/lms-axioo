@@ -27,9 +27,9 @@ class Create extends Component
             'username' => [
                 'required',
                 'string',
-                'min:3',
+                'min:5',
                 'max:20',
-                'regex:/^[a-zA-Z0-9_]+$/',
+                'alpha_dash',
                 Rule::unique('users', 'username')->ignore($this->user?->id),
             ],
             'email' => [
@@ -37,7 +37,7 @@ class Create extends Component
                 'email',
                 'min:8',
                 Rule::unique('users', 'email')->ignore($this->user?->id),
-            ],
+            ]
         ];
 
         if ($this->editform && $this->changePassword) {
@@ -50,7 +50,25 @@ class Create extends Component
 
         return $rules;
     }
+    protected function messages()
+    {
+        return [
+            'username.required' => 'Username wajib diisi.',
+            'username.string'   => 'Username harus berupa teks.',
+            'username.min'      => 'Username minimal :min karakter.',
+            'username.max'      => 'Username maksimal :max karakter.',
+            'username.alpha_dash' => 'Username hanya boleh huruf, angka, tanda hubung, dan underscore.',
+            'username.unique'   => 'Username sudah digunakan.',
 
+            'email.required'    => 'Email wajib diisi.',
+            'email.email'       => 'Format email tidak valid.',
+            'email.unique'      => 'Email sudah digunakan.',
+
+            'password.required' => 'Password wajib diisi.',
+            'password.string'   => 'Password harus berupa teks.',
+            'password.min'      => 'Password minimal :min karakter.',
+        ];
+    }
     public function mount(){
         $this->title = Str::of($this->role)->replace('-', ' ')->title(); 
         $this->formtitle = "Buat ".$this->title;
