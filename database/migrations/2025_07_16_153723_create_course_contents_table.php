@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('video_url')->nullable();
             $table->integer('order');
             $table->boolean('is_free_preview');
-            $table->boolean('is_assessment');
+            $table->boolean('is_assessment')->default(false);
             $table->foreignId('quiz_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('created_by');
             $table->string('modified_by');
