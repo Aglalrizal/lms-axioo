@@ -9,19 +9,24 @@ use Livewire\Attributes\Rule;
 
 class CreateFaqCategory extends Component
 {
-    #[Rule('required')]
+    #[Rule('required|string|min:10')]
     public $name = '';
     #[Rule('boolean')]
     public $is_active = false;
     public $formtitle = 'Buat FAQ Kategori';
     public $editform=false;
-
     public $faqCategory;
+    public function messages(){
+        return [
+            'name.required' => 'Nama kategori wajib diisi.',
+            'name.string'   => 'Nama kategori harus berupa teks.',
+            'name.min'      => 'Nama kategori minimal :min karakter.',
+        ];
+    }
     public function render()
     {
         return view('livewire.admin.faqs.create-faq-category');
     }
-
     public function save(){
         $this->name = trim($this->name);
         $this->validate();
@@ -33,7 +38,6 @@ class CreateFaqCategory extends Component
         flash()->success('Berhasil menambah FAQ kategori!');
         $this->reset();
     }
-
     #[On('reset-category-modal')]
     public function close(){
         $this->reset();
