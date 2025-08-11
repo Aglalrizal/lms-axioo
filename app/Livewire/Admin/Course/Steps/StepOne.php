@@ -107,7 +107,7 @@ class StepOne extends Component
 
 
     public function stepOne(){
-        $this->description = Purifier::clean($this->description);
+        $this->description = Purifier::clean($this->description, 'course_description');
         $data = $this->validate();
         if ($this->course && $this->course->exists) {
             if($this->title != $this->course->title){
