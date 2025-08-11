@@ -8,6 +8,7 @@ use Livewire\Component;
 use Livewire\Attributes\Rule;
 use App\Models\CourseCategory;
 use Livewire\Attributes\Layout;
+use Mews\Purifier\Facades\Purifier;
 use Illuminate\Support\Facades\Auth;
 
 #[Layout('layouts.dashboard')]
@@ -17,25 +18,67 @@ class StepOne extends Component
     public $step = 1;
     public $categories;
     public $instructors;
-    #[Rule('required')]
-    public $courseCategory;
-    #[Rule('required')]
-    public $courseInstructor;
-    #[Rule('required')]
-    public $title;
-    #[Rule('required')]
-    public $courseLevel;
-    #[Rule('required')]
-    public $courseType;
-    #[Rule('required')]
-    public $duration;
-    #[Rule('required')]
-    public $description;
+    public $courseCategory,$courseInstructor,$title,$courseLevel,$courseType,$duration,$description;
     
     public ?Course $course = null;
 
     public $slug;
 
+    public function rules()
+    {
+        return [
+            'courseCategory'    => 'required|integer|exists:course_categories,id',
+            'courseInstructor'  => 'required|integer|exists:users,id',
+            'title'             => 'required|string|max:255',
+            'courseLevel'       => 'required|string|max:100',
+            'courseType'        => 'required|string|max:100',
+            'duration'          => 'required|integer|min:1',
+            'description'       => [
+                'required',
+                'string',
+                function ($attribute, $value, $fail) {
+                    $plainText = trim(strip_tags($value));
+                    if (strlen($plainText) < 20) {
+                        $fail('Deskripsi kursus minimal 20 karakter teks.');
+                    }
+                },
+            ],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'courseCategory.required'  => 'Kategori kursus wajib dipilih.',
+            'courseCategory.integer'   => 'Kategori kursus tidak valid.',
+            'courseCategory.exists'    => 'Kategori kursus yang dipilih tidak ditemukan.',
+
+            'courseInstructor.required'=> 'Instruktur wajib dipilih.',
+            'courseInstructor.integer' => 'Instruktur tidak valid.',
+            'courseInstructor.exists'  => 'Instruktur yang dipilih tidak ditemukan.',
+
+            'title.required'           => 'Judul kursus wajib diisi.',
+            'title.string'             => 'Judul kursus harus berupa teks.',
+            'title.max'                => 'Judul kursus tidak boleh lebih dari :max karakter.',
+
+            'courseLevel.required'     => 'Level kursus wajib dipilih.',
+            'courseLevel.string'       => 'Level kursus harus berupa teks.',
+            'courseLevel.max'          => 'Level kursus tidak boleh lebih dari :max karakter.',
+
+            'courseType.required'      => 'Tipe kursus wajib dipilih.',
+            'courseType.string'        => 'Tipe kursus harus berupa teks.',
+            'courseType.max'           => 'Tipe kursus tidak boleh lebih dari :max karakter.',
+
+            'duration.required'        => 'Durasi kursus wajib diisi.',
+            'duration.integer'         => 'Durasi kursus harus berupa angka (jam/menit).',
+            'duration.min'             => 'Durasi kursus minimal :min (jam/menit).',
+
+            'description.required'     => 'Deskripsi kursus wajib diisi.',
+            'description.string'       => 'Deskripsi kursus harus berupa teks.',
+            'description.min'          => 'Deskripsi kursus minimal :min karakter.',
+            'description.max'          => 'Deskripsi kursus maksimal :max karakter.',
+        ];
+    }
     public function mount()
     {
         if ($this->slug) {
@@ -64,6 +107,7 @@ class StepOne extends Component
 
 
     public function stepOne(){
+        $this->description = Purifier::clean($this->description);
         $data = $this->validate();
         if ($this->course && $this->course->exists) {
             if($this->title != $this->course->title){
