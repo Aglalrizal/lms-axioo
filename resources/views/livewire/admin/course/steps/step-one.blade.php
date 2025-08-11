@@ -99,8 +99,8 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <link rel="stylesheet" href="//unpkg.com/jodit@4.1.16/es2021/jodit.min.css">
-    <script src="//unpkg.com/jodit@4.1.16/es2021/jodit.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('assets/css/jodit.css') }}">
+    <script src="{{ asset('assets/js/jodit.js') }}"></script>
     <style>
         .jodit-wysiwyg pre {
             background-color: #1f2937;
@@ -126,7 +126,7 @@
     </style>
 @endassets
 
-@if (session('succes'))
+@if (session('success'))
     <script>
         document.addEventListener('livewire:initialized', () => {
             flasher.success('{{ session('success') }}');

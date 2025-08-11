@@ -54,8 +54,8 @@
 </div>
 
 @assets
-    <link rel="stylesheet" href="//unpkg.com/jodit@4.1.16/es2021/jodit.min.css">
-    <script src="//unpkg.com/jodit@4.1.16/es2021/jodit.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('assets/css/jodit.css') }}">
+    <script src="{{ asset('assets/js/jodit.js') }}"></script>
     <style>
         .jodit-wysiwyg pre {
             background-color: #1f2937;
