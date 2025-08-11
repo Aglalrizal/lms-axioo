@@ -31,13 +31,22 @@ return [
             'AutoFormat.RemoveEmpty'   => true,
         ],
         'course_description' => [
-        'HTML.Doctype' => 'HTML 4.01 Transitional',
-        'HTML.Allowed' => 'p,br,ul,ol,li,b,strong,i,em,u,a[href|title|target],img[src|alt|width|height],iframe[src|width|height|frameborder|allow|allowfullscreen],video[src|width|height|poster|controls],source[src|type]',
-        'HTML.SafeIframe' => true,
-        'URI.SafeIframeRegexp' => '%^(https?:)?//(www\.youtube\.com/embed/|player\.vimeo\.com/video/)%',
-        'CSS.AllowedProperties' => 'font,font-size,font-weight,font-style,font-family,text-decoration,color,background-color,text-align',
-        'AutoFormat.AutoParagraph' => true,
-        'AutoFormat.RemoveEmpty' => true,
+            'HTML.Doctype' => 'HTML 4.01 Transitional',
+            'HTML.Allowed' => implode(',', [
+                'p', 'br', 'ul', 'ol', 'li', 'b', 'strong', 'i', 'em', 'u',
+                'a[href|title|target]',
+                'span[style]',
+                'img[src|alt|width|height]',
+                'video[src|width|height|poster|controls]',
+                'source[src|type]',
+                'iframe[src|width|height|frameborder|allow|allowfullscreen]'
+            ]),
+            'HTML.SafeIframe' => true,
+            'URI.SafeIframeRegexp' => '%^(https?:)?//(www\.youtube\.com/embed/|player\.vimeo\.com/video/)%',
+            'Attr.AllowedFrameTargets' => ['_blank', '_self', '_parent', '_top'],
+            'CSS.AllowedProperties' => 'font,font-size,font-weight,font-style,font-family,text-decoration,color,background-color,text-align',
+            'AutoFormat.AutoParagraph' => true,
+            'AutoFormat.RemoveEmpty' => true,
         ],
         'test'    => [
             'Attr.EnableID' => 'true',
@@ -96,6 +105,7 @@ return [
             ],
             'attributes' => [
                 ['iframe', 'allowfullscreen', 'Bool'],
+                ['iframe', 'allow', 'Text'],
                 ['table', 'height', 'Text'],
                 ['td', 'border', 'Text'],
                 ['th', 'border', 'Text'],
