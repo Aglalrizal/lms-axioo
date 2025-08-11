@@ -15,7 +15,7 @@ class StepTwo extends Component
 
     use WithFileUploads;
 
-    #[Rule('required|image|max:2048')]
+    #[Rule('required|image|mimes:jpeg,png,jpg|max:2048')]
     public $courseImage;
     public $currentImage;
     public $slug;
@@ -27,6 +27,13 @@ class StepTwo extends Component
     public function refreshImage(){
 
     }
+    protected $messages = [
+    'courseImage.required' => 'Gambar kursus wajib diunggah.',
+    'courseImage.image'    => 'File yang diunggah harus berupa gambar.',
+    'courseImage.mimes'    => 'Format gambar harus JPEG, PNG atau JPG.',
+    'courseImage.max'      => 'Ukuran gambar tidak boleh lebih dari 2 MB.',
+];
+
     public function saveImage(){
         $validated = $this->validate();
         $this->course = Course::where('slug', $this->slug)->firstOrFail();
