@@ -13,18 +13,37 @@ class CreateFaqs extends Component
     public $faq;
     public $categories = [];
     public $formtitle = 'Buat FAQ';
-
     public $editform=false;
-
-    #[Rule(['required', 'string', 'min:5'])]
-    public $question;
-    #[Rule('required')]
-    public $answer;
-    #[Rule('boolean')]
-    public $is_active = false;
-    #[Rule('required')]
+    public $question, $answer;
+    public $is_active = false;  
     public $faq_category_id = 1;
-
+        protected function rules()
+    {
+        return [
+            'question'    => ['required', 'string', 'min:10'],
+            'answer'      => ['required', 'string', 'min:10'],
+            'is_active'   => ['boolean'],
+            'category_id' => ['required', 'integer', 'exists:faq_categories,id'],
+        ];
+    }
+    protected function messages()
+    {
+        return [
+            'question.required'    => 'Pertanyaan tidak boleh kosong.',
+            'question.string'      => 'Pertanyaan harus berupa teks.',
+            'question.min'         => 'Pertanyaan minimal :min karakter.',
+            
+            'answer.required'      => 'Jawaban tidak boleh kosong.',
+            'answer.string'        => 'Jawaban harus berupa teks.',
+            'answer.min'           => 'Jawaban minimal :min karakter.',
+            
+            'is_active.boolean'    => 'Status aktif harus bernilai true atau false.',
+            
+            'category_id.required' => 'Kategori FAQ wajib dipilih.',
+            'category_id.integer'  => 'Kategori FAQ tidak valid.',
+            'category_id.exists'   => 'Kategori FAQ yang dipilih tidak ditemukan.',
+        ];
+    }
     public function mount(){
         $this->categories=FaqCategory::with(['faqs' => fn($q) => $q->orderBy('order')])->orderBy('order')->get();
     }
