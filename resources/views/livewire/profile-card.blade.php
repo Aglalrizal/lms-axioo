@@ -18,26 +18,28 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="mb-3 form-label">Foto Profil</h4>
-                    <div class="mb-4 d-flex align-items-center gap-3">
-                        <img src="{{ optional($user)->profile_picture
-                            ? asset('storage/' . $user->profile_picture)
-                            : 'https://ui-avatars.com/api/?background=random&name=' . urlencode(optional($user)->username) }}"
-                            class="rounded-circle" width="80" height="80"
-                            alt="{{ $user->username . '-avatar' }}">
-                        <div>
-                            <small class="text-muted d-block">Gambar sebaiknya memiliki rasio 1:1 dan berukuran tidak
-                                lebih
-                                dari
-                                2MB.</small>
-                            <input type="file" class="form-control mt-2" wire:model="profile_picture">
-                            @error('profile_picture')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
+                    <div class="row">
+                        <div class="col-md-12 mb-4 d-flex align-items-center gap-3 flex-grow">
+                            <img src="{{ optional($user)->profile_picture
+                                ? asset('storage/' . $user->profile_picture)
+                                : 'https://ui-avatars.com/api/?background=random&name=' . urlencode(optional($user)->username) }}"
+                                class="rounded-circle" width="80" height="80"
+                                alt="{{ $user->username . '-avatar' }}">
+                            <div class="flex-grow-1">
+                                <small class="text-muted d-block">Gambar sebaiknya memiliki rasio 1:1 dan berukuran
+                                    tidak
+                                    lebih
+                                    dari
+                                    2MB.</small>
+                                <input type="file" class="form-control mt-2" wire:model="profile_picture">
+                                @error('profile_picture')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
                         </div>
                     </div>
-
                     <h4 class="mb-2 mt-4">Detail Profil</h4>
-                    <div class="row">
+                    <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Nama Depan</label>
                             <input type="text" class="form-control" wire:model="first_name">
@@ -75,8 +77,15 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Tanggal Lahir</label>
-                            <input type="date" class="form-control" wire:model="date_of_birth">
+                            <input type="date" class="form-control" wire:model="date_of_birth"">
                             @error('date_of_birth')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Kota</label>
+                            <input type="text" class="form-control" wire:model="city">
+                            @error('city')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -101,6 +110,13 @@
                             <label class="form-label">Institusi</label>
                             <input type="text" class="form-control" wire:model="institution">
                             @error('institution')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Jurusan</label>
+                            <input type="text" class="form-control" wire:model="major">
+                            @error('major')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
