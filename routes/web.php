@@ -24,10 +24,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/cms/blogs/create', \App\Livewire\BlogCreate::class)->name('admin.cms.blog.create');
         Route::get('/admin/cms/blogs/{blog}/edit', \App\Livewire\BlogEdit::class)->name('admin.cms.blog.edit');
         Route::get('/admin/report/activity-log', \App\Livewire\Admin\Reports\ActivityLog\Index::class)->name('admin.report.activity-log');
-        Route::get('/admin/quiz', \App\Livewire\Quiz\Index::class)->name('quiz.index');
-        Route::get('/admin/cms/blogs', \App\Livewire\BlogIndexAdmin::class)->name('admin.cms.blog.index');
-        Route::get('/admin/cms/blogs/create', \App\Livewire\BlogCreate::class)->name('admin.cms.blog.create');
-        Route::get('/admin/cms/blogs/{blog}/edit', \App\Livewire\BlogEdit::class)->name('admin.cms.blog.edit');
     });
     Route::middleware('role:instructor')->group(function () {
         Route::get('/instructor/dashboard', \App\Livewire\Instructor\Dashboard::class)->name('instructor.dashboard');

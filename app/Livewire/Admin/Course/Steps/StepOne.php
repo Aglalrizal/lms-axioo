@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Course\Steps;
 
 use App\Models\User;
 use App\Models\Course;
+use App\Traits\HandlesBase64Images;
 use Livewire\Component;
 use Livewire\Attributes\Rule;
 use App\Models\CourseCategory;
@@ -13,13 +14,14 @@ use Illuminate\Support\Facades\Auth;
 
 #[Layout('layouts.dashboard')]
 class StepOne extends Component
-
 {
+    use HandlesBase64Images;
+
     public $step = 1;
     public $categories;
     public $instructors;
-    public $courseCategory,$courseInstructor,$title,$courseLevel,$courseType,$duration,$description;
-    
+    public $courseCategory, $courseInstructor, $title, $courseLevel, $courseType, $duration, $description;
+
     public ?Course $course = null;
 
     public $slug;
@@ -53,7 +55,7 @@ class StepOne extends Component
             'courseCategory.integer'   => 'Kategori kursus tidak valid.',
             'courseCategory.exists'    => 'Kategori kursus yang dipilih tidak ditemukan.',
 
-            'courseInstructor.required'=> 'Instruktur wajib dipilih.',
+            'courseInstructor.required' => 'Instruktur wajib dipilih.',
             'courseInstructor.integer' => 'Instruktur tidak valid.',
             'courseInstructor.exists'  => 'Instruktur yang dipilih tidak ditemukan.',
 
@@ -106,11 +108,20 @@ class StepOne extends Component
     }
 
 
-    public function stepOne(){
+    public function stepOne()
+    {
+        $oldDescription = $this->course->description;
+
+        $this->description = $this->processBase64Images($this->description, 'course_images');
+
         $this->description = Purifier::clean($this->description, 'course_description');
+
         $data = $this->validate();
+
+        $this->removeUnusedImages($oldDescription, $this->description, 'course_images');
+
         if ($this->course && $this->course->exists) {
-            if($this->title != $this->course->title){
+            if ($this->title != $this->course->title) {
                 $this->slug = '';
                 $this->course->slug = "";
                 $this->course->update([
@@ -127,7 +138,7 @@ class StepOne extends Component
                 $this->slug = $this->course->slug;
                 $this->dispatch('set-course', ['slug' => $this->course->slug]);
                 return redirect()->route('admin.course.create', ['slug' => $this->slug]);
-            }else{
+            } else {
                 $this->course->update([
                     'title' => $data['title'],
                     'course_category_id' => $data['courseCategory'],
@@ -138,7 +149,7 @@ class StepOne extends Component
                     'description' => $data['description'],
                     'duration' => $data['duration'],
                 ]);
-                flash()->success('Kursus Berhasil Diperbarui!', [],'Sukses');
+                flash()->success('Kursus Berhasil Diperbarui!', [], 'Sukses');
             }
         } else {
             $this->course = Course::create([
@@ -160,7 +171,8 @@ class StepOne extends Component
         }
     }
     public function render()
-    {   $this->categories = CourseCategory::all();
+    {
+        $this->categories = CourseCategory::all();
         $this->instructors = User::role('instructor')->get();
         return view('livewire.admin.course.steps.step-one');
     }
