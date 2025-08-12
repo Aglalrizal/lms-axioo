@@ -27,7 +27,8 @@
                 <div class="mb-3">
                     <div wire:ignore>
                         <label class="form-label" for="select-category">Kategori</label>
-                        <select class="form-select" id="select-category" wire:model="courseCategory">
+                        <select class="form-select" id="select-category" wire:model="courseCategory"
+                            style="width: 100%">
                             <option value="">Pilih Kategori
                             </option>
                             @foreach ($categories as $item)
@@ -42,7 +43,8 @@
                 <div class="mb-3">
                     <div wire:ignore>
                         <label class="form-label" for="select-instructor">Instruktur</label>
-                        <select class="form-select" id="select-instructor" wire:model="courseInstructor">
+                        <select class="form-select" id="select-instructor" wire:model="courseInstructor"
+                            style="width: 100%">
                             <option value="">Pilih Instruktur
                             </option>
                             @foreach ($instructors as $item)
