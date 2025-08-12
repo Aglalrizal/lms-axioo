@@ -42,7 +42,7 @@ class CleanupContentImages extends Command
         } else {
             // Clean all known folders - collect all orphans first
             $allOrphans = [];
-            $folders = ['blog_images', 'blog_thumbnails', 'course_images', 'course_thumbnails'];
+            $folders = ['blog_images', 'blog_thumbnails', 'course_images', 'course_thumbnails', 'user_profile_photos'];
 
             foreach ($folders as $folderName) {
                 $orphans = $this->scanFolder($folderName);
@@ -193,8 +193,21 @@ class CleanupContentImages extends Command
                 }
                 break;
 
+            case 'user_profile_photos':
+                // For user profile photos, check profile_picture_path field
+                $users = \App\Models\User::select('profile_picture_path')->whereNotNull('profile_picture_path')->get();
+
+                foreach ($users as $user) {
+                    if ($user->profile_picture_path) {
+                        $profileUrl = asset('storage/' . $user->profile_picture_path);
+                        $fakeContent = '<img src="' . $profileUrl . '" />';
+                        $allContent[] = $fakeContent;
+                    }
+                }
+                break;
+
             default:
-                $this->warn("Unknown folder: {$folder}. Supported folders: blog_images, course_images, blog_thumbnails");
+                $this->warn("Unknown folder: {$folder}. Supported folders: blog_images, course_images, blog_thumbnails, course_thumbnails, user_profile_photos");
                 break;
         }
 
@@ -252,9 +265,23 @@ class CleanupContentImages extends Command
 
         $allContent = $this->getAllContentForFolder($folder);
 
-        if (empty($allContent)) {
-            $this->line("No content found for folder: {$folder}");
+        // Check if folder exists
+        if (!Storage::disk('public')->exists($folder)) {
+            $this->line("Folder {$folder} does not exist");
             return [];
+        }
+
+        // Get all files in folder
+        $allFiles = Storage::disk('public')->files($folder);
+
+        if (empty($allFiles)) {
+            $this->line("No files found in folder: {$folder}");
+            return [];
+        }
+
+        if (empty($allContent)) {
+            $this->line("No content found for folder: {$folder} - all files are orphans");
+            return $allFiles; // All files are orphans if no content references them
         }
 
         return $this->previewCleanup($allContent, $folder);
