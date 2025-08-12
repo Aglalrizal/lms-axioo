@@ -1,5 +1,11 @@
 <ul class="navbar-nav flex-column" id="sideNavbar">
     <li class="nav-item">
+        <a class="nav-link {{ Route::is('*dashboard*') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
+            <i class="nav-icon fe fe-home me-2"></i>
+            Dashboard
+        </a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link  collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navProfile"
             aria-expanded="false" aria-controls="navProfile">
             <i class="nav-icon fe fe-user me-2"></i>
@@ -21,17 +27,16 @@
         <a class="nav-link " href="#" data-bs-toggle="collapse" data-bs-target="#navCourses" aria-expanded="false"
             aria-controls="navCourses">
             <i class="nav-icon fe fe-book me-2"></i>
-            Courses
+            Kursus
         </a>
         <div id="navCourses" class="collapse {{ request()->is('admin/course/*') ? 'show' : '' }}"
             data-bs-parent="#sideNavbar">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link " href="{{ route('admin.course.all') }}">All Courses</a>
+                    <a class="nav-link " href="{{ route('admin.course.all') }}">Seluruh Kursus</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.course.category') }}">Courses
-                        Category</a>
+                    <a class="nav-link" href="{{ route('admin.course.category') }}">Kursus Kategori</a>
                 </li>
             </ul>
         </div>
@@ -58,7 +63,7 @@
     <li class="nav-item">
         <a class="nav-link {{ Route::is('*quiz*') ? 'active' : '' }}" href="{{ route('quiz.index') }}">
             <i class="nav-icon fe fe-book-open me-2"></i>
-            Quiz
+            Kuis
         </a>
     </li>
     <li class="nav-item">
@@ -72,13 +77,13 @@
         <a class="nav-link  collapsed " data-bs-toggle="collapse" data-bs-target="#navReport" aria-expanded="false"
             aria-controls="navReport">
             <i class="bi bi-card-checklist me-2"></i>
-            Report
+            Laporan
         </a>
         <div id="navReport" class="collapse {{ request()->is('admin/report/*') ? 'show' : '' }}"
             data-bs-parent="#sideNavbar">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link " href="{{ route('admin.report.activity-log') }}">Activity Log</a>
+                    <a class="nav-link " href="{{ route('admin.report.activity-log') }}">Log Aktivitas</a>
                 </li>
             </ul>
         </div>
