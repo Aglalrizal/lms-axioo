@@ -13,12 +13,11 @@
             "uploader": {
                 "insertImageAsBase64URI": true
             },
-            "toolbarButtonSize": "large",
+            "toolbarButtonSize": "medium",
             "showCharsCounter": false,
             "showWordsCounter": false,
             "showXPathInStatusbar": false,
             "defaultActionOnPaste": "insert_clear_html",
-            "buttons": buttons
         });
 
         document.getElementById(@js($joditId)).addEventListener('change', function() {
