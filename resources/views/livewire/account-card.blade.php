@@ -53,14 +53,26 @@
                 <div class="row">
                     <div class="mb-3 col-12 col-md-6">
                         <x-input-label for="old_password" :value="__('Kata Sandi Lama')" />
-                        <x-password-input :id="'old_password'" :name="'old_password'"
-                            wire:model="old_password"></x-password-input>
+                        <div class="input-group mb-3">
+                            <input class="form-control" type="password" id="old_password" wire:model="old_password"
+                                required>
+                            <span class="input-group-text">
+                                <i class="bi bi-eye" id="togglePassword" style="cursor: pointer"
+                                    data-target="#old_password" data-toggle="password"></i>
+                            </span>
+                        </div>
                         <x-input-error :messages="$errors->get('old_password')" class="mt-2" />
                     </div>
                     <div class="mb-3 col-12 col-md-6">
                         <x-input-label for="new_password" :value="__('Kata Sandi Baru')" />
-                        <x-password-input :id="'new_password'" :name="'new_password'"
-                            wire:model="new_password"></x-password-input>
+                        <div class="input-group mb-3">
+                            <input class="form-control" type="password" id="new_password" wire:model="new_password"
+                                required>
+                            <span class="input-group-text">
+                                <i class="bi bi-eye" id="togglePassword" style="cursor: pointer"
+                                    data-target="#new_password" data-toggle="password"></i>
+                            </span>
+                        </div>
                         <x-input-error :messages="$errors->get('new_password')" class="mt-2" />
                     </div>
 
