@@ -166,12 +166,45 @@ class BlogForm extends Form
 
     public function cleanExcerpt()
     {
-        // Trim dan bersihkan whitespace
-        $cleaned = preg_replace('/\s+/', ' ', trim($this->excerpt));
+
+        $this->excerpt = $this->stripHtmlAndClean($this->content);
 
         // Potong sesuai max length
-        $this->excerpt = strlen($cleaned) > $this->excerptMaxLength
-            ? substr($cleaned, 0, $this->excerptMaxLength) . '...'
-            : $cleaned;
+        $this->excerpt = strlen($this->excerpt) > $this->excerptMaxLength
+            ? substr($this->excerpt, 0, $this->excerptMaxLength) . '...'
+            : $this->excerpt;
+    }
+
+    /**
+     * Strip HTML tags and clean text
+     */
+    private function stripHtmlAndClean($htmlContent)
+    {
+        // Strip HTML tags
+        $text = strip_tags($htmlContent);
+
+        // Decode HTML entities
+        $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
+
+        // Remove extra whitespace, newlines, dan normalize spaces
+        $text = preg_replace('/\s+/', ' ', $text);
+
+        // Trim whitespace
+        $text = trim($text);
+
+        // Potong sesuai max length
+        if (strlen($text) > $this->excerptMaxLength) {
+            // Potong di kata terdekat untuk menghindari kata terpotong
+            $text = substr($text, 0, $this->excerptMaxLength);
+            $lastSpace = strrpos($text, ' ');
+
+            if ($lastSpace !== false && $lastSpace > ($this->excerptMaxLength * 0.8)) {
+                $text = substr($text, 0, $lastSpace);
+            }
+
+            $text .= '...';
+        }
+
+        return $text;
     }
 }
