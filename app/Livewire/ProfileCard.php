@@ -5,8 +5,9 @@ namespace App\Livewire;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 #[Layout('layouts.dashboard')]
 class ProfileCard extends Component
@@ -122,6 +123,8 @@ class ProfileCard extends Component
         $this->user->update($validated);
 
         flash()->success('Profil berhasil diperbarui!');
-        return redirect()->route('admin.user', ['role' =>  $this->user->getRoleNames()->first()]);
+        if(Auth::user()->hasRole('super-admin')){
+            return redirect()->route('admin.user', ['role' =>  $this->user->getRoleNames()->first()]);
+        }
     }
 }
