@@ -7,9 +7,12 @@ use App\Models\CourseSyllabus;
 use Mews\Purifier\Facades\Purifier;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CourseContent as ModelsCourseContent;
+use App\Traits\HandlesBase64Images;
 
 class CourseContent extends Component
 {
+    use HandlesBase64Images;
+
     public $syllabus_id;
     public $title;
     public $video_url;
@@ -66,13 +69,27 @@ class CourseContent extends Component
 
     public function save()
     {
+        $oldContent = $this->courseContent?->content;
+
+        // Process base64 images in content before purifier
+        $this->content = $this->processBase64Images($this->content, 'course_images');
+
         $this->content = Purifier::clean($this->content, 'course_description');
+
         $validated = $this->validate();
 
+        $this->removeUnusedImages($oldContent, $this->content, 'course_images');
+
         if ($this->courseContentId && $this->courseContent) {
+            // Get old content before update for cleanup
+            $oldContent = $this->courseContent->content;
+
             $this->courseContent->update(array_merge($validated, [
                 'modified_by' => Auth::user()->username,
             ]));
+
+            // Remove unused images after update
+            $this->removeUnusedImages($oldContent, $this->content, 'course_images');
 
             flash()->success('Konten berhasil diperbarui!', [], 'Sukses');
         } else {
