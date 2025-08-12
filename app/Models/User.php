@@ -21,8 +21,7 @@ class User extends Authenticatable
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logExcept(['password', 'updated_at'])
-            ->logOnlyDirty()
+            ->logExcept(['password'])
             ->useLogName('user');
     }
 
@@ -31,9 +30,9 @@ class User extends Authenticatable
         $actor = Auth::user()?->username ?? 'System';
 
         return match ($eventName) {
-            'created' => "[{$actor}] created user \"{$this->username}\"",
-            'updated' => "[{$actor}] updated user \"{$this->username}\"",
-            'deleted' => "[{$actor}] deleted user \"{$this->username}\"",
+            'created' => "[{$actor}] membuat user \"{$this->username}\"",
+            'updated' => "[{$actor}] memperbarui user \"{$this->username}\"",
+            'deleted' => "[{$actor}] menghapus user \"{$this->username}\"",
             default => ucfirst($eventName) . " user \"{$this->username}\"",
         };
     }

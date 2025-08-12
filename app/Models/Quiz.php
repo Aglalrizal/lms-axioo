@@ -2,15 +2,35 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Quiz extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, LogsActivity;
 
+    function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->useLogName('quiz');
+    }
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        $actor = Auth::user()?->username ?? 'System';
+        
+        return match ($eventName) {
+            'created' => "[{$actor}] membuat quiz \"{$this->title}\"",
+            'updated' => "[{$actor}] memperbarui quiz \"{$this->title}\"",
+            'deleted' => "[{$actor}] menghapus quiz \"{$this->title}\"",
+            default => ucfirst($eventName) . " quiz \"{$this->title}\"",
+        };
+    }
     /**
      * The attributes that are mass assignable.
      *

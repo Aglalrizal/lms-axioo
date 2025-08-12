@@ -18,7 +18,7 @@ class Faq extends Model
     {
         return LogOptions::defaults()
         ->logAll()
-        ->logOnlyDirty();
+        ->useLogName('faqItem');
     }
 
     public function getDescriptionForEvent(string $eventName): string

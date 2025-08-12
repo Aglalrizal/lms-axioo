@@ -17,8 +17,8 @@ class FaqCategory extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logOnly(['name', 'is_active'])
-        ->logOnlyDirty();
+        ->logAll()
+        ->useLogName('faqCategory');
     }
 
     public function getDescriptionForEvent(string $eventName): string

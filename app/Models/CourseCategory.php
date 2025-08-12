@@ -2,14 +2,35 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CourseCategory extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, LogsActivity;
+
+    function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->useLogName('courseCategory');
+    }
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        $actor = Auth::user()?->username ?? 'System';
+        
+        return match ($eventName) {
+            'created' => "[{$actor}] membuat kategori kursus \"{$this->name}\"",
+            'updated' => "[{$actor}] memperbarui kategori kursus \"{$this->name}\"",
+            'deleted' => "[{$actor}] menghapus kategori kursus \"{$this->name}\"",
+            default => ucfirst($eventName) . " kategori kursus \"{$this->name}\"",
+        };
+    }
 
     /**
      * The attributes that are mass assignable.

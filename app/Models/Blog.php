@@ -2,16 +2,37 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Blog extends Model
 {
     /** @use HasFactory<\Database\Factories\BlogFactory> */
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, LogsActivity;
+
+    function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->useLogName('blog');
+    }
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        $actor = Auth::user()?->username ?? 'System';
+        
+        return match ($eventName) {
+            'created' => "[{$actor}] membuat blog \"{$this->title}\"",
+            'updated' => "[{$actor}] memperbarui blog \"{$this->title}\"",
+            'deleted' => "[{$actor}] menghapus blog \"{$this->title}\"",
+            default => ucfirst($eventName) . " blog \"{$this->title}\"",
+        };
+    }
 
     protected $casts = [
         'published_at' => 'datetime'

@@ -2,15 +2,19 @@
 
 namespace App\Models;
 
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Course extends Model
 {
-    use HasFactory, Sluggable, SoftDeletes;
+    use HasFactory, Sluggable, SoftDeletes, LogsActivity;
 
     /**
      * Return the sluggable configuration array for this model.
@@ -25,7 +29,23 @@ class Course extends Model
             ]
         ];
     }
-
+    function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->useLogName('course');
+    }
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        $actor = Auth::user()?->username ?? 'System';
+        
+        return match ($eventName) {
+            'created' => "[{$actor}] membuat kursus \"{$this->title}\"",
+            'updated' => "[{$actor}] memperbarui kursus \"{$this->title}\"",
+            'deleted' => "[{$actor}] menghapus kursus \"{$this->title}\"",
+            default => ucfirst($eventName) . " course \"{$this->title}\"",
+        };
+    }
     /**
      * The attributes that are mass assignable.
      *
