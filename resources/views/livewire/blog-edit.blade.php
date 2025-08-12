@@ -1,7 +1,3 @@
-@assets
-    <link rel="stylesheet" href={{ asset('assets/libs/quill/dist/quill.snow.css') }} />
-@endassets
-
 <section class="container-fluid p-4">
     <div class="row">
         <!-- Page header -->
@@ -112,7 +108,8 @@
                         </div>
                         <!-- Editor -->
                         <div class="mt-2 mb-4" wire:ignore>
-                            <div id="editor" data-blog-content="{{ json_encode($blog) }}"></div>
+                            {{-- <div id="editor" data-blog-content="{{ json_encode($blog) }}"></div> --}}
+                            <livewire:jodit-text-editor wire:model.live="form.content" />
                         </div>
                         <!-- button -->
                         <button type="submit" wire:click.debounce="$refresh" id="save-btn"
@@ -208,23 +205,35 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('livewire:init', function() {
-            const blog = @json($blog);
-            console.log(blog)
-            quill.clipboard.dangerouslyPasteHTML(blog['content']);
-        });
-
-        document.getElementById('save-btn').addEventListener('click', function() {
-            let content = quill.getSemanticHTML();
-            const excerpt = quill.getText();
-
-            @this.set('form.content', content);
-            @this.set('form.excerpt', excerpt);
-        });
-    </script>
-
-    <script src={{ asset('assets/libs/quill/dist/quill.js') }}></script>
-    <script src={{ asset('assets/js/vendors/editor.js') }}></script>
 </section>
+
+@assets
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('assets/css/jodit.css') }}">
+    <script src="{{ asset('assets/js/jodit.js') }}"></script>
+    <style>
+        .jodit-wysiwyg pre {
+            background-color: #1f2937;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            max-width: 100%;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .jodit-wysiwyg code {
+            font-size: 0.875rem;
+        }
+
+        .jodit-wysiwyg blockquote {
+            border-left: 4px solid #9ca3af;
+            padding-left: 1rem;
+            font-style: italic;
+            color: #4b5563;
+        }
+    </style>
+@endassets

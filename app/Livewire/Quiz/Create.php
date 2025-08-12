@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Quiz;
 
+use App\Traits\HandlesBase64Images;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 #[Layout('layouts.dashboard')]
 class Create extends Component
 {
-    use WithPagination;
+    use WithPagination, HandlesBase64Images;
     public $syllabusId;
     public $search = '';
     public $filterType = '';
@@ -25,15 +26,16 @@ class Create extends Component
     public $title;
     public $duration;
     public $number_of_questions;
-    public $content;  
-    public $courseContent;  
+    public $content;
+    public $courseContent;
     public $showForm = true;
     public $showQuizInfo = false;
     public $quizId;
     public $courseId;
     public $questionToDelete;
 
-    public function rules(){
+    public function rules()
+    {
         return [
             'title' => 'required|string|min:10|max:255',
             'duration' => 'required|integer|min:15',
@@ -68,12 +70,12 @@ class Create extends Component
         'content.string'         => 'Deskripsi harus berupa teks.',
         'content.min'             => 'Deskripsi minimal :min karakter.',
     ];
-    public function toogleQuizForm(){
+    public function toogleQuizForm()
+    {
         $this->showForm = !$this->showForm;
     }
     public function mount($courseContentId = null)
     {
-        
         if ($courseContentId) {
             $this->courseContentId = $courseContentId;
             $this->courseContent = CourseContent::with('quiz.questions')->findOrFail($courseContentId);
@@ -87,14 +89,14 @@ class Create extends Component
     }
 
     #[On('refresh-questions')]
-    public function refreshQuestions(){}
+    public function refreshQuestions() {}
 
     public function render()
     {
         $questions = QuizQuestion::with('choices')
             ->where('quiz_id', $this->quiz?->id)
-                    ->when($this->filterType, function ($query) {
-            $query->where('question_type', $this->filterType);
+            ->when($this->filterType, function ($query) {
+                $query->where('question_type', $this->filterType);
             })
             ->when($this->search, function ($query) {
                 $query->where('question', 'like', '%' . $this->search . '%');
@@ -108,7 +110,15 @@ class Create extends Component
     }
     public function saveQuiz()
     {
+
+        $oldContent = $this->courseContent?->content;
+
+        // Process base64 images in content before purifier
+        $this->content = $this->processBase64Images($this->content, 'course_images');
+
         $data = $this->validate();
+
+        $this->removeUnusedImages($oldContent, $this->content, 'course_images');
 
         if ($this->courseContentId) {
             $this->courseContent = CourseContent::findOrFail($this->courseContentId);
@@ -117,12 +127,12 @@ class Create extends Component
                 'content' => $data['content'],
                 'modified_by' => Auth::user()->username,
             ]);
-            if($this->courseContent->course_syllabus_id != $this->syllabusId){
+            if ($this->courseContent->course_syllabus_id != $this->syllabusId) {
                 $lastOrder = CourseContent::where('course_syllabus_id', $this->syllabusId)->max('order') ?? 0;
                 $data['order'] = $lastOrder + 1;
                 $this->courseContent->update([
                     'course_syllabus_id' => $this->syllabusId,
-                    'order' => $data['order'] 
+                    'order' => $data['order']
                 ]);
             }
             if ($this->courseContent->quiz) {
@@ -178,7 +188,8 @@ class Create extends Component
         $this->dispatch('refresh-list');
         $this->toogleQuizForm();
     }
-    public function back(){
+    public function back()
+    {
         $this->dispatch('close-add-quiz');
     }
     #[On('delete-question')]
