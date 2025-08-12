@@ -123,7 +123,7 @@ class StepOne extends Component
                     'description' => $data['description'],
                     'duration' => $data['duration'],
                 ]);
-                flash()->success('Kursus Berhasil Diperbarui!', 'Sukses');
+                flash()->success('Kursus Berhasil Diperbarui!',[], 'Sukses');
                 $this->slug = $this->course->slug;
                 $this->dispatch('set-course', ['slug' => $this->course->slug]);
                 return redirect()->route('admin.course.create', ['slug' => $this->slug]);
