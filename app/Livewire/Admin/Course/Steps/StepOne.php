@@ -110,17 +110,15 @@ class StepOne extends Component
 
     public function stepOne()
     {
-        $oldDescription = $this->course->description;
-
-        $this->description = $this->processBase64Images($this->description, 'course_images');
-
         $this->description = Purifier::clean($this->description, 'course_description');
 
         $data = $this->validate();
 
-        $this->removeUnusedImages($oldDescription, $this->description, 'course_images');
-
         if ($this->course && $this->course->exists) {
+            $oldDescription = $this->course->description;
+            $this->description = $this->processBase64Images($this->description, 'course_images');
+            $this->removeUnusedImages($oldDescription, $this->description, 'course_images');
+            $data['description'] = $this->description;
             if ($this->title != $this->course->title) {
                 $this->slug = '';
                 $this->course->slug = "";
