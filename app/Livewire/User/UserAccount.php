@@ -9,7 +9,7 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 
-#[Layout('layouts.authenticated.dashboard')]
+#[Layout('layouts.dashboard')]
 
 class UserAccount extends Component
 {

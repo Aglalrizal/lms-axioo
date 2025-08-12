@@ -1,4 +1,4 @@
-<div>
+<div class="p-4">
     <p class="display-4">Sertifikat</p>
     <p>Berikut adalah kumpulan sertifikat yang sudah terkumpul dari hasil belajarmu.</p>
 

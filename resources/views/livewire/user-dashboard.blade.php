@@ -1,4 +1,4 @@
-<div>
+<div class="p-4">
     <p class="display-4">Halo, {{ $user->first_name }} {{ $user->surname }}</p>
     <p>Selamat datang di Dashboard Student</p>
 

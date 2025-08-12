@@ -32,11 +32,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/instructor/account', \App\Livewire\AccountCard::class)->name('instructor.account');
     });
     Route::middleware(['role:student'])->group(function () {
-        Route::get('/student/dashboard', \App\Livewire\User\UserDashboard::class)->name('user.dashboard.index');
+        Route::get('/student/dashboard', \App\Livewire\User\UserDashboard::class)->name('user.dashboard');
         Route::get('/student/dashboard/courses', \App\Livewire\User\UserCourses::class)->name('user.dashboard.courses');
         Route::get('/student/dashboard/certificates', \App\Livewire\User\UserCertificates::class)->name('user.dashboard.certificates');
-        Route::get('/student/dashboard/profile', \App\Livewire\User\UserProfile::class)->name('user.dashboard.profile');
-        Route::get('/student/dashboard/account', \App\Livewire\User\UserAccount::class)->name('user.dashboard.account');
+        Route::get('/student/dashboard/{username}/profile', \App\Livewire\ProfileCard::class)->name('user.dashboard.profile');
+        Route::get('/student/dashboard/account', \App\Livewire\AccountCard::class)->name('user.dashboard.account');
     });
 });
 

@@ -39,7 +39,7 @@
                         <label class="form-label ">Thumbnail</label>
                         <div class="d-block ratio ratio-21x9 w-100 w-md-75 w-lg-50 mb-3 border rounded overflow-hidden">
                             @if ($form->photo_path)
-                                <img src="{{ asset($form->photo_path) }}" alt="Thumbnail"
+                                <img src="{{ asset('storage/' . $form->photo_path) }}" alt="Thumbnail"
                                     class="w-100 h-100 object-fit-cover object-position-center">
                             @else
                                 <div class="d-flex justify-content-center align-items-center h-100">

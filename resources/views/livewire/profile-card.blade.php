@@ -128,7 +128,7 @@
                                 'super-admin' => route('admin.user', ['role' => $role]),
                                 'admin' => route('admin.user', ['role' => $role]),
                                 'instructor' => route('instructor.dashboard'),
-                                'student' => route('student.dashboard'),
+                                'student' => route('user.dashboard'),
                             };
                         @endphp
                         <a class="btn btn-outline-secondary px-4" href="{{ $backUrl }}">Kembali</a>

@@ -5,7 +5,7 @@ namespace App\Livewire\User;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
-#[Layout('layouts.authenticated.dashboard')]
+#[Layout('layouts.dashboard')]
 
 class UserCourses extends Component
 {

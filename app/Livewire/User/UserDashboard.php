@@ -7,8 +7,9 @@ use App\Models\StudyPlan;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\Auth;
 
-#[Layout('layouts.authenticated.dashboard')]
+#[Layout('layouts.dashboard')]
 
 class UserDashboard extends Component
 {
@@ -71,7 +72,7 @@ class UserDashboard extends Component
             'program',
             'tanggal',
             'target'
-        ]) + ['user_id' => auth()->id()]);
+        ]) + ['user_id' => Auth::user()->id]);
 
         flash()->success('Rencana belajar berhasil dibuat!');
 
@@ -120,8 +121,8 @@ class UserDashboard extends Component
     public function render()
     {
         return view('livewire.user-dashboard', [
-            'user' => auth()->user(),
-            'rencanaBelajar' => StudyPlan::where('user_id', auth()->id())->get(),
+            'user' => Auth::user(),
+            'rencanaBelajar' => StudyPlan::where('user_id', Auth::user()->id)->get(),
         ]);
     }
 }

@@ -8,9 +8,10 @@ use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-#[Layout('layouts.authenticated.dashboard')]
+#[Layout('layouts.dashboard')]
 
 class UserProfile extends Component
 {
@@ -75,7 +76,7 @@ class UserProfile extends Component
 
     public function mount()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         $this->user = $user;
         $this->profile_picture_path = $user->profile_picture_path;

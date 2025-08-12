@@ -1,4 +1,4 @@
-<div>
+<div class="p-4">
     <p class="display-4">Progres Belajar</p>
     <p>Periksa dan terus tingkatkan progres belajarmu setiap harinya!</p>
 
@@ -7,7 +7,8 @@
 
             <div x-data="{ selected: 'onGoing' }" class="btn-group w-100">
                 <button wire:click="setShow('onGoing')" :class="selected === 'onGoing' ? 'active' : ''"
-                    @click=" selected = 'onGoing' " class="btn btn-outline-primary">Kelas yang sedang dipelajarai</button>
+                    @click=" selected = 'onGoing' " class="btn btn-outline-primary">Kelas yang sedang
+                    dipelajarai</button>
                 <button wire:click="setShow('completed')" :class="selected === 'completed' ? 'active' : ''"
                     @click=" selected = 'completed' " class="btn btn-outline-primary">Kelas yang telah
                     diselesaikan</button>
