@@ -19,6 +19,43 @@ class Index extends Component
 
     public $faq = [];
 
+    public function updateFaqOrder($groups)
+    {
+        foreach ($groups as $group) {
+        // Update urutan kategori jika ada
+            if ($group['order'] !== null) {
+                FaqCategory::where('id', $group['value'])->update(['order' => $group['order']]);
+            }
+            // Update FAQ
+            foreach ($group['items'] as $item) {
+                Faq::where('id', $item['value'])->update([
+                    'order' => $item['order'],
+                    'faq_category_id' => $group['value'],
+                ]);
+            }
+        }
+        flash()->success('Berhasil mengubah urutan FAQ', [], 'Sukses');
+        $this->dispatch('refresh-faqs');
+    }
+    public function updateCategoryFaqOrder($groups)
+    {
+        $changed = false;
+
+        foreach ($groups as $group) {
+            $category = FaqCategory::find($group['value']);
+            if ($category && $category->order != $group['order'] && $group['order'] !== null) {
+                $category->update(['order' => $group['order']]);
+                $changed = true; // tandai ada perubahan
+            }
+        }
+
+        if ($changed) {
+            flash()->success('Berhasil mengubah urutan kategori FAQ', [], 'Sukses');
+            $this->dispatch('refresh-faqs');
+        }
+    }
+
+
     #[On('delete-faq-category')]
     public function confirmDeleteCategory($id)
     {

@@ -9,7 +9,7 @@ use Livewire\Attributes\Rule;
 
 class CreateFaqCategory extends Component
 {
-    #[Rule('required|string|min:10')]
+    #[Rule('required|string|min:7')]
     public $name = '';
     #[Rule('boolean')]
     public $is_active = false;

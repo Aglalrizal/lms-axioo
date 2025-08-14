@@ -41,11 +41,12 @@
     <script src={{ asset('assets/libs/tiny-slider/dist/min/tiny-slider.js') }}></script>
     <script src={{ asset('assets/js/vendors/tnsSlider.js') }}></script>
 
-    @stack('scripts')
     @yield('scripts')
 
     <!-- Custom JS -->
     @livewireScripts
+    <script src="https://unpkg.com/@wotz/livewire-sortablejs@1.0.0/dist/livewire-sortable.js"></script>
+    @stack('scripts')
 </body>
 
 </html>
