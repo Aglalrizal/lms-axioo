@@ -105,4 +105,11 @@ class Course extends Model
             'course_syllabus_id',
         );
     }
+    public function hasAssignment(): bool
+    {
+        return $this->contents()
+            ->where('type', 'assignment')
+            ->withoutTrashed()
+            ->exists();
+    }
 }

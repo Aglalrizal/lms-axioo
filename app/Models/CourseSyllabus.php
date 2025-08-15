@@ -67,4 +67,12 @@ class CourseSyllabus extends Model
     public function courseContents(){
         return $this->hasMany(CourseContent::class);
     }
+    public function hasAssignmentInCourse(): bool
+    {
+        return $this->course
+            ->contents()
+            ->where('type', 'assignment')
+            ->withoutTrashed()
+            ->exists();
+    }
 }

@@ -185,11 +185,7 @@ class StepThree extends Component
         'syllabus' => fn($q) => $q->orderBy('order'),
         'syllabus.courseContents' => fn($q) => $q->orderBy('order')
         ])->where('slug', $this->slug)->first();
-        $this->hasAssignment = $this->course
-            ->contents()
-            ->where('type', 'assignment')
-            ->withoutTrashed()
-            ->exists();
+        $this->hasAssignment = $this->course->hasAssignment();
         $this->lastSyllabusId = $this->course->syllabus()->latest('order')->first()->id;
     }
     public function mount(){
@@ -197,11 +193,7 @@ class StepThree extends Component
         'syllabus' => fn($q) => $q->orderBy('order'),
         'syllabus.courseContents' => fn($q) => $q->orderBy('order')
         ])->where('slug', $this->slug)->first();
-        $this->hasAssignment = $this->course
-            ->contents()
-            ->where('type', 'assignment')
-            ->withoutTrashed()
-            ->exists();
+        $this->hasAssignment = $this->course->hasAssignment();
         $this->lastSyllabusId = $this->course->syllabus()->latest('order')->first()->id;
     }
     public function render()
