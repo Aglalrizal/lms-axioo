@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email');
             $table->enum('subject', ['General', 'Technical', 'Accounts', 'Payment', 'Other']);
             $table->text('description');
-            $table->enum('status', ['open', 'in-progress', 'resolved', 'closed'])->default('open');
+            $table->enum('status', ['open', 'resolved', 'closed'])->default('open');
             $table->softDeletes();
             $table->timestamps();
         });

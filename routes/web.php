@@ -7,6 +7,9 @@ use App\Http\Controllers\FaqController as UserFaq;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\BlogController;
 
+use App\Models\SupportTicket;
+use App\Mail\SupportTicketReplyMail;
+
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:super-admin|admin'])->group(function () {
         Route::get('/admin/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard');
@@ -77,5 +80,20 @@ Route::middleware('guest')->group(function () {
     Route::get('auth/{provider}', [SocialiteController::class, 'redirectToProvider'])->name('auth.redirect');
     Route::get('auth/{provider}/callback', [SocialiteController::class, 'handleProviderCallback'])->name('auth.callback');
 });
+
+// Preview Email Route (hanya untuk development/testing)
+Route::get('/preview-email/{ticketId}', function ($ticketId) {
+    try {
+        $ticket = SupportTicket::with('reply')->findOrFail($ticketId);
+
+        if (!$ticket->reply) {
+            return '<h1>No reply found for ticket #' . $ticketId . '</h1><p>Ticket ini belum memiliki reply dari admin.</p>';
+        }
+
+        return new SupportTicketReplyMail($ticket, $ticket->reply);
+    } catch (Exception $e) {
+        return '<h1>Error</h1><p>Error: ' . $e->getMessage() . '</p>';
+    }
+})->middleware('web');
 
 require __DIR__ . '/auth.php';

@@ -35,12 +35,6 @@
                                 wire:click="setShow('open')">Open</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" @click=" selected = 'inProgress' "
-                                :class="selected === 'inProgress' ? 'active' : ''"
-                                wire:click="setShow('in-progress')">In
-                                Progress</button>
-                        </li>
-                        <li class="nav-item">
                             <button class="nav-link" @click=" selected = 'resolved' "
                                 :class="selected === 'resolved' ? 'active' : ''"
                                 wire:click="setShow('resolved')">Resolved</button>
@@ -135,10 +129,6 @@
                                                     @if ($ticket->status === 'open')
                                                         <span
                                                             class="badge-dot bg-warning me-1 d-inline-block align-middle"></span>
-                                                        {{ $ticket->status }}
-                                                    @elseif ($ticket->status === 'in-progress')
-                                                        <span
-                                                            class="badge-dot bg-info me-1 d-inline-block align-middle"></span>
                                                         {{ $ticket->status }}
                                                     @elseif ($ticket->status === 'resolved')
                                                         <span
