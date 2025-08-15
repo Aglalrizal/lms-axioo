@@ -39,7 +39,7 @@
                         <label class="form-label ">Thumbnail</label>
                         <div class="d-block ratio ratio-21x9 w-100 w-md-75 w-lg-50 mb-3 border rounded overflow-hidden">
                             @if ($form->photo_path)
-                                <img src="{{ asset('storage/' . $form->photo_path) }}" alt="Thumbnail"
+                                <img src="{{ asset($form->photo_path) }}" alt="Thumbnail"
                                     class="w-100 h-100 object-fit-cover object-position-center">
                             @else
                                 <div class="d-flex justify-content-center align-items-center h-100">
@@ -50,10 +50,14 @@
                                 </div>
                             @endif
                         </div>
+                        @error($form->photo)
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
 
                         <p class="mb-2 text-secondary   ">Gambar thumbnail sebaiknya memiliki rasio 21:9 dan berukuran
                             tidak lebih dari 2MB.</p>
-                        <input type="file" wire:model="form.photo" id="photo" class="form-control mb-3 d-none">
+                        <input type="file" accept="image/*" wire:model="form.photo" id="photo"
+                            class="form-control mb-3 d-none">
                         <button type="button" class="btn btn-outline-primary mb-2 d-block"
                             onclick="document.querySelector('#photo').click()">
                             <i class="fe fe-upload me-2"></i>

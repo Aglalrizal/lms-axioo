@@ -23,6 +23,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/cms/blogs', \App\Livewire\BlogIndexAdmin::class)->name('admin.cms.blog.index');
         Route::get('/admin/cms/blogs/create', \App\Livewire\BlogCreate::class)->name('admin.cms.blog.create');
         Route::get('/admin/cms/blogs/{blog}/edit', \App\Livewire\BlogEdit::class)->name('admin.cms.blog.edit');
+        Route::get('/admin/cms/about-us', \App\Livewire\AboutUsCMS::class)->name('admin.cms.about-us');
+        Route::get('/admin/cms/our-team', \App\Livewire\OurTeamCMS::class)->name('admin.cms.our-team');
         Route::get('/admin/report/activity-log', \App\Livewire\Admin\Reports\ActivityLog\Index::class)->name('admin.report.activity-log');
     });
     Route::middleware('role:instructor')->group(function () {
@@ -49,6 +51,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/about-us', \App\Livewire\AboutUsPublic::class)->name('public.about-us');
 
 Route::get('/help-center/guide', function () {
     return view('public.help-center.guide');
