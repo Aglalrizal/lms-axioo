@@ -56,6 +56,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.cms.faqs') }}">Faqs</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.cms.about-us') }}">Tentang Kami</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.cms.our-team') }}">Tim Kami</a>
+                </li>
             </ul>
         </div>
     </li>

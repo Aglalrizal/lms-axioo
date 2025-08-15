@@ -85,7 +85,7 @@ class BlogForm extends Form
 
     public function publish()
     {
-        if (!$this->photo) {
+        if (!$this->old_photo_path && !$this->photo) {
             flash()->error('Thumbnail dibutuhkan ketika ingin publish.');
             return;
         }

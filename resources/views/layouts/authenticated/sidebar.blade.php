@@ -24,8 +24,8 @@
                     <!-- Nav item -->
 
                     <li class="nav-item">
-                        <a class="nav-link @if (request()->routeIs('user.dashboard.index')) active @endif"
-                            href="{{ route('user.dashboard.index') }}">
+                        <a class="nav-link @if (request()->routeIs('user.dashboard')) active @endif"
+                            href="{{ route('user.dashboard') }}">
                             <i class="fe fe-home nav-icon"></i>
                             Dashboard
                         </a>
@@ -76,7 +76,7 @@
                         <!-- Nav item -->
                         <li class="nav-item">
                             <a class="nav-link @if (request()->routeIs('user.dashboard.profile')) active @endif"
-                                href="{{ route('user.dashboard.profile') }}">
+                                href="{{ route('user.dashboard.profile', $user) }}">
                                 <i class="fe fe-user nav-icon"></i>
                                 Profil
                             </a>
