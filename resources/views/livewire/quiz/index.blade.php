@@ -28,7 +28,7 @@
                                 <div class="d-flex justify-content-between mb-2">
                                     <h3 class="mb-0 text-inherit">
                                         <a wire:click="openQuizPage({{ $quiz->id }})">
-                                            {{ $quiz->title }}
+                                            {{ $quiz->courseContent->title }}
                                         </a>
                                     </h3>
                                     <a wire:click="$dispatch('delete-quiz', { id: {{ $quiz->id }} })">

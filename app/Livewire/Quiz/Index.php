@@ -28,8 +28,8 @@ class Index extends Component
         $this->quizzes = collect();
 
         foreach ($this->selectedCourse->syllabus as $syl) {
-            foreach ($syl->contents as $content) {
-                if ($content->is_assessment && $content->quiz) {
+            foreach ($syl->courseContents as $content) {
+                if ($content->type == 'quiz' && $content->quiz) {
                     $this->quizzes->push($content->quiz);
                 }
             }
@@ -37,18 +37,18 @@ class Index extends Component
     }
     public function mount()
     {
-        $this->courses = Course::with('syllabus.contents.quiz')->get();
+        $this->courses = Course::with('syllabus.courseContents.quiz')->get();
     }
 
     public function selectCourse($courseId)
     {
-        $this->selectedCourse = Course::with('syllabus.contents.quiz')->findOrFail($courseId);
+        $this->selectedCourse = Course::with('syllabus.courseContents.quiz')->findOrFail($courseId);
 
         $this->quizzes = collect();
 
         foreach ($this->selectedCourse->syllabus as $syl) {
-            foreach ($syl->contents as $content) {
-                if ($content->is_assessment && $content->quiz) {
+            foreach ($syl->courseContents as $content) {
+                if ($content->type == 'quiz' && $content->quiz) {
                     $this->quizzes->push($content->quiz);
                 }
             }

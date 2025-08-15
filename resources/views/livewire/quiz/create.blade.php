@@ -11,7 +11,8 @@
                             <div class="d-flex align-items-center">
                                 <!-- quiz content -->
                                 <div class="ms-3">
-                                    <h3 class="mb-2"><a href="#" class="text-inherit">{{ $quiz->title }}</a></h3>
+                                    <h3 class="mb-2"><a href="#"
+                                            class="text-inherit">{{ $quiz->courseContent->title }}</a></h3>
                                     <div>
                                         <span>
                                             <span class="align-middle"><i class="fe fe-list"></i></span>
