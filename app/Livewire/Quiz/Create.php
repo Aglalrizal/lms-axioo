@@ -11,6 +11,7 @@ use Livewire\WithPagination;
 use App\Models\CourseContent;
 use Livewire\Attributes\Rule;
 use Illuminate\Support\Facades\Auth;
+use Mews\Purifier\Facades\Purifier;
 
 #[Layout('layouts.dashboard')]
 class Create extends Component
@@ -26,7 +27,7 @@ class Create extends Component
     public $title;
     public $duration;
     public $number_of_questions;
-    public $content;
+    public $description;
     public $courseContent;
     public $showForm = true;
     public $showQuizInfo = false;
@@ -40,7 +41,7 @@ class Create extends Component
             'title' => 'required|string|min:10|max:255',
             'duration' => 'required|integer|min:15',
             'number_of_questions' => 'required|integer|min:5',
-            'content' => [
+            'description' => [
                 'required',
                 'string',
                 function ($attribute, $value, $fail) {
@@ -66,9 +67,9 @@ class Create extends Component
         'number_of_questions.integer'  => 'Jumlah soal harus berupa angka.',
         'number_of_questions.min'      => 'Jumlah soal minimal :min.',
 
-        'content.required'      => 'Deskripsi wajib diisi.',
-        'content.string'         => 'Deskripsi harus berupa teks.',
-        'content.min'             => 'Deskripsi minimal :min karakter.',
+        'description.required'      => 'Deskripsi wajib diisi.',
+        'description.string'         => 'Deskripsi harus berupa teks.',
+        'description.min'             => 'Deskripsi minimal :min karakter.',
     ];
     public function toogleQuizForm()
     {
@@ -81,7 +82,7 @@ class Create extends Component
             $this->courseContent = CourseContent::with('quiz.questions')->findOrFail($courseContentId);
             $this->quiz = $this->courseContent->quiz;
             $this->title = $this->courseContent->title;
-            $this->content = $this->courseContent->content;
+            $this->description = $this->courseContent->quiz->description;
             $this->duration = $this->quiz->duration ?? null;
             $this->number_of_questions = $this->quiz->number_of_questions ?? null;
             $this->toogleQuizForm();
@@ -111,20 +112,13 @@ class Create extends Component
     public function saveQuiz()
     {
 
-        $oldContent = $this->courseContent?->content;
-
-        // Process base64 images in content before purifier
-        $this->content = $this->processBase64Images($this->content, 'course_images');
-
+        $this->description = Purifier::clean($this->description, 'course_description');
         $data = $this->validate();
-
-        $this->removeUnusedImages($oldContent, $this->content, 'course_images');
 
         if ($this->courseContentId) {
             $this->courseContent = CourseContent::findOrFail($this->courseContentId);
             $this->courseContent->update([
                 'title' => $data['title'],
-                'content' => $data['content'],
                 'modified_by' => Auth::user()->username,
             ]);
             if ($this->courseContent->course_syllabus_id != $this->syllabusId) {
@@ -136,15 +130,18 @@ class Create extends Component
                 ]);
             }
             if ($this->courseContent->quiz) {
+                $oldDesc = $this->courseContent->quiz->description;
+                $this->description = $this->processBase64Images($this->description, 'quiz_images');
                 $this->courseContent->quiz->update([
-                    'title' => $data['title'],
+                    'description' => $data['description'],
                     'duration' => $data['duration'],
                     'number_of_questions' => $data['number_of_questions'],
                     'modified_by' => Auth::user()->username,
                 ]);
+                $this->removeUnusedImages($oldDesc, $this->description, 'quiz_images');
             } else {
                 $this->quiz = $this->courseContent->quiz()->create([
-                    'title' => $data['title'],
+                    'description' => $data['description'],
                     'duration' => $data['duration'],
                     'number_of_questions' => $data['number_of_questions'],
                     'created_by' => Auth::user()->username,
@@ -158,22 +155,24 @@ class Create extends Component
             $this->quiz = $this->courseContent->quiz;
             flash()->success('Kuis berhasil diperbarui!', [], 'Sukses');
         } else {
+            if (CourseContent::where('course_syllabus_id', $this->syllabusId)->where('type', 'quiz')->exists()) {
+                flash()->error('Syllabus ini sudah memiliki quiz.', [], 'Galat');
+                $this->back();
+            }
             $lastOrder = CourseContent::where('course_syllabus_id', $this->syllabusId)->max('order') ?? 0;
             $data['order'] = $lastOrder + 1;
 
             $this->courseContent = CourseContent::create([
                 'course_syllabus_id' => $this->syllabusId,
                 'title' => $data['title'],
-                'is_assessment' => true,
-                'is_free_preview' => false,
                 'order' => $data['order'],
-                'content' => $data['content'],
+                'type'  => 'quiz',
                 'created_by' => Auth::user()->username,
                 'modified_by' => Auth::user()->username,
             ]);
 
             $this->quiz = $this->courseContent->quiz()->create([
-                'title' => $data['title'],
+                'description' => $data['description'],
                 'duration' => $data['duration'],
                 'number_of_questions' => $data['number_of_questions'],
                 'created_by' => Auth::user()->username,

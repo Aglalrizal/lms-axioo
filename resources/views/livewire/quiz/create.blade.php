@@ -73,7 +73,8 @@
                                         class="text-muted text-sm">(menit)</small></label>
                                 <input id="duration" wire:model="duration"
                                     class="form-control @error('duration') is-invalid @enderror" type="number"
-                                    min="0" x-on:keydown.arrow-up.prevent x-on:keydown.arrow-down.prevent />
+                                    min="0" x-on:wheel.prevent x-on:keydown.arrow-up.prevent
+                                    x-on:keydown.arrow-down.prevent />
                                 @error('duration')
                                     <small class="d-block mt-2 text-danger">{{ $message }}</small>
                                 @enderror
@@ -82,7 +83,7 @@
                                 <label for="number_of_questions" class="form-label">Jumlah Soal</label>
                                 <input id="number_of_questions" wire:model="number_of_questions"
                                     class="form-control @error('number_of_questions') is-invalid @enderror"
-                                    type="number" min="0" x-on:keydown.arrow-up.prevent
+                                    type="number" min="0" x-on:wheel.prevent x-on:keydown.arrow-up.prevent
                                     x-on:keydown.arrow-down.prevent />
                                 @error('number_of_questions')
                                     <small class="d-block mt-2 text-danger">{{ $message }}</small>
@@ -91,8 +92,8 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Deskripsi</label>
-                            <livewire:jodit-text-editor wire:model="content" />
-                            @error('content')
+                            <livewire:jodit-text-editor wire:model="description" />
+                            @error('description')
                                 <small class="d-block mt-2 text-danger">{{ $message }}</small>
                             @enderror
                         </div>

@@ -60,6 +60,7 @@ class Course extends Model
         'thumbnail',
         'level',
         'course_type',
+        'price',
         'duration',
         'extra_description',
         'is_published',
@@ -91,7 +92,17 @@ class Course extends Model
     {
         return $this->belongsTo(CourseCategory::class);
     }
-    public function syllabus(){
+    public function syllabus()
+    {
         return $this->hasMany(CourseSyllabus::class);
+    }
+    public function contents()
+    {
+        return $this->hasManyThrough(
+            CourseContent::class,
+            CourseSyllabus::class,
+            'course_id',     
+            'course_syllabus_id',
+        );
     }
 }

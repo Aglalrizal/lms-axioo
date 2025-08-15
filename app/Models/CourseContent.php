@@ -2,35 +2,15 @@
 
 namespace App\Models;
 
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CourseContent extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, SoftDeletes;
 
-    function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->logAll()
-            ->useLogName('courseContent');
-    }
-    public function getDescriptionForEvent(string $eventName): string
-    {
-        $actor = Auth::user()?->username ?? 'System';
-        
-        return match ($eventName) {
-            'created' => "[{$actor}] membuat kontent kursus \"{$this->title}\"",
-            'updated' => "[{$actor}] memperbarui kontent kursus \"{$this->title}\"",
-            'deleted' => "[{$actor}] menghapus kontent kursus \"{$this->title}\"",
-            default => ucfirst($eventName) . " kontent kursus \"{$this->title}\"",
-        };
-    }
     /**
      * The attributes that are mass assignable.
      *
@@ -39,13 +19,9 @@ class CourseContent extends Model
     protected $fillable = [
         'course_syllabus_id',
         'title',
-        'content',
-        'video_url',
         'order',
+        'type',
         'is_free_preview',
-        'is_assessment',
-        'is_completed',
-        'quiz_id',
         'created_by',
         'modified_by',
     ];
@@ -61,8 +37,6 @@ class CourseContent extends Model
             'id' => 'integer',
             'course_syllabus_id' => 'integer',
             'is_free_preview' => 'boolean',
-            'is_assessment' => 'boolean',
-            'is_completed' => 'boolean',
         ];
     }
 
@@ -72,5 +46,14 @@ class CourseContent extends Model
     }
     public function quiz(){
         return $this->hasOne(Quiz::class);
+    }
+    public function article(){
+        return $this->hasOne(Article::class);
+    }
+    public function video(){
+        return $this->hasOne(Video::class);
+    }
+    public function assignment(){
+        return $this->hasOne(Assignment::class);
     }
 }

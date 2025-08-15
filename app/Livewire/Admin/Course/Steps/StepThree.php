@@ -18,16 +18,22 @@ class StepThree extends Component
     public $syllabusToDelete;
     public $courseContentToDelete;
 
-    public $isAddContent = false;
+    public $isAddArticle = false;
     public $isAddQuiz = false;
+    public $isAddVideo = false;
+    public $isAddAssignment = false;
     public $syllabusId;
     public $courseContentId;
+    public bool $hasAssignment = false;
+    public $lastSyllabusId = 0;
 
-    #[On('open-add-content')]
-    public function openAddContent($syllabusId, $courseContentId = null)
+    #[On('open-add-article')]
+    public function openAddArticle($syllabusId, $courseContentId = null)
     {
-        $this->isAddContent = true;
+        $this->isAddArticle = true;
         $this->isAddQuiz = false;
+        $this->isAddVideo = false;
+        $this->isAddAssignment = false;
         $this->syllabusId = $syllabusId;
         $this->courseContentId = $courseContentId;
     }
@@ -36,28 +42,71 @@ class StepThree extends Component
     public function openAddQuiz($syllabusId, $courseContentId = null)
     {
         $this->isAddQuiz = true;
-        $this->isAddContent = false;
+        $this->isAddArticle = false;
+        $this->isAddVideo = false;
+        $this->isAddAssignment = false;
+        $this->syllabusId = $syllabusId;
+        $this->courseContentId = $courseContentId;
+        
+    }
+    #[On('open-add-video')]
+    public function openAddVideo($syllabusId, $courseContentId = null)
+    {
+        $this->isAddVideo = true;
+        $this->isAddQuiz = false;
+        $this->isAddArticle = false;
+        $this->isAddAssignment = false;
         $this->syllabusId = $syllabusId;
         $this->courseContentId = $courseContentId;
     }
-    #[On('close-add-content')]
-    public function closeCourseContentPage(){
-        $this->reset(['syllabusId', 'courseContentId']);
-        $this->isAddContent = false;
+    #[On('open-add-assignment')]
+    public function openAddAssignment($syllabusId, $courseContentId = null)
+    {
+        $this->isAddVideo = false;
         $this->isAddQuiz = false;
+        $this->isAddArticle = false;
+        $this->isAddAssignment = true;
+        $this->syllabusId = $syllabusId;
+        $this->courseContentId = $courseContentId;
+    }
+    #[On('close-add-article')]
+    public function closeCourseArticlePage(){
+        $this->reset(['syllabusId', 'courseContentId']);
+        $this->isAddArticle = false;
+        $this->isAddQuiz = false;
+        $this->isAddVideo = false;
+        $this->isAddAssignment = false;
     }
     #[On('close-add-quiz')]
     public function closeCourseQuizPage(){
         $this->reset(['syllabusId', 'courseContentId']);
         $this->isAddQuiz = false;
-        $this->isAddContent = false;
+        $this->isAddArticle = false;
+        $this->isAddVideo = false;
+        $this->isAddAssignment = false;
+    }
+    #[On('close-add-video')]
+    public function closeCourseVideoPage(){
+        $this->reset(['syllabusId', 'courseContentId']);
+        $this->isAddQuiz = false;
+        $this->isAddArticle = false;
+        $this->isAddVideo = false;
+        $this->isAddAssignment = false;
+    }
+    #[On('close-add-assignment')]
+    public function closeCourseAssignmentPage(){
+        $this->reset(['syllabusId', 'courseContentId']);
+        $this->isAddQuiz = false;
+        $this->isAddArticle = false;
+        $this->isAddVideo = false;
+        $this->isAddAssignment = false;
     }
 
     // #[On('done-loading-content')]
     // public function doneLoadingContent(){
     //     sleep(1);
     //     $this->isLoadingContent = false;
-    //     $this->isAddContent = false;
+    //     $this->isAddArticle = false;
     // }
 
     #[On('delete-syllabus')]
@@ -134,14 +183,26 @@ class StepThree extends Component
     public function refreshSyllabus(){
         $this->course = Course::with([
         'syllabus' => fn($q) => $q->orderBy('order'),
-        'syllabus.contents' => fn($q) => $q->orderBy('order')
+        'syllabus.courseContents' => fn($q) => $q->orderBy('order')
         ])->where('slug', $this->slug)->first();
+        $this->hasAssignment = $this->course
+            ->contents()
+            ->where('type', 'assignment')
+            ->withoutTrashed()
+            ->exists();
+        $this->lastSyllabusId = $this->course->syllabus()->latest('order')->first()->id;
     }
     public function mount(){
         $this->course = Course::with([
         'syllabus' => fn($q) => $q->orderBy('order'),
-        'syllabus.contents' => fn($q) => $q->orderBy('order')
+        'syllabus.courseContents' => fn($q) => $q->orderBy('order')
         ])->where('slug', $this->slug)->first();
+        $this->hasAssignment = $this->course
+            ->contents()
+            ->where('type', 'assignment')
+            ->withoutTrashed()
+            ->exists();
+        $this->lastSyllabusId = $this->course->syllabus()->latest('order')->first()->id;
     }
     public function render()
     {

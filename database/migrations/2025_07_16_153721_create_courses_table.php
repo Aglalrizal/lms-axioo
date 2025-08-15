@@ -22,6 +22,7 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->string('thumbnail')->nullable();
             $table->enum('course_type', ["free_trial","free","paid"]);
+            $table->decimal('price', 10, 2)->default(0);
             $table->enum('level', ["beginner","intermediate","advanced"]);
             $table->integer('duration')->nullable();
             $table->longText('extra_description')->nullable();

@@ -11,21 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-
-        Schema::create('quizzes', function (Blueprint $table) {
+        Schema::create('assignments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('course_content_id')->constrained()->cascadeOnDelete();
-            $table->longText('description');
-            $table->integer('number_of_questions');
-            $table->integer('duration');
-            $table->string('created_by');
-            $table->string('modified_by');
-            $table->softDeletes();
+            $table->longText('instruction');
+            $table->timestamp('due_date')->nullable();
             $table->timestamps();
         });
-
-        Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -33,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('quizzes');
+        Schema::dropIfExists('assignments');
     }
 };

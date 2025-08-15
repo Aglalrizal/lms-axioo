@@ -18,17 +18,18 @@ class Quiz extends Model
     {
         return LogOptions::defaults()
             ->logAll()
-            ->useLogName('quiz');
+            ->useLogName('kuis');
     }
     public function getDescriptionForEvent(string $eventName): string
     {
-        $actor = Auth::user()?->username ?? 'System';
+        $actor = Auth::user()?->username ?? 'Sisem';
+        $title = $this?->courseContent()->title ?? 'Kuis';
         
         return match ($eventName) {
-            'created' => "[{$actor}] membuat quiz \"{$this->title}\"",
-            'updated' => "[{$actor}] memperbarui quiz \"{$this->title}\"",
-            'deleted' => "[{$actor}] menghapus quiz \"{$this->title}\"",
-            default => ucfirst($eventName) . " quiz \"{$this->title}\"",
+            'created' => "[{$actor}] membuat kuis \"{$title}\"",
+            'updated' => "[{$actor}] memperbarui kuis \"{$title}\"",
+            'deleted' => "[{$actor}] menghapus kuis \"{$title}\"",
+            default => ucfirst($eventName) . " kuis \"{$title}\"",
         };
     }
     /**
@@ -38,7 +39,7 @@ class Quiz extends Model
      */
     protected $fillable = [
         'course_content_id',
-        'title',
+        'description',
         'duration',
         'number_of_questions',
         'created_by',

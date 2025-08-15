@@ -1,8 +1,14 @@
 <section>
-    @if ($isAddContent)
-        <livewire:course.course-content wire:key="add-content" :syllabus_id="$syllabusId" :courseContentId="$courseContentId ?? null" />
+    @if ($isAddArticle)
+        <livewire:course.course-contents.article.create-article wire:key="add-article" :syllabus_id="$syllabusId"
+            :courseContentId="$courseContentId ?? null" />
+    @elseif ($isAddVideo)
+        <livewire:course.course-contents.video.create wire:key="add-video" :syllabus_id="$syllabusId" :courseContentId="$courseContentId ?? null" />
     @elseif ($isAddQuiz)
         <livewire:quiz.create wire:key="open-quiz" :courseId="$course->id ?? null" :syllabus_id="$syllabusId ?? null" :courseContentId="$courseContentId ?? null" />
+    @elseif ($isAddAssignment)
+        <livewire:course.course-contents.assignment.create wire:key="open-assignment" :courseId="$course->id ?? null" :syllabus_id="$syllabusId ?? null"
+            :courseContentId="$courseContentId ?? null" />
     @else
         <div wire:key="list-content">
             <!-- Card -->
@@ -12,57 +18,74 @@
                 </div>
                 <!-- Card body -->
                 <div class="card-body">
-                    @forelse ($course->syllabus as $syllabus)
+                    @forelse ($course->syllabus as $s)
+                        @php
+                            $isLastSyllabus = $s->id === $course->syllabus->last()->id;
+                        @endphp
                         <div class="bg-light rounded p-2 mb-4">
                             <div class="d-flex align-items-center justify-content-between">
                                 <a class="text-dark text-decoration-none flex-grow-1" data-bs-toggle="collapse"
-                                    data-bs-target="#syllabus-{{ $syllabus->id }}" aria-expanded="false"
-                                    aria-controls="syllabus-{{ $syllabus->id }}">
+                                    data-bs-target="#syllabus-{{ $s->id }}" aria-expanded="false"
+                                    aria-controls="syllabus-{{ $s->id }}">
                                     <h4 class="mb-0 text-truncate text-wrap">
-                                        {{ Str::title($syllabus->title) }}
+                                        {{ Str::title($s->title) }}
                                     </h4>
                                 </a>
                                 <div class="ms-2">
-                                    <button wire:click="$dispatch('edit-syllabus-mode',{id:{{ $syllabus->id }}})"
+                                    <button wire:click="$dispatch('edit-syllabus-mode',{id:{{ $s->id }}})"
                                         type="button" class="text-inherit btn btn-sm p-1" data-bs-toggle="modal"
                                         data-bs-target="#courseSyllabusModal"><i class="fe fe-edit fs-6"></i></button>
-                                    <button wire:click="$dispatch('delete-syllabus',{id: {{ $syllabus->id }}})"
+                                    <button wire:click="$dispatch('delete-syllabus',{id: {{ $s->id }}})"
                                         class="btn btn-sm text-danger p-1">
                                         <i class="fe fe-trash-2 fs-6"></i>
                                     </button>
                                     <button class="text-inherit btn btn-sm p-1" data-bs-toggle="collapse"
-                                        data-bs-target="#syllabus-{{ $syllabus->id }}" aria-expanded="false"
-                                        aria-controls="syllabus-{{ $syllabus->id }}">
+                                        data-bs-target="#syllabus-{{ $s->id }}" aria-expanded="false"
+                                        aria-controls="syllabus-{{ $s->id }}">
                                         <span class="chevron-arrow"><i class="fe fe-chevron-down"></i></span>
                                     </button>
                                 </div>
                             </div>
                             <!-- List group -->
-                            <div id="syllabus-{{ $syllabus->id }}" class="collapse mt-3">
+                            <div id="syllabus-{{ $s->id }}" class="collapse mt-3">
                                 <div class="list-group list-group-flush border-top-0">
-                                    @forelse($syllabus->contents as $content)
+                                    @forelse($s->courseContents as $content)
                                         <div class="list-group-item rounded px-3 text-nowrap mb-1">
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <h5 class="mb-0 text-truncate">
-                                                    <a href="#" class="text-inherit">
+                                                    <a wire:click="$dispatch('open-add-{{ $content->type }}', { syllabusId: {{ $s->id }}, courseContentId: {{ $content->id }} })"
+                                                        class="text-inherit">
                                                         <i class="fe fe-menu me-1 align-middle"></i>
                                                         <span class="align-middle">{{ $content->title }}</span>
                                                     </a>
+                                                    @php
+                                                        $types = [
+                                                            'article' => [
+                                                                'label' => 'Artikel',
+                                                                'class' => 'bg-primary',
+                                                            ],
+                                                            'video' => ['label' => 'Video', 'class' => 'bg-danger'],
+                                                            'quiz' => [
+                                                                'label' => 'Kuis',
+                                                                'class' => 'bg-warning text-dark',
+                                                            ],
+                                                            'assignment' => [
+                                                                'label' => 'Tugas',
+                                                                'class' => 'bg-success',
+                                                            ],
+                                                        ];
+
+                                                        $badge = $types[$content->type] ?? [
+                                                            'label' => 'Tidak diketahui',
+                                                            'class' => 'bg-secondary',
+                                                        ];
+                                                    @endphp
+
+                                                    <span class="badge {{ $badge['class'] }}">
+                                                        {{ $badge['label'] }}
+                                                    </span>
                                                 </h5>
                                                 <div>
-                                                    @if ($content->is_assessment)
-                                                        <a wire:click="$dispatch('open-add-quiz', { syllabusId: {{ $syllabus->id }}, courseContentId: {{ $content->id }} })"
-                                                            class="me-1 text-inherit" data-bs-toggle="tooltip"
-                                                            data-placement="top" title="Edit">
-                                                            <i class="fe fe-edit fs-6"></i>
-                                                        </a>
-                                                    @else
-                                                        <a wire:click="$dispatch('open-add-content', { syllabusId: {{ $syllabus->id }}, courseContentId: {{ $content->id }} })"
-                                                            class="me-1 text-inherit" data-bs-toggle="tooltip"
-                                                            data-placement="top" title="Edit">
-                                                            <i class="fe fe-edit fs-6"></i>
-                                                        </a>
-                                                    @endif
                                                     <a wire:click="$dispatch('delete-course-content', { id: {{ $content->id }} })"
                                                         class="me-1 text-inherit" data-bs-toggle="tooltip"
                                                         data-placement="top" title="Delete">
@@ -79,11 +102,21 @@
                                 </div>
                             </div>
                             <button class="btn btn-outline-primary btn-sm mt-3"
-                                wire:click='$dispatch("open-add-content", {syllabusId: {{ $syllabus->id }} })'>Tambah
-                                Konten</button>
+                                wire:click='$dispatch("open-add-article", {syllabusId: {{ $s->id }} })'>Tambah
+                                Artikel</button>
                             <button class="btn btn-outline-primary btn-sm mt-3"
-                                wire:click='$dispatch("open-add-quiz", {syllabusId: {{ $syllabus->id }} })'>Tambah
-                                Kuis</button>
+                                wire:click='$dispatch("open-add-video", {syllabusId: {{ $s->id }} })'>Tambah
+                                Video Pembelajaran</button>
+                            @if (!$s->courseContents->where('type', 'quiz')->count())
+                                <button class="btn btn-outline-primary btn-sm mt-3"
+                                    wire:click='$dispatch("open-add-quiz", {syllabusId: {{ $s->id }} })'>Tambah
+                                    Kuis</button>
+                            @endif
+                            @if ($s->id === $lastSyllabusId && !$hasAssignment)
+                                <button class="btn btn-outline-primary btn-sm mt-3"
+                                    wire:click='$dispatch("open-add-assignment", {syllabusId: {{ $s->id }} })'>Tambah
+                                    Assignment</button>
+                            @endif
                         </div>
                     @empty
                         <p class="text-secondary text-sm">Belum ada Silabus.</p>

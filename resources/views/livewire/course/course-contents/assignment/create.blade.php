@@ -3,43 +3,22 @@
         <!-- Card -->
         <div class="card mb-3">
             <div class="card-header border-bottom px-4 py-3">
-                <h4 class="mb-0">Tambah Konten</h4>
+                <h4 class="mb-0">Tambah Assignment</h4>
             </div>
             <!-- Card body -->
             <div class="card-body">
                 <div class="mb-3">
-                    <label for="addCourseTitle" class="form-label">Judul</label>
-                    <input id="addCourseTitle" wire:model="title"
-                        class="form-control @error('title') is-invalid @enderror" type="text" autocomplete="off" />
+                    <label for="title" class="form-label">Judul</label>
+                    <input id="title" wire:model="title" class="form-control @error('title') is-invalid @enderror"
+                        type="text" autocomplete="off" />
                     @error('title')
                         <small class="d-block mt-2 text-danger">{{ $message }}</small>
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="video_url" class="form-label">Tautan Video
-                        <small class="fst-normal">
-                            (opsional)
-                        </small>
-                    </label>
-                    <input id="video_url" wire:model="video_url"
-                        class="form-control @error('video_url') is-invalid @enderror" type="text" />
-                    @error('video_url')
-                        <small class="d-block mt-2 text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <div class="d-flex align-items-center">
-                        <label for="is_free_preview" class="form-label m-0">Gratis Pratinjau</label>
-                        <div class="form-check form-switch ms-2">
-                            <input wire:model="is_free_preview" class="form-check-input" type="checkbox" role="switch"
-                                id="is_free_preview">
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Deskripsi</label>
-                    <livewire:jodit-text-editor wire:model="content" />
-                    @error('content')
+                    <label class="form-label">Instruksi</label>
+                    <livewire:jodit-text-editor wire:model="instruction" />
+                    @error('instruction')
                         <small class="d-block mt-2 text-danger">{{ $message }}</small>
                     @enderror
                 </div>

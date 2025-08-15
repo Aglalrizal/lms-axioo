@@ -23,7 +23,7 @@ class Index extends Component
 
     public function render()
     {
-        $courses = Course::with(['courseCategory','teacher', 'syllabus.contents'])
+        $courses = Course::with(['courseCategory','teacher', 'syllabus.courseContents'])
             ->when($this->search, function ($query) {
                 $query->where('title', 'like', '%' . $this->search . '%');
             })
