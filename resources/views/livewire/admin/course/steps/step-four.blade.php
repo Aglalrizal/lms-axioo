@@ -22,7 +22,7 @@
                         <label for="publish" class="form-label m-0">Publikasi</label>
                         <div class="form-check form-switch ms-2">
                             <input wire:model="is_published" class="form-check-input" type="checkbox" role="switch"
-                                id="publish" disabled>
+                                id="publish">
                         </div>
                     </div>
                     <small>Kursus hanya bisa dipublikasikan jika setiap silabus memiliki setidaknya satu kuis atau

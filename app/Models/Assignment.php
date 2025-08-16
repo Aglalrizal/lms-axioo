@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Assignment extends Model
 {
     /** @use HasFactory<\Database\Factories\AssignmentFactory> */
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, LogsActivity;
     function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

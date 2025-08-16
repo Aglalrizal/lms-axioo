@@ -186,7 +186,8 @@ class StepThree extends Component
         'syllabus.courseContents' => fn($q) => $q->orderBy('order')
         ])->where('slug', $this->slug)->first();
         $this->hasAssignment = $this->course->hasAssignment();
-        $this->lastSyllabusId = $this->course->syllabus()->latest('order')->first()->id;
+        $lastSyllabus = $this->course->syllabus()->latest('order')->first();
+        $this->lastSyllabusId = $lastSyllabus ? $lastSyllabus->id : null;
     }
     public function mount(){
         $this->course = Course::with([
@@ -194,7 +195,8 @@ class StepThree extends Component
         'syllabus.courseContents' => fn($q) => $q->orderBy('order')
         ])->where('slug', $this->slug)->first();
         $this->hasAssignment = $this->course->hasAssignment();
-        $this->lastSyllabusId = $this->course->syllabus()->latest('order')->first()->id;
+        $lastSyllabus = $this->course->syllabus()->latest('order')->first();
+        $this->lastSyllabusId = $lastSyllabus ? $lastSyllabus->id : null;
     }
     public function render()
     {

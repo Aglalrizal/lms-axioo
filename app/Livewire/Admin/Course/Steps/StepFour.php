@@ -16,8 +16,7 @@ class StepFour extends Component
 
     public $step = 4;
     public $slug;
-    #[Rule('required')]
-    public $extra_description;
+    public $extra_description = '';
     public $is_published = false;
     public $course;
 
@@ -35,6 +34,7 @@ class StepFour extends Component
             //         $fail('Deskripsi ekstra kursus maksimal 1000 karakter.');
             //     }
             // },
+            'is_published' => 'required|boolean',
         ];
     }
 
@@ -46,19 +46,22 @@ class StepFour extends Component
     {
         $this->course = Course::where('slug', $this->slug)->first();
         $this->extra_description = $this->course->extra_description;
+        $this->is_published = $this->course->is_published;
         $this->dispatch('update-jodit-content', $this->course->extra_description);
     }
 
     public function save()
     {
-        $oldExtraDescription = $this->course->extra_description;
 
         $this->extra_description = $this->processBase64Images($this->extra_description, 'course_images');
 
         $this->extra_description = Purifier::clean($this->extra_description, 'course_description');
 
         $data = $this->validate();
-
+        $oldExtraDescription = '';
+        if($this->course->extra_description){
+            $oldExtraDescription = $this->course->extra_description;
+        }
         $this->removeUnusedImages($oldExtraDescription, $this->extra_description, 'course_images');
 
         $this->course = Course::where('slug', $this->slug)->first();

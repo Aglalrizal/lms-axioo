@@ -143,19 +143,25 @@
     @endif
     <livewire:admin.course.syllabus-modal wire:key="syllabusModal" :courseId="$course->id" />
 </section>
-
 @script
     <script>
         Livewire.on('refresh-syllabus', () => {
-            var mySyllabusModalEl = document.querySelector('#courseSyllabusModal')
-            var syllabusModal = bootstrap.Modal.getOrCreateInstance(mySyllabusModalEl)
-            syllabusModal.hide();
-            @this.dispatch('reset-syllabus-modal');
-        })
+            let el = document.getElementById('courseSyllabusModal');
+            let syllabusModal = bootstrap.Modal.getInstance(el) || new bootstrap.Modal(el);
 
+            // Paksa close walau animasi belum selesai
+            setTimeout(() => {
+                syllabusModal.hide();
+            }, 50);
+
+            Livewire.dispatch('reset-syllabus-modal');
+        });
         var mySyllabusModalEl = document.getElementById('courseSyllabusModal')
         mySyllabusModalEl.addEventListener('hidden.bs.modal', (event) => {
-            @this.dispatch('reset-syllabus-modal');
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+            Livewire.dispatch('reset-syllabus-modal');
         })
     </script>
 @endscript

@@ -29,7 +29,7 @@ class Create extends Component
                 'string',
                 function ($attribute, $value, $fail) {
                     $plainText = trim(strip_tags($value));
-                    if (strlen($plainText) > 50) {
+                    if (strlen($plainText) < 50) {
                         $fail('Instruksi minimal 50 karakter.');
                     }
                 }
@@ -66,7 +66,7 @@ class Create extends Component
         $this->instruction = Purifier::clean($this->instruction, 'course_description');
         $validated = $this->validate();
         if ($this->courseContentId && $this->courseContent) {
-            $oldInstruction = $this->courseContent->article->instruction;
+            $oldInstruction = $this->courseContent->assignment->instruction;
             $this->instruction = $this->processBase64Images($this->instruction, 'course_assignment_images');
             $this->courseContent->update( [
                 'title'       => $validated['title'],
@@ -76,7 +76,7 @@ class Create extends Component
                 'instruction'       => $validated['instruction'],
             ]);
 
-            $this->removeUnusedImages($oldInstruction, $this->instruction, 'course_article_images');
+            $this->removeUnusedImages($oldInstruction, $this->instruction, 'course_assigment_images');
 
             flash()->success('Assignment berhasil diperbarui!', [], 'Sukses');
         } else {
