@@ -19,4 +19,9 @@ class SupportTicket extends Model
         'description',
         'status',
     ];
+
+    public function reply()
+    {
+        return $this->hasOne(SupportTicketReply::class);
+    }
 }

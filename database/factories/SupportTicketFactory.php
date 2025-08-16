@@ -22,7 +22,7 @@ class SupportTicketFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'subject' => fake()->randomElement(['General', 'Technical', 'Accounts', 'Payment', 'Other']),
             'description' => fake()->paragraph(),
-            'status' => fake()->randomElement(['open', 'in-progress', 'resolved', 'closed']),
+            'status' => fake()->randomElement(['open', 'closed']),
         ];
     }
 }

@@ -5,8 +5,11 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Models\SupportTicket;
+use App\Models\SupportTicketReply;
+use App\Mail\SupportTicketReplyMail;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\Mail;
 
 #[Layout('layouts.dashboard')]
 
@@ -14,19 +17,79 @@ class SupportTicketShow extends Component
 {
     public ?SupportTicket $ticket;
 
-    #[Validate('required|in:open,in-progress,resolved,closed')]
+    #[Validate('required|in:open,resolved,closed')]
     public $status;
+    #[Validate('required|string|min:10')]
+    public $replyMessage = '';
+
+    #[Validate('required|string')]
+    public $adminName = '';
+
+    public $showReplyForm = false;
 
     public function mount()
     {
         $this->status = $this->ticket->status;
+        $this->ticket->load('reply');
+
+        // Set default admin name (bisa disesuaikan dengan auth user)
+        $this->adminName = 'Support Team';
+    }
+
+    public function toggleReplyForm()
+    {
+        $this->showReplyForm = !$this->showReplyForm;
+
+        if (!$this->showReplyForm) {
+            $this->reset(['replyMessage']);
+            $this->resetValidation();
+        }
+    }
+
+    public function sendReply()
+    {
+        $this->validateOnly([
+            'replyMessage',
+            'adminName'
+        ]);
+
+        // Check if reply already exists
+        if ($this->ticket->reply) {
+            flash()->error('Ticket ini sudah memiliki balasan. Satu ticket hanya bisa dibalas sekali.');
+            return;
+        }
+
+        // Create the reply
+        $reply = SupportTicketReply::create([
+            'support_ticket_id' => $this->ticket->id,
+            'admin_name' => $this->adminName,
+            'message' => $this->replyMessage,
+            'sent_at' => now(),
+        ]);
+
+        // Update ticket status to resolved
+        $this->ticket->update(['status' => 'resolved']);
+        $this->status = 'resolved';
+
+        // Send email
+        try {
+            Mail::to($this->ticket->email)->send(new SupportTicketReplyMail($this->ticket, $reply));
+            flash()->success('Reply berhasil dikirim dan email telah dikirim ke customer.');
+        } catch (\Exception $e) {
+            flash()->warning('Reply berhasil dikirim tetapi terjadi masalah saat mengirim email: ' . $e->getMessage());
+        }
+
+        // Reset form
+        $this->reset(['replyMessage', 'showReplyForm']);
+        $this->resetValidation();
+
+        // Reload ticket with reply
+        $this->ticket->load('reply');
     }
 
     public function updateStatus()
     {
-        $this->roleCheck();
-
-        $this->validate();
+        $this->validateOnly('status');
 
         $this->ticket->update(
             $this->only([
@@ -34,7 +97,7 @@ class SupportTicketShow extends Component
             ])
         );
 
-        flash()->success('Status berhasi diubah.');
+        flash()->success('Status berhasil diubah.');
     }
 
     public function confirmation()
@@ -53,7 +116,6 @@ class SupportTicketShow extends Component
 
         $this->redirect(route('admin.support-ticket.index'));
     }
-
 
     public function render()
     {
