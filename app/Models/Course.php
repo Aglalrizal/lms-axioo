@@ -112,4 +112,14 @@ class Course extends Model
             ->withoutTrashed()
             ->exists();
     }
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'enrollments', 'course_id', 'student_id')
+                    ->withPivot(['transaction_id', 'enrolled_by', 'enrolled_at']);
+    }
 }

@@ -14,6 +14,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/user/create/import', \App\Livewire\Admin\User\Import::class)->name('admin.user.import');
         Route::get('/admin/user/{username}/profile', \App\Livewire\Admin\User\ManageProfile::class)->name('admin.user.profile');
         Route::get('/admin/course/', \App\Livewire\Admin\Course\Index::class)->name('admin.course.all');
+        Route::get('/admin/course/published', \App\Livewire\Course\Published\Index::class)->name('admin.course.published');
+        Route::get('/admin/course/published/{slug}', \App\Livewire\Course\Published\Show::class)->name('admin.course.published.show');
         Route::get('/admin/course/create/{slug?}', \App\Livewire\Admin\Course\CreateCourse::class)->name('admin.course.create');
         Route::get('/admin/course/category', \App\Livewire\Admin\Course\CourseCategory::class)->name('admin.course.category');
         Route::get('/admin/support-tickets', \App\Livewire\SupportTicketIndex::class)->name('admin.support-ticket.index');
