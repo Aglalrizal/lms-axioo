@@ -23,6 +23,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/course/category', \App\Livewire\Admin\Course\CourseCategory::class)->name('admin.course.category');
         Route::get('/admin/support-tickets', \App\Livewire\SupportTicketIndex::class)->name('admin.support-ticket.index');
         Route::get('/admin/support-tickets/{ticket}', \App\Livewire\SupportTicketShow::class)->name('admin.support-ticket.show');
+        Route::get('/admin/inbox', \App\Livewire\ContactUsIndex::class)->name('admin.inbox.index');
+        Route::get('/admin/inbox/{contactUs}', \App\Livewire\ContactUsShow::class)->name('admin.inbox.show');
         Route::get('admin/report/activity-log', \App\Livewire\Admin\Reports\ActivityLog\Index::class)->name('admin.report.activity-log');
         Route::get('admin/quiz', \App\Livewire\Quiz\Index::class)->name('quiz.index');
         Route::get('/admin/cms/blogs', \App\Livewire\BlogIndexAdmin::class)->name('admin.cms.blog.index');

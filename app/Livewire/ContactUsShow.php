@@ -4,20 +4,20 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\Attributes\On;
-use App\Models\SupportTicket;
-use App\Models\SupportTicketReply;
-use App\Mail\SupportTicketReplyMail;
+use App\Models\ContactUs;
+use App\Models\ContactUsReply;
+use App\Mail\ContactUsReplyMail;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Mail;
 
 #[Layout('layouts.dashboard')]
 
-class SupportTicketShow extends Component
+class ContactUsShow extends Component
 {
-    public ?SupportTicket $ticket;
+    public ?ContactUs $contactUs;
 
-    #[Validate('required|in:open,resolved,closed')]
+    #[Validate('required|in:open,replied')]
     public $status;
     #[Validate('required|string|min:10')]
     public $replyMessage = '';
@@ -29,11 +29,11 @@ class SupportTicketShow extends Component
 
     public function mount()
     {
-        $this->status = $this->ticket->status;
-        $this->ticket->load('reply');
+        $this->status = $this->contactUs->status;
+        $this->contactUs->load('reply');
 
         // Set default admin name (bisa disesuaikan dengan auth user)
-        $this->adminName = 'Support Team';
+        $this->adminName = 'Customer Service Team';
     }
 
     public function toggleReplyForm()
@@ -53,26 +53,26 @@ class SupportTicketShow extends Component
         );
 
         // Check if reply already exists
-        if ($this->ticket->reply) {
-            flash()->error('Ticket ini sudah memiliki balasan. Satu ticket hanya bisa dibalas sekali.');
+        if ($this->contactUs->reply) {
+            flash()->error('Pesan ini sudah memiliki balasan. Satu pesan hanya bisa dibalas sekali.');
             return;
         }
 
         // Create the reply
-        $reply = SupportTicketReply::create([
-            'support_ticket_id' => $this->ticket->id,
+        $reply = ContactUsReply::create([
+            'contact_us_id' => $this->contactUs->id,
             'admin_name' => $this->adminName,
             'message' => $this->replyMessage,
             'sent_at' => now(),
         ]);
 
-        // Update ticket status to resolved
-        $this->ticket->update(['status' => 'resolved']);
-        $this->status = 'resolved';
+        // Update contact us status to replied
+        $this->contactUs->update(['status' => 'replied']);
+        $this->status = 'replied';
 
         // Send email
         try {
-            Mail::to($this->ticket->email)->send(new SupportTicketReplyMail($this->ticket, $reply));
+            Mail::to($this->contactUs->email)->send(new ContactUsReplyMail($this->contactUs, $reply));
             flash()->success('Reply berhasil dikirim dan email telah dikirim ke customer.');
         } catch (\Exception $e) {
             flash()->warning('Reply berhasil dikirim tetapi terjadi masalah saat mengirim email: ' . $e->getMessage());
@@ -82,15 +82,15 @@ class SupportTicketShow extends Component
         $this->reset(['replyMessage', 'showReplyForm']);
         $this->resetValidation();
 
-        // Reload ticket with reply
-        $this->ticket->load('reply');
+        // Reload contact us with reply
+        $this->contactUs->load('reply');
     }
 
     public function updateStatus()
     {
         $this->validateOnly('status');
 
-        $this->ticket->update(
+        $this->contactUs->update(
             $this->only([
                 'status'
             ])
@@ -103,21 +103,21 @@ class SupportTicketShow extends Component
     {
         sweetalert()
             ->showDenyButton()
-            ->option('confirmButtonText', 'Ya, Hapus Tiket!')
+            ->option('confirmButtonText', 'Ya, Hapus Pesan!')
             ->option('denyButtonText', 'Batal')
-            ->warning('Apakah Anda yakin ingin menghapus tiket ini?');
+            ->warning('Apakah Anda yakin ingin menghapus pesan ini?');
     }
 
     #[On('sweetalert:confirmed')]
     public function softDelete()
     {
-        $this->ticket->delete();
+        $this->contactUs->delete();
 
-        $this->redirect(route('admin.support-ticket.index'));
+        $this->redirect(route('admin.inbox.index'));
     }
 
     public function render()
     {
-        return view('livewire.support-ticket-show');
+        return view('livewire.contact-us-show');
     }
 }

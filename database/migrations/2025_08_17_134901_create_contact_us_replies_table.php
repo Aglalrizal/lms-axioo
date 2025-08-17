@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contact_us', function (Blueprint $table) {
+        Schema::create('contact_us_replies', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name');
-            $table->string('email');
+            $table->foreignId('contact_us_id')->constrained('contact_us')->onDelete('cascade');
+            $table->string('admin_name');
             $table->text('message');
-            $table->enum('status', ['open', 'replied'])->default('open');
-            $table->softDeletes();
+            $table->timestamp('sent_at');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contact_us');
+        Schema::dropIfExists('contact_us_replies');
     }
 };

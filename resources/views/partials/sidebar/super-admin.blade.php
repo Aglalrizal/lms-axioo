@@ -76,10 +76,16 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link {{ Route::is('*support-tickets*') ? 'active' : '' }}"
+        <a class="nav-link {{ Route::is('*support-ticket*') ? 'active' : '' }}"
             href="{{ route('admin.support-ticket.index') }}">
             <i class="nav-icon fe fe-inbox me-2"></i>
             Support Tickets
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ Route::is('*inbox*') ? 'active' : '' }}" href="{{ route('admin.inbox.index') }}">
+            <i class="nav-icon fe fe-inbox me-2"></i>
+            Inbox
         </a>
     </li>
     <li class="nav-item">
