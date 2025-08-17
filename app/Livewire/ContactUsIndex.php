@@ -2,29 +2,29 @@
 
 namespace App\Livewire;
 
+use App\Models\ContactUs;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
-use App\Models\SupportTicket;
 use Livewire\Attributes\Layout;
 
 #[Layout('layouts.dashboard')]
 
-class SupportTicketIndex extends Component
+class ContactUsIndex extends Component
 {
     use WithPagination;
 
-    protected $paginationTheme = 'bootstrap';
+    // protected $paginationTheme = 'bootstrap';
 
     public $isShowing = 'all';
     public $query = '';
-    public $ticketId;
-    public $ticketAction;
+    public $messageId;
+    public $messageAction;
 
     public function setShow(string $status): void
     {
         $this->isShowing = $status;
-        $this->resetPage(pageName: 'tickets_page');
+        $this->resetPage(pageName: 'inbox_page');
     }
 
     public function search()
@@ -35,39 +35,41 @@ class SupportTicketIndex extends Component
 
     public function confirmation($id, $action)
     {
-        $this->ticketId = $id;
-        $this->ticketAction = $action;
+        $this->messageId = $id;
+        $this->messageAction = $action;
+
+        $aksi = $action === 'delete' ? 'menghapus' : 'memulihkan';
 
         sweetalert()
             ->showDenyButton()
-            ->option('confirmButtonText', 'Yes, ' . $action . ' it!')
+            ->option('confirmButtonText', 'Yes, ' . $aksi . ' it!')
             ->option('denyButtonText', 'Cancel')
             ->option('id', $id)
-            ->warning('Are you sure you want to ' . $action . ' this ticket?');
+            ->warning('Apakah kamu yakin ingin ' . $aksi . ' pesan ini?');
     }
 
     #[On('sweetalert:confirmed')]
     public function actionOnConfirm()
     {
-        if ($this->ticketAction === 'delete') {
-            SupportTicket::findOrFail($this->ticketId)->delete();
-            flash()->success('Ticket deleted successfully.');
+        if ($this->messageAction === 'delete') {
+            ContactUs::findOrFail($this->messageId)->delete();
+            flash()->success('Pesan berhasil dihapus.');
         } else {
-            SupportTicket::withTrashed()->findOrFail($this->ticketId)->restore();
-            flash()->success('Ticket restored successfully.');
+            ContactUs::withTrashed()->findOrFail($this->messageId)->restore();
+            flash()->success('Pesan berhasil dipulihkan.');
         }
     }
 
     #[On('sweetalert:denied')]
     public function actionOnCancel()
     {
-        $this->ticketId = null;
-        $this->ticketAction = null;
+        $this->messageId = null;
+        $this->messageAction = null;
     }
 
     public function render()
     {
-        $query = SupportTicket::query();
+        $query = ContactUs::query();
 
         if ($this->isShowing === 'deleted') {
             $query->onlyTrashed();
@@ -79,11 +81,11 @@ class SupportTicketIndex extends Component
             }
         }
 
-        return view('livewire.support-ticket-index', [
-            'tickets' => $query
-                ->whereAny(['title', 'email'], 'like', '%' . $this->query . '%')
+        return view('livewire.contact-us-index', [
+            'messages' => $query
+                ->whereAny(['full_name', 'email'], 'like', '%' . $this->query . '%')
                 ->orderBy('created_at', 'desc')
-                ->paginate(10, pageName: 'tickets_page'),
+                ->paginate(10, pageName: 'messages_page'),
         ]);
     }
 }
