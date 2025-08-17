@@ -17,6 +17,18 @@
                         @enderror
                     </div>
                 </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Deskripsi<small>(Maksimal 50 Karakter)</small>
+                        </label>
+                        <textarea wire:model="description" type="text" class="form-control @error('description') is-invalid @enderror"
+                            rows="4">
+                            </textarea>
+                        @error('description')
+                            <small class="d-block mt-2 text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>

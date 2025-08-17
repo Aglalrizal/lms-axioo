@@ -14,6 +14,8 @@ class SyllabusModal extends Component
     public $title = '';
     #[Rule('boolean')]
     public $is_completed = false;
+    #[Rule('required|string|min:25|max:200')]
+    public $description;
     public $formtitle = 'Buat Silabus';
     public $editform=false;
     public $courseId;
@@ -23,7 +25,11 @@ class SyllabusModal extends Component
         'title.required' => 'Judul Silabus tidak boleh kosong',
         'title.min' => 'Judul Silabus minimal :min karakter',
         'title.max' => 'Judul Silabus maksimal :max karakter',
-        'title.string' => 'Judul Silabus harus berupa string',
+        'title.string' => 'Judul Silabus harus berupa teks',
+        'description.required' => 'Deskripsi Silabus tidak boleh kosong',
+        'description.min' => 'Deskripsi Silabus minimal :min karakter',
+        'description.max' => 'Deskripsi Silabus maksimal :max karakter',
+        'description.string' => 'Deskripsi Silabus harus berupa teks',
     ];
     public function render()
     {
@@ -57,6 +63,7 @@ class SyllabusModal extends Component
         $this->formtitle='Edit Silabus';
         $this->syllabus=CourseSyllabus::findOrfail($id);
         $this->title=$this->syllabus->title;
+        $this->description=$this->syllabus->description;
     }
     public function update(){
         $this->validate();
