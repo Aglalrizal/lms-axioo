@@ -4,7 +4,7 @@
             <img alt="{{ auth()->user()->username . '-avatar' }}"
                 src="{{ optional(auth()->user())->profile_picture
                     ? asset('storage/' . auth()->user()->profile_picture)
-                    : 'https://ui-avatars.com/api/?background=random&name=' . urlencode(optional(auth()->user())->username) }}"
+                    : 'https://ui-avatars.com/api/?background=random&name=' . urlencode(optional(auth()->user())->first_name) }}"
                 class="rounded-circle" />
         </div>
     </a>
@@ -15,12 +15,12 @@
                     <img alt="{{ auth()->user()->username . '-avatar' }}"
                         src="{{ optional(auth()->user())->profile_picture
                             ? asset('storage/' . auth()->user()->profile_picture)
-                            : 'https://ui-avatars.com/api/?background=random&name=' . urlencode(optional(auth()->user())->username) }}"
+                            : 'https://ui-avatars.com/api/?background=random&name=' . urlencode(optional(auth()->user())->first_name) }}"
                         class="rounded-circle" />
                 </div>
                 <div class="ms-3 lh-1">
-                    <h5 class="mb-1">{{ auth()->user()->username ?? 'user' }}</h5>
-                    <p class="mb-0">{{ auth()->user()->email }}</p>
+                    <h5 class="mb-1">{{ auth()->user()->first_name . ' ' . auth()->user()->surname }}</h5>
+                    <p class="mb-0">{{ '@' . auth()->user()->username }}</p>
                 </div>
             </div>
         </div>
@@ -35,6 +35,8 @@
                     $goto = route('admin.dashboard');
                 } elseif ($userRole == 'instructor') {
                     $goto = route('instructor.dashboard');
+                } else {
+                    $goto = route('user.dashboard');
                 }
             @endphp
             <li>
@@ -43,22 +45,14 @@
                 </a>
             </li>
             <li>
-                <a class="dropdown-item" href="#">
-                    <i class="fe fe-user me-2"></i> Profile
-                </a>
-            </li>
-            <li>
-                <a class="dropdown-item" href="#">
-                    <i class="fe fe-star me-2"></i> Subscription
-                </a>
-            </li>
-            <li>
-                <a class="dropdown-item" href="#">
-                    <i class="fe fe-settings me-2"></i> Settings
+                <a class="dropdown-item"
+                    href="{{ auth()->user()->getRoleNames()->first() == 'instructor'
+                        ? route('instructor.profile')
+                        : route('user.dashboard.profile', auth()->user()->username) }}">
+                    <i class="fe fe-user me-2"></i> Profil
                 </a>
             </li>
         </ul>
-
         <div class="dropdown-divider"></div>
 
         <ul class="list-unstyled mb-0">
@@ -66,7 +60,7 @@
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="dropdown-item bg-transparent border-0">
-                        <i class="fe fe-power me-2"></i> Sign Out
+                        <i class="fe fe-power me-2"></i> Keluar
                     </button>
                 </form>
             </li>
