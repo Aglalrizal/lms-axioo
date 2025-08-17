@@ -139,7 +139,6 @@
     <!-- Team Section -->
     <div class="py-6">
         <h2 class="fs-2 text-center mb-5">Tim Kami</h2>
-
         <div class="row g-4">
 
             @forelse ($teamMembers as $member)
@@ -171,5 +170,46 @@
             @endforelse
 
         </div>
+    </div>
+
+    <div class="py-6">
+        <h2 class="mb-5 fw-bold fs-2">Hubungi Kami</h2>
+        <!-- form  -->
+        <form wire:submit="submitContactUs">
+            <!-- input  -->
+            <div class="mb-5">
+                <label class="form-label fw-bold fs-3" for="name">Nama</label>
+                <input wire:model="full_name" class="form-control p-3 rounded-4" type="text" name="name"
+                    placeholder="masukkan nama anda" id="name" required />
+                @error('full_name')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <!-- input  -->
+            <div class="mb-5">
+                <label class="form-label fw-bold fs-3" for="email">Email </label>
+                <input wire:model="email" class="form-control p-3 rounded-4" type="text" name="email"
+                    placeholder="masukkan email anda" id="email" required />
+                @error('email')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="mb-5">
+                <!-- input  -->
+                <label class="form-label fw-bold fs-3" for="description">Pesan</label>
+                <textarea wire:model="message" placeholder="masukkan pesan anda" id="description" rows="4"
+                    class="form-control p-3 rounded-4" required></textarea>
+                @error('description')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <!-- button  -->
+            <div class="text-center">
+                <button wire:loading.attr="disabled" class="btn btn-primary mx-auto" type="submit">Kirim
+                    pesan</button>
+            </div>
+        </form>
+
+
     </div>
 </div>

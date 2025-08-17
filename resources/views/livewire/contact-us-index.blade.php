@@ -4,13 +4,13 @@
         <div class="col-lg-12 col-md-12 col-12">
             <div class="border-bottom pb-3 mb-3 d-flex align-items-center justify-content-between">
                 <div class="d-flex flex-column gap-1">
-                    <h1 class="mb-0 h2 fw-bold">Semua Tiket</h1>
+                    <h1 class="mb-0 h2 fw-bold">Semua Pesan</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
                                 <a href="../dashboard/admin-dashboard.html">Dashboard</a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Semua Tiket</li>
+                            <li class="breadcrumb-item active" aria-current="page">Semua Pesan</li>
                         </ol>
                     </nav>
                 </div>
@@ -35,14 +35,9 @@
                                 wire:click="setShow('open')">Open</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" @click=" selected = 'resolved' "
-                                :class="selected === 'resolved' ? 'active' : ''"
-                                wire:click="setShow('resolved')">Resolved</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" @click=" selected = 'closed' "
-                                :class="selected === 'closed' ? 'active' : ''"
-                                wire:click="setShow('closed')">Closed</button>
+                            <button class="nav-link" @click=" selected = 'replied' "
+                                :class="selected === 'replied' ? 'active' : ''"
+                                wire:click="setShow('replied')">Replied</button>
                         </li>
                         <li class="nav-item">
                             <button class="nav-link" @click=" selected = 'deleted' "
@@ -69,7 +64,7 @@
                             aria-labelledby="all-post-tab">
                             <div class="table-responsive">
                                 <!-- Table -->
-                                <table class="table mb-0 text-nowrap table-centered table-hover">
+                                <table class="table mb-0 text-nowrap table-centered table-hover"> {{-- add table-with-checkbox if using checkboxes --}}
                                     <!-- Table Head -->
                                     <thead class="table-light">
                                         <tr>
@@ -79,18 +74,17 @@
                                                     <label class="form-check-label" for="checkAll"></label>
                                                 </div>
                                             </th> --}}
-                                            <th>Judul</th>
-                                            <th>Subjek</th>
+                                            <th>Nama</th>
                                             <th>Email</th>
-                                            <th>Tanggal Dikirim</th>
+                                            <th>Tanggal Dikirim </th>
                                             <th>Status</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <!-- Table body -->
-                                        @forelse ($tickets as $ticket)
-                                            <tr wire:key="ticket-{{ $ticket->id }}">
+                                        @forelse ($messages as $message)
+                                            <tr wire:key="message-{{ $message->id }}">
                                                 {{-- <td>
                                                     <div class="form-check">
                                                         <input type="checkbox" class="form-check-input"
@@ -100,45 +94,37 @@
                                                 </td> --}}
                                                 <td>
                                                     <h5 class="mb-0">
-                                                        <a @if ($ticket->deleted_at) href="#"
-                                                        @else href="{{ route('admin.support-ticket.show', $ticket->id) }}" @endif
-                                                            class="text-inherit">{{ $ticket->title }}</a>
+                                                        <a @if ($message->deleted_at) href="#"
+                                                        @else href="{{ route('admin.inbox.show', $message->id) }}" @endif
+                                                            class="text-inherit">{{ $message->full_name }}</a>
                                                     </h5>
                                                 </td>
                                                 <td>
-                                                    <a @if ($ticket->deleted_at) href="#"
-                                                        @else href="{{ route('admin.support-ticket.show', $ticket->id) }}" @endif
-                                                        class="text-inherit">{{ $ticket->subject }}</a>
-                                                </td>
-
-                                                <td>
                                                     <div class="d-flex align-items-center flex-row gap-2">
-                                                        <h5 class="mb-0">{{ $ticket->email }}</h5>
+                                                        <h5 class="mb-0">{{ $message->email }}</h5>
                                                     </div>
                                                 </td>
-
                                                 <td>
-                                                    @if ($ticket->created_at->lessThan(now()->subDays(2)))
-                                                        {{ $ticket->created_at->format('d M Y') }}
+                                                    @if ($message->created_at->lessThan(now()->subDays(2)))
+                                                        {{ $message->created_at->format('d M Y') }}
                                                     @else
-                                                        {{ $ticket->created_at->diffForHumans() }}
+                                                        {{ $message->created_at->diffForHumans() }}
                                                     @endif
                                                 </td>
 
                                                 <td>
                                                     @php
-                                                        $badgeClass = $ticket->deleted_at
+                                                        $badgeClass = $message->deleted_at
                                                             ? 'bg-secondary'
-                                                            : match ($ticket->status) {
+                                                            : match ($message->status) {
                                                                 'replied' => 'bg-success',
                                                                 'open' => 'bg-warning',
-                                                                'closed' => 'bg-danger',
                                                                 default => 'bg-secondary',
                                                             };
 
-                                                        $displayText = $ticket->deleted_at
+                                                        $displayText = $message->deleted_at
                                                             ? 'Deleted'
-                                                            : ucfirst($ticket->status);
+                                                            : ucfirst($message->status);
                                                     @endphp
                                                     <span
                                                         class="badge-dot {{ $badgeClass }} me-1 d-inline-block align-middle"></span>
@@ -158,14 +144,14 @@
                                                                 <i class="fe fe-edit dropdown-item-icon"></i>
                                                                 Change Status
                                                             </a>
-                                                            @if ($ticket->deleted_at)
-                                                                <a wire:click="confirmation({{ $ticket->id }}, 'restore')"
+                                                            @if ($message->deleted_at)
+                                                                <a wire:click="confirmation({{ $message->id }}, 'restore')"
                                                                     wire:loading.attr="disabled" class="dropdown-item">
                                                                     <i class="fe fe-rotate-cw dropdown-item-icon"></i>
                                                                     Restore
                                                                 </a>
                                                             @else
-                                                                <a wire:click="confirmation({{ $ticket->id }}, 'delete')"
+                                                                <a wire:click="confirmation({{ $message->id }}, 'delete')"
                                                                     wire:loading.attr="disabled" class="dropdown-item">
                                                                     <i class="fe fe-trash dropdown-item-icon"></i>
                                                                     Delete
@@ -181,7 +167,7 @@
                                                 <td colspan="7" class="text-center">
                                                     <div class="d-flex justify-content-center align-items-center">
                                                         <i class="fe fe-alert-triangle me-2"></i>
-                                                        <span>No tickets found.</span>
+                                                        <span>Tidak ada pesan ditemukan.</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -193,7 +179,7 @@
                     </div>
                     <!-- Card Footer -->
                     <div class="card-footer">
-                        {{ $tickets->links(data: ['scrollTo' => false]) }}
+                        {{ $messages->links(data: ['scrollTo' => false]) }}
                     </div>
                 </div>
             </div>

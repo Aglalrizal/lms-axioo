@@ -21,7 +21,7 @@ class SupportTicketFactory extends Factory
             'full_name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'subject' => fake()->randomElement(['General', 'Technical', 'Accounts', 'Payment', 'Other']),
-            'description' => fake()->paragraph(),
+            'description' => fake()->paragraph(12),
             'status' => fake()->randomElement(['open', 'closed']),
         ];
     }
