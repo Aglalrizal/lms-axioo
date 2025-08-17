@@ -34,7 +34,7 @@
                                 <i class="fe fe-bookmark fs-4 fs-3 text-inherit"></i>
                             </a> --}}
                         </div>
-                        <div class="d-flex mb-5 lh-1">
+                        <div class="d-flex mb-3 lh-1">
                             <span class="d-none d-md-block">
                                 <i class="bi bi-bar-chart-fill"></i>
                                 <span>{{ Str::title($course->level) }}</span>
@@ -60,20 +60,14 @@
                             </div>
                         </div>
                     </div>
-                    <ul class="nav nav-lt-tab" id="tab" role="tablist">
+                    {{-- <ul class="nav nav-lt-tab" id="tab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link @if ($activeTab === 'description') active @endif"
                                 wire:click.prevent="setActiveTab('description')" id="description-tab"
                                 data-bs-toggle="pill" href="#description" role="tab" aria-controls="description"
                                 aria-selected="false">Deskripsi</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link @if ($activeTab === 'enrolled') active @endif"
-                                wire:click.prevent="setActiveTab('enrolled')" id="enrolled-tab" data-bs-toggle="pill"
-                                href="#enrolled" role="tab" aria-controls="enrolled"
-                                aria-selected="false">Peserta</a>
-                        </li>
-                    </ul>
+                    </ul> --}}
                 </div>
                 <!-- Card -->
                 <div class="card rounded-3">
@@ -81,72 +75,11 @@
                     <div class="card-body">
                         <div class="tab-content" id="tabContent">
                             <!-- Tab pane -->
-                            <div class="tab-pane fade @if ($activeTab === 'description') show active @endif"
-                                id="description" role="tabpanel" aria-labelledby="description-tab">
+                            <div class="tab-pane fade show active" id="description" role="tabpanel"
+                                aria-labelledby="description-tab">
                                 <div>
                                     <h3 class="mb-2">Deskripsi Kursus</h3>
                                     {!! $course->description !!}
-                                </div>
-                            </div>
-                            <div class="tab-pane fade @if ($activeTab === 'enrolled') show active @endif"
-                                id="enrolled" role="tabpanel" aria-labelledby="enrolled-tab">
-                                <div class="row mb-5">
-                                    <div class="col-12">
-                                        <div>
-                                            <h1 class="h2 mb-0">Peserta</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-5 gap-2 gap-md-0">
-                                    <div class="col-md-6 col-12">
-                                        <input type="search" class="form-control" placeholder="Cari berdasarkan nama"
-                                            wire:model.live="search" />
-                                    </div>
-                                    <!-- Button -->
-                                    <div class="col-md-4 col-12">
-                                        <a class="btn btn-success text-center" data-bs-toggle="modal"
-                                            data-bs-target="#enrollUserModal"><i class="bi bi-plus fs-5"></i></a>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <!-- Table -->
-                                            <div class="table-responsive">
-                                                <table class="table table-hover table-centered">
-                                                    <thead class="table-light">
-                                                        <tr>
-                                                            <th>Nama</th>
-                                                            <th>Tanggal Daftar</th>
-                                                            <th>Progres</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @forelse ($enrolledStudents as $enroll)
-                                                            <tr>
-                                                                <td>{{ $enroll->student->first_name . ' ' . $enroll->student->surname }}
-                                                                </td>
-                                                                <td>{{ $enroll->enrolled_at->format('d M Y H:i') }}
-                                                                </td>
-                                                                <td>0%</td>
-                                                            </tr>
-                                                        @empty
-                                                            <tr>
-                                                                <td colspan="3" class="text-center">
-                                                                    <i class="bi bi-exclamation-triangle"></i> Belum ada
-                                                                    yang
-                                                                    mendaftar
-                                                                </td>
-                                                            </tr>
-                                                        @endforelse
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="p-3">
-                                                {{ $enrolledStudents->links() }}
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -154,9 +87,21 @@
                 </div>
             </div>
             <div class="col-xl-4 col-lg-12 col-md-12 col-12">
+                <div class="card mb-3">
+                    @if ($is_enrolled)
+                        <div class="card-body p-0">
+                            <div class="alert alert-info m-0 text-center">
+                                Sudah terdaftar!
+                            </div>
+                        </div>
+                    @else
+                        <div class="card-body p-0">
+                            <button wire:click='confirmEnrollUser' class="btn btn-success w-100">Daftar Kursus</button>
+                        </div>
+                    @endif
+                </div>
                 <div class="card" id="courseAccordion">
                     <div>
-                        <!-- List group -->
                         <ul class="list-group list-group-flush">
                             @foreach ($course->syllabus as $syllabus)
                                 <li class="list-group-item p-0">
@@ -236,23 +181,4 @@
             </div>
         </div>
     </div>
-    <livewire:course.published.enroll :courseId="$course->id" />
 </section>
-@script
-    <script>
-        Livewire.on('refresh-course', (event) => {
-            var enrollUserModalEl = document.querySelector('#enrollUserModal')
-            var enrollUserModal = bootstrap.Modal.getOrCreateInstance(enrollUserModalEl)
-            enrollUserModal.hide();
-            Livewire.dispatch('reset-enroll-modal');
-        })
-
-        var enrollUserModalEl = document.getElementById('enrollUserModal')
-        enrollUserModalEl.addEventListener('hidden.bs.modal', (event) => {
-            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-            document.body.classList.remove('modal-open');
-            document.body.style.overflow = '';
-            Livewire.dispatch('reset-enroll-modal');
-        })
-    </script>
-@endscript

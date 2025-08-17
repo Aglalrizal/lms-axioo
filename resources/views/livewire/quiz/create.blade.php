@@ -7,10 +7,10 @@
                     <!-- Card body -->
                     <div class="card-body">
                         <!-- quiz -->
-                        <div class="d-lg-flex justify-content-between align-items-center">
+                        <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center">
                                 <!-- quiz content -->
-                                <div class="ms-3">
+                                <div>
                                     <h3 class="mb-2"><a href="#"
                                             class="text-inherit">{{ $quiz->courseContent->title }}</a></h3>
                                     <div>
@@ -25,11 +25,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="d-none d-lg-block">
+                            <div class="d-flex">
                                 <button type="button" wire:click='toogleQuizForm' class="btn btn-outline-info"><i
                                         class="bi bi-pencil-square"></i></button>
-                                <a class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#addQuizQuestionModal">Tambah Pertanyaan</a>
+                                <a class="btn btn-primary ms-2" data-bs-toggle="modal"
+                                    data-bs-target="#addQuizQuestionModal"><i class="bi bi-plus"></i></a>
                             </div>
                         </div>
                     </div>

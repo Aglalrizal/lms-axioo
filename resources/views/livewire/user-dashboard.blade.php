@@ -8,7 +8,7 @@
             <div class="card mb-4 mb-lg-0">
                 <!-- card body -->
                 <div class="card-body p-5 text-center">
-                    <h3 class="mb-2 display-3">11</h3>
+                    <h3 class="mb-2 display-3">0</h3>
                     <p class="mb-0">Kelas yang diselesaikan</p>
                 </div>
             </div>
@@ -18,7 +18,7 @@
             <div class="card mb-4 mb-lg-0">
                 <!-- card body -->
                 <div class="card-body p-5 text-center">
-                    <h3 class="mb-2 display-3">13</h3>
+                    <h3 class="mb-2 display-3">{{ $enrolledCourses->count() }}</h3>
                     <p class="mb-0">Kelas yang Dipelajari</p>
                 </div>
             </div>
@@ -28,7 +28,7 @@
             <div class="card mb-4 mb-lg-0">
                 <!-- card body -->
                 <div class="card-body p-5 text-center">
-                    <h3 class="mb-2 display-3">9</h3>
+                    <h3 class="mb-2 display-3">0</h3>
                     <p class="mb-0">Sertifikat Diperoleh</p>
                 </div>
             </div>
@@ -46,35 +46,41 @@
                     <a href="#" class="link-dark"><u>Lainnya</u></a>
                 </div>
                 <div class="row">
-                    @for ($i = 0; $i < 3; $i++)
+                    @forelse($enrolledCourses as $course)
                         <div class="col-md-4 col-12">
                             <!-- card -->
-                            <div class="card mb-2 mb-lg-0">
+                            <div class="card mb-2 mb-lg-0 h-100">
                                 <!-- card body -->
-                                <a href="#!">
-                                    <img src="../assets/images/education/edu-webinar-1.jpg" alt="webinar-1"
-                                        class="img-fluid w-100 rounded-top-3">
+                                <a href="{{ route('course.show', ['slug' => $course->slug]) }}">
+                                    @if ($course->thumbnail)
+                                        <img src="{{ asset('storage/' . $course->thumbnail) }}"
+                                            alt="{{ $course->title }}-gambar-sampul"
+                                            class="img-fluid w-100 rounded-top-3">
+                                    @else
+                                        <img src="{{ asset('assets/images/course-bg.jpg') }}"
+                                            alt="{{ $course->title }}-gambar-sampul"
+                                            class="img-fluid w-100 rounded-top-3">
+                                    @endif
                                 </a>
                                 <div class="card-body">
-                                    <h3 class="mb-2 text-truncate">
-                                        <a href="#!" class="text-inherit">Education Edition Deployment And Set
-                                            Up</a>
-                                    </h3>
-                                    <div class="mb-4">
-                                        <div>
-                                            <div class="progress" style="height: 6px;">
-                                                <div class="progress-bar bg-success" role="progressbar"
-                                                    style="width: 10%;" aria-valuenow="10" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                            <small>5% Completed</small>
-                                        </div>
-                                    </div>
-                                    <a href="#!" class="btn btn-light-primary text-primary">Lanjut Belajar</a>
+                                    <h4 class="mb-2 text-truncate">
+                                        <a href="{{ route('course.show', ['slug' => $course->slug]) }}"
+                                            class="text-wrap">{{ $course->title }}</a>
+                                    </h4>
+                                </div>
+                                <div class="card-footer text-end">
+                                    <a href="{{ route('course.show', ['slug' => $course->slug]) }}"
+                                        class="btn btn-light-primary text-primary">Lihat Kursus</a>
                                 </div>
                             </div>
                         </div>
-                    @endfor
+                    @empty
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <p class="text-muted mb-0">Eh, kamu belum daftar kursus manapun.</p>
+                            </div>
+                        </div>
+                    @endforelse
                 </div>
             </div>
 
@@ -87,35 +93,41 @@
                     <a href="#" class="link-dark"><u>Lainnya</u></a>
                 </div>
                 <div class="row">
-                    @for ($i = 0; $i < 3; $i++)
+                    @forelse($recommendCourses as $rc)
                         <div class="col-md-4 col-12">
                             <!-- card -->
-                            <div class="card mb-2 mb-lg-0">
+                            <div class="card mb-2 mb-lg-0 h-100">
                                 <!-- card body -->
-                                <a href="#!">
-                                    <img src="{{ asset('../assets/images/education/edu-webinar-1.jpg') }}"
-                                        alt="webinar-1" class="img-fluid w-100 rounded-top-3">
+                                <a href="{{ route('course.show', ['slug' => $rc->slug]) }}">
+                                    @if ($rc->thumbnail)
+                                        <img src="{{ asset('storage/' . $rc->thumbnail) }}"
+                                            alt="{{ $rc->title }}-gambar-sampul"
+                                            class="img-fluid w-100 rounded-top-3">
+                                    @else
+                                        <img src="{{ asset('assets/images/course-bg.jpg') }}"
+                                            alt="{{ $rc->title }}-gambar-sampul"
+                                            class="img-fluid w-100 rounded-top-3">
+                                    @endif
                                 </a>
                                 <div class="card-body">
-                                    <h3 class="mb-2 text-truncate">
-                                        <a href="#!" class="text-inherit">Education Edition Deployment And Set
-                                            Up</a>
-                                    </h3>
-                                    <div class="mb-4">
-                                        <div>
-                                            <div class="progress" style="height: 6px;">
-                                                <div class="progress-bar bg-success" role="progressbar"
-                                                    style="width: 10%;" aria-valuenow="10" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                            <small>5% Completed</small>
-                                        </div>
-                                    </div>
-                                    <a href="#!" class="btn btn-light-primary text-primary">Lihat Kursus</a>
+                                    <h4 class="mb-2 text-truncate">
+                                        <a href="{{ route('course.show', ['slug' => $rc->slug]) }}"
+                                            class="text-wrap">{{ $rc->title }}</a>
+                                    </h4>
+                                </div>
+                                <div class="card-footer text-end">
+                                    <a href="{{ route('course.show', ['slug' => $rc->slug]) }}"
+                                        class="btn btn-light-primary text-primary">Lihat Kursus</a>
                                 </div>
                             </div>
                         </div>
-                    @endfor
+                    @empty
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <p class="text-muted mb-0">Belum ada rekomendasi kursus untukmu.</p>
+                            </div>
+                        </div>
+                    @endforelse
                 </div>
             </div>
 

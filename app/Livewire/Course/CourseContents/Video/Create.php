@@ -25,7 +25,7 @@ class Create extends Component
             'short_description'         => [
                 'nullable',
                 'string',
-                'max:75'
+                'max:150'
             ],
         ];
     }

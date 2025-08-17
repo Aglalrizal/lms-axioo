@@ -41,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:student'])->group(function () {
         Route::get('/student/dashboard', \App\Livewire\User\UserDashboard::class)->name('user.dashboard');
         Route::get('/student/dashboard/courses', \App\Livewire\User\UserCourses::class)->name('user.dashboard.courses');
+        Route::get('/student/dashboard/course/{slug}', \App\Livewire\Course\Public\Show::class)->name('course.show');
         Route::get('/student/dashboard/certificates', \App\Livewire\User\UserCertificates::class)->name('user.dashboard.certificates');
         Route::get('/student/dashboard/{username}/profile', \App\Livewire\ProfileCard::class)->name('user.dashboard.profile');
         Route::get('/student/dashboard/account', \App\Livewire\AccountCard::class)->name('user.dashboard.account');
