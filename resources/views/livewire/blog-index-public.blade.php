@@ -1,9 +1,9 @@
 <div>
-    <section style="height: 35rem" class="d-flex align-items-center">
-        <div class="container">
-            <div style="height: 28rem; width: 68rem; border-radius: 50px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"
-                class="position-relative overflow-hidden mx-auto ">
-                <img src="{{ asset('assets\images\blog_hero.jpg') }}" class="object-fit-cover w-100 h-100"
+    <div class="container">
+        <section style="padding: 4rem 0" class="d-flex align-items-center">
+            <div style="height: 450px; aspect-ratio: 21/9; border-radius: 50px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"
+                class="position-relative overflow-hidden mx-auto">
+                <img src="{{ asset('assets/images/blog_hero.jpg') }}" class="object-fit-cover w-100 h-100"
                     alt="blogpost" />
                 <div class="position-absolute bottom-0 left-0 d-flex flex-column justify-content-end w-100 h-100 p-5 text-white"
                     style=" background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 50%);">
@@ -15,11 +15,9 @@
                         masa kini.</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="pb-8 pt-4">
-        <div class="container">
+        <section class="pb-8 pt-4">
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-12">
                     <ul x-data="{ selected: 'berita' }" class="nav nav-pills nav-fill mb-6 border border-3 rounded"
@@ -46,6 +44,7 @@
                         </li>
                     </ul>
                 </div>
+
                 @forelse ($blogs as $blog)
                     <div class="col-xl-4 col-lg-4 col-md-6 col-12" wire:key="blog-{{ $blog->id }}">
                         <!-- Card -->
@@ -95,7 +94,7 @@
                     {{ $blogs->links() }}
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
+    </div>
 </div>

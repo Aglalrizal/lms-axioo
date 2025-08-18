@@ -60,6 +60,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/about-us', \App\Livewire\AboutUsPublic::class)->name('public.about-us');
+Route::get('/search', \App\Livewire\CourseSearchByCategory::class)->name('public.search');
 
 Route::get('/temp', function () {
     return view('course_temp');
