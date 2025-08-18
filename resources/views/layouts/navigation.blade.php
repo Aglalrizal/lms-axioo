@@ -5,7 +5,7 @@
 
         <!-- Mobile view nav wrap -->
         <div class="ms-auto d-flex align-items-center order-lg-3">
-            <div class="d-flex gap-2 align-items-center">
+            <div class="d-flex align-items-center gap-2">
                 @auth
                     <ul class="navbar-nav me-3">
                         <li class="nav-item ">
@@ -14,7 +14,7 @@
                         </li>
                     </ul>
 
-                    <x-user-dropdown :dropdownBehavior="''"></x-user-dropdown>
+                    <x-user-dropdown></x-user-dropdown>
                 @endauth
                 @guest
                     @if (!(Route::is('login') || Route::is('register')))
@@ -39,7 +39,7 @@
         <!-- Collapse -->
         <div class="collapse navbar-collapse" id="navbar-default">
 
-            <form class="ms-lg-5 d-flex align-items-center">
+            <form class="mt-3 mt-lg-0 ms-lg-5 d-flex align-items-center">
                 <span class="position-absolute ps-3 search-icon">
                     <i class="fe fe-search"></i>
                 </span>
@@ -47,15 +47,15 @@
                 <input type="search" id="search" class="form-control ps-6 rounded-5" placeholder="Search Courses">
             </form>
 
-            <ul class="navbar-nav gap-6 mt-3 mt-lg-0 mx-xxl-auto">
+            <ul class="navbar-nav mt-3 mt-lg-0 mx-lg-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="{{ route('public.about-us') }}" id="navbarBrowse"
                         aria-haspopup="true"data-bs-display="static">Tentang Kami</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle me-n2" href="#" id="navbarLanding"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kursus</a>
-                    <ul class="dropdown-menu d-flex flex-column gap-2" aria-labelledby="navbarLanding">
+                <li class="nav-item dropdown mx-lg-3 mx-xl-6">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarLanding" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Kursus</a>
+                    <ul class="dropdown-menu    " aria-labelledby="navbarLanding">
                         <li>
                             <a href="./index.html" class="dropdown-item">
                                 <span>Axioo</span>
