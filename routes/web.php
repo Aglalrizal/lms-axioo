@@ -61,6 +61,10 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/about-us', \App\Livewire\AboutUsPublic::class)->name('public.about-us');
 
+Route::get('/temp', function () {
+    return view('course_temp');
+})->name('temp');
+
 Route::get('/help-center/guide', function () {
     return view('public.help-center.guide');
 })->name('public.help-center.guide');
