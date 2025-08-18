@@ -5,7 +5,7 @@
 
         <!-- Mobile view nav wrap -->
         <div class="ms-auto d-flex align-items-center order-lg-3">
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center gap-2">
                 @auth
                     <ul class="navbar-nav me-3">
                         <li class="nav-item ">
