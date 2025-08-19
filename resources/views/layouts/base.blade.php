@@ -22,6 +22,18 @@
     <link rel="canonical" href="https://geeksui.codescandy.com/geeks/index.html" />
 
     <link rel="stylesheet" href="{{ asset('assets/libs/tiny-slider/dist/tiny-slider.css') }}" />
+    <style>
+        <style>.navbar.fixed-top {
+            z-index: 1020 !important;
+            /* default biasanya 1030 */
+        }
+
+        .fl-wrapper {
+            z-index: 2200 !important;
+            /* lebih tinggi dari navbar */
+        }
+    </style>
+    </style>
 
     <title>Homepage | Axioo</title>
     @livewireStyles

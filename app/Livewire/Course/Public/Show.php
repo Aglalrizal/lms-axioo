@@ -50,7 +50,7 @@ class Show extends Component
     }
 
     #[On('sweetalert:denied')]
-    public function cancelDelete()
+    public function cancelEnrollment()
     {
         flash()->info('Pendaftaran dibatalkan.', [], 'Informasi');
     }

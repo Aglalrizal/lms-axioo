@@ -11,9 +11,6 @@
     {{--        @include('layouts.navigation') --}}
     {{--    @endif --}}
 
-    @include('layouts.navigation-IC')
-    <x-modal></x-modal>
-
     {{-- content --}}
     @hasSection('content')
         @yield('content')

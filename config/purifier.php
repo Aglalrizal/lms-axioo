@@ -33,21 +33,50 @@ return [
         'course_description' => [
             'HTML.Doctype' => 'HTML 4.01 Transitional',
             'HTML.Allowed' => implode(',', [
-                'p', 'br', 'ul', 'ol', 'li', 'b', 'strong', 'i', 'em', 'u',
+                // Basic text
+                'p[style]', 'br', 'span[style]', 'div[style]',
+                'b', 'strong', 'i', 'em', 'u', 's', 'sub', 'sup', 'blockquote',
+
+                // Lists
+                'ul', 'ol', 'li',
+
+                // Table
+                'table[border|cellpadding|cellspacing|width|height|style]',
+                'thead', 'tbody', 'tfoot',
+                'tr[style]', 'td[colspan|rowspan|width|height|style]',
+                'th[colspan|rowspan|width|height|style]',
+
+                // Links
                 'a[href|title|target]',
-                'span[style]',
-                'img[src|alt|width|height]',
+
+                // Media
+                'img[src|alt|width|height|style]',
                 'video[src|width|height|poster|controls]',
                 'source[src|type]',
-                'iframe[src|width|height|frameborder|allow|allowfullscreen]'
+                'iframe[src|width|height|frameborder|allow|allowfullscreen]',
+
+                // Headings
+                'h1','h2','h3','h4','h5','h6',
             ]),
             'HTML.SafeIframe' => true,
             'URI.SafeIframeRegexp' => '%^(https?:)?//(www\.youtube\.com/embed/|player\.vimeo\.com/video/)%',
             'Attr.AllowedFrameTargets' => ['_blank', '_self', '_parent', '_top'],
-            'CSS.AllowedProperties' => 'font,font-size,font-weight,font-style,font-family,text-decoration,color,background-color,text-align',
+            'CSS.AllowTricky' => true,
+            // Allow CSS from Jodit
+            'CSS.AllowedProperties' => implode(',', [
+                'font', 'font-size', 'font-weight', 'font-style', 'font-family',
+                'text-decoration', 'color', 'background-color',
+                'text-align', 'line-height',
+                'margin', 'margin-left', 'margin-right', 'margin-top', 'margin-bottom',
+                'padding', 'padding-left', 'padding-right', 'padding-top', 'padding-bottom',
+                'border', 'border-width', 'border-style', 'border-color',
+                'width', 'height', 'display'
+            ]),
+
             'AutoFormat.AutoParagraph' => true,
-            'AutoFormat.RemoveEmpty' => true,
+            'AutoFormat.RemoveEmpty'   => true,
         ],
+
         'test'    => [
             'Attr.EnableID' => 'true',
         ],
@@ -113,6 +142,10 @@ return [
                 ['tr', 'height', 'Text'],
                 ['tr', 'border', 'Text'],
             ],
+            'properties' => [
+            // nambahin property CSS display
+            ['CSS', 'display', 'Enum#none,inline,block,inline-block,flex,grid,table,table-cell'],
+        ],
         ],
         'custom_attributes' => [
             ['a', 'target', 'Enum#_blank,_self,_target,_top'],

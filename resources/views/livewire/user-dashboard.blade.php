@@ -1,6 +1,6 @@
 <div class="p-4">
-    <p class="display-4">Halo, {{ $user->first_name }} {{ $user->surname }}</p>
-    <p>Selamat datang di Dashboard Student</p>
+    <p class="display-4">Halo, {{ $user->first_name ? $user->first_name . '' . $user->surname : $user->username }}</p>
+    <p>Selamat datang!</p>
 
     <div class="row">
         <div class="col-md-4 col-12">

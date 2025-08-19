@@ -36,4 +36,8 @@ class Assignment extends Model
     public function courseContent(){
         return $this->belongsTo(CourseContent::class);
     }
+    public function submission()
+    {
+        return $this->hasOne(AssignmentSubmission::class)->where('student_id', Auth::id());
+    }
 }

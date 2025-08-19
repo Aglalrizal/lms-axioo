@@ -63,11 +63,11 @@ class Create extends Component
 
     public function save()
     {
+        $this->instruction = $this->processBase64Images($this->instruction, 'course_assignment_images');
         $this->instruction = Purifier::clean($this->instruction, 'course_description');
         $validated = $this->validate();
         if ($this->courseContentId && $this->courseContent) {
             $oldInstruction = $this->courseContent->assignment->instruction;
-            $this->instruction = $this->processBase64Images($this->instruction, 'course_assignment_images');
             $this->courseContent->update( [
                 'title'       => $validated['title'],
                 'modified_by' => Auth::user()->username,

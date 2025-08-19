@@ -69,11 +69,11 @@ class CreateArticle extends Component
 
     public function save()
     {
+        $this->body = $this->processBase64Images($this->body, 'course_article_images');
         $this->body = Purifier::clean($this->body, 'course_description');
         $validated = $this->validate();
         if ($this->courseContentId && $this->courseContent) {
             $oldBody = $this->courseContent->article->body;
-            $this->body = $this->processBase64Images($this->body, 'course_article_images');
             $this->courseContent->update( [
                 'title'              => $validated['title'],
                 'is_free_preview'    => $validated['is_free_preview'],

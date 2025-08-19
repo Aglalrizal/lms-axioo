@@ -103,4 +103,12 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Course::class, 'enrollments', 'student_id', 'course_id');
     }
+    public function assignmentSubmissions()
+    {
+        return $this->hasMany(AssignmentSubmission::class, 'student_id');
+    }
+    public function gradedSubmissions()
+    {
+        return $this->hasMany(AssignmentSubmission::class, 'graded_by');
+    }
 }

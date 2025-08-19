@@ -112,6 +112,7 @@ class Create extends Component
     public function saveQuiz()
     {
 
+        $this->description = $this->processBase64Images($this->description, 'quiz_images');
         $this->description = Purifier::clean($this->description, 'course_description');
         $data = $this->validate();
 
@@ -131,7 +132,6 @@ class Create extends Component
             }
             if ($this->courseContent->quiz) {
                 $oldDesc = $this->courseContent->quiz->description;
-                $this->description = $this->processBase64Images($this->description, 'quiz_images');
                 $this->courseContent->quiz->update([
                     'description' => $data['description'],
                     'duration' => $data['duration'],

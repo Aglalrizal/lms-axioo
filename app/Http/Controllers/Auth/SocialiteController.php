@@ -42,7 +42,9 @@ public function redirectToProvider($provider)
         if (!$user) {
             // Buat user baru kalau belum ada
             $user = User::create([
-                'username'             => Str::replace(' ', '', $googleUser->name),
+                'username'             => Str::slug($googleUser->name, '') . now()->timestamp,
+                'first_name'           => strstr($googleUser->name, " ", true),
+                'surname'              => ltrim(strstr($googleUser->name, " ")),
                 'email'                => $googleUser->email,
                 'email_verified_at'    => now(),
                 'provider_id'          => $googleUser->id,

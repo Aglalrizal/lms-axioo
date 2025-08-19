@@ -106,6 +106,8 @@
                                     <div class="col-md-4 col-12">
                                         <a class="btn btn-success text-center" data-bs-toggle="modal"
                                             data-bs-target="#enrollUserModal"><i class="bi bi-plus fs-5"></i></a>
+                                        <a class="btn btn-success text-center"
+                                            href="{{ route('admin.course.published.import', $course->slug) }}">Import</a>
                                     </div>
                                 </div>
                                 <div class="row">

@@ -19,6 +19,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/course/', \App\Livewire\Admin\Course\Index::class)->name('admin.course.all');
         Route::get('/admin/course/published', \App\Livewire\Course\Published\Index::class)->name('admin.course.published');
         Route::get('/admin/course/published/{slug}', \App\Livewire\Course\Published\Show::class)->name('admin.course.published.show');
+        Route::get('/admin/course/published/{slug}/enroll/import', \App\Livewire\Course\Published\Import::class)->name('admin.course.published.import');
         Route::get('/admin/course/create/{slug?}', \App\Livewire\Admin\Course\CreateCourse::class)->name('admin.course.create');
         Route::get('/admin/course/category', \App\Livewire\Admin\Course\CourseCategory::class)->name('admin.course.category');
         Route::get('/admin/support-tickets', \App\Livewire\SupportTicketIndex::class)->name('admin.support-ticket.index');
@@ -44,6 +45,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/student/dashboard', \App\Livewire\User\UserDashboard::class)->name('user.dashboard');
         Route::get('/student/dashboard/courses', \App\Livewire\User\UserCourses::class)->name('user.dashboard.courses');
         Route::get('/student/dashboard/course/{slug}', \App\Livewire\Course\Public\Show::class)->name('course.show');
+        Route::get('/student/dashboard/course/{slug}/{syllabusId}/{courseContentId}', \App\Livewire\Course\Public\ShowContent::class)->name('course.show.content');
         Route::get('/student/dashboard/certificates', \App\Livewire\User\UserCertificates::class)->name('user.dashboard.certificates');
         Route::get('/student/dashboard/{username}/profile', \App\Livewire\ProfileCard::class)->name('user.dashboard.profile');
         Route::get('/student/dashboard/account', \App\Livewire\AccountCard::class)->name('user.dashboard.account');
@@ -63,7 +65,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/about-us', \App\Livewire\AboutUsPublic::class)->name('public.about-us');
 
 Route::get('/temp', function () {
-    return view('course_temp');
+    return view('public.wrwrwrwr');
 })->name('temp');
 
 Route::get('/help-center/guide', function () {

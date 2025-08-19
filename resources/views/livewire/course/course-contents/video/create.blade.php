@@ -24,15 +24,6 @@
                         <small class="d-block mt-2 text-danger">{{ $message }}</small>
                     @enderror
                 </div>
-                {{-- <div class="mb-3">
-                    <div class="d-flex align-items-center">
-                        <label for="is_free_preview" class="form-label m-0">Gratis Pratinjau</label>
-                        <div class="form-check form-switch ms-2">
-                            <input wire:model="is_free_preview" class="form-check-input" type="checkbox" role="switch"
-                                id="is_free_preview">
-                        </div>
-                    </div>
-                </div> --}}
                 <div class="mb-3">
                     <label class="form-label" for="short_description">Deskripsi Singkat
                         <small class="fst-normal">
