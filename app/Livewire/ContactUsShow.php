@@ -64,6 +64,7 @@ class ContactUsShow extends Component
             'admin_name' => $this->adminName,
             'message' => $this->replyMessage,
             'sent_at' => now(),
+            'email_status' => ContactUsReply::EMAIL_STATUS_SENT
         ]);
 
         // Update contact us status to replied
@@ -71,18 +72,41 @@ class ContactUsShow extends Component
         $this->status = 'replied';
 
         // Send email
-        try {
-            Mail::to($this->contactUs->email)->send(new ContactUsReplyMail($this->contactUs, $reply));
-            flash()->success('Reply berhasil dikirim dan email telah dikirim ke customer.');
-        } catch (\Exception $e) {
-            flash()->warning('Reply berhasil dikirim tetapi terjadi masalah saat mengirim email: ' . $e->getMessage());
-        }
+        $this->sendEmailToCustomer($reply);
 
         // Reset form
         $this->reset(['replyMessage', 'showReplyForm']);
         $this->resetValidation();
 
         // Reload contact us with reply
+        $this->contactUs->load('reply');
+    }
+
+    public function sendEmailToCustomer($reply)
+    {
+        try {
+            Mail::to($this->contactUs->email)->send(new ContactUsReplyMail($this->contactUs, $reply));
+            $reply->update(['email_status' => ContactUsReply::EMAIL_STATUS_SENT]);
+            flash()->success('Reply berhasil dikirim dan email telah dikirim ke customer.');
+        } catch (\Exception $e) {
+            $reply->update(['email_status' => ContactUsReply::EMAIL_STATUS_FAILED]);
+            flash()->warning('Reply berhasil dikirim tetapi terjadi masalah saat mengirim email: ' . $e->getMessage());
+        }
+    }
+
+    public function resendEmail()
+    {
+        if (!$this->contactUs->reply) {
+            flash()->error('Tidak ada balasan yang tersedia untuk dikirim ulang.');
+            return;
+        }
+
+        if ($this->contactUs->reply->isEmailSent()) {
+            flash()->error('Email sudah dikirim sebelumnya.');
+            return;
+        }
+
+        $this->sendEmailToCustomer($this->contactUs->reply);
         $this->contactUs->load('reply');
     }
 

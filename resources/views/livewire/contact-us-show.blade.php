@@ -100,9 +100,39 @@
                                     <strong>{{ $contactUs->reply->admin_name }}</strong> -
                                     {{ $contactUs->reply->created_at->format('d M Y, H:i') }}
                                 </small>
-                                @if ($contactUs->reply->sent_at)
-                                    <span class="badge bg-success">Email Sent</span>
-                                @endif
+                                <div class="d-flex align-items-center">
+                                    @if ($contactUs->reply->email_status === 'sent')
+                                        <span class="badge bg-success me-2">
+                                            <i class="fe fe-check-circle me-1"></i>Email Terkirim
+                                        </span>
+                                    @elseif ($contactUs->reply->email_status === 'failed')
+                                        <span class="badge bg-danger me-2">
+                                            <i class="fe fe-x-circle me-1"></i>Email Gagal
+                                        </span>
+                                        <button wire:click="resendEmail" class="btn btn-sm btn-outline-primary"
+                                            title="Kirim Ulang Email">
+                                            <span wire:loading.remove wire:target="resendEmail">
+                                                <i class="fe fe-mail me-1"></i>Kirim Ulang
+                                            </span>
+                                            <span wire:loading wire:target="resendEmail">
+                                                <i class="fe fe-loader me-1"></i>Mengirim...
+                                            </span>
+                                        </button>
+                                    @elseif ($contactUs->reply->email_status === 'pending')
+                                        <span class="badge bg-warning me-2">
+                                            <i class="fe fe-clock me-1"></i>Email Pending
+                                        </span>
+                                        <button wire:click="resendEmail" class="btn btn-sm btn-outline-primary"
+                                            title="Coba Kirim Email">
+                                            <span wire:loading.remove wire:target="resendEmail">
+                                                <i class="fe fe-mail me-1"></i>Coba Kirim
+                                            </span>
+                                            <span wire:loading wire:target="resendEmail">
+                                                <i class="fe fe-loader me-1"></i>Mengirim...
+                                            </span>
+                                        </button>
+                                    @endif
+                                </div>
                             </div>
                             <p class="mb-0">{!! nl2br(e($contactUs->reply->message)) !!}</p>
                         </div>
