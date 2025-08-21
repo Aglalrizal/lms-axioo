@@ -64,6 +64,7 @@ class SupportTicketShow extends Component
             'admin_name' => $this->adminName,
             'message' => $this->replyMessage,
             'sent_at' => now(),
+            'email_status' => SupportTicketReply::EMAIL_STATUS_PENDING,
         ]);
 
         // Update ticket status to resolved
@@ -71,18 +72,41 @@ class SupportTicketShow extends Component
         $this->status = 'resolved';
 
         // Send email
-        try {
-            Mail::to($this->ticket->email)->send(new SupportTicketReplyMail($this->ticket, $reply));
-            flash()->success('Reply berhasil dikirim dan email telah dikirim ke customer.');
-        } catch (\Exception $e) {
-            flash()->warning('Reply berhasil dikirim tetapi terjadi masalah saat mengirim email: ' . $e->getMessage());
-        }
+        $this->sendEmailToCustomer($reply);
 
         // Reset form
         $this->reset(['replyMessage', 'showReplyForm']);
         $this->resetValidation();
 
         // Reload ticket with reply
+        $this->ticket->load('reply');
+    }
+
+    private function sendEmailToCustomer($reply)
+    {
+        try {
+            Mail::to($this->ticket->email)->send(new SupportTicketReplyMail($this->ticket, $reply));
+            $reply->update(['email_status' => SupportTicketReply::EMAIL_STATUS_SENT]);
+            flash()->success('Reply berhasil disimpan dan email telah dikirim ke customer.');
+        } catch (\Exception $e) {
+            $reply->update(['email_status' => SupportTicketReply::EMAIL_STATUS_FAILED]);
+            flash()->warning('Reply berhasil disimpan tetapi terjadi masalah saat mengirim email: ' . $e->getMessage());
+        }
+    }
+
+    public function resendEmail()
+    {
+        if (!$this->ticket->reply) {
+            flash()->error('Tidak ada balasan untuk dikirim ulang.');
+            return;
+        }
+
+        if ($this->ticket->reply->isEmailSent()) {
+            flash()->info('Email sudah berhasil dikirim sebelumnya.');
+            return;
+        }
+
+        $this->sendEmailToCustomer($this->ticket->reply);
         $this->ticket->load('reply');
     }
 

@@ -41,9 +41,10 @@ class ContactUsReplyMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.contact-us-reply',
+            view: 'emails.contact-us-and-support-reply',
             with: [
-                'contactUs' => $this->contactUs,
+                'type' => 'contact',
+                'inquiry' => $this->contactUs,
                 'reply' => $this->reply,
             ]
         );

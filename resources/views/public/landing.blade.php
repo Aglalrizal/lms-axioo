@@ -240,7 +240,7 @@
                                 <div class="card mb-2 mb-lg-0">
                                     <!-- card body -->
                                     <a href="#!">
-                                        <img src="{{ asset('../assets/images/education/edu-webinar-1.jpg') }}"
+                                        <img src="{{ asset('assets/images/education/edu-webinar-1.jpg') }}"
                                             alt="webinar-1" class="img-fluid w-100 rounded-top-3">
                                     </a>
                                     <div class="card-body">
@@ -250,7 +250,7 @@
                                                 Up</a>
                                         </h3>
                                         <div class="">
-                                            <p class="mb-0 text-secondary">
+                                            <p class="text-secondary">
                                                 Pelajari langkah-langkah dasar merawat dan menangani masalah umum komputer
                                                 agar performa selalu optimal.
                                             </p>
