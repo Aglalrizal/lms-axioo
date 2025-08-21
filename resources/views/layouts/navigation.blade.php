@@ -57,22 +57,25 @@
                         aria-haspopup="true" aria-expanded="false">Kursus</a>
                     <ul class="dropdown-menu    " aria-labelledby="navbarLanding">
                         <li>
-                            <a href="./index.html" class="dropdown-item">
+                            <a href={{ route('public.search', ['category' => 'Axioo']) }} class="dropdown-item">
                                 <span>Axioo</span>
                             </a>
                         </li>
                         <li>
-                            <a href="./pages/landings/landing-abroad.html" class="dropdown-item">
+                            <a href={{ route('public.search', ['category' => 'Intel']) }} class="dropdown-item">
                                 <span>Intel</span>
                             </a>
                         </li>
                         <li>
-                            <a href="./mentor/mentor.html" class="dropdown-item">
+                            <a href={{ route('public.search', ['category' => 'Mentor']) }} class="dropdown-item">
                                 <span>Makeblock</span>
                             </a>
                         </li>
                         <li>
-                            <a href="./pages/landings/landing-education.html" class="dropdown-item">Telview Academy</a>
+                            <a href={{ route('public.search', ['category' => 'Telview Academy']) }}
+                                class="dropdown-item">
+                                <span>Telview Academy</span>
+                            </a>
                         </li>
                     </ul>
                 </li>
