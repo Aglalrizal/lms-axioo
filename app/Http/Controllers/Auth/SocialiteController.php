@@ -4,15 +4,19 @@ namespace App\Http\Controllers\Auth;
 
 use Throwable;
 use App\Models\User;
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+
 class SocialiteController extends Controller
 {
-    public function redirectToProvider($provider){
-        if(!in_array($provider, ['google'])){
+public function redirectToProvider($provider)
+    {
+        if (!in_array($provider, ['google'])) {
             return redirect(route('login'))->withErrors(['provider' => 'Invalid Provider']);
         }
+
         try {
             return Socialite::driver($provider)->redirect();
         } catch (Throwable $e) {
@@ -20,41 +24,46 @@ class SocialiteController extends Controller
         }
     }
 
-    public function handleProviderCallback($provider){
-
-        if(!in_array($provider, ['google'])){
+    public function handleProviderCallback($provider)
+    {
+        if (!in_array($provider, ['google'])) {
             return redirect(route('login'))->withErrors(['provider' => 'Invalid Provider']);
         }
 
         try {
-            // Get the user information from Google
-            $user = Socialite::driver('google')->user();
+            $googleUser = Socialite::driver('google')->user();
         } catch (Throwable $e) {
             return redirect('/')->with('error', 'Google authentication failed.');
         }
 
-        // Check if the user already exists in the database
-        $existingUser = User::where('email', $user->email)->first();
+        // Cari user berdasarkan email
+        $user = User::where('email', $googleUser->email)->first();
 
-        if ($existingUser) {
-            // Log the user in if they already exist
-            Auth::login($existingUser);
-        } else {
-            // Otherwise, create a new user and log them in
-            $newUser = User::updateOrCreate([
-                'email' => $user->email
-            ], [
-                'username' => $user->name,
-                'email_verified_at' => now(),
-                'provider_id' => $user->id,
-                'provider_name' => "google",
-                'provider_token' => $user->token,
-                'provider_refresh_token' => $user->refreshToken,
+        if (!$user) {
+            // Buat user baru kalau belum ada
+            $user = User::create([
+                'username'             => Str::replace(' ', '', $googleUser->name),
+                'email'                => $googleUser->email,
+                'email_verified_at'    => now(),
+                'provider_id'          => $googleUser->id,
+                'provider_name'        => 'google',
+                'provider_token'       => $googleUser->token,
+                'provider_refresh_token' => $googleUser->refreshToken ?? null,
             ]);
-            Auth::login($newUser);
+
+            // Assign role default (misalnya student)
+            $user->assignRole('student');
         }
 
-        // Redirect the user to the dashboard or any other secure page
-        return redirect('/dashboard');
+        Auth::login($user, true);
+
+        // Redirect sesuai role
+        if ($user->hasRole(['super-admin','admin'])) {
+            return redirect()->intended('/admin/dashboard');
+        } elseif ($user->hasRole('instructor')) {
+            return redirect()->intended('/instructor/dashboard');
+        }
+
+        return redirect()->intended('/student/dashboard');
     }
 }

@@ -23,6 +23,7 @@ class CourseSyllabus extends Model
         'course_id',
         'title',
         'order',
+        'description',
         'is_completed',
         'created_by',
         'modified_by',
@@ -55,6 +56,9 @@ class CourseSyllabus extends Model
     {
         return [
             'id' => 'integer',
+            'title' => 'string',
+            'order' => 'integer',
+            'description' => 'string',
             'course_id' => 'integer',
             'is_completed' => 'boolean',
         ];

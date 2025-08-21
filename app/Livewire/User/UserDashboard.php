@@ -2,6 +2,8 @@
 
 namespace App\Livewire\User;
 
+use App\Models\Course;
+use App\Models\Enrollment;
 use Livewire\Component;
 use App\Models\StudyPlan;
 use Livewire\Attributes\On;
@@ -26,6 +28,8 @@ class UserDashboard extends Component
 
     public $showModal = false;
     public $action;
+
+    public $user, $enrolledCourses, $recommendCourses, $rencanaBelajar;
 
     public function messages()
     {
@@ -117,12 +121,16 @@ class UserDashboard extends Component
 
         $this->closeModal();
     }
-
+    public function mount(){
+        $this->user = Auth::user();
+        $this->enrolledCourses = $this->user->enrolledCourses;
+        $this->recommendCourses = Course::whereDoesntHave('enrollments', function ($q) {
+                $q->where('student_id', $this->user->id);
+        })->get();
+        $this->rencanaBelajar = StudyPlan::where('user_id', $this->user->id)->get();
+    }
     public function render()
     {
-        return view('livewire.user-dashboard', [
-            'user' => Auth::user(),
-            'rencanaBelajar' => StudyPlan::where('user_id', Auth::user()->id)->get(),
-        ]);
+        return view('livewire.user-dashboard');
     }
 }
