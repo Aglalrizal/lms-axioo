@@ -137,7 +137,8 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <img src="{{ asset('assets/images/upmyskill_logo_light.png') }}" alt="UpMySkill" class="logo">
+            <img src="https://upmyskill.id/pluginfile.php/1/theme_edumy/headerlogo2/1745895302/logo%20upmyskill%20for%20white.png"
+                alt="UpMySkill" class="logo">
         </div>
 
         <!-- Content -->
