@@ -52,7 +52,13 @@
                     <a class="nav-link" href="{{ route('public.about-us') }}" id="navbarBrowse"
                         aria-haspopup="true"data-bs-display="static">Tentang Kami</a>
                 </li>
+
                 <li class="nav-item dropdown mx-lg-3 mx-xl-6">
+                    <a class="nav-link" href="{{ route('public.course.categories') }}" id="navbarBrowse"
+                        aria-haspopup="true"data-bs-display="static">Kursus</a>
+                </li>
+
+                {{-- <li class="nav-item dropdown mx-lg-3 mx-xl-6">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarLanding" data-bs-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">Kursus</a>
                     <ul class="dropdown-menu    " aria-labelledby="navbarLanding">
@@ -66,19 +72,8 @@
                                 <span>Intel</span>
                             </a>
                         </li>
-                        <li>
-                            <a href={{ route('public.search', ['category' => 'Mentor']) }} class="dropdown-item">
-                                <span>Makeblock</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href={{ route('public.search', ['category' => 'Telview Academy']) }}
-                                class="dropdown-item">
-                                <span>Telview Academy</span>
-                            </a>
-                        </li>
                     </ul>
-                </li>
+                </li> --}}
 
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="#" id="navbarBrowse"

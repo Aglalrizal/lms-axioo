@@ -61,7 +61,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/about-us', \App\Livewire\AboutUsPublic::class)->name('public.about-us');
-Route::get('/search', \App\Livewire\CourseSearchByCategory::class)->name('public.search');
+Route::get('/course/categories', \App\Livewire\CourseExploreCategory::class)->name('public.course.categories');
+Route::get('/course/search', \App\Livewire\CourseSearchByCategory::class)->name('public.course.search');
 
 Route::get('/temp', function () {
     return view('course_temp');

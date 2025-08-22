@@ -14,9 +14,9 @@
         <div class="container">
             <!-- Carousel With Captions -->
 
-            <div class="d-flex justify-content-center align-items-center" style="height: 570px;">
-                <div id="carouselExampleCaptions" class="carousel slide overflow-hidden"
-                    style="border-radius: 50px; aspect-ratio: 21/9; height: 450px;" data-bs-ride="carousel">
+            <div class="d-flex justify-content-center align-items-center" style="padding: 4rem 0;">
+                <div id="carouselExampleCaptions" class="carousel slide overflow-hidden w-100"
+                    style="border-radius: 50px; aspect-ratio: 21/9;" data-bs-ride="carousel">
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
                             aria-current="true" aria-label="Slide 1"></button>
@@ -25,25 +25,29 @@
                         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
                             aria-label="Slide 3"></button>
                     </div>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="../assets/images/blog/blogpost-1.jpg" class="d-block w-100 " alt="...">
-                            <div class="carousel-caption d-flex align-items-center justify-content-center h-100">
+                    <div class="carousel-inner h-100">
+                        <div class="carousel-item active h-100 position-relative">
+                            <img src="{{ asset('assets/images/landing_slide1.jpg') }}"
+                                class="d-block w-100 h-100 object-fit-cover" alt="">
+                            <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
+                            <div class="carousel-caption d-flex align-items-center justify-content-center h-100 bottom-0">
                                 <div class="text-center">
                                     <h3 class="text-white fs-2">Keep Learning</h3>
                                     <p>Tetap unggul dalam karier dengan mempelajari keterampilan terbaru, kapan pun dan di
                                         mana pun. Bersama UpMySkill, pembelajaran jadi fleksibel dan memberdayakan kamu
                                         untuk tumbuh sesuai ritmemu sendiri.</p>
-                                    <div class="d-flex gap-3 justify-content-center mt-3">
+                                    <div class="d-flex gap-3 justify-content-center">
                                         <button class="btn btn-outline-warning">Uji Coba Gratis 7 Hari</button>
                                         <button class="btn btn-warning">Mulai Belajar</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="carousel-item">
-                            <img src="../assets/images/blog/blogpost-2.jpg" class="d-block w-100 " alt="...">
-                            <div class="carousel-caption d-flex align-items-center justify-content-center h-100">
+                        <div class="carousel-item h-100 position-relative">
+                            <img src="{{ asset('assets/images/landing_slide2.jpg') }}"
+                                class="d-block w-100 h-100 object-fit-cover" alt="...">
+                            <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
+                            <div class="carousel-caption d-flex align-items-center justify-content-center h-100 bottom-0">
                                 <div class="text-center">
                                     <h3 class="text-white fs-2">Practice with Purpose</h3>
                                     <p>Ubah pengetahuan jadi dampak nyata. Kursus praktik langsung dan jalur pembelajaran
@@ -56,9 +60,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="carousel-item">
-                            <img src="../assets/images/blog/blogpost-3.jpg" class="d-block w-100 " alt="...">
-                            <div class="carousel-caption d-flex align-items-center justify-content-center h-100">
+                        <div class="carousel-item h-100 position-relative">
+                            <img src="{{ asset('assets/images/landing_slide3.jpg') }}"
+                                class="d-block w-100 h-100 object-fit-cover" alt="...">
+                            <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
+                            <div class="carousel-caption d-flex align-items-center justify-content-center h-100 bottom-0">
                                 <div class="text-center">
                                     <h3 class="text-white fs-2">Grow with Passion</h3>
                                     <p>Maksimalkan potensimu lewat pengalaman belajar yang menarik dan dipandu oleh para
@@ -126,17 +132,16 @@
                 </div>
             </div>
 
-            <section class="py-lg-8" style="padding: 4rem 0;">
-
-                <!--row-->
-                <div class="row align-items-center">
-                    <div class="offset-xl-1 col-xl-4 col-lg-6 d-none d-lg-block">
+            <section style="padding: 4rem 0;">
+                <!--flex container-->
+                <div class="d-flex align-items-center gap-5 flex-column flex-lg-row">
+                    <div class="d-none d-lg-block " style="flex-basis: 40%;">
                         <!--img-->
                         <img src="../assets/images/mentor/become-mentor.jpg" alt="mentor img"
-                            class="img-fluid w-100 rounded-5">
+                            class="img-fluid object-fit-cover w-100 rounded-5">
                     </div>
 
-                    <div class="col-xl-6 col-lg-5 ms-5">
+                    <div class="" style="flex-basis: 60%;">
                         <div class="d-flex flex-column gap-6">
                             <div class="d-flex flex-column gap-2">
                                 <p class="opacity-75 mb-0">Tentang Kami</p>

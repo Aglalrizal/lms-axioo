@@ -1,9 +1,21 @@
+/*  */
+/* Body */
+/*  */
+
+body {
+    background: #f8f9fa;
+}
+
+/*  */
+/* FAQ */
+/*  */
+
 .faq-sortable {
     touch-action: none;
 }
 
 /*  */
-/* lip Card */
+/* Flip Card */
 /*  */
 
 .flip-card {
