@@ -2,7 +2,6 @@
 <html lang="id">
 
 <head>
-    @yield('styles')
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,6 +21,8 @@
     <link rel="canonical" href="https://geeksui.codescandy.com/geeks/index.html" />
 
     <link rel="stylesheet" href="{{ asset('assets/libs/tiny-slider/dist/tiny-slider.css') }}" />
+
+    @yield('styles')
 
     <title>Homepage | Axioo</title>
     @livewireStyles

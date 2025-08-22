@@ -1,7 +1,3 @@
-@assets
-    <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
-@endassets
-
 <div class="container mb-4">
     <div class="py-6 text-center">
         <h1 class="fs-2">Tentang Kami</h1>
@@ -146,9 +142,8 @@
                     <div class="flip-card">
                         <div class="flip-card-inner">
                             <div class="flip-card-front p-3">
-                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
-                                    alt="" class="object-fit-cover w-100 rounded-4"
-                                    style="aspect-ratio: 1/1;">
+                                <img src="{{ $member->photo_path }}" alt="foto {{ $member->nama }}"
+                                    class="object-fit-cover w-100 rounded-4" style="aspect-ratio: 1/1;">
                                 <div class="team-info p-2 text-center">
                                     <p class="text-white fw-bold mb-0">{{ $member->nama }}</p>
                                     <p class="fw-light text-light mb-0">{{ $member->jabatan }}</p>

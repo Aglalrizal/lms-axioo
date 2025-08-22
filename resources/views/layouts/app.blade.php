@@ -4,7 +4,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
 @endsection
 
-
 @section('container')
     {{-- navbar --}}
     {{--    @if (Request::is('help-center')) --}}
