@@ -19,7 +19,7 @@
                         class="rounded-circle" />
                 </div>
                 <div class="ms-3 lh-1">
-                    <h5 class="mb-1">{{ auth()->user()->first_name . ' ' . auth()->user()->surname }}</h5>
+                    <h5 class="mb-1">{{ auth()->user()->full_name }}</h5>
                     <p class="mb-0">{{ '@' . auth()->user()->username }}</p>
                 </div>
             </div>

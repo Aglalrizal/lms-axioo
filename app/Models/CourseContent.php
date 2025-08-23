@@ -40,6 +40,17 @@ class CourseContent extends Model
         ];
     }
 
+    public function getIconAttribute()
+    {
+        return match ($this->type) {
+            'article' => 'bi-book',
+            'video'   => 'bi-play-fill',
+            'quiz'    => 'bi-question-lg',
+            'assignment'   => 'bi-file-earmark-arrow-up-fill',
+            default     => 'bi-book'
+        };
+    }
+
     public function courseSyllabus(): BelongsTo
     {
         return $this->belongsTo(\App\Models\CourseSyllabus::class);

@@ -191,36 +191,10 @@
                                                 <!-- List group item -->
                                                 <li class="list-group-item">
                                                     <div class="d-flex align-items-center text-inherit">
-                                                        <div>
-                                                            @php
-                                                                $types = [
-                                                                    'article' => [
-                                                                        'label' => 'Artikel',
-                                                                        'class' => 'primary',
-                                                                    ],
-                                                                    'video' => [
-                                                                        'label' => 'Video',
-                                                                        'class' => 'danger',
-                                                                    ],
-                                                                    'quiz' => [
-                                                                        'label' => 'Kuis',
-                                                                        'class' => 'warning',
-                                                                    ],
-                                                                    'assignment' => [
-                                                                        'label' => 'Tugas',
-                                                                        'class' => 'success',
-                                                                    ],
-                                                                ];
-
-                                                                $badge = $types[$content->type] ?? [
-                                                                    'label' => 'Tidak diketahui',
-                                                                    'class' => 'bg-secondary',
-                                                                ];
-                                                            @endphp
-                                                            <span
-                                                                class="badge rounded-pill text-bg-{{ $badge['class'] }} me-2">
-                                                                {{ $badge['label'] }}
-                                                            </span>
+                                                        <div class="border border-primary rounded-circle"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            data-bs-title="{{ Str::title($content->type) }}">
+                                                            <i class="bi {{ $content->icon }} p-2"></i>
                                                         </div>
                                                         <div>
                                                             <span>{{ $content->title }}</span>

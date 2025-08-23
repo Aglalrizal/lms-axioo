@@ -45,7 +45,9 @@ class ShowContent extends Component
         $this->refreshPage();
     }
     public function refreshPage(){
-        $this->submission = $this->content->assignment->submission;
+        if($this->content->assignment){
+            $this->submission = $this->content->assignment->submission;
+        }
     }
     public function confirmDeleteSubmission(){
         sweetalert()
@@ -112,7 +114,9 @@ class ShowContent extends Component
                 $this->nextContent = $nextSyllabus->courseContents()->orderBy('order', 'asc')->first();
             }
         }
-        $this->submission = $this->content->assignment->submission;
+        if($this->content->assignment){
+            $this->submission = $this->content->assignment->submission;
+        }
     }
     public function render()
     {

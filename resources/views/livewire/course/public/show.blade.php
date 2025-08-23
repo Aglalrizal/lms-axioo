@@ -135,43 +135,19 @@
                                                 <li class="list-group-item">
                                                     <a
                                                         href="{{ route('course.show.content', ['slug' => $course->slug, 'syllabusId' => $syllabus->id, 'courseContentId' => $content->id]) }}">
-                                                        <div class="d-flex align-items-center text-inherit">
-                                                            <div class="d-flex">
-                                                                @php
-                                                                    $types = [
-                                                                        'article' => [
-                                                                            'label' => 'Artikel',
-                                                                            'class' => 'primary',
-                                                                        ],
-                                                                        'video' => [
-                                                                            'label' => 'Video',
-                                                                            'class' => 'danger',
-                                                                        ],
-                                                                        'quiz' => [
-                                                                            'label' => 'Kuis',
-                                                                            'class' => 'warning',
-                                                                        ],
-                                                                        'assignment' => [
-                                                                            'label' => 'Tugas',
-                                                                            'class' => 'success',
-                                                                        ],
-                                                                    ];
-                                                                    $badge = $types[$content->type] ?? [
-                                                                        'label' => 'Tidak diketahui',
-                                                                        'class' => 'bg-secondary',
-                                                                    ];
-                                                                @endphp
-                                                                <div class="d-flex align-items-center">
-                                                                    <span
-                                                                        class="badge rounded-pill text-bg-{{ $badge['class'] }} me-2"
-                                                                        style="width: 55px;">
-                                                                        {{ $badge['label'] }}
-                                                                    </span>
-                                                                </div>
-                                                                <div class="text-wrap">
-                                                                    {{ $content->title }}
-                                                                </div>
-                                                            </div>
+                                                        <div class="text-truncate">
+                                                            <span
+                                                                class="icon-shape bg-light text-primary icon-md rounded-circle me-2"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                data-bs-title="{{ Str::title($content->type) }}">
+                                                                <i
+                                                                    class="bi
+                                                                {{ $content->icon }}">
+                                                                </i>
+                                                            </span>
+                                                            <span>
+                                                                {{ $content->title }}
+                                                            </span>
                                                         </div>
                                                     </a>
                                                 </li>

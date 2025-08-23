@@ -84,7 +84,16 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
+    public function getFullNameAttribute()
+    {
+        return trim("{$this->first_name} {$this->surname}");
+    }
+    // public function getAvatarUrlAttribute()
+    // {
+    //     return $this->profile_picture_path 
+    //         ? asset('storage/'.$this->profile_picture_path) 
+    //         : ;
+    // }
     public function posts()
     {
         return $this->hasMany(Blog::class);
