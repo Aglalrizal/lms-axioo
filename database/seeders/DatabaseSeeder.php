@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\CourseCategory;
 use App\Models\Blog;
 use App\Models\ContactUs;
+use App\Models\Program;
 use App\Models\SupportTicket;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -27,7 +28,7 @@ class DatabaseSeeder extends Seeder
         $this->call(BlogCategorySeeder::class);
 
         CourseCategory::factory(5)->create();
-
+        Program::factory()->count(5)->create();
         //akun admin
         $admin = User::factory()->create([
             'username' => 'Admin',

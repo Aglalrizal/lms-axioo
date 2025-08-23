@@ -55,6 +55,7 @@ class Course extends Model
         'title',
         'slug',
         'teacher_id',
+        'program_id',
         'course_category_id',
         'description',
         'thumbnail',
@@ -87,7 +88,9 @@ class Course extends Model
     {
         return $this->belongsTo(User::class);
     }
-
+    public function program(){
+        return $this->belongsTo(Program::class);
+    }
     public function courseCategory(): BelongsTo
     {
         return $this->belongsTo(CourseCategory::class);

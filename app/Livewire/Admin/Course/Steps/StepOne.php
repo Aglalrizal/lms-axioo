@@ -4,11 +4,12 @@ namespace App\Livewire\Admin\Course\Steps;
 
 use App\Models\User;
 use App\Models\Course;
-use App\Traits\HandlesBase64Images;
+use App\Models\Program;
 use Livewire\Component;
 use Livewire\Attributes\Rule;
 use App\Models\CourseCategory;
 use Livewire\Attributes\Layout;
+use App\Traits\HandlesBase64Images;
 use Mews\Purifier\Facades\Purifier;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,7 +21,8 @@ class StepOne extends Component
     public $step = 1;
     public $categories;
     public $instructors;
-    public $courseCategory, $courseInstructor, $title, $courseLevel, $courseType, $duration, $description;
+    public $programs;
+    public $courseCategory, $courseInstructor, $program_id, $title, $courseLevel, $courseType, $duration, $description, $short_desc, $price;
 
     public ?Course $course = null;
 
@@ -31,6 +33,7 @@ class StepOne extends Component
         return [
             'courseCategory'    => 'required|integer|exists:course_categories,id',
             'courseInstructor'  => 'required|integer|exists:users,id',
+            'program_id'        => 'nullable|integer|exist:programs.id',
             'title'             => 'required|string|max:255',
             'courseLevel'       => 'required|string|max:100',
             'courseType'        => 'required|string|max:100',
@@ -45,6 +48,8 @@ class StepOne extends Component
                     }
                 },
             ],
+            'short_desc' => 'required|string|min:75|max:150',
+            'price' => 'nullable|numeric|min:0'
         ];
     }
 
@@ -58,6 +63,8 @@ class StepOne extends Component
             'courseInstructor.required' => 'Instruktur wajib dipilih.',
             'courseInstructor.integer' => 'Instruktur tidak valid.',
             'courseInstructor.exists'  => 'Instruktur yang dipilih tidak ditemukan.',
+
+            'program_id.exist'         => 'Program tidak ditemukan',
 
             'title.required'           => 'Judul kursus wajib diisi.',
             'title.string'             => 'Judul kursus harus berupa teks.',
@@ -79,6 +86,14 @@ class StepOne extends Component
             'description.string'       => 'Deskripsi kursus harus berupa teks.',
             'description.min'          => 'Deskripsi kursus minimal :min karakter.',
             'description.max'          => 'Deskripsi kursus maksimal :max karakter.',
+            
+            'short_desc.required'     => 'Deskripsi singkat wajib diisi.',
+            'short_desc.string'       => 'Deskripsi singkat harus berupa teks.',
+            'short_desc.min'          => 'Deskripsi singkat minimal :min karakter.',
+            'short_desc.max'          => 'Deskripsi singkat maksimal :max karakter.',
+
+            'price.numeric'           => 'Harga kursus harus berupa angka.',
+            'price.min'               => 'Harga kursus tidak boleh negatif.',
         ];
     }
     public function mount()
@@ -89,8 +104,11 @@ class StepOne extends Component
                 $this->title = $this->course->title;
                 $this->courseCategory = $this->course->course_category_id;
                 $this->courseInstructor = $this->course->teacher_id;
+                $this->program_id = $this->course->program_id;
                 $this->duration = $this->course->duration;
                 $this->description = $this->course->description;
+                $this->short_desc = $this->course->short_desc;
+                $this->price = $this->course->price;
                 $this->dispatch('update-jodit-content', [$this->description]);
                 $this->dispatch('init-category', [
                     $this->courseCategory
@@ -98,12 +116,16 @@ class StepOne extends Component
                 $this->dispatch('init-instructor', [
                     $this->courseInstructor
                 ]);
+                $this->dispatch('init-program', [
+                    $this->program_id
+                ]);
                 $this->courseLevel = $this->course->level;
                 $this->courseType = $this->course->course_type;
             }
         }
 
         $this->categories = CourseCategory::all();
+        $this->programs = Program::all();
         $this->instructors = User::role('instructor')->get();
     }
 
@@ -126,11 +148,14 @@ class StepOne extends Component
                     'title' => $data['title'],
                     'course_category_id' => $data['courseCategory'],
                     'teacher_id' => $data['courseInstructor'],
+                    'program_id' => $data['program_id'],
                     'modified_by' => Auth::user()->username,
                     'level' => $data['courseLevel'],
                     'course_type' => $data['courseType'],
                     'description' => $data['description'],
                     'duration' => $data['duration'],
+                    'short_desc' => $data['short_desc'],
+                    'price' => $data['price']
                 ]);
                 flash()->success('Kursus Berhasil Diperbarui!',[], 'Sukses');
                 $this->slug = $this->course->slug;
@@ -141,11 +166,14 @@ class StepOne extends Component
                     'title' => $data['title'],
                     'course_category_id' => $data['courseCategory'],
                     'teacher_id' => $data['courseInstructor'],
+                    'program_id' => $data['program_id'],
                     'modified_by' => Auth::user()->username,
                     'level' => $data['courseLevel'],
                     'course_type' => $data['courseType'],
                     'description' => $data['description'],
                     'duration' => $data['duration'],
+                    'short_desc' => $data['short_desc'],
+                    'price' => $data['price']
                 ]);
                 flash()->success('Kursus Berhasil Diperbarui!', [], 'Sukses');
             }
@@ -154,6 +182,7 @@ class StepOne extends Component
                 'title' => $data['title'],
                 'course_category_id' => $data['courseCategory'],
                 'teacher_id' => $data['courseInstructor'],
+                'program_id' => $data['program_id'],
                 'created_by' => Auth::user()->username,
                 'modified_by' => Auth::user()->username,
                 'level' => $data['courseLevel'],
@@ -161,6 +190,8 @@ class StepOne extends Component
                 'is_published' => 0,
                 'description' => $data['description'],
                 'duration' => $data['duration'],
+                'short_desc' => $data['short_desc'],
+                'price' => $data['price']
             ]);
             flash()->success('Kursus Berhasil Disimpan!', [], 'Sukses');
             $this->slug = $this->course->slug;

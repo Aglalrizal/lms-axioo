@@ -16,11 +16,38 @@
                     @enderror
                 </div>
                 <div class="mb-3">
+                    <label for="short_desc" class="form-label">Deskripsi Singkat</label>
+                    <textarea wire:model="short_desc" class="form-control" id="short_desc" rows="3"
+                        placeholder="Minimal 75 karakter dan maksimal 150 karakter"></textarea>
+                    @error('short_desc')
+                        <small class="d-block mt-2 text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="mb-3">
                     <label for="duration" class="form-label">Durasi Kursus <small>(jam)</small></label>
                     <input id="duration" wire:model="duration"
                         class="form-control @error('duration') is-invalid @enderror" type="number" min="0"
                         x-on:wheel.prevent x-on:keydown.arrow-up.prevent x-on:keydown.arrow-down.prevent />
                     @error('duration')
+                        <small class="d-block mt-2 text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <div wire:ignore>
+                        <label class="form-label" for="select-program">Kategori</label>
+                        <select class="form-select" id="select-program" wire:model="program_id" style="width: 100%">
+                            <option value="">Pilih Program
+                            </option>
+                            @foreach ($programs as $item)
+                                <option value="{{ $item->id }}">{{ Str::title($item->name) }}</option>
+                            @endforeach
+                        </select>
+                        <div class="form-text">
+                            Jika kursus merupakan bagian dari sebuah program, pilih program terkait. Biarkan kosong
+                            jika kursus tidak terkait program apapun.
+                        </div>
+                    </div>
+                    @error('courseprogram')
                         <small class="d-block mt-2 text-danger">{{ $message }}</small>
                     @enderror
                 </div>
@@ -78,6 +105,17 @@
                         <option value="paid">Berbayar</option>
                     </select>
                     @error('courseType')
+                        <small class="d-block mt-2 text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Harga Kursus</label>
+                    <input id="price" wire:model="price" class="form-control @error('price') is-invalid @enderror"
+                        type="number" min="0" x-on:wheel.prevent x-on:keydown.arrow-up.prevent
+                        x-on:keydown.arrow-down.prevent
+                        placeholder="Kosongkan jika tipe kursus
+                            adalah gratis" />
+                    @error('price')
                         <small class="d-block mt-2 text-danger">{{ $message }}</small>
                     @enderror
                 </div>
@@ -140,6 +178,7 @@
     <script>
         $('#select-category').select2();
         $('#select-instructor').select2();
+        $('#select-program').select2();
 
         Livewire.on('init-category', ([categoryId]) => {
             $('#select-category').val(categoryId).trigger('change');
@@ -147,13 +186,18 @@
         Livewire.on('init-instructor', ([instructorId]) => {
             $('#select-instructor').val(instructorId).trigger('change');
         });
+        Livewire.on('init-program', ([programId]) => {
+            $('#select-program').val(programId).trigger('change');
+        });
 
         document.getElementById('save-button').addEventListener('click', function() {
 
             const instructor = $('#select-instructor').val();
+            @this.set('courseInstructor', instructor);
             const category = $('#select-category').val();
             @this.set('courseCategory', category);
-            @this.set('courseInstructor', instructor);
+            const program = $('#select-program').val();
+            @this.set('program_id', program);
         });
     </script>
 @endscript
