@@ -2,7 +2,6 @@
 <html lang="id">
 
 <head>
-    @yield('styles')
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -34,6 +33,8 @@
         }
     </style>
     </style>
+
+    @yield('styles')
 
     <title>Homepage | Axioo</title>
     @livewireStyles

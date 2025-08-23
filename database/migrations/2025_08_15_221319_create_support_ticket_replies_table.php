@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('admin_name');
             $table->text('message');
             $table->timestamp('sent_at')->nullable();
+            $table->enum('email_status', ['pending', 'sent', 'failed'])->default('pending');
             $table->timestamps();
         });
     }

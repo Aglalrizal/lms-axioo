@@ -41,9 +41,10 @@ class SupportTicketReplyMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.support-ticket-reply',
+            view: 'emails.contact-us-and-support-reply',
             with: [
-                'ticket' => $this->ticket,
+                'type' => 'support',
+                'inquiry' => $this->ticket,
                 'reply' => $this->reply,
             ]
         );

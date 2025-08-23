@@ -8,7 +8,7 @@
                 class="rounded-circle" />
         </div>
     </a>
-    <div class="dropdown-menu dropdown-menu-end position-absolute mx-3 my-5">
+    <div class="dropdown-menu position-absolute dropdown-menu-md-end mx-3 my-5">
         <div class="dropdown-item">
             <div class="d-flex">
                 <div class="avatar avatar-md avatar-indicators avatar-online">
