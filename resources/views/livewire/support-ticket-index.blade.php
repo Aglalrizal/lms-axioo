@@ -130,7 +130,7 @@
                                                         $badgeClass = $ticket->deleted_at
                                                             ? 'bg-secondary'
                                                             : match ($ticket->status) {
-                                                                'replied' => 'bg-success',
+                                                                'resolved' => 'bg-success',
                                                                 'open' => 'bg-warning',
                                                                 'closed' => 'bg-danger',
                                                                 default => 'bg-secondary',
