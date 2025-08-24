@@ -17,9 +17,15 @@
                 {{-- Preview --}}
                 @if ($currentImage)
                     <label class="form-label">Gambar saat ini:</label>
-                    <div class="mb-3">
-                        <img src="{{ asset('storage/' . $currentImage) }}" alt="Current"
-                            class="img-fluid rounded border img-thumbnail">
+                    <div class="mb-3" style="aspect-ratio: 16/9; height: 450px;">
+
+                        @if (str_contains($currentImage, 'samples'))
+                            <img src="{{ asset($currentImage) }}" alt="Current" class="object-fit-cover w-100 h-100">
+                        @else
+                            <img src="{{ asset('storage/' . $currentImage) }}" alt="Current"
+                                class="object-fit-cover w-100 h-100">
+                        @endif
+
                     </div>
                 @endif
                 @if ($courseImage)
