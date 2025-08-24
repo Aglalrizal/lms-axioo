@@ -7,10 +7,10 @@ use Livewire\Component;
 
 #[Layout('layouts.app')]
 
-class CourseSearchByCategory extends Component
+class CourseSearchWithFilter extends Component
 {
     public function render()
     {
-        return view('livewire.course-search-by-category');
+        return view('livewire.course-search-with-filter');
     }
 }

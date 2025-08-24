@@ -17,8 +17,22 @@ class ProgramFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->word()
+            'name' => fake()->randomElement([
+                'Axioo',
+                'Intel',
+                'MakeBlock',
+                'Axioo Robotic',
+                'TelView Security Academy',
+                'Cerdas Bersama ASABA',
+                'Digital Development',
+                'Axioo Live Skill to Job & Enterpreneur',
+                'LS Cable',
+                'IT Specialist',
+                'EL Shaddai',
+                'Fablab Makers Academy',
+                'Metrix Flasher',
+                'IT Smart Coding'
+            ]),
         ];
     }
-    
 }
