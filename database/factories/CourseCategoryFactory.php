@@ -21,7 +21,23 @@ class CourseCategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->word(),
+            'name' => fake()->randomElement([
+                'Software Engineering',
+                'Graphic Design',
+                'Web Development',
+                'Mobile Development',
+                'Data Science',
+                'Digital Marketing',
+                'UI/UX Design',
+                'Machine Learning',
+                'Cybersecurity',
+                'Database Administration',
+                'Project Management',
+                'Content Writing',
+                'Video Editing',
+                'Photography',
+                'Business Analytics'
+            ]),
         ];
     }
 }

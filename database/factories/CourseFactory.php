@@ -110,7 +110,7 @@ class CourseFactory extends Factory
         $topic = fake()->randomElement($topics);
         $modifier = fake()->randomElement(array_merge($levels, $formats));
 
-        return "Kursus {$topic} {$modifier} untuk Pemula hingga Mahir";
+        return "Kursus {$topic} {$modifier}";
     }
 
     /**
