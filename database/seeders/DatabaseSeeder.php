@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\CourseCategory;
 use App\Models\Blog;
 use App\Models\ContactUs;
+use App\Models\Course;
 use App\Models\Program;
 use App\Models\SupportTicket;
 use App\Models\User;
@@ -74,5 +75,13 @@ class DatabaseSeeder extends Seeder
         SupportTicket::factory(50)->create();
         ContactUs::factory(50)->create();
         // Blog::factory(50)->create();
+
+        // Create courses - semua akan otomatis dapat thumbnail dari samples
+        Course::factory()
+            ->withBase64Images()
+            ->published()
+            ->withProgram()
+            ->count(50)
+            ->create();
     }
 }

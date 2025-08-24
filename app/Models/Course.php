@@ -38,7 +38,7 @@ class Course extends Model
     public function getDescriptionForEvent(string $eventName): string
     {
         $actor = Auth::user()?->username ?? 'System';
-        
+
         return match ($eventName) {
             'created' => "[{$actor}] membuat kursus \"{$this->title}\"",
             'updated' => "[{$actor}] memperbarui kursus \"{$this->title}\"",
@@ -67,6 +67,7 @@ class Course extends Model
         'is_published',
         'created_by',
         'modified_by',
+        'short_desc',
     ];
 
     /**
@@ -88,7 +89,8 @@ class Course extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function program(){
+    public function program()
+    {
         return $this->belongsTo(Program::class);
     }
     public function courseCategory(): BelongsTo
@@ -104,7 +106,7 @@ class Course extends Model
         return $this->hasManyThrough(
             CourseContent::class,
             CourseSyllabus::class,
-            'course_id',     
+            'course_id',
             'course_syllabus_id',
         );
     }
@@ -123,6 +125,6 @@ class Course extends Model
     public function students()
     {
         return $this->belongsToMany(User::class, 'enrollments', 'course_id', 'student_id')
-                    ->withPivot(['transaction_id', 'enrolled_by', 'enrolled_at']);
+            ->withPivot(['transaction_id', 'enrolled_by', 'enrolled_at']);
     }
 }
