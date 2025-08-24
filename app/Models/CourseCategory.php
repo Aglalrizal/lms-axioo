@@ -23,7 +23,7 @@ class CourseCategory extends Model
     public function getDescriptionForEvent(string $eventName): string
     {
         $actor = Auth::user()?->username ?? 'System';
-        
+
         return match ($eventName) {
             'created' => "[{$actor}] membuat kategori kursus \"{$this->name}\"",
             'updated' => "[{$actor}] memperbarui kategori kursus \"{$this->name}\"",
@@ -39,6 +39,7 @@ class CourseCategory extends Model
      */
     protected $fillable = [
         'name',
+        'slug'
     ];
 
     /**

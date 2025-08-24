@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Enums\AccessType;
+use App\Enums\CourseLevel;
 
 return new class extends Migration
 {
@@ -21,9 +23,9 @@ return new class extends Migration
             $table->foreignId('course_category_id')->constrained()->cascadeOnDelete();
             $table->longText('description')->nullable();
             $table->string('thumbnail')->nullable();
-            $table->enum('course_type', ["free_trial","free","paid"]);
+            $table->enum('access_type', AccessType::values());
             $table->decimal('price', 10, 2)->default(0);
-            $table->enum('level', ["beginner","intermediate","advanced"]);
+            $table->enum('level', CourseLevel::values());
             $table->integer('duration')->nullable();
             $table->longText('extra_description')->nullable();
             $table->boolean('is_published')->default(false);

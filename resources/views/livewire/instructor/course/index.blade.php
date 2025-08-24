@@ -107,7 +107,7 @@
                                                         </td>
                                                         <td>
                                                             <div class="d-flex align-items-center flex-row gap-2">
-                                                                @switch($course->course_type)
+                                                                @switch($course->access_type)
                                                                     @case('free')
                                                                         <span class="badge bg-success">Gratis</span>
                                                                     @break

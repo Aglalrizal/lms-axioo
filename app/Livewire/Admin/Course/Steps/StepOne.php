@@ -86,7 +86,7 @@ class StepOne extends Component
             'description.string'       => 'Deskripsi kursus harus berupa teks.',
             'description.min'          => 'Deskripsi kursus minimal :min karakter.',
             'description.max'          => 'Deskripsi kursus maksimal :max karakter.',
-            
+
             'short_desc.required'     => 'Deskripsi singkat wajib diisi.',
             'short_desc.string'       => 'Deskripsi singkat harus berupa teks.',
             'short_desc.min'          => 'Deskripsi singkat minimal :min karakter.',
@@ -120,7 +120,7 @@ class StepOne extends Component
                     $this->program_id
                 ]);
                 $this->courseLevel = $this->course->level;
-                $this->courseType = $this->course->course_type;
+                $this->courseType = $this->course->access_type;
             }
         }
 
@@ -151,13 +151,13 @@ class StepOne extends Component
                     'program_id' => $data['program_id'],
                     'modified_by' => Auth::user()->username,
                     'level' => $data['courseLevel'],
-                    'course_type' => $data['courseType'],
+                    'access_type' => $data['courseType'],
                     'description' => $data['description'],
                     'duration' => $data['duration'],
                     'short_desc' => $data['short_desc'],
                     'price' => $data['price']
                 ]);
-                flash()->success('Kursus Berhasil Diperbarui!',[], 'Sukses');
+                flash()->success('Kursus Berhasil Diperbarui!', [], 'Sukses');
                 $this->slug = $this->course->slug;
                 $this->dispatch('set-course', ['slug' => $this->course->slug]);
                 return redirect()->route('admin.course.create', ['slug' => $this->slug]);
@@ -169,7 +169,7 @@ class StepOne extends Component
                     'program_id' => $data['program_id'],
                     'modified_by' => Auth::user()->username,
                     'level' => $data['courseLevel'],
-                    'course_type' => $data['courseType'],
+                    'access_type' => $data['courseType'],
                     'description' => $data['description'],
                     'duration' => $data['duration'],
                     'short_desc' => $data['short_desc'],
@@ -186,7 +186,7 @@ class StepOne extends Component
                 'created_by' => Auth::user()->username,
                 'modified_by' => Auth::user()->username,
                 'level' => $data['courseLevel'],
-                'course_type' => $data['courseType'],
+                'access_type' => $data['courseType'],
                 'is_published' => 0,
                 'description' => $data['description'],
                 'duration' => $data['duration'],

@@ -41,7 +41,7 @@
                             </span>
                             <span class="ms-4 d-none d-md-block">
                                 <i class="bi bi-cash"></i>
-                                <span>{{ Str::title($course->course_type) }}</span>
+                                <span>{{ Str::title($course->access_type) }}</span>
                             </span>
                         </div>
                         <div class="d-flex justify-content-between">

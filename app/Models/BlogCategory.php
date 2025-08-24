@@ -23,7 +23,7 @@ class BlogCategory extends Model
     public function getDescriptionForEvent(string $eventName): string
     {
         $actor = Auth::user()?->username ?? 'System';
-        
+
         return match ($eventName) {
             'created' => "[{$actor}] membuat kategori blog \"{$this->name}\"",
             'updated' => "[{$actor}] memperbarui kategori blog \"{$this->name}\"",

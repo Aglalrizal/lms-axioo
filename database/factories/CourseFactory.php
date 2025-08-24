@@ -57,7 +57,7 @@ class CourseFactory extends Factory
             'teacher_id' => User::role('instructor')->inRandomOrder()->first()?->id ?? User::factory()->create()->assignRole('instructor')->id,
             'program_id' => fake()->boolean(50) ? Program::inRandomOrder()->first()?->id  : null, // 50% chance memiliki program
             'level' => fake()->randomElement(["beginner", "intermediate", "advanced"]),
-            'course_type' => fake()->randomElement(["free_trial", "free", "paid"]),
+            'access_type' => fake()->randomElement(["free_trial", "free", "paid"]),
             'description' => $this->generateJoditContent(),
             'short_desc' => $this->generateShortDescription(),
 
@@ -67,7 +67,7 @@ class CourseFactory extends Factory
             'is_published' => false, // Default draft
 
             'price' => function (array $attributes) {
-                return $attributes['course_type'] === 'paid'
+                return $attributes['access_type'] === 'paid'
                     ? fake()->numberBetween(50000, 2000000)
                     : 0;
             },
@@ -283,7 +283,7 @@ class CourseFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'course_type' => 'free_trial',
+                'access_type' => 'free_trial',
                 'price' => 0,
                 'duration' => fake()->numberBetween(1, 10), // Course trial biasanya singkat
             ];
@@ -297,7 +297,7 @@ class CourseFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'course_type' => 'free',
+                'access_type' => 'free',
                 'price' => 0,
             ];
         });
@@ -310,7 +310,7 @@ class CourseFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'course_type' => 'paid',
+                'access_type' => 'paid',
                 'price' => fake()->numberBetween(100000, 2000000),
             ];
         });
@@ -374,7 +374,7 @@ class CourseFactory extends Factory
     {
         return $this->state(function (array $attributes) use ($programId) {
             return [
-                'program_id' => $programId ?? Program::factory(),
+                'program_id' => $programId ?? Program::inRandomOrder()->first()?->id,
             ];
         });
     }
