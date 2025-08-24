@@ -22,7 +22,7 @@ class StepOne extends Component
     public $categories;
     public $instructors;
     public $programs;
-    public $courseCategory, $courseInstructor, $program_id, $title, $courseLevel, $courseType, $duration, $description, $short_desc, $price;
+    public $courseCategory, $courseInstructor, $program_id, $title, $courseLevel, $accessType, $duration, $description, $short_desc, $price;
 
     public ?Course $course = null;
 
@@ -36,7 +36,7 @@ class StepOne extends Component
             'program_id'        => 'nullable|integer|exist:programs.id',
             'title'             => 'required|string|max:255',
             'courseLevel'       => 'required|string|max:100',
-            'courseType'        => 'required|string|max:100',
+            'accessType'        => 'required|string|max:100',
             'duration'          => 'required|integer|min:1',
             'description'       => [
                 'required',
@@ -74,9 +74,9 @@ class StepOne extends Component
             'courseLevel.string'       => 'Level kursus harus berupa teks.',
             'courseLevel.max'          => 'Level kursus tidak boleh lebih dari :max karakter.',
 
-            'courseType.required'      => 'Tipe kursus wajib dipilih.',
-            'courseType.string'        => 'Tipe kursus harus berupa teks.',
-            'courseType.max'           => 'Tipe kursus tidak boleh lebih dari :max karakter.',
+            'accessType.required'      => 'Tipe kursus wajib dipilih.',
+            'accessType.string'        => 'Tipe kursus harus berupa teks.',
+            'accessType.max'           => 'Tipe kursus tidak boleh lebih dari :max karakter.',
 
             'duration.required'        => 'Durasi kursus wajib diisi.',
             'duration.integer'         => 'Durasi kursus harus berupa angka (jam/menit).',
@@ -120,7 +120,7 @@ class StepOne extends Component
                     $this->program_id
                 ]);
                 $this->courseLevel = $this->course->level;
-                $this->courseType = $this->course->access_type;
+                $this->accessType = $this->course->access_type;
             }
         }
 
@@ -151,7 +151,7 @@ class StepOne extends Component
                     'program_id' => $data['program_id'],
                     'modified_by' => Auth::user()->username,
                     'level' => $data['courseLevel'],
-                    'access_type' => $data['courseType'],
+                    'access_type' => $data['accessType'],
                     'description' => $data['description'],
                     'duration' => $data['duration'],
                     'short_desc' => $data['short_desc'],
@@ -169,7 +169,7 @@ class StepOne extends Component
                     'program_id' => $data['program_id'],
                     'modified_by' => Auth::user()->username,
                     'level' => $data['courseLevel'],
-                    'access_type' => $data['courseType'],
+                    'access_type' => $data['accessType'],
                     'description' => $data['description'],
                     'duration' => $data['duration'],
                     'short_desc' => $data['short_desc'],
@@ -186,7 +186,7 @@ class StepOne extends Component
                 'created_by' => Auth::user()->username,
                 'modified_by' => Auth::user()->username,
                 'level' => $data['courseLevel'],
-                'access_type' => $data['courseType'],
+                'access_type' => $data['accessType'],
                 'is_published' => 0,
                 'description' => $data['description'],
                 'duration' => $data['duration'],

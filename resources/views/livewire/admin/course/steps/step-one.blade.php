@@ -97,14 +97,14 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="addCourseType">Tipe Kursus</label>
-                    <select class="form-select text-dark" id="addCourseType" wire:model="courseType">
+                    <label class="form-label" for="addAccessType">Tipe Kursus</label>
+                    <select class="form-select text-dark" id="addAccessType" wire:model="accessType">
                         <option value="">Pilih Level</option>
                         <option value="free_trial">Gratis Percobaan</option>
                         <option value="free">Gratis</option>
                         <option value="paid">Berbayar</option>
                     </select>
-                    @error('courseType')
+                    @error('accessType')
                         <small class="d-block mt-2 text-danger">{{ $message }}</small>
                     @enderror
                 </div>
