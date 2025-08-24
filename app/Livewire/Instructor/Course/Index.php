@@ -6,6 +6,7 @@ use App\Models\Course;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
+
 #[Layout('layouts.dashboard')]
 class Index extends Component
 {
@@ -20,15 +21,15 @@ class Index extends Component
     }
     public function render()
     {
-        $courses = Course::where('teacher_id', Auth::user()->id)->with(['courseCategory','teacher', 'syllabus.contents.quiz'])
-        ->when($this->search, function ($query) {
-            $query->where('title', 'like', '%' . $this->search . '%');
-        })
-        ->when($this->filterType, function ($query) {
-            $query->where('course_type', $this->filterType); 
-        })
-        ->orderBy($this->sortBy, $this->sortDirection)
-        ->paginate(5);
+        $courses = Course::where('teacher_id', Auth::user()->id)->with(['courseCategory', 'teacher', 'syllabus.contents.quiz'])
+            ->when($this->search, function ($query) {
+                $query->where('title', 'like', '%' . $this->search . '%');
+            })
+            ->when($this->filterType, function ($query) {
+                $query->where('access_type', $this->filterType);
+            })
+            ->orderBy($this->sortBy, $this->sortDirection)
+            ->paginate(5);
         return view('livewire.instructor.course.index', compact('courses'));
     }
 }

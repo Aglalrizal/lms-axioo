@@ -29,7 +29,7 @@ class Index extends Component
                 $query->where('title', 'like', '%' . $this->search . '%');
             })
             ->when($this->filterType, function ($query) {
-                $query->where('course_type', $this->filterType);
+                $query->where('access_type', $this->filterType);
             })
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate(10);

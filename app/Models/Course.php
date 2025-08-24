@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\AccessType;
+use App\Enums\CourseLevel;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -60,7 +62,7 @@ class Course extends Model
         'description',
         'thumbnail',
         'level',
-        'course_type',
+        'access_type',
         'price',
         'duration',
         'extra_description',
@@ -82,6 +84,8 @@ class Course extends Model
             'teacher_id' => 'integer',
             'course_category_id' => 'integer',
             'is_published' => 'boolean',
+            'access_type' => AccessType::class,
+            'level' => CourseLevel::class,
         ];
     }
 

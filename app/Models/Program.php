@@ -9,9 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Program extends Model
 {
     /** @use HasFactory<\Database\Factories\ProgramFactory> */
-    use HasFactory, SoftDeletes;
-    protected $fillable = ['name', 'image_path'];
-    public function course(){
+    use  SoftDeletes;
+    protected $fillable = ['name', 'image_path', 'slug'];
+    public function course()
+    {
         return $this->hasOne(Course::class);
     }
 }

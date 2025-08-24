@@ -27,9 +27,9 @@ class DatabaseSeeder extends Seeder
         $this->call(FaqCategorySeeder::class);
         $this->call(FaqSeeder::class);
         $this->call(BlogCategorySeeder::class);
+        $this->call(CourseCategorySeeder::class);
+        $this->call(ProgramSeeder::class);
 
-        CourseCategory::factory(5)->create();
-        Program::factory()->count(5)->create();
         //akun admin
         $admin = User::factory()->create([
             'username' => 'Admin',
