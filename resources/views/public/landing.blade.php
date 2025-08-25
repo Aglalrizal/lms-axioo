@@ -226,27 +226,33 @@
                 </div>
             </div>
 
-            <div style="padding: 4rem 0;">
+            <div style="padding: 4rem 0 1rem 0;">
                 <div class="">
-                    <p class="opacity-75 mb-0 ">Course</p>
+                    <p class="opacity-75 mb-0 ">Kursus</p>
                     <h2 class="fs-2 mb-0">Temukan kursus sesuai minat dan tujuanmu</h2>
                     <p class="mb-0">Pelajari keterampilan baru yang relevan dengan dunia kerja bersama mentor ahli dan
                         materi yang terstruktur. Akses kapan saja, di mana saja.</p>
                 </div>
 
-                <div class="mb-6">
+                <div>
                     <div class="text-end mb-2">
                         <a href="#" class="link-dark"><u>Lihat Lebih Banyak</u></a>
                     </div>
                     <div class="row">
-                        @forelse($courses as $course)
-                            <div class="col-md-3 col-12">
+                        @forelse($courses->take(4) as $course)
+                            <div class="col-md-3 col-12 mb-3">
                                 <!-- card -->
-                                <div class="card mb-2 mb-lg-0">
+                                <div class="card mb-2 h-100">
                                     <!-- card body -->
                                     <a href="{{ route('course.show', $course->slug) }}">
-                                        <img src="{{ asset('assets/images/education/edu-webinar-1.jpg') }}"
-                                            alt="webinar-1" class="img-fluid w-100 rounded-top-3">
+                                        @if (str_contains($course->thumbnail, 'samples'))
+                                            <img src="{{ asset($course->thumbnail) }}" alt="{{ $course->slug }}-image"
+                                                class="img-fluid w-100" style="height: 150px">
+                                        @else
+                                            <img src="{{ asset('storage/' . $course->thumbnail) }}"
+                                                alt="{{ $course->slug }}-image" class="img-fluid w-100"
+                                                style="height: 150px">
+                                        @endif
                                     </a>
                                     <div class="card-body">
                                         <h3 class="mb-2 text-truncate">
@@ -255,8 +261,7 @@
                                         </h3>
                                         <div class="">
                                             <p class="text-secondary">
-                                                Pelajari langkah-langkah dasar merawat dan menangani masalah umum komputer
-                                                agar performa selalu optimal.
+                                                {{ $course->short_desc }}
                                             </p>
                                         </div>
                                         <div class="text-center mb-0">

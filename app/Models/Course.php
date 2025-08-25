@@ -95,13 +95,13 @@ class Course extends Model
         }
         return 'Rp ' . number_format($this->price, 0, ',', '.');
     }
-    public function getLevelFormattedAttribute(){
-        return match ($this->level){
-            'beginner' => 'Pemula',
-            'intermediate' => 'Menengah',
-            'advanced' => 'Mahir'
-        };
-    }
+    // public function getLevelFormattedAttribute(){
+    //     return match ($this->level){
+    //         'beginner' => 'Pemula',
+    //         'intermediate' => 'Menengah',
+    //         'advanced' => 'Mahir'
+    //     };
+    // }
     public function teacher(): BelongsTo
     {
         return $this->belongsTo(User::class, 'teacher_id');
@@ -120,7 +120,12 @@ class Course extends Model
     }
     public function contents()
     {
-        return $this->hasMany(CourseContent::class);
+        return $this->hasManyThrough(
+            CourseContent::class,
+            CourseSyllabus::class,
+            'course_id',     
+            'course_syllabus_id',
+        );
     }
     public function hasAssignment(): bool
     {

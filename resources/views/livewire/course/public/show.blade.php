@@ -54,7 +54,7 @@
                             </div> --}}
                             <span class="text-white ms-4 d-none d-md-block">
                                 <i class="bi bi-bar-chart-fill"></i>
-                                <span class="align-middle">{{ $course->level_formatted }}</span>
+                                <span class="align-middle">{{ $course->level->label() }}</span>
                             </span>
                         </div>
                     </div>
@@ -169,7 +169,11 @@
                     <div class="card mb-3">
                         <div class="p-1">
                             <div class="d-flex justify-content-center align-items-center rounded border-white border rounded-3 bg-cover"
-                                style="background-image: url({{ asset('storage/' . $course->thumbnail) }}); height: 210px">
+                                style="background-image: 
+                                url(
+                                    @if (str_contains($course->thumbnail, 'samples')) {{ asset($course->thumbnail) }}
+                                    @else {{ asset('storage/' . $course->thumbnail) }} @endif
+                                ); height: 210px">
                             </div>
                         </div>
                         <!-- Card body -->
