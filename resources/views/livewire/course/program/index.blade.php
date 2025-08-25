@@ -6,11 +6,11 @@
             <div
                 class="border-bottom pb-3 mb-3 d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between">
                 <div class="d-flex flex-column gap-1">
-                    <h1 class="mb-0 h2 fw-bold">Kategori Kursus</h1>
+                    <h1 class="mb-0 h2 fw-bold">Program</h1>
                 </div>
                 <div>
                     <a href="#" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#courseCategoryModal">Tambah Kategori</a>
+                        data-bs-target="#createProgramModal">Tambah Program</a>
                 </div>
             </div>
         </div>
@@ -26,7 +26,7 @@
                         <span class="position-absolute ps-3 search-icon">
                             <i class="fe fe-search"></i>
                         </span>
-                        <input wire:model.live="search" class="form-control ps-6" placeholder="Cari Kategori" />
+                        <input wire:model.live="search" class="form-control ps-6" placeholder="Cari Program" />
                     </form>
                 </div>
                 <div class="card-body">
@@ -35,7 +35,7 @@
                         <table class="table mb-0 text-nowrap table-centered table-hover">
                             <thead class="table-light">
                                 <tr>
-                                    <th class="text-center">Kategori</th>
+                                    <th class="text-center">Program</th>
                                     <th class="text-center">Jumlah Kursus</th>
                                     <th class="text-center">Tanggal dibuat</th>
                                     <th class="text-center">Tanggal diperbarui</th>
@@ -43,18 +43,33 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($courseCategories as $category)
+                                @forelse ($programs as $program)
                                     <tr>
                                         <td class="text-left">
-                                            <a href="#" class="text-inherit">
-                                                <h5 class="mb-0 text-primary-hover">{{ Str::title($category->name) }}
-                                                </h5>
-                                            </a>
+                                            <div class="text-inherit">
+                                                <div class="d-flex align-items-center gap-3">
+                                                    <div>
+                                                        @if ($program->image_path)
+                                                            <img src="{{ asset('storage/' . $program->image_path) }}"
+                                                                alt="{{ $program->slug }}-image"
+                                                                class="img-4by3-lg rounded" />
+                                                        @else
+                                                            <img src="https://placehold.co/100x60"
+                                                                alt="{{ $program->slug }}-image"
+                                                                class="img-4by3-lg rounded" />
+                                                        @endif
+                                                    </div>
+                                                    <div class="d-flex flex-column gap-1">
+                                                        <h4 class="mb-0 text-primary-hover">
+                                                            {{ Str::title($program->name) }}</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
-                                        <td class="text-center">{{ $category->courses->count() }}</td>
-                                        <td class="text-center">{{ $category->created_at->translatedFormat('d F, Y') }}
+                                        <td class="text-center">{{ $program->course->count() }}</td>
+                                        <td class="text-center">{{ $program->created_at->translatedFormat('d F, Y') }}
                                         </td>
-                                        <td class="text-center">{{ $category->updated_at->translatedFormat('d F, Y') }}
+                                        <td class="text-center">{{ $program->updated_at->translatedFormat('d F, Y') }}
                                         </td>
 
                                         <td>
@@ -66,17 +81,16 @@
                                                         <i class="fe fe-more-vertical"></i>
                                                     </a>
                                                     <span class="dropdown-menu">
-                                                        <span class="dropdown-header">Action</span>
+                                                        <span class="dropdown-header">Aksi</span>
                                                         <button
-                                                            wire:click="$dispatch('edit-mode',{id: {{ $category->id }}})"
+                                                            wire:click="$dispatch('edit-mode',{id: {{ $program->id }}})"
                                                             class="dropdown-item" type="button" class="dropdown-item"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#courseCategoryModal">
+                                                            data-bs-toggle="modal" data-bs-target="#createProgramModal">
                                                             <i class="fe fe-edit dropdown-item-icon"></i>
                                                             Edit
                                                         </button>
                                                         <button
-                                                            wire:click="$dispatch('delete-category',{id: {{ $category->id }}})"
+                                                            wire:click="$dispatch('delete-program',{id: {{ $program->id }}})"
                                                             class="dropdown-item text-danger">
                                                             <i class="fe fe-trash dropdown-item-icon text-danger"></i>
                                                             Remove
@@ -88,7 +102,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td class="text-center" colspan="5">Course category not found.</td>
+                                        <td class="text-center" colspan="5">Tidak ada program.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -96,28 +110,31 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    {{ $courseCategories->links() }}
+                    {{ $programs->links() }}
                 </div>
             </div>
         </div>
     </div>
-    <livewire:admin.course.category-modal>
+    <livewire:course.program.create />
 </section>
 
-<script>
-    document.addEventListener('livewire:initialized', () => {
-        @this.on('refresh-categories', (event) => {
-            var myCourseCategoryModalEl = document.querySelector('#courseCategoryModal')
-            var courseCategoryModal = bootstrap.Modal.getOrCreateInstance(myCourseCategoryModalEl)
+@script
+    <script>
+        Livewire.on('refresh-program', () => {
+            let el = document.getElementById('createProgramModal');
+            let programModal = bootstrap.Modal.getOrCreateInstance(el);
+            setTimeout(() => {
+                programModal.hide();
+            }, 50);
 
-
-            courseCategoryModal.hide();
-            @this.dispatch('reset-course-category-modal');
+            Livewire.dispatch('reset-program-modal');
+        });
+        var myProgramModalEl = document.getElementById('createProgramModal')
+        myProgramModalEl.addEventListener('hidden.bs.modal', (event) => {
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+            Livewire.dispatch('reset-program-modal');
         })
-
-        var myCourseCategoryModalEl = document.getElementById('courseCategoryModal')
-        myCourseCategoryModalEl.addEventListener('hidden.bs.modal', (event) => {
-            @this.dispatch('reset-course-category-modal');
-        })
-    })
-</script>
+    </script>
+@endscript

@@ -23,6 +23,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/course/published/{slug}/enroll/import', \App\Livewire\Course\Published\Import::class)->name('admin.course.published.import');
         Route::get('/admin/course/create/{slug?}', \App\Livewire\Admin\Course\CreateCourse::class)->name('admin.course.create');
         Route::get('/admin/course/category', \App\Livewire\Admin\Course\CourseCategory::class)->name('admin.course.category');
+        Route::get('/admin/course/program', \App\Livewire\Course\Program\Index::class)->name('admin.course.program');
         Route::get('/admin/support-tickets', \App\Livewire\SupportTicketIndex::class)->name('admin.support-ticket.index');
         Route::get('/admin/support-tickets/{ticket}', \App\Livewire\SupportTicketShow::class)->name('admin.support-ticket.show');
         Route::get('/admin/inbox', \App\Livewire\ContactUsIndex::class)->name('admin.inbox.index');

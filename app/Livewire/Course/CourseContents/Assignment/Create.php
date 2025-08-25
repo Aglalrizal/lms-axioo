@@ -80,9 +80,6 @@ class Create extends Component
 
             flash()->success('Assignment berhasil diperbarui!', [], 'Sukses');
         } else {
-            if(CourseSyllabus::find($this->syllabus_id)->hasAssignmentInCourse()){
-                flash()->error('Assignment sudah ada di kurikulum ini!', [], 'Gagal');
-            }
             $lastOrder = CourseContent::where('course_syllabus_id', $this->syllabus_id)->max('order') ?? 0;
             CourseContent::create( [
                 'course_id'          => $this->courseId,

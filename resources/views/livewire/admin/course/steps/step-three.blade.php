@@ -31,6 +31,9 @@
                                     <h4 class="mb-0 text-truncate text-wrap">
                                         {{ Str::title($s->title) }}
                                     </h4>
+                                    <p>
+                                        {{ $s->description }}
+                                    </p>
                                 </a>
                                 <div class="ms-2">
                                     <button wire:click="$dispatch('edit-syllabus-mode',{id:{{ $s->id }}})"
@@ -59,31 +62,10 @@
                                                         <i class="fe fe-menu me-1 align-middle"></i>
                                                         <span class="align-middle">{{ $content->title }}</span>
                                                     </a>
-                                                    @php
-                                                        $types = [
-                                                            'article' => [
-                                                                'label' => 'Artikel',
-                                                                'class' => 'bg-primary',
-                                                            ],
-                                                            'video' => ['label' => 'Video', 'class' => 'bg-danger'],
-                                                            'quiz' => [
-                                                                'label' => 'Kuis',
-                                                                'class' => 'bg-warning text-dark',
-                                                            ],
-                                                            'assignment' => [
-                                                                'label' => 'Tugas',
-                                                                'class' => 'bg-success',
-                                                            ],
-                                                        ];
 
-                                                        $badge = $types[$content->type] ?? [
-                                                            'label' => 'Tidak diketahui',
-                                                            'class' => 'bg-secondary',
-                                                        ];
-                                                    @endphp
-
-                                                    <span class="badge {{ $badge['class'] }}">
-                                                        {{ $badge['label'] }}
+                                                    <span
+                                                        class="badge text-light-emphasis bg-light-subtle border border-light-subtle rounded-pill">
+                                                        {{ $content->type_formatted }}
                                                     </span>
                                                 </h5>
                                                 <div>
@@ -108,7 +90,11 @@
                             <button class="btn btn-outline-primary btn-sm mt-3"
                                 wire:click='$dispatch("open-add-video", {syllabusId: {{ $s->id }} })'>Tambah
                                 Video Pembelajaran</button>
-                            @if (!$s->courseContents->where('type', 'quiz')->count())
+                            <button class="btn btn-outline-primary btn-sm mt-3" data-bs-toggle="modal"
+                                data-bs-target="#chooseAssessmentModal"
+                                wire:click="$set('syllabusId', {{ $s->id }})">Tambah
+                                Assessment</button>
+                            {{-- @if (!$s->courseContents->where('type', 'quiz')->count())
                                 <button class="btn btn-outline-primary btn-sm mt-3"
                                     wire:click='$dispatch("open-add-quiz", {syllabusId: {{ $s->id }} })'>Tambah
                                     Kuis</button>
@@ -117,7 +103,7 @@
                                 <button class="btn btn-outline-primary btn-sm mt-3"
                                     wire:click='$dispatch("open-add-assignment", {syllabusId: {{ $s->id }} })'>Tambah
                                     Assignment</button>
-                            @endif
+                            @endif --}}
                         </div>
                     @empty
                         <p class="text-secondary text-sm">Belum ada Silabus.</p>
@@ -143,14 +129,47 @@
         </div>
     @endif
     <livewire:admin.course.syllabus-modal wire:key="syllabusModal" :courseId="$course->id" />
+    <div wire:ignore.self class="modal fade" id="chooseAssessmentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg rounded-3 border-0">
+
+                {{-- Header --}}
+                <div class="modal-header bg-primary text-white">
+                    <h2 class="modal-title fw-bold text-white text-center m-0">Pilih Tipe Assessment</h2>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                {{-- Body --}}
+                <div class="modal-body p-4">
+                    <p class="text-muted mb-4">Silakan pilih tipe assessment yang ingin ditambahkan ke silabus ini.</p>
+
+                    <div class="d-grid gap-3">
+                        <button wire:click="openAddQuiz"
+                            class="btn btn-outline-primary btn-lg d-flex align-items-center justify-content-center gap-2"
+                            onclick="bootstrap.Modal.getInstance(document.getElementById('chooseAssessmentModal')).hide()">
+                            <i class="bi bi-question-circle fs-5"></i>
+                            <span>Kuis</span>
+                        </button>
+
+                        <button wire:click="openAddAssignment"
+                            class="btn btn-outline-success btn-lg d-flex align-items-center justify-content-center gap-2"
+                            onclick="bootstrap.Modal.getInstance(document.getElementById('chooseAssessmentModal')).hide()">
+                            <i class="bi bi-clipboard-check fs-5"></i>
+                            <span>Tugas</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 </section>
 @script
     <script>
         Livewire.on('refresh-syllabus', () => {
             let el = document.getElementById('courseSyllabusModal');
-            let syllabusModal = bootstrap.Modal.getInstance(el) || new bootstrap.Modal(el);
-
-            // Paksa close walau animasi belum selesai
+            let syllabusModal = bootstrap.Modal.getOrCreateInstance(el);
             setTimeout(() => {
                 syllabusModal.hide();
             }, 50);

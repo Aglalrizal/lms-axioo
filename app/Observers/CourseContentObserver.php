@@ -11,6 +11,10 @@ class CourseContentObserver
      */
     public function created(CourseContent $courseContent): void
     {
+        logger()->info('Observer jalan di created!', [
+            'course_id' => $courseContent->course_id,
+            'content_id' => $courseContent->id,
+        ]);
         CourseContent::recalculateGlobalOrder($courseContent->course_id);
     }
 

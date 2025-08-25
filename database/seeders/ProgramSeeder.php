@@ -34,7 +34,9 @@ class ProgramSeeder extends Seeder
         foreach ($programs as $program) {
             Program::insert([
                 'name' => $program,
-                'slug' => Str::slug($program)
+                'slug' => Str::slug($program),
+                'created_at' => now(),
+                'updated_at' => now()
             ]);
         }
     }

@@ -34,7 +34,9 @@ class CourseCategorySeeder extends Seeder
         foreach ($categories as $category) {
             CourseCategory::insert([
                 'name' => $category,
-                'slug' => Str::slug($category)
+                'slug' => Str::slug($category),
+                'created_at' => now(),
+                'updated_at' => now()
             ]);
         }
     }

@@ -34,7 +34,7 @@
                 </div>
                 <div class="mb-3">
                     <div wire:ignore>
-                        <label class="form-label" for="select-program">Kategori</label>
+                        <label class="form-label" for="select-program">Program</label>
                         <select class="form-select" id="select-program" wire:model="program_id" style="width: 100%">
                             <option value="">Pilih Program
                             </option>

@@ -39,7 +39,10 @@
                     <a class="nav-link " href="{{ route('admin.course.published') }}">Kursus Aktif</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.course.category') }}">Kursus Kategori</a>
+                    <a class="nav-link" href="{{ route('admin.course.program') }}">Program</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.course.category') }}">Kategori</a>
                 </li>
             </ul>
         </div>

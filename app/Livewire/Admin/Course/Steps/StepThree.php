@@ -39,13 +39,15 @@ class StepThree extends Component
     }
 
     #[On('open-add-quiz')]
-    public function openAddQuiz($syllabusId, $courseContentId = null)
+    public function openAddQuiz($syllabusId = null, $courseContentId = null)
     {
         $this->isAddQuiz = true;
         $this->isAddArticle = false;
         $this->isAddVideo = false;
         $this->isAddAssignment = false;
-        $this->syllabusId = $syllabusId;
+        if($syllabusId){
+            $this->syllabusId = $syllabusId;
+        }
         $this->courseContentId = $courseContentId;
         
     }
@@ -60,13 +62,15 @@ class StepThree extends Component
         $this->courseContentId = $courseContentId;
     }
     #[On('open-add-assignment')]
-    public function openAddAssignment($syllabusId, $courseContentId = null)
+    public function openAddAssignment($syllabusId = null, $courseContentId = null)
     {
         $this->isAddVideo = false;
         $this->isAddQuiz = false;
         $this->isAddArticle = false;
-        $this->isAddAssignment = true;
-        $this->syllabusId = $syllabusId;
+        $this->isAddAssignment = true;       
+        if($syllabusId){
+            $this->syllabusId = $syllabusId;
+        }
         $this->courseContentId = $courseContentId;
     }
     #[On('close-add-article')]
