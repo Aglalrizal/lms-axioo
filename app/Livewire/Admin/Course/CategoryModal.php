@@ -11,7 +11,7 @@ class CategoryModal extends Component
 {
     #[Rule('required')]
     public $name = '';
-    public $formtitle = 'Buat Course Kategori';
+    public $formtitle = 'Buat Kategori';
     public $editform=false;
     public $courseCategory;
     public function render()
@@ -36,7 +36,7 @@ class CategoryModal extends Component
     public function edit($id){
         //dd($id);
         $this->editform=true;
-        $this->formtitle='Edit Course Kategori';
+        $this->formtitle='Edit Kategori';
         $this->courseCategory=CourseCategory::findOrfail($id);
         $this->name=$this->courseCategory->name;
     }

@@ -75,8 +75,21 @@
                                                             class="text-inherit">
                                                             <div class="d-flex align-items-center gap-3">
                                                                 <div>
-                                                                    <img src="{{ optional($course)->thumbnail ? asset('storage/' . $course->thumbnail) : 'https://placehold.co/100x60' }}"
-                                                                        alt="" class="img-4by3-lg rounded" />
+                                                                    @if ($course->thumbnail)
+                                                                        @if (str_contains($course->thumbnail, 'samples'))
+                                                                            <img src="{{ asset($course->thumbnail) }}"
+                                                                                alt="{{ $course->slug }}-image"
+                                                                                class="img-4by3-lg rounded" />
+                                                                        @else
+                                                                            <img src="{{ asset('storage/' . $course->thumbnail) }}"
+                                                                                alt="{{ $course->slug }}-image"
+                                                                                class="img-4by3-lg rounded" />
+                                                                        @endif
+                                                                    @else
+                                                                        <img src="https://placehold.co/100x60"
+                                                                            alt="{{ $course->slug }}-image"
+                                                                            class="img-4by3-lg rounded" />
+                                                                    @endif
                                                                 </div>
                                                                 <div class="d-flex flex-column gap-1">
                                                                     <h4 class="mb-0 text-primary-hover">
@@ -108,17 +121,16 @@
                                                     </td>
                                                     <td>
                                                         <div class="d-flex align-items-center flex-row gap-2">
-                                                            @switch($course->access_type)
-                                                                @case('free')
+                                                            @switch($course->access_type->label())
+                                                                @case('Gratis')
                                                                     <span class="badge bg-success">Gratis</span>
                                                                 @break
 
-                                                                @case('free_trial')
-                                                                    <span class="badge bg-warning text-dark">Gratis
-                                                                        Percobaan</span>
+                                                                @case('Free Trial')
+                                                                    <span class="badge bg-warning text-dark">Free Trial</span>
                                                                 @break
 
-                                                                @case('paid')
+                                                                @case('Berbayar')
                                                                     <span class="badge bg-primary">Berbayar</span>
                                                                 @break
                                                             @endswitch

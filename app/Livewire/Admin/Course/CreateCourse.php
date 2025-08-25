@@ -16,6 +16,11 @@ class CreateCourse extends Component
 
     public $course;
 
+    protected $queryString = [
+        'step' => ['except' => 1]
+    ];
+
+
     #[On('next')]
     public function next(){
         $this->step++;

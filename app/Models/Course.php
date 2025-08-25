@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\AccessType;
 use App\Enums\CourseLevel;
+use App\Models\CourseProgress;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;

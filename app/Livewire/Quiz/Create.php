@@ -9,7 +9,6 @@ use Livewire\Attributes\On;
 use App\Models\QuizQuestion;
 use Livewire\WithPagination;
 use App\Models\CourseContent;
-use Livewire\Attributes\Rule;
 use Illuminate\Support\Facades\Auth;
 use Mews\Purifier\Facades\Purifier;
 
@@ -155,10 +154,6 @@ class Create extends Component
             $this->quiz = $this->courseContent->quiz;
             flash()->success('Kuis berhasil diperbarui!', [], 'Sukses');
         } else {
-            if (CourseContent::where('course_syllabus_id', $this->syllabusId)->where('type', 'quiz')->exists()) {
-                flash()->error('Syllabus ini sudah memiliki quiz.', [], 'Galat');
-                $this->back();
-            }
             $lastOrder = CourseContent::where('course_syllabus_id', $this->syllabusId)->max('order') ?? 0;
             $data['order'] = $lastOrder + 1;
 

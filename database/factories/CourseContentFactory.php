@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\CourseContent;
 use App\Models\CourseSyllabu;
+use App\Models\CourseSyllabus;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CourseContentFactory extends Factory
 {
@@ -22,7 +23,7 @@ class CourseContentFactory extends Factory
     public function definition(): array
     {
         return [
-            'course_syllabus_id' => CourseSyllabu::factory(),
+            'course_syllabus_id' => CourseSyllabus::factory(),
             'title' => fake()->sentence(4),
             'content' => fake()->paragraphs(3, true),
             'video_url' => fake()->word(),
