@@ -1,14 +1,15 @@
 <?php
 
+use App\Models\Course;
+use App\Models\SupportTicket;
+use App\Mail\SupportTicketReplyMail;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ProfileController;
+
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\FaqController as UserFaq;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
-use App\Http\Controllers\BlogController;
-
-use App\Models\SupportTicket;
-use App\Mail\SupportTicketReplyMail;
 
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:super-admin|admin'])->group(function () {
@@ -44,17 +45,18 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:student'])->group(function () {
         Route::get('/student/dashboard', \App\Livewire\User\UserDashboard::class)->name('user.dashboard');
         Route::get('/student/dashboard/courses', \App\Livewire\User\UserCourses::class)->name('user.dashboard.courses');
-        Route::get('/student/dashboard/course/{slug}', \App\Livewire\Course\Public\Show::class)->name('course.show');
-        Route::get('/student/dashboard/course/{slug}/{syllabusId}/{courseContentId}', \App\Livewire\Course\Public\ShowContent::class)->name('course.show.content');
         Route::get('/student/dashboard/certificates', \App\Livewire\User\UserCertificates::class)->name('user.dashboard.certificates');
         Route::get('/student/dashboard/{username}/profile', \App\Livewire\ProfileCard::class)->name('user.dashboard.profile');
         Route::get('/student/dashboard/account', \App\Livewire\AccountCard::class)->name('user.dashboard.account');
     });
+    Route::get('/course/{slug}/{syllabusId}/{courseContentId}', \App\Livewire\Course\Public\ShowContent::class)->name('course.show.content');
 });
 
 Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
     Route::get('admin/cms/faqs', \App\Livewire\Admin\Faqs\Index::class)->name('admin.cms.faqs');
 });
+
+Route::get('course/{slug}', \App\Livewire\Course\Public\Show::class)->name('course.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -86,7 +88,10 @@ Route::get('/blogs', \App\Livewire\BlogIndexPublic::class)->name('public.blog.in
 Route::get('/blogs/{blog}', [BlogController::class, 'show'])->name('public.blog.show');
 
 Route::get('/', function () {
-    return view('public.landing');
+    $courses = Course::where('is_published', true)->get();
+    return view('public.landing', [
+        'courses' => $courses
+    ]);
 });
 
 Route::middleware('guest')->group(function () {

@@ -85,6 +85,7 @@ class Create extends Component
             }
             $lastOrder = CourseContent::where('course_syllabus_id', $this->syllabus_id)->max('order') ?? 0;
             CourseContent::create( [
+                'course_id'          => $this->courseId,
                 'course_syllabus_id' => $this->syllabus_id,
                 'title'              => $validated['title'],
                 'type'               => 'assignment',

@@ -6,8 +6,10 @@ use App\Models\Course;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Models\CourseContent;
+use App\Models\CourseProgress;
 use Livewire\Attributes\Layout;
 use App\Models\AssignmentSubmission;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 #[Layout('layouts.courseContent')]
@@ -24,6 +26,20 @@ class ShowContent extends Component
         'url'     => 'nullable|url',
         'file'    => 'nullable|file|max:10240',
     ];
+
+    public function markComplete(){
+        CourseProgress::updateOrCreate(
+            [
+                'student_id' => Auth::id(),
+                'course_id' => $this->course->id,
+                'course_content_id' => $this->content->id,
+            ],
+            [
+                'is_completed' => true,
+            ]
+        );
+        flash()->success("Berhasil menyelesaikan {$this->content->type_formatted}.", [], 'Sukses');
+    }
 
     public function save()
     {
@@ -79,6 +95,25 @@ class ShowContent extends Component
         ->with(['quiz', 'article', 'video', 'assignment.submission', 'courseSyllabus'])
         ->firstOrFail();
         
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $user = User::find(Auth::id());
+
+        if (!$user->enrolledCourses()->where('course_id', $this->course->id)->exists()) {
+            return redirect()->route('course.show', $this->course->slug)
+                ->with('error', 'Anda belum terdaftar dalam kursus ini.');
+        }
+
+        $syllabus = $this->course->syllabus()->findOrFail($syllabusId);
+        $this->content  = $syllabus->courseContents()->findOrFail($courseContentId);
+
+        if (!$this->content->is_unlocked) {
+            return redirect()->route('course.show', $this->course->slug)
+                ->with('error', 'Konten ini masih terkunci.');
+        }
+
         // --- Prev Content ---
         $this->prevContent = $this->content->courseSyllabus
             ->courseContents()

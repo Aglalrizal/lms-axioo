@@ -1,6 +1,6 @@
 <div>
     <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container-fluid px-0 justify-content-start">
+        <div class="container-fluid px-0 justify-content-start" style="padding: 3.5px 0">
             <a class="navbar-brand" href="{{ route('course.show', $course->slug) }}"><i
                     class="bi bi-arrow-left fw-bold text-dark"></i></a>
             <h2 class="mb-0">{{ $content->title }}</h2>
@@ -201,15 +201,15 @@
                                     </a>
                                 @endif
 
-                                @if (in_array($content->type, ['article', 'video']))
-                                    <a href="#" class="btn btn-success mx-2">
+                                @if (in_array($content->type, ['article', 'video']) && !$content->progresses()->first()->is_completed)
+                                    <a wire:click="markComplete" class="btn btn-success mx-2">
                                         Tandai selesai
                                     </a>
                                 @endif
 
                                 @if ($nextContent)
-                                    <a href="{{ route('course.show.content', [$course->slug, $content->courseSyllabus->id, $nextContent->id]) }}"
-                                        class="ms-2 btn btn-secondary">
+                                    <a @if ($nextContent->is_unlocked) href="{{ route('course.show.content', [$course->slug, $content->courseSyllabus->id, $nextContent->id]) }}" @endif
+                                        class="ms-2 btn btn-secondary {{ !$nextContent->is_unlocked ? 'disabled' : '' }}">
                                         Selanjutnya
                                     </a>
                                 @endif
@@ -254,44 +254,25 @@
                                                 id="syllabus-{{ $syllabus->id }}" data-bs-parent="#courseAccordion">
                                                 <div class="py-4 nav" role="tablist" aria-orientation="vertical">
                                                     @foreach ($syllabus->courseContents as $c)
-                                                        <a href="{{ route('course.show.content', ['slug' => $course->slug, 'syllabusId' => $syllabus->id, 'courseContentId' => $c->id]) }}"
-                                                            wire:navigate
-                                                            class="mb-2 d-flex align-items-center border-bottom w-100 pb-2 text-dark">
+                                                        <a @if ($c->is_unlocked) href="{{ route('course.show.content', ['slug' => $course->slug, 'syllabusId' => $syllabus->id, 'courseContentId' => $c->id]) }}"
+                                                            wire:navigate @endif
+                                                            class="mb-2 d-flex align-items-center border-bottom w-100 pb-2 
+                                                            @if (!$c->is_unlocked) text-dark @endif">
                                                             <div class="d-flex">
-                                                                @php
-                                                                    $types = [
-                                                                        'article' => [
-                                                                            'label' => 'Artikel',
-                                                                            'class' => 'primary',
-                                                                        ],
-                                                                        'video' => [
-                                                                            'label' => 'Video',
-                                                                            'class' => 'danger',
-                                                                        ],
-                                                                        'quiz' => [
-                                                                            'label' => 'Kuis',
-                                                                            'class' => 'warning',
-                                                                        ],
-                                                                        'assignment' => [
-                                                                            'label' => 'Tugas',
-                                                                            'class' => 'success',
-                                                                        ],
-                                                                    ];
-
-                                                                    $badge = $types[$c->type] ?? [
-                                                                        'label' => 'Tidak diketahui',
-                                                                        'class' => 'bg-secondary',
-                                                                    ];
-                                                                @endphp
                                                                 <div class="d-flex align-items-center">
                                                                     <span
-                                                                        class="badge rounded-pill text-bg-{{ $badge['class'] }} me-2"
-                                                                        style="width: 55px;">
-                                                                        {{ $badge['label'] }}
+                                                                        class="icon-shape bg-light text-primary icon-md rounded-circle me-2"
+                                                                        data-bs-toggle="tooltip"
+                                                                        data-bs-placement="top"
+                                                                        data-bs-title="{{ Str::title($c->type) }}">
+                                                                        <i
+                                                                            class="bi
+                                                                {{ $c->is_unlocked ? $c->icon : 'bi-lock-fill' }}">
+                                                                        </i>
                                                                     </span>
                                                                 </div>
                                                                 <div
-                                                                    class="text-wrap  @if ($content->id == $c->id) fw-bold @endif">
+                                                                    class="text-wrap m-auto @if ($content->id == $c->id) fw-bold @endif">
                                                                     {{ $c->title }}
                                                                 </div>
                                                             </div>

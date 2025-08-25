@@ -1,14 +1,15 @@
 <section>
     @if ($isAddArticle)
-        <livewire:course.course-contents.article.create-article wire:key="add-article" :syllabus_id="$syllabusId"
-            :courseContentId="$courseContentId ?? null" />
+        <livewire:course.course-contents.article.create-article wire:key="add-article" :courseId="$course->id"
+            :syllabus_id="$syllabusId" :courseContentId="$courseContentId ?? null" />
     @elseif ($isAddVideo)
-        <livewire:course.course-contents.video.create wire:key="add-video" :syllabus_id="$syllabusId" :courseContentId="$courseContentId ?? null" />
+        <livewire:course.course-contents.video.create wire:key="add-video" :courseId="$course->id" :syllabus_id="$syllabusId"
+            :courseContentId="$courseContentId ?? null" />
     @elseif ($isAddQuiz)
         <livewire:quiz.create wire:key="open-quiz" :courseId="$course->id ?? null" :syllabus_id="$syllabusId ?? null" :courseContentId="$courseContentId ?? null" />
     @elseif ($isAddAssignment)
-        <livewire:course.course-contents.assignment.create wire:key="open-assignment" :courseId="$course->id ?? null" :syllabus_id="$syllabusId ?? null"
-            :courseContentId="$courseContentId ?? null" />
+        <livewire:course.course-contents.assignment.create wire:key="open-assignment" :courseId="$course->id"
+            :courseId="$course->id ?? null" :syllabus_id="$syllabusId ?? null" :courseContentId="$courseContentId ?? null" />
     @else
         <div wire:key="list-content">
             <!-- Card -->
