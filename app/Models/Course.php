@@ -83,10 +83,23 @@ class Course extends Model
             'is_published' => 'boolean',
         ];
     }
-
+    public function getPriceFormattedAttribute()
+    {
+        if (is_null($this->price) || $this->price == 0) {
+            return 'Gratis';
+        }
+        return 'Rp ' . number_format($this->price, 0, ',', '.');
+    }
+    public function getLevelFormattedAttribute(){
+        return match ($this->level){
+            'beginner' => 'Pemula',
+            'intermediate' => 'Menengah',
+            'advanced' => 'Mahir'
+        };
+    }
     public function teacher(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'teacher_id');
     }
     public function program(){
         return $this->belongsTo(Program::class);
@@ -101,12 +114,7 @@ class Course extends Model
     }
     public function contents()
     {
-        return $this->hasManyThrough(
-            CourseContent::class,
-            CourseSyllabus::class,
-            'course_id',     
-            'course_syllabus_id',
-        );
+        return $this->hasMany(CourseContent::class);
     }
     public function hasAssignment(): bool
     {
@@ -124,5 +132,15 @@ class Course extends Model
     {
         return $this->belongsToMany(User::class, 'enrollments', 'course_id', 'student_id')
                     ->withPivot(['transaction_id', 'enrolled_by', 'enrolled_at']);
+    }
+    public function progresses()
+    {
+        return $this->hasMany(CourseProgress::class);
+    }
+
+    public function studentProgress()
+    {
+        return $this->belongsToMany(User::class, 'course_progress', 'course_id', 'student_id')
+                    ->withPivot('is_completed');
     }
 }

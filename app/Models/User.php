@@ -88,12 +88,12 @@ class User extends Authenticatable
     {
         return trim("{$this->first_name} {$this->surname}");
     }
-    // public function getAvatarUrlAttribute()
-    // {
-    //     return $this->profile_picture_path 
-    //         ? asset('storage/'.$this->profile_picture_path) 
-    //         : ;
-    // }
+    public function getAvatarUrlAttribute()
+    {
+        return $this->profile_picture_path 
+            ? asset('storage/'.$this->profile_picture_path) 
+            : 'https://ui-avatars.com/api/?background=random&name=' . urlencode(optional($this)->full_name);
+    }
     public function posts()
     {
         return $this->hasMany(Blog::class);
@@ -102,6 +102,10 @@ class User extends Authenticatable
     public function studyPlans()
     {
         return $this->hasMany(StudyPlan::class);
+    }
+    public function courses()
+    {
+        return $this->hasMany(Course::class, 'teacher_id');
     }
     public function enrollments()
     {
@@ -119,5 +123,14 @@ class User extends Authenticatable
     public function gradedSubmissions()
     {
         return $this->hasMany(AssignmentSubmission::class, 'graded_by');
+    }
+    public function progresses()
+    {
+        return $this->hasMany(CourseProgress::class, 'student_id');
+    }
+
+    public function completedContents()
+    {
+        return $this->progresses()->where('is_completed', true);
     }
 }

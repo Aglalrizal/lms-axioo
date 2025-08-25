@@ -239,20 +239,19 @@
                         <a href="#" class="link-dark"><u>Lihat Lebih Banyak</u></a>
                     </div>
                     <div class="row">
-                        @for ($i = 0; $i < 4; $i++)
+                        @forelse($courses as $course)
                             <div class="col-md-3 col-12">
                                 <!-- card -->
                                 <div class="card mb-2 mb-lg-0">
                                     <!-- card body -->
-                                    <a href="#!">
+                                    <a href="{{ route('course.show', $course->slug) }}">
                                         <img src="{{ asset('assets/images/education/edu-webinar-1.jpg') }}"
                                             alt="webinar-1" class="img-fluid w-100 rounded-top-3">
                                     </a>
                                     <div class="card-body">
                                         <h3 class="mb-2 text-truncate">
-                                            <a href="#!" class="text-inherit">Education Edition Deployment And
-                                                Set
-                                                Up</a>
+                                            <a href="{{ route('course.show', $course->slug) }}"
+                                                class="text-inherit">{{ $course->title }}</a>
                                         </h3>
                                         <div class="">
                                             <p class="text-secondary">
@@ -261,12 +260,14 @@
                                             </p>
                                         </div>
                                         <div class="text-center mb-0">
-                                            <a href="#!" class="btn btn-light-primary text-primary">Lihat Kursus</a>
+                                            <a href="{{ route('course.show', $course->slug) }}"
+                                                class="btn btn-light-primary text-primary">Lihat Kursus</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        @endfor
+                        @empty
+                        @endforelse
                     </div>
 
                 </div>

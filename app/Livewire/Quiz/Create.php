@@ -163,6 +163,7 @@ class Create extends Component
             $data['order'] = $lastOrder + 1;
 
             $this->courseContent = CourseContent::create([
+                'course_id'          => $this->courseId,
                 'course_syllabus_id' => $this->syllabusId,
                 'title' => $data['title'],
                 'order' => $data['order'],

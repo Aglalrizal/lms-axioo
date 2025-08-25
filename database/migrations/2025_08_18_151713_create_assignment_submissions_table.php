@@ -16,11 +16,11 @@ return new class extends Migration
             $table->foreignId('assignment_id')->constrained()->cascadeOnDelete();
             $table->foreignId('student_id')->constrained('users')->cascadeOnDelete();
 
-            $table->text('text_answer')->nullable(); // jawaban teks/esai
-            $table->string('url')->nullable(); // link jawaban
-            $table->string('file_path')->nullable(); // upload file
+            $table->text('text_answer')->nullable();
+            $table->string('url')->nullable();
+            $table->string('file_path')->nullable();
 
-            $table->enum('status', ['submitted', 'graded', 'late'])->default('submitted');
+            $table->enum('status', ['submitted','under review','graded', 'late'])->default('submitted');
             $table->float('grade')->nullable();
             $table->foreignId('graded_by')->nullable()
                 ->constrained('users')

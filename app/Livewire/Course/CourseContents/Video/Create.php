@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Create extends Component
 {
-    public $syllabus_id;
+    public $syllabus_id, $courseId;
     public $title;
     public $video_url;
     public $is_free_preview = false;
@@ -76,6 +76,7 @@ class Create extends Component
         } else {
             $lastOrder = CourseContent::where('course_syllabus_id', $this->syllabus_id)->max('order') ?? 0;
             CourseContent::create( [
+                'course_id'          => $this->courseId,
                 'course_syllabus_id' => $this->syllabus_id,
                 'title'              => $validated['title'],
                 'is_free_preview'    => $validated['is_free_preview'],
