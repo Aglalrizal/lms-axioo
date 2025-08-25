@@ -239,7 +239,7 @@
                         <a href="#" class="link-dark"><u>Lihat Lebih Banyak</u></a>
                     </div>
                     <div class="row">
-                        @forelse($courseswe as $course)
+                        @forelse($courses as $course)
                             <div class="col-md-3 col-12 mb-3">
                                 <!-- card -->
                                 <div class="card mb-2 h-100">
