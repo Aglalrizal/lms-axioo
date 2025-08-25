@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CourseCategory extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, SoftDeletes, LogsActivity, Sluggable;
 
     function getActivitylogOptions(): LogOptions
     {
@@ -32,6 +33,7 @@ class CourseCategory extends Model
         };
     }
 
+
     /**
      * The attributes that are mass assignable.
      *
@@ -41,6 +43,15 @@ class CourseCategory extends Model
         'name',
         'slug'
     ];
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+    }
 
     /**
      * Get the attributes that should be cast.

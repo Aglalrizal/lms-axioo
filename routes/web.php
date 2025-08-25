@@ -67,16 +67,11 @@ Route::middleware('guest')->group(function () {
     Route::get('auth/{provider}/callback', [SocialiteController::class, 'handleProviderCallback'])->name('auth.callback');
 });
 
-Route::get('/', function () {
-    $courses = Course::where('is_published', true)->limit(4)->get();
-    return view('public.landing', [
-        'courses' => $courses
-    ]);
-});
+Route::get('/', \App\Livewire\Landing::class)->name('public.landing');
 
 Route::get('/about-us', \App\Livewire\AboutUsPublic::class)->name('public.about-us');
 
-Route::get('/course/categories', \App\Livewire\CourseExploreCategory::class)->name('public.course.categories');
+Route::get('/course/explore', \App\Livewire\CourseExplore::class)->name('public.course.explore');
 Route::get('/course/search', \App\Livewire\CourseSearch::class)->name('public.course.search');
 Route::get('course/{slug}', \App\Livewire\Course\Public\Show::class)->name('course.show');
 
