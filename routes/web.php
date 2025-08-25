@@ -49,14 +49,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/student/dashboard/{username}/profile', \App\Livewire\ProfileCard::class)->name('user.dashboard.profile');
         Route::get('/student/dashboard/account', \App\Livewire\AccountCard::class)->name('user.dashboard.account');
     });
+    Route::middleware('permission:manage faqs')->group(function () {
+        Route::get('/admin/cms/faqs', \App\Livewire\Admin\Faqs\Index::class)->name('admin.cms.faqs');
+    });
     Route::get('/course/{slug}/{syllabusId}/{courseContentId}', \App\Livewire\Course\Public\ShowContent::class)->name('course.show.content');
 });
-
-Route::middleware(['auth', 'permission:manage faqs'])->group(function () {
-    Route::get('admin/cms/faqs', \App\Livewire\Admin\Faqs\Index::class)->name('admin.cms.faqs');
-});
-
-Route::get('course/{slug}', \App\Livewire\Course\Public\Show::class)->name('course.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -64,13 +61,30 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware('guest')->group(function () {
+    Route::get('auth/{provider}', [SocialiteController::class, 'redirectToProvider'])->name('auth.redirect');
+    Route::get('auth/{provider}/callback', [SocialiteController::class, 'handleProviderCallback'])->name('auth.callback');
+});
+
+Route::get('/', function () {
+    $courses = Course::where('is_published', true)->limit(4)->get();
+    return view('public.landing', [
+        'courses' => $courses
+    ]);
+});
+
 Route::get('/about-us', \App\Livewire\AboutUsPublic::class)->name('public.about-us');
+
 Route::get('/course/categories', \App\Livewire\CourseExploreCategory::class)->name('public.course.categories');
 Route::get('/course/search', \App\Livewire\CourseSearch::class)->name('public.course.search');
+Route::get('course/{slug}', \App\Livewire\Course\Public\Show::class)->name('course.show');
 
-Route::get('/temp', function () {
-    return view('public.wrwrwrwr');
-})->name('temp');
+Route::get('/blogs', \App\Livewire\BlogIndexPublic::class)->name('public.blog.index');
+Route::get('/blogs/{blog}', [BlogController::class, 'show'])->name('public.blog.show');
+
+Route::get('/help-center', [UserFaq::class, 'show_most_asked'])->name('public.help-center');
+Route::get('/help-center/faqs', [UserFaq::class, 'show'])->name('public.help-center.faqs');
+Route::get('/help-center/support', \App\Livewire\SupportTicketCreate::class)->name('public.help-center.support');
 
 Route::get('/help-center/guide', function () {
     return view('public.help-center.guide');
@@ -80,24 +94,13 @@ Route::get('/help-center/guide/{slug}', function () {
     return view('public.help-center.guide-single');
 })->name('public.help-center.guide-single');
 
-Route::get('/help-center', [UserFaq::class, 'show_most_asked'])->name('public.help-center');
-Route::get('/help-center/faqs', [UserFaq::class, 'show'])->name('public.help-center.faqs');
-Route::get('/help-center/support', \App\Livewire\SupportTicketCreate::class)->name('public.help-center.support');
+// 
+// DEVELOPMENT AND TESTING 
+//  
 
-Route::get('/blogs', \App\Livewire\BlogIndexPublic::class)->name('public.blog.index');
-Route::get('/blogs/{blog}', [BlogController::class, 'show'])->name('public.blog.show');
-
-Route::get('/', function () {
-    $courses = Course::where('is_published', true)->get();
-    return view('public.landing', [
-        'courses' => $courses
-    ]);
-});
-
-Route::middleware('guest')->group(function () {
-    Route::get('auth/{provider}', [SocialiteController::class, 'redirectToProvider'])->name('auth.redirect');
-    Route::get('auth/{provider}/callback', [SocialiteController::class, 'handleProviderCallback'])->name('auth.callback');
-});
+Route::get('/temp', function () {
+    return view('public.wrwrwrwr');
+})->name('temp');
 
 // Preview Email Route (hanya untuk development/testing)
 Route::get('/preview-email/{ticketId}', function ($ticketId) {

@@ -22,28 +22,29 @@ class CourseSearch extends Component
 
     public function render()
     {
-        // Query courses dengan filter dan search
-        $courses = Course::with(['teacher', 'courseCategory', 'program'])
-            ->where('is_published', true)
-            ->when($this->search, function ($query) {
-                $query->where(function ($q) {
-                    $q->where('title', 'like', '%' . $this->search . '%')
-                        ->orWhere('description', 'like', '%' . $this->search . '%')
-                        ->orWhere('short_desc', 'like', '%' . $this->search . '%');
-                });
-            })
-            ->when($this->selectedProgram, function ($query) {
-                $query->where('program_id', $this->selectedProgram);
-            })
-            ->when($this->selectedAccessType, function ($query) {
-                $query->where('access_type', $this->selectedAccessType);
-            })
-            ->when($this->selectedCategory, function ($query) {
-                $query->where('course_category_id', $this->selectedCategory);
-            })
-            ->when($this->selectedLevel, function ($query) {
-                $query->where('level', $this->selectedLevel);
-            })
+        $query = Course::where('is_published', true);
+
+        if ($this->search) {
+            $query->where('title', 'like', '%' . $this->search . '%');
+        }
+
+        if ($this->selectedProgram) {
+            $query->where('program_id', $this->selectedProgram);
+        }
+
+        if ($this->selectedAccessType) {
+            $query->where('access_type', $this->selectedAccessType);
+        }
+
+        if ($this->selectedCategory) {
+            $query->where('course_category_id', $this->selectedCategory);
+        }
+
+        if ($this->selectedLevel) {
+            $query->where('level', $this->selectedLevel);
+        }
+
+        $courses = $query
             ->limit(6)
             ->get();
 

@@ -239,7 +239,7 @@
                         <a href="#" class="link-dark"><u>Lihat Lebih Banyak</u></a>
                     </div>
                     <div class="row">
-                        @forelse($courses->take(4) as $course)
+                        @forelse($courses as $course)
                             <div class="col-md-3 col-12 mb-3">
                                 <!-- card -->
                                 <div class="card mb-2 h-100">
@@ -247,7 +247,7 @@
                                     <a href="{{ route('course.show', $course->slug) }}">
                                         @if (str_contains($course->thumbnail, 'samples'))
                                             <img src="{{ asset($course->thumbnail) }}" alt="{{ $course->slug }}-image"
-                                                class="img-fluid w-100" style="height: 150px">
+                                                class="img-fluid w-100 object-fit-cover" style="height: 150px">
                                         @else
                                             <img src="{{ asset('storage/' . $course->thumbnail) }}"
                                                 alt="{{ $course->slug }}-image" class="img-fluid w-100"
