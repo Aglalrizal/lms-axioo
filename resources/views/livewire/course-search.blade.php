@@ -31,21 +31,21 @@
                 @endforeach
             </select>
         </div>
-        <!-- Access Type -->
-        <div class="mb-3 col-12 col-md-3">
-            <select wire:model.live="selectedAccessType" id="select-access-type" class="form-select">
-                <option value="">Tipe Akses</option>
-                @foreach ($accessTypes as $type)
-                    <option value="{{ $type['value'] }}">{{ $type['label'] }}</option>
-                @endforeach
-            </select>
-        </div>
         <!-- Course Topic -->
         <div class="mb-3 col-12 col-md-3">
             <select wire:model.live="selectedCategory" id="select-course-topic" class="form-select">
                 <option value="">Topik Kursus</option>
                 @foreach ($categories as $category)
                     <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <!-- Access Type -->
+        <div class="mb-3 col-12 col-md-3">
+            <select wire:model.live="selectedAccessType" id="select-access-type" class="form-select">
+                <option value="">Tipe Akses</option>
+                @foreach ($accessTypes as $type)
+                    <option value="{{ $type['value'] }}">{{ $type['label'] }}</option>
                 @endforeach
             </select>
         </div>
