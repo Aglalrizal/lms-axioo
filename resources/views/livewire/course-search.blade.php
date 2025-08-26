@@ -24,25 +24,25 @@
         </div>
         <!-- Month -->
         <div class="mb-3 col-12 col-md-3">
-            <select wire:model.live="selectedProgram" id="select-program" class="form-select">
+            <select wire:model.live="program" id="select-program" class="form-select">
                 <option value="">Pilih Program</option>
                 @foreach ($programs as $program)
-                    <option value="{{ $program->id }}">{{ $program->name }}</option>
+                    <option value="{{ $program->slug }}">{{ $program->name }}</option>
                 @endforeach
             </select>
         </div>
         <!-- Course Topic -->
         <div class="mb-3 col-12 col-md-3">
-            <select wire:model.live="selectedCategory" id="select-course-topic" class="form-select">
+            <select wire:model.live="category" id="select-course-topic" class="form-select">
                 <option value="">Topik Kursus</option>
                 @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    <option value="{{ $category->slug }}">{{ $category->name }}</option>
                 @endforeach
             </select>
         </div>
         <!-- Access Type -->
         <div class="mb-3 col-12 col-md-3">
-            <select wire:model.live="selectedAccessType" id="select-access-type" class="form-select">
+            <select wire:model.live="accessType" id="select-access-type" class="form-select">
                 <option value="">Tipe Akses</option>
                 @foreach ($accessTypes as $type)
                     <option value="{{ $type['value'] }}">{{ $type['label'] }}</option>
@@ -51,7 +51,7 @@
         </div>
         <!-- Difficulty Level -->
         <div class="mb-3 col-12 col-md-3">
-            <select wire:model.live="selectedLevel" id="select-difficulty-level" class="form-select">
+            <select wire:model.live="level" id="select-difficulty-level" class="form-select">
                 <option value="">Tingkat Kesulitan</option>
                 @foreach ($courseLevels as $level)
                     <option value="{{ $level['value'] }}">{{ $level['label'] }}</option>
@@ -85,6 +85,7 @@
                                 @endif
                             </a>
                             <div class="card-body">
+                                <p class="text-secondary">{{ $course->program->name ?? '' }}</p>
                                 <h3 class="mb-2 text-truncate">
                                     <a href="#!" class="text-inherit">{{ $course->title }}</a>
                                 </h3>
@@ -169,21 +170,17 @@
             width: '100%'
         });
 
-        // Sync Select2 changes with Livewire
-        $('#select-program').on('change', function(e) {
-            @this.set('selectedProgram', $(this).val());
-        });
+        // Function to sync Livewire values to Select2 (for URL parameters)
+        function syncLivewireToSelect2() {
+            $('#select-program').val(@this.program).trigger('change.select2');
+            $('#select-access-type').val(@this.accessType).trigger('change.select2');
+            $('#select-course-topic').val(@this.category).trigger('change.select2');
+            $('#select-difficulty-level').val(@this.level).trigger('change.select2');
+        }
 
-        $('#select-access-type').on('change', function(e) {
-            @this.set('selectedAccessType', $(this).val());
-        });
-
-        $('#select-course-topic').on('change', function(e) {
-            @this.set('selectedCategory', $(this).val());
-        });
-
-        $('#select-difficulty-level').on('change', function(e) {
-            @this.set('selectedLevel', $(this).val());
+        // Sync on initial load (for URL parameters)
+        $(document).ready(function() {
+            syncLivewireToSelect2();
         });
     </script>
 @endscript

@@ -9,16 +9,15 @@ use App\Enums\AccessType;
 use App\Enums\CourseLevel;
 use App\Models\CourseCategory;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Url;
+use function Laravel\Prompts\select;
 
 #[Layout('layouts.app')]
 
 class CourseSearch extends Component
 {
-    public $search = '';
-    public $selectedProgram = '';
-    public $selectedAccessType = '';
-    public $selectedCategory = '';
-    public $selectedLevel = '';
+    #[Url]
+    public $search, $program, $accessType, $category, $level;
 
     public function render()
     {
@@ -28,29 +27,30 @@ class CourseSearch extends Component
             $query->where('title', 'like', '%' . $this->search . '%');
         }
 
-        if ($this->selectedProgram) {
-            $query->where('program_id', $this->selectedProgram);
+        if ($this->program) {
+            $query->whereHas('program', fn($q) => $q->where('slug', $this->program));
         }
 
-        if ($this->selectedAccessType) {
-            $query->where('access_type', $this->selectedAccessType);
+        if ($this->accessType) {
+            $query->where('access_type', $this->accessType);
         }
 
-        if ($this->selectedCategory) {
-            $query->where('course_category_id', $this->selectedCategory);
+        if ($this->category) {
+            $query->whereHas('courseCategory', fn($q) => $q->where('slug', $this->category));
         }
 
-        if ($this->selectedLevel) {
-            $query->where('level', $this->selectedLevel);
+        if ($this->level) {
+            $query->where('level', $this->level);
         }
 
         $courses = $query
+            ->with(['program', 'courseCategory'])
             ->limit(6)
             ->get();
 
         return view('livewire.course-search', [
-            'programs' => Program::all(),
-            'categories' => CourseCategory::all(),
+            'programs' => Program::select('id', 'name', 'slug')->get(),
+            'categories' => CourseCategory::select('id', 'name', 'slug')->get(),
             'accessTypes' => AccessType::toArray(),
             'courseLevels' => CourseLevel::toArray(),
             'courses' => $courses

@@ -1,0 +1,288 @@
+<section class="container-fluid p-4">
+    <div class="row d-flex">
+        <!-- Page header -->
+        <div class="col-lg-12 col-md-12 col-12">
+            <div
+                class="border-bottom pb-3 mb-3 d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between">
+                <div class="d-flex flex-column gap-1">
+                    <h1 class="mb-0 h2 fw-bold">Edit Learning Path</h1>
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('admin.learning-paths.index') }}">Learning Paths</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="d-flex gap-2">
+
+                    <a href="{{ route('admin.learning-paths.index') }}" class="btn btn-outline-secondary">
+                        <i class="fe fe-arrow-left me-2"></i>Back to Learning Paths
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form wire:submit="save">
+        <div class="row gy-4">
+            <!-- Basic Information -->
+            <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                <div class="card border-0">
+                    <div class="card-header d-flex gap-2 align-items-center">
+                        <h4 class="mb-0">Basic Information</h4>
+                        @if ($learningPath->is_published)
+                            <span class="badge bg-success-soft text-success px-3 py-2">
+                                <i class="fe fe-eye me-1"></i>Published
+                            </span>
+                        @else
+                            <span class="badge bg-warning-soft text-warning px-3 py-2">
+                                <i class="fe fe-edit me-1"></i>Draft
+                            </span>
+                        @endif
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="title" class="form-label">Learning Path Title <span
+                                        class="text-danger">*</span></label>
+                                <input wire:model="title" type="text" id="title" class="form-control"
+                                    placeholder="Enter learning path title" required />
+                                @error('title')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="description" class="form-label">Description <span
+                                        class="text-danger">*</span></label>
+                                <textarea wire:model="description" id="description" class="form-control" rows="4"
+                                    placeholder="Describe what learners will achieve..." required></textarea>
+                                @error('description')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Learning Steps -->
+            <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                <div class="card border-0">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h4 class="mb-0">Learning Steps</h4>
+                        <button type="button" class="btn btn-outline-primary btn-sm" wire:click="addStep">
+                            <i class="fe fe-plus me-2"></i>Add Step
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        @if (count($steps) > 0)
+                            <div id="sortable-steps" class="sortable-container">
+                                @foreach ($steps as $index => $step)
+                                    <div class="step-item mb-4 border rounded p-3 {{ isset($step['id']) && $step['id'] ? 'bg-white' : 'bg-light border-primary' }}"
+                                        wire:key="step-{{ $step['temp_id'] }}" data-step-id="{{ $step['temp_id'] }}">
+                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="drag-handle me-3" style="cursor: move;">
+                                                    <i class="fe fe-move text-muted"></i>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <h6 class="mb-0 me-2">Step {{ $index + 1 }}</h6>
+                                                    @if (!isset($step['id']) || !$step['id'])
+                                                        <span class="badge bg-primary-soft text-primary">New</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            @if (count($steps) > 1)
+                                                <button type="button" class="btn btn-sm btn-outline-danger"
+                                                    wire:click="removeStep({{ $index }})">
+                                                    <i class="fe fe-trash-2"></i>
+                                                </button>
+                                            @endif
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Step Title <span
+                                                        class="text-danger">*</span></label>
+                                                <input wire:model="steps.{{ $index }}.title" type="text"
+                                                    class="form-control" placeholder="Step title" />
+                                                @error("steps.{$index}.title")
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Course <span
+                                                        class="text-danger">*</span></label>
+                                                <select wire:model="steps.{{ $index }}.course_id"
+                                                    class="form-select">
+                                                    <option value="">Select a course</option>
+                                                    @foreach ($courses as $course)
+                                                        <option value="{{ $course->id }}">{{ $course->title }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @error("steps.{$index}.course_id")
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-12 mb-3">
+                                                <label class="form-label">Step Description <span
+                                                        class="text-danger">*</span></label>
+                                                <textarea wire:model="steps.{{ $index }}.description" class="form-control" rows="3"
+                                                    placeholder="What will students learn in this step?"></textarea>
+                                                @error("steps.{$index}.description")
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <div class="alert alert-info">
+                                <i class="fe fe-info me-2"></i>
+                                <strong>Tip:</strong> You can drag and drop steps to reorder them. Changes will be saved
+                                when you submit the form.
+                            </div>
+                        @else
+                            <div class="text-center py-4">
+                                <i class="fe fe-layers fs-1 text-muted"></i>
+                                <h6 class="text-muted mt-3">No steps found</h6>
+                                <p class="text-muted">Add your first step to get started</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="col-xl-12">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fe fe-save me-2"></i>Update Learning Path
+                            </button>
+                            <a href="{{ route('admin.learning-paths.index') }}" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Additional Actions -->
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h6 class="mb-1">Publication Status</h6>
+                                <p class="text-muted mb-0">
+                                    @if ($learningPath->is_published)
+                                        This learning path is currently published and visible to users.
+                                    @else
+                                        This learning path is currently in draft mode.
+                                    @endif
+                                </p>
+                            </div>
+                            <div>
+                                <button type="button" wire:click="togglePublish({{ $learningPath->id }})"
+                                    class="btn btn-outline-{{ $learningPath->is_published ? 'warning' : 'success' }}">
+                                    <i class="fe fe-{{ $learningPath->is_published ? 'eye-off' : 'eye' }} me-2"></i>
+                                    {{ $learningPath->is_published ? 'Unpublish' : 'Publish' }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+@assets
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <style>
+        .step-item {
+            transition: all 0.3s ease;
+        }
+
+        .step-item:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sortable-ghost {
+            opacity: 0.4;
+        }
+
+        .sortable-chosen {
+            background-color: #f8f9fa;
+        }
+
+        .drag-handle {
+            cursor: move;
+            padding: 8px;
+            margin: -8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .drag-handle:hover {
+            color: #007bff !important;
+            background-color: rgba(0, 123, 255, 0.1);
+        }
+
+        .bg-primary-soft {
+            background-color: rgba(13, 110, 253, 0.1);
+        }
+
+        .text-primary {
+            color: #0d6efd !important;
+        }
+
+        .bg-success-soft {
+            background-color: rgba(25, 135, 84, 0.1);
+        }
+
+        .bg-warning-soft {
+            background-color: rgba(255, 193, 7, 0.1);
+        }
+    </style>
+@endassets
+
+@script
+    <script>
+        let sortable;
+
+        function initSortable() {
+            const container = document.getElementById('sortable-steps');
+            if (container) {
+                // Destroy existing sortable if it exists
+                if (sortable) {
+                    sortable.destroy();
+                }
+
+                // Create new sortable instance
+                sortable = Sortable.create(container, {
+                    handle: '.drag-handle',
+                    animation: 150,
+                    ghostClass: 'sortable-ghost',
+                    chosenClass: 'sortable-chosen',
+                    onEnd: function(evt) {
+                        const stepIds = Array.from(container.children).map(el => el.dataset.stepId);
+                        $wire.updateStepOrder(stepIds);
+                    }
+                });
+            }
+        }
+
+        // Listen for component-loaded event from Livewire component
+        Livewire.on('component-loaded', () => {
+            // setTimeout(initSortable, 100);
+            initSortable();
+        });
+    </script>
+@endscript

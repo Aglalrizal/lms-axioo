@@ -54,7 +54,7 @@
                 </li>
 
                 <li class="nav-item dropdown mx-lg-3 mx-xl-6">
-                    <a class="nav-link" href="{{ route('public.course.categories') }}" id="navbarBrowse"
+                    <a class="nav-link" href="{{ route('public.course.explore') }}" id="navbarBrowse"
                         aria-haspopup="true"data-bs-display="static">Kursus</a>
                 </li>
 

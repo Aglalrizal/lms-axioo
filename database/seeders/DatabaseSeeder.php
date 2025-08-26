@@ -23,12 +23,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(RoleSeeder::class);
-        $this->call(FaqCategorySeeder::class);
-        $this->call(FaqSeeder::class);
-        $this->call(BlogCategorySeeder::class);
-        $this->call(CourseCategorySeeder::class);
-        $this->call(ProgramSeeder::class);
+        $this->call([
+            RoleSeeder::class,
+            FaqCategorySeeder::class,
+            FaqSeeder::class,
+            BlogCategorySeeder::class,
+            CourseCategorySeeder::class,
+            ProgramSeeder::class
+        ]);
 
         //akun admin
         $admin = User::factory()->create([
@@ -83,5 +85,10 @@ class DatabaseSeeder extends Seeder
             ->withProgram()
             ->count(50)
             ->create();
+
+        // Create learning paths with steps
+        $this->call([
+            LearningPathSeeder::class
+        ]);
     }
 }
