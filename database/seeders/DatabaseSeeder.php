@@ -85,5 +85,10 @@ class DatabaseSeeder extends Seeder
             ->withProgram()
             ->count(50)
             ->create();
+
+        // Create learning paths with steps
+        $this->call([
+            LearningPathSeeder::class
+        ]);
     }
 }

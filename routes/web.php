@@ -36,6 +36,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/cms/about-us', \App\Livewire\AboutUsCMS::class)->name('admin.cms.about-us');
         Route::get('/admin/cms/our-team', \App\Livewire\OurTeamCMS::class)->name('admin.cms.our-team');
         Route::get('/admin/report/activity-log', \App\Livewire\Admin\Reports\ActivityLog\Index::class)->name('admin.report.activity-log');
+        Route::get('/admin/learning-path', \App\Livewire\LearningPathIndexAdmin::class)->name('admin.learning-paths.index');
+        Route::get('/admin/learning-path/create', \App\Livewire\LearningPathCreate::class)->name('admin.learning-paths.create');
+        Route::get('/admin/learning-path/{slug}/edit', \App\Livewire\LearningPathEdit::class)->name('admin.learning-paths.edit');
     });
     Route::middleware('role:instructor')->group(function () {
         Route::get('/instructor/dashboard', \App\Livewire\Instructor\Dashboard::class)->name('instructor.dashboard');
@@ -70,6 +73,9 @@ Route::middleware('guest')->group(function () {
 Route::get('/', \App\Livewire\Landing::class)->name('public.landing');
 
 Route::get('/about-us', \App\Livewire\AboutUsPublic::class)->name('public.about-us');
+
+Route::get('/learning-paths', \App\Livewire\LearningPathIndexPublic::class)->name('public.learning-paths.index');
+Route::get('/learning-paths/{slug}', \App\Livewire\LearningPathShowPublic::class)->name('public.learning-paths.show');
 
 Route::get('/course/explore', \App\Livewire\CourseExplore::class)->name('public.course.explore');
 Route::get('/course/search', \App\Livewire\CourseSearch::class)->name('public.course.search');
