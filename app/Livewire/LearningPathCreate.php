@@ -118,6 +118,8 @@ class LearningPathCreate extends Component
             ->orderBy('title')
             ->get();
 
+        $this->dispatch('component-loaded');
+
         return view('livewire.learning-path-create', [
             'courses' => $courses
         ]);

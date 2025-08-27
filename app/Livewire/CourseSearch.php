@@ -9,15 +9,20 @@ use App\Enums\AccessType;
 use App\Enums\CourseLevel;
 use App\Models\CourseCategory;
 use Livewire\Attributes\Layout;
-use Livewire\Attributes\Url;
-use function Laravel\Prompts\select;
 
 #[Layout('layouts.app')]
 
 class CourseSearch extends Component
 {
-    #[Url]
     public $search, $program, $accessType, $category, $level;
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'program' => ['except' => ''],
+        'accessType' => ['except' => ''],
+        'category' => ['except' => ''],
+        'level' => ['except' => ''],
+    ];
 
     public function render()
     {

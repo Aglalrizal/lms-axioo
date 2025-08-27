@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\LearningPath;
 use Illuminate\Database\Seeder;
+use App\Models\LearningPathStep;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class LearningPathSeeder extends Seeder
@@ -111,7 +112,7 @@ class LearningPathSeeder extends Seeder
                     $stepData['course_id'] = null;
                 }
 
-                \App\Models\LearningPathStep::factory()->create($stepData);
+                LearningPathStep::factory()->create($stepData);
             }
         }
 

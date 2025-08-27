@@ -281,7 +281,6 @@
 
         // Listen for component-loaded event from Livewire component
         Livewire.on('component-loaded', () => {
-            // setTimeout(initSortable, 100);
             initSortable();
         });
     </script>
