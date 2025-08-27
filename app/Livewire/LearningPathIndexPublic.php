@@ -14,11 +14,12 @@ class LearningPathIndexPublic extends Component
 
     public function render()
     {
-        $learningPaths = LearningPath::where('is_published', true)
+        $learningPaths = LearningPath::query()
+            ->where('is_published', true)
+            ->select('id', 'title', 'slug', 'description')
+            ->withCount('steps')
             ->latest()
             ->paginate(12);
-
-        // with(['steps.course'])
 
         return view('livewire.learning-path-index-public', [
             'learningPaths' => $learningPaths

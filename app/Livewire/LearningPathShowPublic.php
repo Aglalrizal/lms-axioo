@@ -13,9 +13,12 @@ class LearningPathShowPublic extends Component
 
     public function mount($slug)
     {
-        $this->path = LearningPath::with(['steps.course'])
+        $this->path = LearningPath::query()
             ->where('slug', $slug)
             ->where('is_published', true)
+            ->select('id', 'title', 'description')
+            ->with(['steps.course:id,title,slug'])
+            ->withCount('steps')
             ->firstOrFail();
     }
 

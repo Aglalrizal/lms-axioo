@@ -20,12 +20,12 @@
                     <div class="d-flex justify-content-center gap-4 mt-4">
                         <div class="text-center">
                             <div class="badge bg-primary-soft text-primary fs-6 px-3 py-2">
-                                {{ $path->steps->count() }} Steps
+                                {{ $path->steps_count }} Steps
                             </div>
                         </div>
                         <div class="text-center">
                             <div class="badge bg-warning-soft text-warning fs-6 px-3 py-2">
-                                {{ $path->steps->count() * 4 }} Weeks
+                                {{ $path->steps_count * 4 }} Weeks
                             </div>
                         </div>
                     </div>

@@ -53,9 +53,13 @@ class AboutUsPublic extends Component
     public function render()
     {
         return view('livewire.about-us-public', [
-            'about_us' => AboutUs::firstOrNew(),
-            'missions' => Mission::all(),
-            'teamMembers' => OurTeam::all(),
+            'about_us' => AboutUs::query()
+                ->select('id', 'about_description', 'vision_description')
+                ->with('missions:id,title,description')
+                ->firstOrNew(),
+            'teamMembers' => OurTeam::query()
+                ->select('id', 'nama', 'photo_path', 'jabatan', 'deskripsi', 'linkedin')
+                ->get(),
         ]);
     }
 }

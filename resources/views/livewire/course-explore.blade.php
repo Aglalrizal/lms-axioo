@@ -69,7 +69,7 @@
                                     style="background-color: rgba(0, 0, 0, 0.60);">
                                     <h5 class="card-title fs-3">{{ $program->name }}</h5>
                                     <p class="card-text"><strong>
-                                            {{ $program->course->count() }}</strong> Kursus</p>
+                                            {{ $program->courses_count }}</strong> Kursus</p>
                                 </div>
                             </div>
                         </a>
@@ -115,7 +115,7 @@
 
             <div class="row g-5">
 
-                @forelse ($courses->take(4) as $course)
+                @forelse ($courses as $course)
                     <div class="col-md-3 col-12">
                         <!-- card -->
                         <div class="card mb-2 mb-lg-0">
