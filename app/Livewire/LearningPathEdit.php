@@ -24,6 +24,9 @@ class LearningPathEdit extends Component
 
     public $steps = [];
 
+    // Track steps that should be deleted when saving
+    public $stepsToDelete = [];
+
     protected function rules()
     {
         return [
@@ -54,16 +57,20 @@ class LearningPathEdit extends Component
         $this->title = $this->learningPath->title;
         $this->description = $this->learningPath->description;
 
-        // Load existing steps
+        // Load existing steps with consistent temp_id generation
         $this->steps = $this->learningPath->steps->map(function ($step) {
             return [
                 'id' => $step->id,
                 'title' => $step->title,
                 'description' => $step->description,
                 'course_id' => $step->course_id,
-                'temp_id' => $step->id // Use real ID as temp_id for existing steps
+                'temp_id' => 'existing_' . $step->id, // Consistent temp_id for existing steps
+                'is_existing' => true
             ];
         })->toArray();
+
+        // Initialize empty array for steps to delete
+        $this->stepsToDelete = [];
 
         if (empty($this->steps)) {
             $this->addStep();
@@ -73,11 +80,12 @@ class LearningPathEdit extends Component
     public function addStep()
     {
         $this->steps[] = [
-            'id' => null, // null for new steps
+            'id' => null,
             'title' => '',
             'description' => '',
             'course_id' => null,
-            'temp_id' => uniqid()
+            'temp_id' => 'new_' . uniqid(),
+            'is_existing' => false
         ];
     }
 
@@ -86,11 +94,12 @@ class LearningPathEdit extends Component
         if (count($this->steps) > 1) {
             $stepToRemove = $this->steps[$index];
 
-            // If it's an existing step, delete from database
-            if (isset($stepToRemove['id']) && $stepToRemove['id']) {
-                LearningPathStep::find($stepToRemove['id'])->delete();
+            // If it's an existing step, mark it for deletion instead of deleting immediately
+            if (isset($stepToRemove['id']) && $stepToRemove['id'] && $stepToRemove['is_existing']) {
+                $this->stepsToDelete[] = $stepToRemove['id'];
             }
 
+            // Remove from steps array
             unset($this->steps[$index]);
             $this->steps = array_values($this->steps); // Re-index array
         }
@@ -122,38 +131,57 @@ class LearningPathEdit extends Component
                 'modified_by' => Auth::user()->username,
             ]);
 
-            // Get existing step IDs
-            $existingStepIds = collect($this->steps)
-                ->whereNotNull('id')
-                ->pluck('id')
-                ->toArray();
+            // Delete marked steps
+            if (!empty($this->stepsToDelete)) {
+                LearningPathStep::whereIn('id', $this->stepsToDelete)->delete();
+            }
 
-            // Delete steps that are no longer in the array
-            $this->learningPath->steps()
-                ->whereNotIn('id', $existingStepIds)
-                ->delete();
+            // Prepare batch operations
+            $stepsToUpdate = [];
+            $stepsToCreate = [];
 
-            // Update or create steps
             foreach ($this->steps as $index => $stepData) {
-                if ($stepData['id']) {
-                    // Update existing step
-                    LearningPathStep::where('id', $stepData['id'])->update([
+                if ($stepData['id'] && $stepData['is_existing']) {
+                    // Existing step - prepare for batch update
+                    $stepsToUpdate[] = [
+                        'id' => $stepData['id'],
                         'title' => $stepData['title'],
                         'description' => $stepData['description'],
                         'course_id' => $stepData['course_id'],
                         'order' => $index + 1,
-                    ]);
+                    ];
                 } else {
-                    // Create new step
-                    LearningPathStep::create([
+                    // New step - prepare for creation
+                    $stepsToCreate[] = [
                         'learning_path_id' => $this->learningPath->id,
                         'course_id' => $stepData['course_id'],
                         'title' => $stepData['title'],
                         'description' => $stepData['description'],
                         'order' => $index + 1,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+            }
+
+            // Perform batch operations
+            if (!empty($stepsToUpdate)) {
+                foreach ($stepsToUpdate as $stepUpdate) {
+                    LearningPathStep::where('id', $stepUpdate['id'])->update([
+                        'title' => $stepUpdate['title'],
+                        'description' => $stepUpdate['description'],
+                        'course_id' => $stepUpdate['course_id'],
+                        'order' => $stepUpdate['order'],
                     ]);
                 }
             }
+
+            if (!empty($stepsToCreate)) {
+                LearningPathStep::insert($stepsToCreate);
+            }
+
+            // Clear steps to delete array
+            $this->stepsToDelete = [];
 
             flash()->success('Learning Path berhasil diperbarui!', [], 'Sukses');
             return $this->redirect(route('admin.learning-paths.index'), true);

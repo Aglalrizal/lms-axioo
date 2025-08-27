@@ -184,8 +184,33 @@
             background-color: #f8f9fa;
         }
 
+        .drag-handle {
+            cursor: move;
+            padding: 8px;
+            margin: -8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
         .drag-handle:hover {
             color: #007bff !important;
+            background-color: rgba(0, 123, 255, 0.1);
+        }
+
+        .bg-primary-soft {
+            background-color: rgba(13, 110, 253, 0.1);
+        }
+
+        .text-primary {
+            color: #0d6efd !important;
+        }
+
+        .bg-success-soft {
+            background-color: rgba(25, 135, 84, 0.1);
+        }
+
+        .bg-warning-soft {
+            background-color: rgba(255, 193, 7, 0.1);
         }
     </style>
 @endassets
@@ -196,7 +221,13 @@
 
         function initSortable() {
             const container = document.getElementById('sortable-steps');
-            if (container && !sortable) {
+            if (container) {
+                // Destroy existing sortable if it exists
+                if (sortable) {
+                    sortable.destroy();
+                }
+
+                // Create new sortable instance
                 sortable = Sortable.create(container, {
                     handle: '.drag-handle',
                     animation: 150,
@@ -210,16 +241,9 @@
             }
         }
 
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', initSortable);
-
-        // Re-initialize after Livewire updates
-        Livewire.hook('morph.updated', () => {
-            if (sortable) {
-                sortable.destroy();
-                sortable = null;
-            }
-            setTimeout(initSortable, 100);
+        // Listen for component-loaded event from Livewire component
+        Livewire.on('component-loaded', () => {
+            initSortable();
         });
     </script>
 @endscript

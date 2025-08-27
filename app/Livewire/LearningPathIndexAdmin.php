@@ -2,10 +2,11 @@
 
 namespace App\Livewire;
 
-use App\Models\LearningPath;
 use Livewire\Component;
-use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use App\Models\LearningPath;
 use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
 
 #[Layout('layouts.dashboard')]
 class LearningPathIndexAdmin extends Component
@@ -19,16 +20,18 @@ class LearningPathIndexAdmin extends Component
         'search' => ['except' => '']
     ];
 
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
     public function confirmDelete($pathId)
     {
         $this->selectedPath = LearningPath::findOrFail($pathId);
+
+        sweetalert()
+            ->showDenyButton()
+            ->option('confirmButtonText', 'Ya, Hapus Tiket!')
+            ->option('denyButtonText', 'Batal')
+            ->warning('Apakah Anda yakin ingin menghapus tiket ini?');
     }
 
+    #[On('sweetalert:confirmed')]
     public function deletePath()
     {
         if ($this->selectedPath) {
@@ -38,6 +41,7 @@ class LearningPathIndexAdmin extends Component
         }
     }
 
+    #[On('sweetalert:denied')]
     public function cancelDelete()
     {
         $this->selectedPath = null;

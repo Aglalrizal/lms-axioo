@@ -169,40 +169,4 @@
             </div>
         </div>
     </div>
-
-    <!-- Delete Confirmation Modal -->
-    @if ($selectedPath)
-        <div class="modal fade show" id="deleteModal" tabindex="-1" style="display: block;" aria-modal="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Confirm Delete</h5>
-                        <button type="button" class="btn-close" wire:click="cancelDelete"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="icon-lg bg-danger-soft rounded-circle me-3">
-                                <i class="fe fe-alert-triangle text-danger"></i>
-                            </div>
-                            <div>
-                                <h6 class="mb-1">Delete Learning Path</h6>
-                                <p class="mb-0 text-muted">This action cannot be undone</p>
-                            </div>
-                        </div>
-                        <p class="text-muted">
-                            Are you sure you want to delete <strong>"{{ $selectedPath->title }}"</strong>?
-                            All steps and associated data will be permanently removed.
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="cancelDelete">Cancel</button>
-                        <button type="button" class="btn btn-danger" wire:click="deletePath">
-                            <i class="fe fe-trash me-2"></i>Delete Path
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-backdrop fade show"></div>
-    @endif
 </section>
