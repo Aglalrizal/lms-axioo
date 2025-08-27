@@ -38,11 +38,11 @@
                             <div class="card-header bg-white border-0 ">
                                 <div class="d-flex align-items-center justify-content-between mb-3">
                                     <span class="badge bg-primary-soft text-primary">
-                                        {{ $path->steps->count() }} Kursus
+                                        {{ $path->steps_count }} Kursus
                                     </span>
                                     <div class="d-flex align-items-center text-muted">
                                         <i class="fe fe-clock me-1"></i>
-                                        <small>{{ $path->steps->count() * 4 }} Minggu</small>
+                                        <small>{{ $path->steps_count * 4 }} Minggu</small>
                                     </div>
                                 </div>
                                 <h3 class="mb-2 text-truncate">

@@ -20,7 +20,7 @@ class Program extends Model
             ]
         ];
     }
-    public function course()
+    public function courses()
     {
         return $this->hasMany(Course::class);
     }

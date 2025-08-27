@@ -16,8 +16,19 @@ class CourseExplore extends Component
         return view(
             'livewire.course-explore',
             [
-                'programs' => Program::all(),
-                'courses' => Course::all(),
+                'programs' => Program::query()
+                    ->select('id', 'name', 'slug', 'image_path')
+                    ->withCount('courses')
+                    ->get(),
+                'courses' => Course::query()
+                    ->where('is_published', true)
+                    ->select('id', 'title', 'thumbnail', 'level', 'access_type', 'program_id', 'course_category_id', 'short_desc', 'slug')
+                    ->with([
+                        'program:id,name',
+                        'courseCategory:id,name'
+                    ])
+                    ->limit(4)
+                    ->get()
             ]
         );
     }

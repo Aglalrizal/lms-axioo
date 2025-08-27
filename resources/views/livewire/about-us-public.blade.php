@@ -138,7 +138,7 @@
         <div class="row g-4">
 
             @forelse ($teamMembers as $member)
-                <div class="col-lg-3 col-md-6 col-12">
+                <div class="col-lg-3 col-md-6 col-12" wire:key="team-member-{{ $member->id }}">
                     <div class="flip-card">
                         <div class="flip-card-inner">
                             <div class="flip-card-front p-3">

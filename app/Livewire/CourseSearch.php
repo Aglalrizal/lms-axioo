@@ -26,7 +26,7 @@ class CourseSearch extends Component
 
     public function render()
     {
-        $query = Course::where('is_published', true);
+        $query = Course::query()->where('is_published', true);
 
         if ($this->search) {
             $query->where('title', 'like', '%' . $this->search . '%');
@@ -49,13 +49,17 @@ class CourseSearch extends Component
         }
 
         $courses = $query
-            ->with(['program', 'courseCategory'])
+            ->select('id', 'title', 'thumbnail', 'level', 'access_type', 'program_id', 'course_category_id', 'short_desc', 'slug')
+            ->with([
+                'program:id,name',
+                'courseCategory:id,name'
+            ])
             ->limit(6)
             ->get();
 
         return view('livewire.course-search', [
-            'programs' => Program::select('id', 'name', 'slug')->get(),
-            'categories' => CourseCategory::select('id', 'name', 'slug')->get(),
+            'programs' => Program::query()->select('id', 'name', 'slug')->get(),
+            'categories' => CourseCategory::query()->select('id', 'name', 'slug')->get(),
             'accessTypes' => AccessType::toArray(),
             'courseLevels' => CourseLevel::toArray(),
             'courses' => $courses

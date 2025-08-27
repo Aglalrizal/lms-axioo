@@ -70,7 +70,7 @@
             <div class="row g-5">
 
                 @forelse ($courses as $course)
-                    <div class="col-md-4 col-12">
+                    <div class="col-md-4 col-12" wire:key="course-{{ $course->id }}">
                         <!-- card -->
                         <div class="card mb-2 mb-lg-0">
                             <!-- card body -->
@@ -95,7 +95,8 @@
                                     </p>
                                 </div>
                                 <div class="text-center mb-0">
-                                    <a href="#!" class="btn btn-light-primary text-primary">Lihat Kursus</a>
+                                    <a href={{ route('course.show', $course->slug) }}
+                                        class="btn btn-light-primary text-primary">Lihat Kursus</a>
                                 </div>
                             </div>
                         </div>
@@ -168,6 +169,23 @@
         });
         $('#select-difficulty-level').select2({
             width: '100%'
+        });
+
+        // Sync Select2 changes with Livewire
+        $('#select-program').on('change', function(e) {
+            @this.set('program', $(this).val());
+        });
+
+        $('#select-access-type').on('change', function(e) {
+            @this.set('accessType', $(this).val());
+        });
+
+        $('#select-course-topic').on('change', function(e) {
+            @this.set('category', $(this).val());
+        });
+
+        $('#select-difficulty-level').on('change', function(e) {
+            @this.set('level', $(this).val());
         });
 
         // Function to sync Livewire values to Select2 (for URL parameters)
