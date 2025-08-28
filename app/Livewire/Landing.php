@@ -15,7 +15,7 @@ class Landing extends Component
         return view('livewire.landing', [
             'courses' => Course::query()
                 ->where('is_published', true)
-                ->select('id', 'title', 'thumbnail', 'level', 'access_type', 'program_id', 'course_category_id', 'short_desc', 'slug')
+                ->select('id', 'title', 'thumbnail', 'level', 'access_type', 'program_id', 'course_category_id', 'short_desc', 'slug', 'duration')
                 ->with([
                     'program:id,name',
                     'courseCategory:id,name'

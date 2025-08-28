@@ -83,7 +83,7 @@ Route::get('/learning-paths/{slug}', \App\Livewire\LearningPathShowPublic::class
 
 Route::get('/course/explore', \App\Livewire\CourseExplore::class)->name('public.course.explore');
 Route::get('/course/search', \App\Livewire\CourseSearch::class)->name('public.course.search');
-Route::get('course/{slug}', \App\Livewire\Course\Public\Show::class)->name('course.show');
+Route::get('/course/{slug}', \App\Livewire\Course\Public\Show::class)->name('course.show');
 
 Route::get('/blogs', \App\Livewire\BlogIndexPublic::class)->name('public.blog.index');
 Route::get('/blogs/{blog}', [BlogController::class, 'show'])->name('public.blog.show');
