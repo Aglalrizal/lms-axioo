@@ -231,9 +231,15 @@
                     <a href="#" class="link-dark"><u>Lihat Lebih Banyak</u></a>
                 </div>
                 <div class="row">
-                    @forelse($courses as $course)
+                    @forelse ($courses as $course)
                         <div class="col-md-3 col-12 mb-3">
-                            <!-- card -->
+                            <x-course-card :key="$course->id" :course="$course" />
+                        </div>
+                    @empty
+                        <p class="text-center">Tidak ada kursus yang ditemukan.</p>
+                    @endforelse
+
+                    {{-- <!-- card -->
                             <div class="card mb-2 h-100">
                                 <!-- card body -->
                                 <a href="{{ route('course.show', $course->slug) }}">
@@ -261,10 +267,8 @@
                                             class="btn btn-light-primary text-primary">Lihat Kursus</a>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    @empty
-                    @endforelse
+                            </div> --}}
+
                 </div>
 
             </div>

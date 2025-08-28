@@ -14,11 +14,11 @@ class BlogCategorySeeder extends Seeder
     public function run(): void
     {
         $data = [
-            ['name' => 'berita'],
-            ['name' => 'akademi'],
-            ['name' => 'event'],
-            ['name' => 'tutorial'],
+            ['name' => 'berita', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'akademi', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'event', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'tutorial', 'created_at' => now(), 'updated_at' => now()],
         ];
-        BlogCategory::insert($data);
+        BlogCategory::query()->insert($data);
     }
 }
