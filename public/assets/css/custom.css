@@ -114,7 +114,7 @@ body {
     padding: 1rem;
     overflow: hidden;
     background: white;
-    max-width: 300px;
+    width: 100%;
     height: 25rem;
     border: rgb(0, 0, 0, 0.1) 1px solid;
 }

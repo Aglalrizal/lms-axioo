@@ -232,7 +232,7 @@
                 </div>
                 <div class="row">
                     @forelse ($courses as $course)
-                        <div class="col-md-3 col-12 mb-3">
+                        <div class="col-md-6 col-lg-4 col-xl-3 col-12 mb-3 d-flex justify-content-center">
                             <x-course-card :key="$course->id" :course="$course" />
                         </div>
                     @empty
