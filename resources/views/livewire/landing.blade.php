@@ -135,11 +135,12 @@
                 <div class="" style="flex-basis: 60%;">
                     <div class="d-flex flex-column gap-6">
                         <div class="d-flex flex-column gap-2">
-                            <p class="opacity-75 mb-0">Tentang Kami</p>
+                            <p class="text-light opacity-75 mb-0">Tentang Kami</p>
                             <!--heading-->
-                            <h2 class="mb-0 display-4">Mengapa UpMySkill berbeda?</h2>
+                            <h2 class="text-light mb-0 display-4">Mengapa UpMySkill berbeda?</h2>
                             <!--para-->
-                            <p>UpMySkill hadir untuk mempercepat proses belajar dan membuka peluang karier bagi
+                            <p class="text-light">UpMySkill hadir untuk mempercepat proses belajar dan membuka peluang
+                                karier bagi
                                 generasi muda Indonesia melalui Axioo Class Program, kursus online, dan kolaborasi
                                 industri.</p>
 
@@ -150,28 +151,28 @@
                                         style="width: 1.5rem; height: 1.5rem;">
                                         <i class="fe fe-check text-white fs-4 fw-bold"></i>
                                     </div>
-                                    <span>Dipercaya oleh Ribuan Pengguna</span>
+                                    <span class="text-light">Dipercaya oleh Ribuan Pengguna</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center"
                                         style="width: 1.5rem; height: 1.5rem;">
                                         <i class="fe fe-check text-white fs-4 fw-bold"></i>
                                     </div>
-                                    <span>Akses Premium Memberships</span>
+                                    <span class="text-light">Akses Premium Memberships</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center"
                                         style="width: 1.5rem; height: 1.5rem;">
                                         <i class="fe fe-check text-white fs-4 fw-bold"></i>
                                     </div>
-                                    <span>Instruktur Berkualitas</span>
+                                    <span class="text-light">Instruktur Berkualitas</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center"
                                         style="width: 1.5rem; height: 1.5rem;">
                                         <i class="fe fe-check text-white fs-4 fw-bold"></i>
                                     </div>
-                                    <span>Kurikulum Berbasis Industri</span>
+                                    <span class="text-light">Kurikulum Berbasis Industri</span>
                                 </div>
                             </div>
 
@@ -186,31 +187,31 @@
 
         <div style="padding: 4rem 0;">
             <div class="row text-center">
-                <div class="col-md-3">
+                <div class="col-lg-3 col-md-6">
                     <div class="d-flex flex-column align-items-center">
                         <i class="bi bi-people-fill text-warning mb-n3" style="font-size: 6.5rem;"></i>
-                        <h3 class="fs-1 fw-bold mb-1">1.000 +</h3>
+                        <h3 class="text-light fs-1 fw-bold mb-1">1.000 +</h3>
                         <p class="text-muted">Siswa Aktif</p>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-lg-3 col-md-6">
                     <div class="d-flex flex-column align-items-center">
                         <i class="bi bi-mortarboard-fill text-warning mb-n3" style="font-size: 6.5rem;"></i>
-                        <h3 class="fs-1 fw-bold mb-1">12.000 +</h3>
+                        <h3 class="text-light fs-1 fw-bold mb-1">12.000 +</h3>
                         <p class="text-muted">Lulusan</p>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-lg-3 col-md-6">
                     <div class="d-flex flex-column align-items-center">
                         <i class="bi bi-collection-play-fill text-warning mb-n3" style="font-size: 6.5rem;"></i>
-                        <h3 class="fs-1 fw-bold mb-1">90 +</h3>
+                        <h3 class="text-light fs-1 fw-bold mb-1">90 +</h3>
                         <p class="text-muted">Kursus Gratis</p>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-lg-3 col-md-6">
                     <div class="d-flex flex-column align-items-center">
                         <i class="bi bi-award-fill text-warning mb-n3" style="font-size: 6.5rem;"></i>
-                        <h3 class="fs-1 fw-bold mb-1">150 +</h3>
+                        <h3 class="text-light fs-1 fw-bold mb-1">150 +</h3>
                         <p class="text-muted">Kursus Aktif</p>
                     </div>
                 </div>
@@ -219,9 +220,10 @@
 
         <div style="padding: 4rem 0 1rem 0;">
             <div class="">
-                <p class="opacity-75 mb-0 ">Kursus</p>
-                <h2 class="fs-2 mb-0">Temukan kursus sesuai minat dan tujuanmu</h2>
-                <p class="mb-0">Pelajari keterampilan baru yang relevan dengan dunia kerja bersama mentor ahli
+                <p class="text-light opacity-75 mb-0">Kursus</p>
+                <h2 class="text-light fs-2 mb-0">Temukan kursus sesuai minat dan tujuanmu</h2>
+                <p class="text-light mb-0">Pelajari keterampilan baru yang relevan dengan dunia kerja bersama mentor
+                    ahli
                     dan
                     materi yang terstruktur. Akses kapan saja, di mana saja.</p>
             </div>
@@ -309,30 +311,32 @@
 
         <div style="padding: 4rem 0;">
             <div class="mb-5">
-                <p class="opacity-75 mb-0 ">Tentang Kami</p>
-                <h2 class="fs-2 mb-0">Apa Kata Mereka?</h2>
-                <p class="mb-0">Dengarkan cerita sukses dan pengalaman para alumni yang telah merasakan manfaat
+                <p class=" text-light opacity-75 mb-0">Tentang Kami</p>
+                <h2 class="text-light fs-2 mb-0">Apa Kata Mereka?</h2>
+                <p class=" text-light mb-0">Dengarkan cerita sukses dan pengalaman para alumni yang telah merasakan
+                    manfaat
                     nyata
                     dari pembelajaran bersama UpMySkill.</p>
             </div>
             <div class="row g-4">
 
                 @forelse ($testimoni as $item)
-                    <div class="col-lg-3 col-md-6 col-12">
+                    <div class="col-lg-4 col-md-6 col-xl-3 col-12">
                         <div class="flip-card">
                             <div class="flip-card-inner">
                                 <div class="flip-card-front">
-                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
-                                        alt="" class="object-fit-cover w-100"
-                                        style="aspect-ratio: 1/1; border-radius: 1rem;">
-                                    <div class="team-info p-2 text-center">
-                                        <p class="text-white fw-bold mb-0">{{ $item['nama'] }}</p>
-                                        <p class="fw-light text-light mb-0">{{ $item['pekerjaan'] }}</p>
+                                    <div class="flip-card-img">
+                                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                                            alt="">
+                                    </div>
+                                    <div class="team-info text-center">
+                                        <p class="text-dark fw-bold mb-n1">{{ $item['nama'] }}</p>
+                                        <p class="text-dark fw-light mb-0">{{ $item['pekerjaan'] }}</p>
                                     </div>
                                 </div>
                                 <div
                                     class="flip-card-back p-5 d-flex flex-column justify-content-center align-items-center">
-                                    <p class="text-center">{{ $item['isi'] }}</p>
+                                    <p class="text-center text-light fw-semibold">{{ $item['isi'] }}</p>
                                     <a href="{{ $item['linkedin'] }}">
                                         <i class="bi bi-linkedin text-warning" style="font-size: 2rem;"></i>
                                     </a>
