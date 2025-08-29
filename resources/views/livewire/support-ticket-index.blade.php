@@ -29,21 +29,15 @@
                                 :class="selected === 'all' ? 'active' : ''"
                                 wire:click="setShow('all')">All</button>
                         </li>
-                        <li class="nav-item">
-                            <button class="nav-link" @click=" selected = 'open' "
-                                :class="selected === 'open' ? 'active' : ''"
-                                wire:click="setShow('open')">Open</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" @click=" selected = 'resolved' "
-                                :class="selected === 'resolved' ? 'active' : ''"
-                                wire:click="setShow('resolved')">Resolved</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" @click=" selected = 'closed' "
-                                :class="selected === 'closed' ? 'active' : ''"
-                                wire:click="setShow('closed')">Closed</button>
-                        </li>
+
+                        @foreach ($statuses as $status)
+                            <li class="nav-item">
+                                <button class="nav-link" @click=" selected = '{{ $status['value'] }}' "
+                                    :class="selected === '{{ $status['value'] }}' ? 'active' : ''"
+                                    wire:click="setShow('{{ $status['value'] }}')">{{ $status['label'] }}</button>
+                            </li>
+                        @endforeach
+
                         <li class="nav-item">
                             <button class="nav-link" @click=" selected = 'deleted' "
                                 :class="selected === 'deleted' ? 'active' : ''"
@@ -133,7 +127,6 @@
                                                                 'resolved' => 'bg-success',
                                                                 'open' => 'bg-warning',
                                                                 'closed' => 'bg-danger',
-                                                                default => 'bg-secondary',
                                                             };
 
                                                         $displayText = $ticket->deleted_at

@@ -3,10 +3,11 @@
 namespace App\Livewire;
 
 use App\Models\Blog;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
+use App\Enums\BlogStatus;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
 
 #[Layout('layouts.dashboard')]
 
@@ -61,16 +62,24 @@ class BlogIndexAdmin extends Component
     {
         $query = Blog::query();
 
-        if ($this->isShowing !== 'all') {
-            $query->where('status', $this->isShowing);
+        if ($this->isShowing === 'deleted') {
+            $query->onlyTrashed();
+        } else {
+            $query->whereNull('deleted_at');
+
+            if ($this->isShowing !== 'all') {
+                $query->where('status', $this->isShowing);
+            }
         }
 
         return view('livewire.blog-index-admin', [
             'blogs' => $query
-                ->with(['author', 'category'])
+                ->select('id', 'title', 'slug', 'status', 'created_at', 'updated_at', 'user_id', 'blog_category_id')
+                ->with(['author:id,username', 'category:id,name'])
                 ->whereAny(['title'], 'like', '%' . $this->query . '%')
                 ->orderBy('created_at', 'desc')
                 ->paginate(10, pageName: 'posts_page'),
+            'statuses' => BlogStatus::toArray()
         ]);
     }
 }

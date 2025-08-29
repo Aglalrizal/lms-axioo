@@ -86,6 +86,11 @@ class DatabaseSeeder extends Seeder
             ->count(50)
             ->create();
 
+        Blog::factory()
+            ->withBase64Images()
+            ->count(50)
+            ->create();
+
         // Create learning paths with steps
         $this->call([
             LearningPathSeeder::class

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Enums\TicketStatus;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Models\SupportTicket;
@@ -68,8 +69,8 @@ class SupportTicketShow extends Component
         ]);
 
         // Update ticket status to resolved
-        $this->ticket->update(['status' => 'resolved']);
-        $this->status = 'resolved';
+        $this->ticket->update(['status' => TicketStatus::RESOLVED]);
+        $this->status = TicketStatus::RESOLVED;
 
         // Send email
         $this->sendEmailToCustomer($reply);

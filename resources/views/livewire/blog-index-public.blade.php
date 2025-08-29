@@ -22,6 +22,15 @@
                 <div class="col-xl-12 col-lg-12 col-md-12 col-12">
                     <ul x-data="{ selected: 'berita' }" class="nav nav-pills nav-fill mb-6 border border-3 rounded"
                         id="tab" role="tablist">
+
+                        {{-- @foreach ($categories as $category)
+                            <li class="nav-item">
+                                <button class="nav-link" @click=" selected = '{{ $category->slug }}' "
+                                    :class="selected === '{{ $category->slug }}' ? 'active' : ''"
+                                    wire:click="setShow('{{ $category->slug }}')">{{ $category->name }}</button>
+                            </li>
+                        @endforeach --}}
+
                         <li class="nav-item">
                             <button class="nav-link" @click=" selected = 'berita' "
                                 :class="selected === 'berita' ? 'active' : ''"
