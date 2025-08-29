@@ -1,6 +1,7 @@
 <div class="p-4">
-    <p class="display-4">Halo, {{ $user->first_name ? $user->first_name . '' . $user->surname : $user->username }}</p>
-    <p>Selamat datang!</p>
+    <p class="display-4 text-dark">Halo,
+        {{ $user->first_name ? $user->first_name . ' ' . $user->surname : $user->username }}</p>
+    <p class="text-dark">Selamat datang!</p>
 
     <div class="row">
         <div class="col-md-4 col-12">
@@ -8,8 +9,8 @@
             <div class="card mb-4 mb-lg-0">
                 <!-- card body -->
                 <div class="card-body p-5 text-center">
-                    <h3 class="mb-2 display-3">0</h3>
-                    <p class="mb-0">Kelas yang diselesaikan</p>
+                    <h3 class="mb-2 display-3 text-dark">0</h3>
+                    <p class="mb-0 text-dark">Kelas yang diselesaikan</p>
                 </div>
             </div>
         </div>
@@ -18,8 +19,8 @@
             <div class="card mb-4 mb-lg-0">
                 <!-- card body -->
                 <div class="card-body p-5 text-center">
-                    <h3 class="mb-2 display-3">{{ $enrolledCourses->count() }}</h3>
-                    <p class="mb-0">Kelas yang Dipelajari</p>
+                    <h3 class="mb-2 display-3 text-dark">{{ $enrolledCourses->count() }}</h3>
+                    <p class="mb-0 text-dark">Kelas yang Dipelajari</p>
                 </div>
             </div>
         </div>
@@ -28,8 +29,8 @@
             <div class="card mb-4 mb-lg-0">
                 <!-- card body -->
                 <div class="card-body p-5 text-center">
-                    <h3 class="mb-2 display-3">0</h3>
-                    <p class="mb-0">Sertifikat Diperoleh</p>
+                    <h3 class="mb-2 display-3 text-dark">0</h3>
+                    <p class="mb-0 text-dark">Sertifikat Diperoleh</p>
                 </div>
             </div>
         </div>
@@ -38,12 +39,12 @@
     <div class="card mt-4">
         <div class="card-body" style="padding: 3rem;">
             <div class="row">
-                <p class="display-6 mb-0">Aktivitas Belajar</p>
+                <p class="display-6 mb-0 text-dark">Aktivitas Belajar</p>
             </div>
 
             <div class="mb-6">
                 <div class="text-end mb-2">
-                    <a href="#" class="link-dark"><u>Lainnya</u></a>
+                    <a href="#" class="text-dark"><u>Lainnya</u></a>
                 </div>
                 <div class="row">
                     @forelse($enrolledCourses as $course)
@@ -77,7 +78,7 @@
                     @empty
                         <div class="card">
                             <div class="card-body text-center">
-                                <p class="text-muted mb-0">Eh, kamu belum daftar kursus manapun.</p>
+                                <p class="text-muted mb-0 text-dark">Eh, kamu belum daftar kursus manapun.</p>
                             </div>
                         </div>
                     @endforelse
@@ -85,41 +86,17 @@
             </div>
 
             <div class="row pt-4">
-                <p class="display-6 mb-0">Rekomendasi Kelas Untukmu</p>
+                <p class="display-6 mb-0 text-dark">Rekomendasi Kelas Untukmu</p>
             </div>
 
             <div class="mb-6">
                 <div class="text-end mb-2">
-                    <a href="#" class="link-dark"><u>Lainnya</u></a>
+                    <a href="#" class="text-dark"><u>Lainnya</u></a>
                 </div>
                 <div class="row">
-                    @forelse($recommendCourses as $rc)
-                        <div class="col-md-4 col-12">
-                            <!-- card -->
-                            <div class="card mb-2 mb-lg-0 h-100">
-                                <!-- card body -->
-                                <a href="{{ route('course.show', ['slug' => $rc->slug]) }}">
-                                    @if ($rc->thumbnail)
-                                        <img src="{{ asset('storage/' . $rc->thumbnail) }}"
-                                            alt="{{ $rc->title }}-gambar-sampul"
-                                            class="img-fluid w-100 rounded-top-3">
-                                    @else
-                                        <img src="{{ asset('assets/images/course-bg.jpg') }}"
-                                            alt="{{ $rc->title }}-gambar-sampul"
-                                            class="img-fluid w-100 rounded-top-3">
-                                    @endif
-                                </a>
-                                <div class="card-body">
-                                    <h4 class="mb-2 text-truncate">
-                                        <a href="{{ route('course.show', ['slug' => $rc->slug]) }}"
-                                            class="text-wrap">{{ $rc->title }}</a>
-                                    </h4>
-                                </div>
-                                <div class="card-footer text-end">
-                                    <a href="{{ route('course.show', ['slug' => $rc->slug]) }}"
-                                        class="btn btn-light-primary text-primary">Lihat Kursus</a>
-                                </div>
-                            </div>
+                    @forelse ($recommendCourses as $rc)
+                        <div class="col-md-6 col-lg-4 col-xl-3 col-12 mb-3 d-flex justify-content-center">
+                            <x-course-card :key="$rc->id" :course="$rc" />
                         </div>
                     @empty
                         <div class="card">
@@ -132,7 +109,7 @@
             </div>
 
             <div class="d-flex align-items-center justify-content-between py-4 ">
-                <p class="display-6 mb-0">Catat Rencana Belajarmu!</p>
+                <p class="display-6 mb-0 text-dark">Catat Rencana Belajarmu!</p>
                 <button type="button" class="btn btn-primary" wire:click="openModal">
                     <i class="fe fe-plus"></i> Buat Rencana Belajar
                 </button>
@@ -142,17 +119,17 @@
                 @forelse ($rencanaBelajar as $rencana)
                     <!-- Header & Footer -->
                     <div class="card mb-4" wire:key="{{ $rencana->id }}">
-                        <div class="card-header">
+                        <div class="card-header text-dark">
                             {{ $rencana->tanggal }}
                         </div>
                         <div class="row card-body">
                             <div class="col-md-5">
-                                <p><strong>Kelas</strong>: {{ $rencana->kelas }}</p>
-                                <p class="mb-0"><strong>Program</strong>: {{ $rencana->program }}</p>
+                                <p class="text-dark"><strong>Kelas</strong>: {{ $rencana->kelas }}</p>
+                                <p class="mb-0 text-dark"><strong>Program</strong>: {{ $rencana->program }}</p>
                             </div>
                             <div class="col-md-5">
-                                <p><strong>Tanggal</strong>: {{ $rencana->tanggal }}</p>
-                                <p class="mb-0"><strong>Target</strong>: {{ $rencana->target }}%</p>
+                                <p class="text-dark"><strong>Tanggal</strong>: {{ $rencana->tanggal }}</p>
+                                <p class="mb-0 text-dark"><strong>Target</strong>: {{ $rencana->target }}%</p>
                             </div>
                             <div class="col-md-2 d-flex justify-content-center align-items-center">
                                 <button wire:click="openModal({{ $rencana->id }})" type="button"
@@ -277,3 +254,7 @@
         <div class="modal-backdrop fade show"></div>
     @endif
 </div>
+
+@assets
+    <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+@endassets

@@ -5,9 +5,10 @@
             <img src="{{ asset('assets/images/blog_hero.jpg') }}" class="object-fit-cover w-100 h-100" alt="blogpost" />
             <div class="position-absolute bottom-0 left-0 d-flex flex-column justify-content-end w-100 h-100 p-5 text-white"
                 style=" background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 90%);">
-                <h2 class="text-white fs-1 mb-n2">BELAJAR KAPAN SAJA,</h2>
-                <h2 class="text-white fs-1">DIMANA SAJA</h2>
-                <p>Ratusan kursus online untuk upgrade skill-mu di bidang teknologi, desain, bisnis, dan banyak
+                <h2 class=" fs-1 mb-n2" style="color: white;">BELAJAR KAPAN SAJA,</h2>
+                <h2 class=" fs-1" style="color: white;">DIMANA SAJA</h2>
+                <p style="color: white;">Ratusan kursus online untuk upgrade skill-mu di bidang teknologi, desain,
+                    bisnis, dan banyak
                     lagi. Mulai perjalanan belajarmu sekarang!</p>
             </div>
         </div>
@@ -18,13 +19,13 @@
         <div class="mb-3 mt-4 col-12">
             <div class="input-group">
                 <span class="input-group-text rounded-start-4"><i class="fe fe-search"></i></span>
-                <input wire:model.live.debounce="search" type="text" class="form-control rounded-end-4"
-                    id="card-mask" placeholder="Cari sesuatu" />
+                <input wire:model.live.debounce="search" type="text"
+                    class="form-control text-secondary rounded-end-4" id="card-mask" placeholder="Cari sesuatu" />
             </div>
         </div>
         <!-- Month -->
         <div class="mb-3 col-12 col-md-3">
-            <select wire:model.live="program" id="select-program" class="form-select">
+            <select wire:model.live="program" id="select-program" class="form-select text-secondary">
                 <option value="">Pilih Program</option>
                 @foreach ($programs as $program)
                     <option value="{{ $program->slug }}">{{ $program->name }}</option>
@@ -33,7 +34,7 @@
         </div>
         <!-- Course Topic -->
         <div class="mb-3 col-12 col-md-3">
-            <select wire:model.live="category" id="select-course-topic" class="form-select">
+            <select wire:model.live="category" id="select-course-topic" class="form-select text-secondary">
                 <option value="">Topik Kursus</option>
                 @foreach ($categories as $category)
                     <option value="{{ $category->slug }}">{{ $category->name }}</option>
@@ -42,7 +43,7 @@
         </div>
         <!-- Access Type -->
         <div class="mb-3 col-12 col-md-3">
-            <select wire:model.live="accessType" id="select-access-type" class="form-select">
+            <select wire:model.live="accessType" id="select-access-type" class="form-select text-secondary">
                 <option value="">Tipe Akses</option>
                 @foreach ($accessTypes as $type)
                     <option value="{{ $type['value'] }}">{{ $type['label'] }}</option>
@@ -51,7 +52,7 @@
         </div>
         <!-- Difficulty Level -->
         <div class="mb-3 col-12 col-md-3">
-            <select wire:model.live="level" id="select-difficulty-level" class="form-select">
+            <select wire:model.live="level" id="select-difficulty-level" class="form-select text-secondary">
                 <option value="">Tingkat Kesulitan</option>
                 @foreach ($courseLevels as $level)
                     <option value="{{ $level['value'] }}">{{ $level['label'] }}</option>
@@ -62,44 +63,16 @@
 
     <div style="padding: 4rem 0;">
         <div class="mb-6">
-            <h2 class="fs-2 mb-0">Mood Belajar Apa Hari Ini?</h2>
-            <p class="">Pilih topik sesuai suasana hatimu dan mulai eksplorasi ilmu baru sekarang juga!</p>
+            <h2 class="fs-2 mb-0 text-dark">Mood Belajar Apa Hari Ini?</h2>
+            <p class="text-dark">Pilih topik sesuai suasana hatimu dan mulai eksplorasi ilmu baru sekarang juga!</p>
         </div>
 
         <div class="mb-6">
             <div class="row g-5">
 
                 @forelse ($courses as $course)
-                    <div class="col-md-4 col-12" wire:key="course-{{ $course->id }}">
-                        <!-- card -->
-                        <div class="card mb-2 mb-lg-0">
-                            <!-- card body -->
-                            <a href="#!">
-                                @if (str_contains($course->thumbnail, 'samples'))
-                                    <img src="{{ asset($course->thumbnail) }}" alt="Current"
-                                        class="img-fluid w-100 rounded-top-3 object-fit-cover" style="height: 300px;">
-                                @else
-                                    <img src="{{ $course->thumbnail ? asset('storage/' . $course->thumbnail) : asset('assets/images/education/edu-webinar-1.jpg') }}"
-                                        alt="Current" class="img-fluid w-100 rounded-top-3 object-fit-cover"
-                                        style="height: 300px;">
-                                @endif
-                            </a>
-                            <div class="card-body">
-                                <p class="text-secondary">{{ $course->program->name ?? '' }}</p>
-                                <h3 class="mb-2 text-truncate">
-                                    <a href="#!" class="text-inherit">{{ $course->title }}</a>
-                                </h3>
-                                <div class="">
-                                    <p class="text-secondary">
-                                        {{ Str::limit($course->short_desc ?? $course->description, 120) }}
-                                    </p>
-                                </div>
-                                <div class="text-center mb-0">
-                                    <a href={{ route('course.show', $course->slug) }}
-                                        class="btn btn-light-primary text-primary">Lihat Kursus</a>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-md-6 col-lg-4 col-xl-3 col-12 mb-3 d-flex justify-content-center">
+                        <x-course-card :key="$course->id" :course="$course" />
                     </div>
                 @empty
                     <div class="col-12">
@@ -111,6 +84,7 @@
                     </div>
                 @endforelse
 
+                {{ $courses->links(data: ['scrollTo' => false]) }}
             </div>
         </div>
     </div>
@@ -118,9 +92,9 @@
 </main>
 
 @assets
+    <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <style>
         /* Custom CSS to make Select2 look like Bootstrap form-select */
         .select2-container--default .select2-selection--single {
@@ -153,6 +127,9 @@
             padding: 0.5rem 1rem !important;
         }
     </style>
+
+    <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @endassets
 
 @script
@@ -194,6 +171,8 @@
             $('#select-access-type').val(@this.accessType).trigger('change.select2');
             $('#select-course-topic').val(@this.category).trigger('change.select2');
             $('#select-difficulty-level').val(@this.level).trigger('change.select2');
+
+            @this.call('triggerRender')
         }
 
         // Sync on initial load (for URL parameters)

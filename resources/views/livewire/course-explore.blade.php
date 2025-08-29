@@ -48,8 +48,9 @@
             <div class="row">
                 <div class="col-xl-10 col-md-10 col-12 mx-auto">
                     <div class="d-flex flex-column gap-2 text-center mb-xl-7 mb-5">
-                        <h2 class="h1 mb-0">Program</h2>
-                        <p class="mb-0 px-xl-5">Temukan berbagai program yang dirancang untuk memperluas pengetahuan
+                        <h2 class="h1 mb-0 text-dark">Program</h2>
+                        <p class="mb-0 px-xl-5 text-dark">Temukan berbagai program yang dirancang untuk memperluas
+                            pengetahuan
                             Anda.</p>
                     </div>
                 </div>
@@ -67,8 +68,8 @@
                                     class="card-img object-fit-cover" alt="...">
                                 <div class="card-img-overlay text-white text-center d-flex flex-column justify-content-center"
                                     style="background-color: rgba(0, 0, 0, 0.60);">
-                                    <h5 class="card-title fs-3">{{ $program->name }}</h5>
-                                    <p class="card-text"><strong>
+                                    <h5 class="card-title fs-3" style="color: white;">{{ $program->name }}</h5>
+                                    <p class="card-text" style="color: white;"><strong>
                                             {{ $program->courses_count }}</strong> Kursus</p>
                                 </div>
                             </div>
@@ -105,8 +106,9 @@
             <div class="row">
                 <div class="col-lg-6 col-md-8 col-12 mx-auto">
                     <div class="d-flex flex-column gap-2 text-center mb-xl-7 mb-5">
-                        <h2 class="mb-0 h1">Kursus Trending</h2>
-                        <p class="mb-0">Apakah Anda ingin mengembangkan karir Anda, mempelajari keterampilan baru,
+                        <h2 class="mb-0 h1 text-dark">Kursus Trending</h2>
+                        <p class="mb-0 text-dark">Apakah Anda ingin mengembangkan karir Anda, mempelajari keterampilan
+                            baru,
                             atau mengeksplorasi
                             minat, kami memiliki kursus yang tepat untuk Anda.</p>
                     </div>
@@ -116,35 +118,8 @@
             <div class="row g-5">
 
                 @forelse ($courses as $course)
-                    <div class="col-md-3 col-12">
-                        <!-- card -->
-                        <div class="card mb-2 mb-lg-0">
-                            <!-- card body -->
-                            <a href="#!">
-                                @if (str_contains($course->thumbnail, 'samples'))
-                                    <img src="{{ asset($course->thumbnail) }}" alt="Current"
-                                        class="img-fluid w-100 rounded-top-3 object-fit-cover" style="height: 300px;">
-                                @else
-                                    <img src="{{ $course->thumbnail ? asset('storage/' . $course->thumbnail) : asset('assets/images/education/edu-webinar-1.jpg') }}"
-                                        alt="Current" class="img-fluid w-100 rounded-top-3 object-fit-cover"
-                                        style="height: 300px;">
-                                @endif
-                            </a>
-                            <div class="card-body">
-                                <p class="text-secondary text-truncate">{{ $course->program->name ?? '' }}</p>
-                                <h3 class="mb-2 text-truncate">
-                                    <a href="#!" class="text-inherit">{{ $course->title }}</a>
-                                </h3>
-                                <div class="">
-                                    <p class="text-secondary">
-                                        {{ Str::limit($course->short_desc ?? $course->description, 120) }}
-                                    </p>
-                                </div>
-                                <div class="text-center mb-0">
-                                    <a href="#!" class="btn btn-light-primary text-primary">Lihat Kursus</a>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-md-6 col-lg-4 col-xl-3 col-12 mb-3 d-flex justify-content-center">
+                        <x-course-card :key="$course->id" :course="$course" />
                     </div>
                 @empty
                     <div class="col-12">

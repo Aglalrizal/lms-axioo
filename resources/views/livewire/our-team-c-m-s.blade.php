@@ -54,14 +54,14 @@
                                                     @if ($photos[$index])
                                                         <img src="{{ $photos[$index]->temporaryUrl() }}"
                                                             alt="Preview foto" class="rounded border"
-                                                            style="width: 80px; height: 80px; object-fit: cover;">
+                                                            style="width: 80px;  object-fit: cover; aspect-ratio: 4/5;">
                                                     @elseif ($tim['photo_path'])
                                                         <img src="{{ Storage::url($tim['photo_path']) }}"
                                                             alt="Foto {{ $tim['nama'] }}" class="rounded border"
-                                                            style="width: 80px; height: 80px; object-fit: cover;">
+                                                            style="width: 80px;  object-fit: cover; aspect-ratio: 4/5;">
                                                     @else
                                                         <div class="d-flex align-items-center justify-content-center rounded border bg-light"
-                                                            style="width: 80px; height: 80px;">
+                                                            style="width: 80px;  aspect-ratio: 4/5;">
                                                             <i class="fas fa-user text-muted fs-4"></i>
                                                         </div>
                                                     @endif

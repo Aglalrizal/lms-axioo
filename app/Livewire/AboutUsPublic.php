@@ -44,7 +44,6 @@ class AboutUsPublic extends Component
             'message',
         ]));
 
-
         flash()->success('Pesan berhasil dikirim.');
 
         $this->reset();
@@ -55,7 +54,7 @@ class AboutUsPublic extends Component
         return view('livewire.about-us-public', [
             'about_us' => AboutUs::query()
                 ->select('id', 'about_description', 'vision_description')
-                ->with('missions:id,title,description')
+                ->with('missions:id,about_us_id,title,description')
                 ->firstOrNew(),
             'teamMembers' => OurTeam::query()
                 ->select('id', 'nama', 'photo_path', 'jabatan', 'deskripsi', 'linkedin')

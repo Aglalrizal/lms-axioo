@@ -43,12 +43,27 @@ class UserDashboard extends Component
         ];
     }
 
+    public function mount()
+    {
+        $this->user = Auth::user();
+        $this->enrolledCourses = $this->user->enrolledCourses;
+        $this->recommendCourses = Course::query()
+            ->whereDoesntHave('enrollments', function ($q) {
+                $q->where('student_id', $this->user->id);
+            })
+            ->select('id', 'title', 'thumbnail', 'level', 'access_type', 'program_id', 'course_category_id', 'short_desc', 'slug', 'duration')
+            ->with([
+                'program:id,name',
+                'courseCategory:id,name'
+            ])
+            ->limit(4)
+            ->get();
+    }
+
     public function openModal($studyPlanId = null)
     {
         if ($studyPlanId) {
             $this->studyPlan = StudyPlan::findOrFail($studyPlanId);
-
-            $this->authorize('view', $this->studyPlan);
 
             $this->kelas = $this->studyPlan->kelas;
             $this->program = $this->studyPlan->program;
@@ -64,7 +79,7 @@ class UserDashboard extends Component
     public function closeModal()
     {
         $this->showModal = false;
-        $this->reset();
+        $this->resetExcept(['user', 'enrolledCourses', 'recommendCourses', 'rencanaBelajar']);
     }
 
     public function store()
@@ -113,24 +128,19 @@ class UserDashboard extends Component
     #[On('sweetalert:confirmed')]
     public function delete()
     {
-        $this->authorize('delete', $this->studyPlan);
-
         $this->studyPlan->delete();
 
         flash()->success('Rencana belajar berhasil dihapus!');
 
         $this->closeModal();
     }
-    public function mount(){
-        $this->user = Auth::user();
-        $this->enrolledCourses = $this->user->enrolledCourses;
-        $this->recommendCourses = Course::whereDoesntHave('enrollments', function ($q) {
-                $q->where('student_id', $this->user->id);
-        })->get();
-        $this->rencanaBelajar = StudyPlan::where('user_id', $this->user->id)->get();
-    }
+
     public function render()
     {
+        $this->rencanaBelajar = StudyPlan::query()
+            ->where('user_id', $this->user->id)
+            ->get();
+
         return view('livewire.user-dashboard');
     }
 }
