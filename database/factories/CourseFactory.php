@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\AccessType;
+use App\Enums\CourseLevel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Course;
@@ -56,8 +58,8 @@ class CourseFactory extends Factory
             'course_category_id' => CourseCategory::inRandomOrder()->first()?->id ?? CourseCategory::factory()->create()->id,
             'teacher_id' => User::role('instructor')->inRandomOrder()->first()?->id ?? User::factory()->create()->assignRole('instructor')->id,
             'program_id' => fake()->boolean(50) ? Program::inRandomOrder()->first()?->id  : null, // 50% chance memiliki program
-            'level' => fake()->randomElement(["beginner", "intermediate", "advanced"]),
-            'access_type' => fake()->randomElement(["free_trial", "free", "paid"]),
+            'level' => fake()->randomElement(CourseLevel::values()),
+            'access_type' => fake()->randomElement(AccessType::values()),
             'description' => $this->generateJoditContent(),
             'short_desc' => $this->generateShortDescription(),
 

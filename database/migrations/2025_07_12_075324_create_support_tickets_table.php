@@ -1,8 +1,10 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Enums\TicketStatus;
+use App\Enums\TicketSubject;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -16,9 +18,9 @@ return new class extends Migration
             $table->string('title');
             $table->string('full_name');
             $table->string('email');
-            $table->enum('subject', ['General', 'Technical', 'Accounts', 'Payment', 'Other']);
+            $table->enum('subject', TicketSubject::values());
             $table->text('description');
-            $table->enum('status', ['open', 'resolved', 'closed'])->default('open');
+            $table->enum('status', TicketStatus::values())->default(TicketStatus::OPEN);
             $table->softDeletes();
             $table->timestamps();
         });

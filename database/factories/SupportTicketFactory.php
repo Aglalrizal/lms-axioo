@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\TicketStatus;
+use App\Enums\TicketSubject;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,9 +22,9 @@ class SupportTicketFactory extends Factory
             'title' => fake()->sentence(),
             'full_name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'subject' => fake()->randomElement(['General', 'Technical', 'Accounts', 'Payment', 'Other']),
+            'subject' => fake()->randomElement(TicketSubject::values()),
             'description' => fake()->paragraph(12),
-            'status' => fake()->randomElement(['open', 'closed']),
+            'status' => fake()->randomElement(TicketStatus::values()),
         ];
     }
 }

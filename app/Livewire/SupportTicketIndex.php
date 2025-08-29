@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Enums\TicketStatus;
 use Livewire\Component;
 use Livewire\Attributes\On;
+use App\Enums\TicketSubject;
 use Livewire\WithPagination;
 use App\Models\SupportTicket;
 use Livewire\Attributes\Layout;
@@ -83,7 +85,9 @@ class SupportTicketIndex extends Component
             'tickets' => $query
                 ->whereAny(['title', 'email'], 'like', '%' . $this->query . '%')
                 ->orderBy('created_at', 'desc')
+                ->select('id', 'title', 'email', 'created_at', 'status', 'subject')
                 ->paginate(10, pageName: 'tickets_page'),
+            'statuses' => TicketStatus::toArray()
         ]);
     }
 }

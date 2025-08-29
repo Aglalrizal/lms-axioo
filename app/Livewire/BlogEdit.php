@@ -9,6 +9,7 @@ use App\Models\BlogCategory;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
 use App\Livewire\Forms\BlogForm;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Layout('layouts.dashboard')]
 
@@ -16,12 +17,12 @@ class BlogEdit extends Component
 {
     use WithFileUploads;
 
-    public Blog $blog;
+    public ?Blog $blog;
     public BlogForm $form;
 
     public function mount()
     {
-        $this->form->setBlog($this->blog->load('author'));
+        $this->form->setBlog($this->blog->load('author:id,username'));
     }
 
     public function updated($property)
@@ -59,7 +60,7 @@ class BlogEdit extends Component
 
         flash()->success('Blog berhasil dihapus.');
 
-        return redirect()->route('dashboard.cms.blogs.index');
+        return redirect()->route('admin.cms.blog.index');
     }
 
     public function save()

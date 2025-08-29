@@ -2,8 +2,13 @@
 
 namespace App\Enums;
 
-enum AccessType: string
+use App\Traits\EnumHelper;
+use App\Enums\LabelledEnum;
+
+enum AccessType: string implements LabelledEnum
 {
+    use EnumHelper;
+
     case FREE_TRIAL = 'free_trial';
     case FREE = 'free';
     case PAID = 'paid';

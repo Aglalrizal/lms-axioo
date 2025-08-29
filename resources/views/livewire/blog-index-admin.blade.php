@@ -33,15 +33,19 @@
                                 :class="selected === 'all' ? 'active' : ''"
                                 wire:click="setShow('all')">All</button>
                         </li>
+
+                        @foreach ($statuses as $status)
+                            <li class="nav-item">
+                                <button class="nav-link" @click=" selected = '{{ $status['value'] }}' "
+                                    :class="selected === '{{ $status['value'] }}' ? 'active' : ''"
+                                    wire:click="setShow('{{ $status['value'] }}')">{{ $status['label'] }}</button>
+                            </li>
+                        @endforeach
+
                         <li class="nav-item">
-                            <button class="nav-link" @click=" selected = 'published' "
-                                :class="selected === 'published' ? 'active' : ''"
-                                wire:click="setShow('published')">Published</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" @click=" selected = 'drafted' "
-                                :class="selected === 'drafted' ? 'active' : ''"
-                                wire:click="setShow('drafted')">Drafted</button>
+                            <button class="nav-link" @click=" selected = 'deleted' "
+                                :class="selected === 'deleted' ? 'active' : ''"
+                                wire:click="setShow('deleted')">Deleted</button>
                         </li>
                     </ul>
 
