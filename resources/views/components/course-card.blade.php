@@ -1,6 +1,6 @@
 @props(['course'])
 
-<div class="course-card">
+<a href={{ route('course.show', $course->slug) }} class="course-card">
     <div class="course-img-container">
         <img src="{{ asset($course->thumbnail) }}" alt="#">
         <div class="course-badge-container">
@@ -13,12 +13,12 @@
     </div>
     <div class="course-card-body">
         <div class="course-card-body-top">
-            <p class="course-program"> {{ $course->program->name }}</p>
-            <a href={{ route('course.show', $course->slug) }} class="course-title"> {{ $course->title }} </a>
-            <p class="course-description"> {{ $course->short_desc }}</p>
+            <p class="course-program text-secondary"> {{ $course->program->name }}</p>
+            <p class="course-title"> {{ $course->title }} </p>
+            <p class="course-description text-secondary"> {{ $course->short_desc }}</p>
         </div>
-        <div class="course-card-body-bottom">
+        <div class="course-card-body-bottom text-secondary">
             <p>{{ ucfirst($course->level->value) }} &#9702; {{ $course->duration }} Jam</p>
         </div>
     </div>
-</div>
+</a>

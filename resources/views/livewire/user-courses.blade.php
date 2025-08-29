@@ -1,6 +1,6 @@
 <div class="p-4">
-    <p class="display-4">Progres Belajar</p>
-    <p>Periksa dan terus tingkatkan progres belajarmu setiap harinya!</p>
+    <p class="display-4 text-dark">Progres Belajar</p>
+    <p class="text-dark">Periksa dan terus tingkatkan progres belajarmu setiap harinya!</p>
 
     <div class="card mt-4">
         <div class="card-body" style="padding: 3rem;">

@@ -4,10 +4,10 @@
             <div class="col-lg-12 col-md-12 col-12">
                 <div class="pb-3 d-flex justify-content-between align-items-center">
                     <div class="d-flex flex-column gap-1">
-                        <h1 class="mb-0 h2 fw-bold">
+                        <h1 class="mb-0 h2 fw-bold text-dark">
                             Profil
                         </h1>
-                        <p>Pastikan semua data anda sudah benar dan valid!</p>
+                        <p class="text-dark">Pastikan semua data anda sudah benar dan valid!</p>
                     </div>
                 </div>
             </div>
@@ -17,7 +17,7 @@
         <form wire:submit="save">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="mb-3 form-label">Foto Profil</h4>
+                    <h4 class="mb-3 form-label text-dark">Foto Profil</h4>
                     <div class="row">
                         <div class="col-md-12 mb-4 d-flex align-items-center gap-3 flex-grow">
                             <img src="{{ optional($user)->profile_picture

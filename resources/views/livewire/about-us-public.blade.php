@@ -3,7 +3,7 @@
         <h1 class="fs-2">Tentang Kami</h1>
 
         @if ($about_us->about_description)
-            <p>{{ $about_us->about_description }}</p>
+            <p class="text-dark">{{ $about_us->about_description }}</p>
         @else
             <p class="text-secondary">Belum ada deskripsi tentang kami yang ditambahkan</p>
         @endif
@@ -14,7 +14,7 @@
             <h2 class="fs-2">Visi Kami</h2>
 
             @if ($about_us->vision_description)
-                <p>{{ $about_us->vision_description }}</p>
+                <p class="text-dark">{{ $about_us->vision_description }}</p>
             @else
                 <p class="text-secondary">Belum ada visi yang ditambahkan</p>
             @endif
@@ -25,8 +25,8 @@
 
             @forelse ($about_us->missions as $mission)
                 <div>
-                    <p class="fw-bold">{{ $mission->title }}</p>
-                    <p class="text-secondary">{{ $mission->description }}</p>
+                    <p class="fw-bold text-dark">{{ $mission->title }}</p>
+                    <p class="text-dark">{{ $mission->description }}</p>
                 </div>
             @empty
                 <p class="text-secondary">Belum ada misi yang ditambahkan</p>
@@ -72,7 +72,8 @@
     <!-- Values Section -->
     <div class="py-6">
         <h2 class="fs-2">Values Kami</h2>
-        <p class="mb-5">Kami percaya bahwa pendidikan bukan hanya soal pengetahuan, tapi juga pembentukan karakter.
+        <p class="mb-5 text-dark">Kami percaya bahwa pendidikan bukan hanya soal pengetahuan, tapi juga pembentukan
+            karakter.
             Nilai-nilai kami mencerminkan komitmen terhadap integritas, rasa ingin tahu, dan semangat untuk belajar.</p>
 
         <div class="row g-4">
@@ -138,27 +139,8 @@
         <div class="row g-4">
 
             @forelse ($teamMembers as $member)
-                <div class="col-lg-3 col-md-6 col-12" wire:key="team-member-{{ $member->id }}">
-                    <div class="flip-card">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front p-3">
-                                <img src="{{ $member->photo_path }}" alt="foto {{ $member->nama }}"
-                                    class="object-fit-cover w-100 rounded-4" style="aspect-ratio: 1/1;">
-                                <div class="team-info p-2 text-center">
-                                    <p class="text-white fw-bold mb-0">{{ $member->nama }}</p>
-                                    <p class="fw-light text-light mb-0">{{ $member->jabatan }}</p>
-                                </div>
-                            </div>
-                            <div
-                                class="flip-card-back p-3 d-flex flex-column justify-content-center align-items-center">
-                                <p class="text-center">{{ $member->deskripsi }}</p>
-                                <a href="{{ $member->linkedin }}">
-                                    <i class="bi bi-linkedin    " style="font-size: 2rem;"></i>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
+                <div class="col-md-6 col-lg-4 col-xl-3 col-12 mb-3 d-flex justify-content-center ">
+                    <x-flip-card :key="$member->id" :item="$member" />
                 </div>
             @empty
                 <p class="text-center">Tidak ada anggota tim yang ditemukan.</p>
@@ -208,3 +190,7 @@
 
     </div>
 </div>
+
+@assets
+    <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+@endassets

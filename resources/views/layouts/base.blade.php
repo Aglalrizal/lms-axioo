@@ -40,7 +40,7 @@
     @livewireStyles
 </head>
 
-<body>
+<body class="bg-white">
     @yield('container')
 
     <!-- Scripts -->

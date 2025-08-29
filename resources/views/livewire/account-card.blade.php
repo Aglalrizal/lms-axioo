@@ -6,7 +6,7 @@
                     <h1 class="mb-0 h2 fw-bold">
                         Pengaturan Akun
                     </h1>
-                    <p>Atur informasi autentikasi akunmu</p>
+                    <p class="text-dark">Atur informasi autentikasi akunmu</p>
                 </div>
             </div>
         </div>
@@ -15,11 +15,11 @@
     <form id="change-email" wire:submit.prevent="changeEmail">
         <div class="card mb-4">
             <div class="card-body">
-                <p class="display-6 mb-0">Ubah Email</p>
+                <p class="display-6 mb-0 text-dark">Ubah Email</p>
 
                 <div class="row">
-                    <div class="mb-3 col-12 col-md-6">
-                        <label class="form-label" for="old_email">Email Lama</label>
+                    <div class="mb-3 col-12 col-md-6 ">
+                        <label class="form-label " for="old_email">Email Lama</label>
                         <input wire:model="old_email" type="email" id="old_email" class="form-control"
                             placeholder="Email Lama" required>
                         @error('old_email')
@@ -49,7 +49,7 @@
     <form id="change-password" wire:submit.prevent="changePassword">
         <div class="card">
             <div class="card-body">
-                <p class="display-6 mb-0">Ubah Kata Sandi</p>
+                <p class="display-6 mb-0 text-dark">Ubah Kata Sandi</p>
                 <div class="row">
                     <div class="mb-3 col-12 col-md-6">
                         <x-input-label for="old_password" :value="__('Kata Sandi Lama')" />

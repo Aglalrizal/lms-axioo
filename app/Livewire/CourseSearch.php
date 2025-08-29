@@ -9,11 +9,14 @@ use App\Enums\AccessType;
 use App\Enums\CourseLevel;
 use App\Models\CourseCategory;
 use Livewire\Attributes\Layout;
+use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
 
 class CourseSearch extends Component
 {
+    use WithPagination;
+
     public $search, $program, $accessType, $category, $level;
 
     protected $queryString = [
@@ -23,6 +26,8 @@ class CourseSearch extends Component
         'category' => ['except' => ''],
         'level' => ['except' => ''],
     ];
+
+    public function triggerRender() {}
 
     public function render()
     {
@@ -49,13 +54,12 @@ class CourseSearch extends Component
         }
 
         $courses = $query
-            ->select('id', 'title', 'thumbnail', 'level', 'access_type', 'program_id', 'course_category_id', 'short_desc', 'slug')
+            ->select('id', 'title', 'thumbnail', 'level', 'access_type', 'program_id', 'course_category_id', 'short_desc', 'slug', 'duration')
             ->with([
                 'program:id,name',
                 'courseCategory:id,name'
             ])
-            ->limit(6)
-            ->get();
+            ->paginate(12);
 
         return view('livewire.course-search', [
             'programs' => Program::query()->select('id', 'name', 'slug')->get(),
