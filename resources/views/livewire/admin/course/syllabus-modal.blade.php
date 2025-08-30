@@ -19,11 +19,14 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="description" class="form-label">Deskripsi<small>(Maksimal 50 Karakter)</small>
+                        <label for="description" class="form-label">Deskripsi<small>(Maksimal 200 Karakter)</small>
                         </label>
-                        <textarea wire:model="description" type="text" class="form-control @error('description') is-invalid @enderror"
-                            rows="4">
+                        <textarea wire:model="description" type="text" maxlength="200" class="form-control"
+                            oninput="document.getElementById('titleCount').textContent = this.value.length"
+                            @error('description') is-invalid @enderror rows="4">
                             </textarea>
+                        <small id="titleCount" class="text-muted">0</small>
+                        <small class="text-muted">/ 200 karakter</small>
                         @error('description')
                             <small class="d-block mt-2 text-danger">{{ $message }}</small>
                         @enderror

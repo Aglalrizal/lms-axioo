@@ -18,23 +18,28 @@
                     <h4 class="mb-0">Kurikulum</h4>
                 </div>
                 <!-- Card body -->
-                <div class="card-body">
+                <div class="card-body" wire:sortable="updateSyllabusOrder" wire:sortable-group="updateCourseContentOrder"
+                    wire:sortable-group.options="{ animation: 150 }" wire.sortable.options="{ animation:150 }">
                     @forelse ($course->syllabus as $s)
-                        @php
-                            $isLastSyllabus = $s->id === $course->syllabus->last()->id;
-                        @endphp
-                        <div class="bg-light rounded p-2 mb-4">
+                        <div class="bg-light rounded p-2 mb-4" wire:sortable.item="{{ $s->id }}"
+                            wire:key="syllabus-{{ $s->id }}">
                             <div class="d-flex align-items-center justify-content-between">
-                                <a class="text-dark text-decoration-none flex-grow-1" data-bs-toggle="collapse"
-                                    data-bs-target="#syllabus-{{ $s->id }}" aria-expanded="false"
-                                    aria-controls="syllabus-{{ $s->id }}">
-                                    <h4 class="mb-0 text-truncate text-wrap">
-                                        {{ Str::title($s->title) }}
-                                    </h4>
-                                    <p>
-                                        {{ $s->description }}
-                                    </p>
-                                </a>
+
+                                <div class="d-flex align-items-center flex-grow-1">
+                                    <button class="btn btn-sm p-1 me-2" wire:sortable.handle>
+                                        <i class="bi bi-list"></i>
+                                    </button>
+                                    <a class="text-dark text-decoration-none flex-grow-1" data-bs-toggle="collapse"
+                                        data-bs-target="#syllabus-{{ $s->id }}" aria-expanded="false"
+                                        aria-controls="syllabus-{{ $s->id }}">
+                                        <h4 class="mb-0 text-truncate text-wrap">
+                                            {{ Str::title($s->title) }}
+                                        </h4>
+                                        <p class="mb-0">
+                                            {{ $s->description }}
+                                        </p>
+                                    </a>
+                                </div>
                                 <div class="ms-2">
                                     <button wire:click="$dispatch('edit-syllabus-mode',{id:{{ $s->id }}})"
                                         type="button" class="text-inherit btn btn-sm p-1" data-bs-toggle="modal"
@@ -50,24 +55,29 @@
                                     </button>
                                 </div>
                             </div>
-                            <!-- List group -->
                             <div id="syllabus-{{ $s->id }}" class="collapse mt-3">
-                                <div class="list-group list-group-flush border-top-0">
+                                <div class="list-group list-group-flush border-top-0"
+                                    wire:sortable-group.item-group="{{ $s->id }}"
+                                    wire:sortable-group.options="{ animation: 150 }">
                                     @forelse($s->courseContents as $content)
-                                        <div class="list-group-item rounded px-3 text-nowrap mb-1">
+                                        <div class="list-group-item rounded px-3 text-nowrap mb-1"
+                                            wire:sortable-group.item="{{ $content->id }}"
+                                            wire:key="content-{{ $content->id }}">
                                             <div class="d-flex align-items-center justify-content-between">
-                                                <h5 class="mb-0 text-truncate">
+                                                <div class="mb-0">
+                                                    <button class="btn btn-sm p-1 me-2" wire:sortable-group.handle>
+                                                        <i class="bi bi-list"></i>
+                                                    </button>
                                                     <a wire:click="$dispatch('open-add-{{ $content->type }}', { syllabusId: {{ $s->id }}, courseContentId: {{ $content->id }} })"
-                                                        class="text-inherit">
-                                                        <i class="fe fe-menu me-1 align-middle"></i>
+                                                        class="text-inherit text-truncate">
                                                         <span class="align-middle">{{ $content->title }}</span>
                                                     </a>
 
                                                     <span
                                                         class="badge text-light-emphasis bg-light-subtle border border-light-subtle rounded-pill">
-                                                        {{ $content->type_formatted }}
+                                                        {{ Str::title($content->type_formatted) }}
                                                     </span>
-                                                </h5>
+                                                </div>
                                                 <div>
                                                     <a wire:click="$dispatch('delete-course-content', { id: {{ $content->id }} })"
                                                         class="me-1 text-inherit" data-bs-toggle="tooltip"
@@ -93,17 +103,7 @@
                             <button class="btn btn-outline-primary btn-sm mt-3" data-bs-toggle="modal"
                                 data-bs-target="#chooseAssessmentModal"
                                 wire:click="$set('syllabusId', {{ $s->id }})">Tambah
-                                Assessment</button>
-                            {{-- @if (!$s->courseContents->where('type', 'quiz')->count())
-                                <button class="btn btn-outline-primary btn-sm mt-3"
-                                    wire:click='$dispatch("open-add-quiz", {syllabusId: {{ $s->id }} })'>Tambah
-                                    Kuis</button>
-                            @endif
-                            @if ($s->id === $lastSyllabusId && !$hasAssignment)
-                                <button class="btn btn-outline-primary btn-sm mt-3"
-                                    wire:click='$dispatch("open-add-assignment", {syllabusId: {{ $s->id }} })'>Tambah
-                                    Assignment</button>
-                            @endif --}}
+                                Assessmen</button>
                         </div>
                     @empty
                         <p class="text-secondary text-sm">Belum ada Silabus.</p>

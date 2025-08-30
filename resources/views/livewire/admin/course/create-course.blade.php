@@ -70,10 +70,36 @@
 @endsection
 
 @assets
-    <script src="{{ asset('assets/libs/dragula/dist/dragula.min.js') }}"></script>
-    <script src="{{ asset('assets/js/vendors/customDragula.js') }}"></script>
     <script src="{{ asset('assets/libs/glightbox/dist/js/glightbox.min.js') }}"></script>
     <script src="{{ asset('assets/js/vendors/glight.js') }}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('assets/css/jodit.css') }}">
+    <script src="{{ asset('assets/js/jodit.js') }}"></script>
+    <style>
+        .jodit-wysiwyg pre {
+            background-color: #1f2937;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            max-width: 100%;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .jodit-wysiwyg code {
+            font-size: 0.875rem;
+        }
+
+        .jodit-wysiwyg blockquote {
+            border-left: 4px solid #9ca3af;
+            padding-left: 1rem;
+            font-style: italic;
+            color: #4b5563;
+        }
+    </style>
 @endassets
 
 {{-- @script
