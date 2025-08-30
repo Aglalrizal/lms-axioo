@@ -33,7 +33,7 @@ class BlogFactory extends Factory
             'title' => fake()->sentence(),
             'slug' => fake()->slug(),
             'content' => $this->generateJoditContent(),
-            'excerpt' => $this->generateShortDescription(),
+            'excerpt' => $this->generateExcerpt(),
             'status' => fake()->randomElement(BlogStatus::values()),
             'user_id' => rand(1, 2),
             'blog_category_id' => $blogCategoryId,
@@ -87,7 +87,7 @@ class BlogFactory extends Factory
         ];
 
         // Pilih 3-5 paragraf secara acak
-        $selectedParagraphs = fake()->randomElements($paragraphs, fake()->numberBetween(3, 5));
+        $selectedParagraphs = fake()->randomElements($paragraphs, fake()->numberBetween(5, 6));
 
         return implode("\n\n", $selectedParagraphs);
     }
@@ -95,17 +95,11 @@ class BlogFactory extends Factory
     /**
      * Generate short description for course preview
      */
-    private function generateShortDescription(): string
+    private function generateExcerpt(): string
     {
         $shortDescriptions = [
-            'Pelajari skill teknologi terkini dengan metode pembelajaran praktis dan mudah dipahami. Cocok untuk pemula hingga level menengah.',
-            'Kursus komprehensif yang memadukan teori dan praktik untuk membangun kemampuan profesional di bidang teknologi modern.',
-            'Dapatkan pengetahuan mendalam melalui video pembelajaran, studi kasus nyata, dan project-based learning yang aplikatif.',
-            'Program pelatihan intensif dengan materi terkini dan mentor berpengalaman. Tingkatkan karir Anda dengan skill yang dibutuhkan industri.',
-            'Pembelajaran fleksibel dengan kurikulum yang dirancang khusus untuk mengembangkan kemampuan praktis dan theoretical knowledge.',
-            'Kursus interaktif dengan pendekatan hands-on learning. Dapatkan sertifikat dan portfolio yang dapat meningkatkan nilai profesional Anda.',
-            'Materi pembelajaran terstruktur dan up-to-date dengan industry best practices. Dilengkapi quiz, assignment, dan forum diskusi.',
-            'Program pelatihan yang menggabungkan fundamental theory dengan real-world application. Cocok untuk career development.',
+            'Pelajari skill teknologi terkini dengan metode pembelajaran praktis dan mudah dipahami. Cocok untuk pemula hingga level menengah. Kursus komprehensif yang memadukan teori dan praktik untuk membangun kemampuan profesional di bidang teknologi modern. Dapatkan pengetahuan mendalam melalui video pembelajaran, studi kasus nyata, dan project-based learning yang aplikatif. Program pelatihan intensif dengan materi terkini dan mentor berpengalaman. Tingkatkan karir Anda dengan skill yang dibutuhkan industri. Pembelajaran fleksibel dengan kurikulum yang dirancang khusus untuk mengembangkan kemampuan praktis dan theoretical knowledge. Kursus interaktif dengan pendekatan hands-on learning. Dapatkan sertifikat dan portfolio yang dapat meningkatkan nilai profesional Anda. Materi pembelajaran terstruktur dan up-to-date dengan industry best practices. Dilengkapi quiz, assignment, dan forum diskusi.Program pelatihan yang menggabungkan fundamental theory dengan real-world application. Cocok untuk career development.',
+            'Pelajari skill teknologi terkini dengan metode pembelajaran praktis dan mudah dipahami. Cocok untuk pemula hingga level menengah. Kursus komprehensif yang memadukan teori dan praktik untuk membangun kemampuan profesional di bidang teknologi modern. Dapatkan pengetahuan mendalam melalui video pembelajaran, studi kasus nyata, dan project-based learning yang aplikatif. Program pelatihan intensif dengan materi terkini dan mentor berpengalaman. Tingkatkan karir Anda dengan skill yang dibutuhkan industri. Pembelajaran fleksibel dengan kurikulum yang dirancang khusus untuk mengembangkan kemampuan praktis dan theoretical knowledge. Kursus interaktif dengan pendekatan hands-on learning. Dapatkan sertifikat dan portfolio yang dapat meningkatkan nilai profesional Anda. Materi pembelajaran terstruktur dan up-to-date dengan industry best practices. Dilengkapi quiz, assignment, dan forum diskusi.Program pelatihan yang menggabungkan fundamental theory dengan real-world application. Cocok untuk career development.',
         ];
 
         return fake()->randomElement($shortDescriptions);

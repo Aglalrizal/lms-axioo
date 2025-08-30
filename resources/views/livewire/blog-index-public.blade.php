@@ -54,49 +54,20 @@
                     </ul>
                 </div>
 
-                @forelse ($blogs as $blog)
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-12" wire:key="blog-{{ $blog->id }}">
-                        <!-- Card -->
-                        <div class="card mb-4 shadow-sm card-lift p-3 rounded rounded-4">
-                            <div class=" ">
-                                <a href="/blogs/{{ $blog->id }}"
-                                    class="ratio ratio-21x9 w-100 border border-0 rounded overflow-hidden">
-                                    <!-- Img  -->
-                                    <img src={{ asset($blog->photo_path) }}
-                                        class="card-img-top rounded rounded-3 w-100 h-100 object-fit-cover object-position-center"
-                                        alt="blogpost" />
-                                </a>
-                                <!-- Card body -->
-                                <div>
-                                    <div class="row align-items-center g-0 mb-1 mt-3 text-gray-400 fw-medium">
-                                        <div class="col lh-1">
-                                            <p class="mb-1 fs-6">{{ $blog->author->username }}</p>
-                                        </div>
-                                        <div class="col-auto">
-                                            <p class="fs-6 mb-0">{{ $blog->created_at->format('d M Y') }}</p>
-                                        </div>
-                                    </div>
-                                    <h3>
-                                        <a href="/blogs/{{ $blog->id }}"
-                                            class="text-inherit">{{ $blog->title }}</a>
-                                    </h3>
-                                    <div class="mb-3">{{ $blog->excerpt }}</div>
-                                    <div class="d-flex justify-content-center">
-                                        <a href="/blogs/{{ $blog->id }}"
-                                            class="btn btn-primary border border-1 rounded rounded-4 w-75">Baca
-                                            Artikel</a>
-                                    </div>
-                                </div>
+                <div class="row g-5">
+                    @forelse ($blogs as $blog)
+                        <div class="col-lg-4 col-md-6 col-12 mb-3 d-flex justify-content-center"
+                            wire:key="blog-{{ $blog->id }}">
+                            <x-blog-card :key="$blog->id" :blog="$blog" />
+                        </div>
+                    @empty
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-12 text-center mt-4">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <i class="fe fe-alert-triangle me-2"></i>
+                                <span>Belum ada blog yang dipublikasikan.</span>
                             </div>
-                        </div>
-                    </div>
-                @empty
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-12 text-center mt-4">
-                        <div class="d-flex justify-content-center align-items-center">
-                            <i class="fe fe-alert-triangle me-2"></i>
-                            <span>No blogs found.</span>
-                        </div>
-                @endforelse
+                    @endforelse
+                </div>
 
                 <!-- Buttom -->
                 <div class="col-xl-12 col-lg-12 col-md-12 col-12 text-center mt-4">
