@@ -183,8 +183,7 @@ class LearningPathEdit extends Component
             // Clear steps to delete array
             $this->stepsToDelete = [];
 
-            flash()->success('Learning Path berhasil diperbarui!', [], 'Sukses');
-            return $this->redirect(route('admin.learning-paths.index'), true);
+            return flash()->success('Learning Path berhasil diperbarui!', [], 'Sukses');
         });
     }
 
@@ -203,6 +202,7 @@ class LearningPathEdit extends Component
     public function render()
     {
         $courses = Course::where('is_published', true)
+            ->select('id', 'title')
             ->orderBy('title')
             ->get();
 
