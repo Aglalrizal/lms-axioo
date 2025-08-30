@@ -33,6 +33,9 @@
             data-bs-parent="#sideNavbar">
             <ul class="nav flex-column">
                 <li class="nav-item">
+                    <a class="nav-link " href="{{ route('admin.learning-paths.index') }}">Learning Path</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link " href="{{ route('admin.course.all') }}">Seluruh Kursus</a>
                 </li>
                 <li class="nav-item">
