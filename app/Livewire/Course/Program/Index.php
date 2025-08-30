@@ -55,17 +55,18 @@ class Index extends Component
         $this->resetPage();
     }
     #[On('refresh-program')]
-    public function refreshProgramPage(){
+    public function refreshProgramPage()
+    {
         $this->resetPage();
     }
     public function render()
     {
-        $programs= \App\Models\Program::with('course')
-        ->where(function ($query) {
-            $query->where('name', 'like', '%' . $this->search . '%');
-        })
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
+        $programs = \App\Models\Program::with('courses')
+            ->where(function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%');
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
         return view('livewire.course.program.index', compact('programs'));
     }
 }

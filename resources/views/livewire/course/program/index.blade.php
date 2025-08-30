@@ -66,7 +66,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-center">{{ $program->course->count() }}</td>
+                                        <td class="text-center">{{ $program->courses->count() }}</td>
                                         <td class="text-center">{{ $program->created_at->translatedFormat('d F, Y') }}
                                         </td>
                                         <td class="text-center">{{ $program->updated_at->translatedFormat('d F, Y') }}
