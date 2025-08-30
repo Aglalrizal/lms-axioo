@@ -58,7 +58,8 @@ class LearningPathIndexAdmin extends Component
 
     public function render()
     {
-        $learningPaths = LearningPath::with(['steps.course'])
+        $learningPaths = LearningPath::query()
+            ->withCount(['steps'])
             ->when($this->search, function ($query) {
                 $query->where('title', 'like', '%' . $this->search . '%')
                     ->orWhere('description', 'like', '%' . $this->search . '%');
