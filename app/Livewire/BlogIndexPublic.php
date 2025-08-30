@@ -33,7 +33,7 @@ class BlogIndexPublic extends Component
                 ->whereRelation('category', 'name', $this->isShowing)
                 ->where('status', 'published')
                 ->orderBy('created_at', 'desc')
-                ->paginate(9, pageName: 'posts_page'),
+                ->paginate(15, pageName: 'posts_page'),
             // 'categories' => BlogCategory::all()
         ]);
     }

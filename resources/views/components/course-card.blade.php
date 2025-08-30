@@ -1,23 +1,25 @@
 @props(['course'])
 
-<a href={{ route('course.show', $course->slug) }} class="course-card">
-    <div class="course-img-container">
+<a href={{ route('course.show', $course->slug) }} class="custom-card">
+    <div class="custom-card-img-container">
         <img src="{{ asset($course->thumbnail) }}" alt="#">
-        <div class="course-badge-container">
+        <div class="custom-card-badge-container">
             @if ($course->access_type->value === 'free')
-                <div class="course-badge">Free</div>
+                <div class="custom-card-badge">Free</div>
             @elseif ($course->access_type->value === 'free_trial')
-                <div class="course-badge">Free Trial</div>
+                <div class="custom-card-badge">Free Trial</div>
             @endif
         </div>
     </div>
-    <div class="course-card-body">
-        <div class="course-card-body-top">
-            <p class="course-program text-secondary"> {{ $course->program->name }}</p>
-            <p class="course-title"> {{ $course->title }} </p>
-            <p class="course-description text-secondary"> {{ $course->short_desc }}</p>
+    <div class="custom-card-body">
+        <div class="custom-card-body-top">
+            <div class="custom-card-meta">
+                <p class="custom-card-meta-left text-secondary"> {{ $course->program->name }}</p>
+            </div>
+            <p class="custom-card-title"> {{ $course->title }} </p>
+            <p class="custom-card-content text-secondary"> {{ $course->short_desc }}</p>
         </div>
-        <div class="course-card-body-bottom text-secondary">
+        <div class="custom-card-body-bottom text-secondary">
             <p>{{ ucfirst($course->level->value) }} &#9702; {{ $course->duration }} Jam</p>
         </div>
     </div>

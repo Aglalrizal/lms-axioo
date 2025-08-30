@@ -28,7 +28,7 @@ class BlogForm extends Form
     public $old_photo_path = '';
     public $photo_path = '';
 
-    public $excerptMaxLength = 120; // Tambah property ini
+    public $excerptMaxLength = 256; // Tambah property ini
 
     public function setBlog($blog)
     {
@@ -45,11 +45,11 @@ class BlogForm extends Form
     protected function rules()
     {
         $rules = [
-            'title' => 'required|max:60|string',
+            'title' => 'required|max:80|string',
             'slug' => [
                 'required',
                 'string',
-                'max:72',
+                'max:80',
                 'lowercase',
                 Rule::unique('blogs')->ignore($this->blog)
             ],
