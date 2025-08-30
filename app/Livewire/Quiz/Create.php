@@ -2,36 +2,53 @@
 
 namespace App\Livewire\Quiz;
 
-use App\Traits\HandlesBase64Images;
-use Livewire\Attributes\Layout;
-use Livewire\Component;
-use Livewire\Attributes\On;
-use App\Models\QuizQuestion;
-use Livewire\WithPagination;
 use App\Models\CourseContent;
+use App\Models\QuizQuestion;
+use App\Traits\HandlesBase64Images;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Component;
+use Livewire\WithPagination;
 use Mews\Purifier\Facades\Purifier;
 
 #[Layout('layouts.dashboard')]
 class Create extends Component
 {
-    use WithPagination, HandlesBase64Images;
+    use HandlesBase64Images, WithPagination;
+
     public $syllabusId;
+
     public $search = '';
+
     public $filterType = '';
+
     public $sortBy = 'order';
+
     public $sortDirection = 'asc';
+
     public $courseContentId;
+
     public $quiz;
+
     public $title;
+
     public $duration;
+
     public $number_of_questions;
+
     public $description;
+
     public $courseContent;
+
     public $showForm = true;
+
     public $showQuizInfo = false;
+
     public $quizId;
+
     public $courseId;
+
     public $questionToDelete;
 
     public function rules()
@@ -48,32 +65,35 @@ class Create extends Component
                     if (strlen($plainText) < 20) {
                         $fail('Deskripsi minimal 20 karakter.');
                     }
-                }
-            ]
+                },
+            ],
         ];
     }
+
     protected $messages = [
         'title.required' => 'Judul wajib diisi.',
-        'title.string'   => 'Judul harus berupa teks.',
-        'title.max'      => 'Judul tidak boleh lebih dari :max karakter.',
-        'title.min'      => 'Judul minimal :min karakter.',
+        'title.string' => 'Judul harus berupa teks.',
+        'title.max' => 'Judul tidak boleh lebih dari :max karakter.',
+        'title.min' => 'Judul minimal :min karakter.',
 
         'duration.required' => 'Durasi wajib diisi.',
-        'duration.integer'  => 'Durasi harus berupa angka.',
-        'duration.min'      => 'Durasi minimal :min menit.',
+        'duration.integer' => 'Durasi harus berupa angka.',
+        'duration.min' => 'Durasi minimal :min menit.',
 
         'number_of_questions.required' => 'Jumlah soal wajib diisi.',
-        'number_of_questions.integer'  => 'Jumlah soal harus berupa angka.',
-        'number_of_questions.min'      => 'Jumlah soal minimal :min.',
+        'number_of_questions.integer' => 'Jumlah soal harus berupa angka.',
+        'number_of_questions.min' => 'Jumlah soal minimal :min.',
 
-        'description.required'      => 'Deskripsi wajib diisi.',
-        'description.string'         => 'Deskripsi harus berupa teks.',
-        'description.min'             => 'Deskripsi minimal :min karakter.',
+        'description.required' => 'Deskripsi wajib diisi.',
+        'description.string' => 'Deskripsi harus berupa teks.',
+        'description.min' => 'Deskripsi minimal :min karakter.',
     ];
+
     public function toogleQuizForm()
     {
-        $this->showForm = !$this->showForm;
+        $this->showForm = ! $this->showForm;
     }
+
     public function mount($courseContentId = null)
     {
         if ($courseContentId) {
@@ -99,7 +119,7 @@ class Create extends Component
                 $query->where('question_type', $this->filterType);
             })
             ->when($this->search, function ($query) {
-                $query->where('question', 'like', '%' . $this->search . '%');
+                $query->where('question', 'like', '%'.$this->search.'%');
             })
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate(5);
@@ -108,6 +128,7 @@ class Create extends Component
             'questions' => $questions,
         ]);
     }
+
     public function saveQuiz()
     {
 
@@ -126,7 +147,7 @@ class Create extends Component
                 $data['order'] = $lastOrder + 1;
                 $this->courseContent->update([
                     'course_syllabus_id' => $this->syllabusId,
-                    'order' => $data['order']
+                    'order' => $data['order'],
                 ]);
             }
             if ($this->courseContent->quiz) {
@@ -158,11 +179,11 @@ class Create extends Component
             $data['order'] = $lastOrder + 1;
 
             $this->courseContent = CourseContent::create([
-                'course_id'          => $this->courseId,
+                'course_id' => $this->courseId,
                 'course_syllabus_id' => $this->syllabusId,
                 'title' => $data['title'],
                 'order' => $data['order'],
-                'type'  => 'quiz',
+                'type' => 'quiz',
                 'created_by' => Auth::user()->username,
                 'modified_by' => Auth::user()->username,
             ]);
@@ -183,10 +204,12 @@ class Create extends Component
         $this->dispatch('refresh-list');
         $this->toogleQuizForm();
     }
+
     public function back()
     {
-        $this->dispatch('close-add-quiz');
+        $this->dispatch('close-add-page');
     }
+
     #[On('delete-question')]
     public function confirmDelete($id)
     {

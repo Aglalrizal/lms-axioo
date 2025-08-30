@@ -3,29 +3,72 @@
 namespace App\Livewire\Admin\Course\Steps;
 
 use App\Models\Course;
+use Livewire\Component;
+use Illuminate\Support\Str;
+use Livewire\Attributes\On;
 use App\Models\CourseContent;
 use App\Models\CourseSyllabus;
-use Livewire\Component;
-use Livewire\Attributes\On;
 use Livewire\Attributes\Layout;
 
 #[Layout('layouts.dashboard')]
 class StepThree extends Component
 {
     public $slug;
+
     public $course;
+
     public $step = 3;
+
     public $syllabusToDelete;
+
     public $courseContentToDelete;
 
     public $isAddArticle = false;
+
     public $isAddQuiz = false;
+
     public $isAddVideo = false;
+
     public $isAddAssignment = false;
+
     public $syllabusId;
+
     public $courseContentId;
-    public bool $hasAssignment = false;
-    public $lastSyllabusId = 0;
+
+    public function updateCourseContentOrder($groups)
+    {
+        foreach ($groups as $group) {
+            if ($group['order'] !== null) {
+                CourseSyllabus::where('id', $group['value'])->update(['order' => $group['order']]);
+            }
+            foreach ($group['items'] as $item) {
+                CourseContent::where('id', $item['value'])->update([
+                    'order' => $item['order'],
+                    'course_syllabus_id' => $group['value'],
+                ]);
+            }
+        }
+        flash()->success('Berhasil mengubah urutan konten', [], 'Sukses');
+        $this->dispatch('refresh-syllabus');
+    }
+    public function updateSyllabusOrder($groups)
+    {
+        $changed = false;
+
+        foreach ($groups as $group) {
+            $syllabus = CourseSyllabus::find($group['value']);
+            if ($syllabus && $syllabus->order != $group['order'] && $group['order'] !== null) {
+                $syllabus->update(['order' => $group['order']]);
+                $changed = true;
+            }
+        }
+
+        if ($changed) {
+            flash()->success('Berhasil mengubah urutan silabus', [], 'Sukses');
+            CourseContent::recalculateGlobalOrder($this->course->id);
+            $this->dispatch('refresh-syllabus');
+        }
+    }
 
     #[On('open-add-article')]
     public function openAddArticle($syllabusId, $courseContentId = null)
@@ -45,12 +88,13 @@ class StepThree extends Component
         $this->isAddArticle = false;
         $this->isAddVideo = false;
         $this->isAddAssignment = false;
-        if($syllabusId){
+        if ($syllabusId) {
             $this->syllabusId = $syllabusId;
         }
         $this->courseContentId = $courseContentId;
-        
+
     }
+
     #[On('open-add-video')]
     public function openAddVideo($syllabusId, $courseContentId = null)
     {
@@ -61,57 +105,29 @@ class StepThree extends Component
         $this->syllabusId = $syllabusId;
         $this->courseContentId = $courseContentId;
     }
+
     #[On('open-add-assignment')]
     public function openAddAssignment($syllabusId = null, $courseContentId = null)
     {
         $this->isAddVideo = false;
         $this->isAddQuiz = false;
         $this->isAddArticle = false;
-        $this->isAddAssignment = true;       
-        if($syllabusId){
+        $this->isAddAssignment = true;
+        if ($syllabusId) {
             $this->syllabusId = $syllabusId;
         }
         $this->courseContentId = $courseContentId;
     }
-    #[On('close-add-article')]
-    public function closeCourseArticlePage(){
-        $this->reset(['syllabusId', 'courseContentId']);
-        $this->isAddArticle = false;
-        $this->isAddQuiz = false;
-        $this->isAddVideo = false;
-        $this->isAddAssignment = false;
-    }
-    #[On('close-add-quiz')]
-    public function closeCourseQuizPage(){
-        $this->reset(['syllabusId', 'courseContentId']);
-        $this->isAddQuiz = false;
-        $this->isAddArticle = false;
-        $this->isAddVideo = false;
-        $this->isAddAssignment = false;
-    }
-    #[On('close-add-video')]
-    public function closeCourseVideoPage(){
-        $this->reset(['syllabusId', 'courseContentId']);
-        $this->isAddQuiz = false;
-        $this->isAddArticle = false;
-        $this->isAddVideo = false;
-        $this->isAddAssignment = false;
-    }
-    #[On('close-add-assignment')]
-    public function closeCourseAssignmentPage(){
-        $this->reset(['syllabusId', 'courseContentId']);
-        $this->isAddQuiz = false;
-        $this->isAddArticle = false;
-        $this->isAddVideo = false;
-        $this->isAddAssignment = false;
-    }
 
-    // #[On('done-loading-content')]
-    // public function doneLoadingContent(){
-    //     sleep(1);
-    //     $this->isLoadingContent = false;
-    //     $this->isAddArticle = false;
-    // }
+    #[On('close-add-page')]
+    public function closeCreateContentPage()
+    {
+        $this->reset(['syllabusId', 'courseContentId']);
+        $this->isAddArticle = false;
+        $this->isAddQuiz = false;
+        $this->isAddVideo = false;
+        $this->isAddAssignment = false;
+    }
 
     #[On('delete-syllabus')]
     public function confirmDeleteSyllabus($id)
@@ -122,22 +138,23 @@ class StepThree extends Component
             ->showDenyButton()
             ->option('confirmButtonText', 'Iya, hapus!')
             ->option('denyButtonText', 'Batal')
-            ->option('id', $id) 
+            ->option('id', $id)
             ->warning('Apakah kamu yakin ingin menghapus silabus ini?', ['Confirm Deletion']);
     }
+
     #[On('delete-course-content')]
     public function confirmDeleteCourseContent($id)
     {
-        $this->courseContentToDelete = $id;
+        $this->courseContentToDelete = CourseContent::find($id);
 
         sweetalert()
             ->showDenyButton()
             ->option('confirmButtonText', 'Iya, hapus!')
             ->option('denyButtonText', 'Batal')
-            ->option('id', $id) 
-            ->warning('Apakah kamu yakin ingin menghapus konten ini?', ['Confirm Deletion']);
+            ->option('id', $id)
+            ->warning("Apakah kamu yakin ingin menghapus {$this->courseContentToDelete->type_formatted} ini?", ['Confirm Deletion']);
     }
-    
+
     #[On('sweetalert:confirmed')]
     public function delete(array $payload)
     {
@@ -152,16 +169,17 @@ class StepThree extends Component
 
             $this->syllabusToDelete = null;
             $this->refreshSyllabus();
+
             return;
         }
         if ($this->courseContentToDelete) {
-            $courseContent = CourseContent::find($this->courseContentToDelete);
-            
+            $courseContent = $this->courseContentToDelete;
+            $type = Str::title($this->courseContentToDelete->type_formatted);
             if ($courseContent) {
                 $courseContent->delete();
-                flash()->success('Konten berhasil dihapus.', [], 'Sukses');
+                flash()->success("{$type} berhasil dihapus.", [], 'Sukses');
             } else {
-                flash()->error('Konten tidak ditemukan.');
+                flash()->error("{$type} tidak ditemukan.");
             }
 
             $this->courseContentToDelete = null;
@@ -172,36 +190,34 @@ class StepThree extends Component
     #[On('sweetalert:denied')]
     public function cancelDelete()
     {
-        if($this->syllabusToDelete){
+        if ($this->syllabusToDelete) {
             $this->syllabusToDelete = null;
             // $this->dispatch('refresh-categories')->to(CreateFaqs::class);
             flash()->info('Membatalkan penghapusan silabus.', [], 'Informasi');
         }
-        if($this->courseContentToDelete){
+        if ($this->courseContentToDelete) {
+            flash()->info("Membatalkan penghapusan {$this->courseContentToDelete->type_formatted}.", [], 'Informasi');
             $this->courseContentToDelete = null;
-            flash()->info('Membatalkan penghapusan konten.', [], 'Informasi');
         }
     }
 
     #[On('refresh-syllabus')]
-    public function refreshSyllabus(){
+    public function refreshSyllabus()
+    {
         $this->course = Course::with([
-        'syllabus' => fn($q) => $q->orderBy('order'),
-        'syllabus.courseContents' => fn($q) => $q->orderBy('order')
+            'syllabus' => fn ($q) => $q->orderBy('order'),
+            'syllabus.courseContents' => fn ($q) => $q->orderBy('order'),
         ])->where('slug', $this->slug)->first();
-        $this->hasAssignment = $this->course->hasAssignment();
-        $lastSyllabus = $this->course->syllabus()->latest('order')->first();
-        $this->lastSyllabusId = $lastSyllabus ? $lastSyllabus->id : null;
     }
-    public function mount(){
+
+    public function mount()
+    {
         $this->course = Course::with([
-        'syllabus' => fn($q) => $q->orderBy('order'),
-        'syllabus.courseContents' => fn($q) => $q->orderBy('order')
+            'syllabus' => fn ($q) => $q->orderBy('order'),
+            'syllabus.courseContents' => fn ($q) => $q->orderBy('order'),
         ])->where('slug', $this->slug)->first();
-        $this->hasAssignment = $this->course->hasAssignment();
-        $lastSyllabus = $this->course->syllabus()->latest('order')->first();
-        $this->lastSyllabusId = $lastSyllabus ? $lastSyllabus->id : null;
     }
+
     public function render()
     {
         return view('livewire.admin.course.steps.step-three');

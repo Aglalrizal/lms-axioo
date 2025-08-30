@@ -2,29 +2,34 @@
 
 namespace App\Livewire\Course\CourseContents\Assignment;
 
-use App\Models\Article;
 use App\Models\Assignment;
-use Livewire\Component;
 use App\Models\CourseContent;
-use App\Models\CourseSyllabus;
 use App\Traits\HandlesBase64Images;
-use Mews\Purifier\Facades\Purifier;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Mews\Purifier\Facades\Purifier;
 
 class Create extends Component
 {
     use HandlesBase64Images;
+
     public $courseId;
+
     public $syllabus_id;
+
     public $title;
+
     public $instruction;
+
     public $courseContentId;
+
     public $courseContent;
+
     protected function rules()
     {
         return [
-            'title'           => 'required|string|min:3|max:255',
-            'instruction'         => [
+            'title' => 'required|string|min:3|max:255',
+            'instruction' => [
                 'required',
                 'string',
                 function ($attribute, $value, $fail) {
@@ -32,7 +37,7 @@ class Create extends Component
                     if (strlen($plainText) < 50) {
                         $fail('Instruksi minimal 50 karakter.');
                     }
-                }
+                },
             ],
         ];
     }
@@ -40,11 +45,11 @@ class Create extends Component
     protected function messages()
     {
         return [
-            'title.required'           => 'Judul artikel wajib diisi.',
-            'title.min'                => 'Judul artikel minimal :min karakter.',
-            'title.max'                => 'Judul artikel maksimal :max karakter.',
-            'instruction.required'         => 'Instruksi wajib diisi.',
-            'instruction.min'              => 'Instruksi minimal :min karakter.',
+            'title.required' => 'Judul artikel wajib diisi.',
+            'title.min' => 'Judul artikel minimal :min karakter.',
+            'title.max' => 'Judul artikel maksimal :max karakter.',
+            'instruction.required' => 'Instruksi wajib diisi.',
+            'instruction.min' => 'Instruksi minimal :min karakter.',
         ];
     }
 
@@ -54,9 +59,9 @@ class Create extends Component
             $this->courseContent = CourseContent::with(['assignment', 'courseSyllabus.course'])->find($this->courseContentId);
 
             if ($this->courseContent) {
-                $this->title           = $this->courseContent->title;
-                $this->instruction     = $this->courseContent->assignment->instruction;
-                $this->syllabus_id     = $this->courseContent->course_syllabus_id;
+                $this->title = $this->courseContent->title;
+                $this->instruction = $this->courseContent->assignment->instruction;
+                $this->syllabus_id = $this->courseContent->course_syllabus_id;
             }
         }
     }
@@ -68,36 +73,36 @@ class Create extends Component
         $validated = $this->validate();
         if ($this->courseContentId && $this->courseContent) {
             $oldInstruction = $this->courseContent->assignment->instruction;
-            $this->courseContent->update( [
-                'title'       => $validated['title'],
+            $this->courseContent->update([
+                'title' => $validated['title'],
                 'modified_by' => Auth::user()->username,
             ]);
             Assignment::where('course_content_id', $this->courseContent->id)->update([
-                'instruction'       => $validated['instruction'],
+                'instruction' => $validated['instruction'],
             ]);
 
             $this->removeUnusedImages($oldInstruction, $this->instruction, 'course_assigment_images');
 
-            flash()->success('Assignment berhasil diperbarui!', [], 'Sukses');
+            flash()->success('Tugas berhasil diperbarui!', [], 'Sukses');
         } else {
             $lastOrder = CourseContent::where('course_syllabus_id', $this->syllabus_id)->max('order') ?? 0;
-            CourseContent::create( [
-                'course_id'          => $this->courseId,
+            CourseContent::create([
+                'course_id' => $this->courseId,
                 'course_syllabus_id' => $this->syllabus_id,
-                'title'              => $validated['title'],
-                'type'               => 'assignment',
-                'order'              => $lastOrder + 1,
-                'created_by'         => Auth::user()->username,
-                'modified_by'        => Auth::user()->username,
+                'title' => $validated['title'],
+                'type' => 'assignment',
+                'order' => $lastOrder + 1,
+                'created_by' => Auth::user()->username,
+                'modified_by' => Auth::user()->username,
             ])->assignment()->create(
                 [
                     'instruction' => $validated['instruction'],
                 ]
             );
 
-            flash()->success('Assignment berhasil dibuat!', [], 'Sukses');
+            flash()->success('Tugas berhasil dibuat!', [], 'Sukses');
         }
-        $this->dispatch('close-add-assignment');
+        $this->dispatch('close-add-page');
         $this->dispatch('refresh-syllabus');
         $this->resetExcept('syllabus_id');
         $this->courseContentId = null;
@@ -105,9 +110,10 @@ class Create extends Component
 
     public function close()
     {
-        $this->dispatch('close-add-assignment');
+        $this->dispatch('close-add-page');
         $this->reset();
     }
+
     public function render()
     {
         return view('livewire.course.course-contents.assignment.create');

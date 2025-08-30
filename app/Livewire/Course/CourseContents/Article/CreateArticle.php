@@ -3,30 +3,39 @@
 namespace App\Livewire\Course\CourseContents\Article;
 
 use App\Models\Article;
-use Livewire\Component;
 use App\Models\CourseContent;
 use App\Traits\HandlesBase64Images;
-use Mews\Purifier\Facades\Purifier;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Mews\Purifier\Facades\Purifier;
 
 class CreateArticle extends Component
 {
     use HandlesBase64Images;
 
-    public $syllabus_id, $courseId;
+    public $syllabus_id;
+
+    public $courseId;
+
     public $title;
+
     public $video_url;
+
     public $is_free_preview = false;
+
     public $body;
+
     public $courseContentId;
+
     public $courseContent;
+
     protected function rules()
     {
         return [
-            'title'           => 'required|string|min:3|max:255',
-            'video_url'       => 'nullable|url|max:255',
+            'title' => 'required|string|min:3|max:255',
+            'video_url' => 'nullable|url|max:255',
             'is_free_preview' => 'required|boolean',
-            'body'         => [
+            'body' => [
                 'required',
                 'string',
                 function ($attribute, $value, $fail) {
@@ -34,7 +43,7 @@ class CreateArticle extends Component
                     if (strlen($plainText) < 150) {
                         $fail('Artikel minimal 150 karakter.');
                     }
-                }
+                },
             ],
         ];
     }
@@ -42,13 +51,13 @@ class CreateArticle extends Component
     protected function messages()
     {
         return [
-            'title.required'           => 'Judul artikel wajib diisi.',
-            'title.min'                => 'Judul artikel minimal :min karakter.',
-            'title.max'                => 'Judul artikel maksimal :max karakter.',
-            'video_url.url'            => 'URL video tidak valid.',
+            'title.required' => 'Judul artikel wajib diisi.',
+            'title.min' => 'Judul artikel minimal :min karakter.',
+            'title.max' => 'Judul artikel maksimal :max karakter.',
+            'video_url.url' => 'URL video tidak valid.',
             'is_free_preview.required' => 'Status preview wajib diisi.',
-            'body.required'         => 'Artikel wajib diisi.',
-            'body.min'              => 'Artikel minimal :min karakter.',
+            'body.required' => 'Artikel wajib diisi.',
+            'body.min' => 'Artikel minimal :min karakter.',
         ];
     }
 
@@ -58,11 +67,11 @@ class CreateArticle extends Component
             $this->courseContent = CourseContent::with('article')->find($this->courseContentId);
 
             if ($this->courseContent) {
-                $this->title           = $this->courseContent->title;
+                $this->title = $this->courseContent->title;
                 $this->is_free_preview = (bool) $this->courseContent->is_free_preview;
-                $this->body            = $this->courseContent->article->body;
-                $this->video_url       = $this->courseContent->article->video_url;
-                $this->syllabus_id     = $this->courseContent->course_syllabus_id;
+                $this->body = $this->courseContent->article->body;
+                $this->video_url = $this->courseContent->article->video_url;
+                $this->syllabus_id = $this->courseContent->course_syllabus_id;
             }
         }
     }
@@ -74,14 +83,14 @@ class CreateArticle extends Component
         $validated = $this->validate();
         if ($this->courseContentId && $this->courseContent) {
             $oldBody = $this->courseContent->article->body;
-            $this->courseContent->update( [
-                'title'              => $validated['title'],
-                'is_free_preview'    => $validated['is_free_preview'],
+            $this->courseContent->update([
+                'title' => $validated['title'],
+                'is_free_preview' => $validated['is_free_preview'],
                 'modified_by' => Auth::user()->username,
             ]);
             Article::where('course_content_id', $this->courseContent->id)->update([
-                'body'              => $validated['body'],
-                'video_url'         => $validated['video_url'],
+                'body' => $validated['body'],
+                'video_url' => $validated['video_url'],
             ]);
 
             $this->removeUnusedImages($oldBody, $this->body, 'course_article_images');
@@ -89,15 +98,15 @@ class CreateArticle extends Component
             flash()->success('Konten berhasil diperbarui!', [], 'Sukses');
         } else {
             $lastOrder = CourseContent::where('course_syllabus_id', $this->syllabus_id)->max('order') ?? 0;
-            CourseContent::create( [
-                'course_id'          => $this->courseId,
+            CourseContent::create([
+                'course_id' => $this->courseId,
                 'course_syllabus_id' => $this->syllabus_id,
-                'title'              => $validated['title'],
-                'is_free_preview'    => $validated['is_free_preview'],
-                'type'               => 'article',
-                'order'              => $lastOrder + 1,
-                'created_by'         => Auth::user()->username,
-                'modified_by'        => Auth::user()->username,
+                'title' => $validated['title'],
+                'is_free_preview' => $validated['is_free_preview'],
+                'type' => 'article',
+                'order' => $lastOrder + 1,
+                'created_by' => Auth::user()->username,
+                'modified_by' => Auth::user()->username,
             ])->article()->create(
                 [
                     'body' => $validated['body'],
@@ -107,7 +116,7 @@ class CreateArticle extends Component
 
             flash()->success('Artikel berhasil dibuat!', [], 'Sukses');
         }
-        $this->dispatch('close-add-article');
+        $this->dispatch('close-add-page');
         $this->dispatch('refresh-syllabus');
         $this->resetExcept('syllabus_id');
         $this->courseContentId = null;
@@ -115,9 +124,10 @@ class CreateArticle extends Component
 
     public function close()
     {
-        $this->dispatch('close-add-article');
+        $this->dispatch('close-add-page');
         $this->reset();
     }
+
     public function render()
     {
         return view('livewire.course.course-contents.article.create-article');
