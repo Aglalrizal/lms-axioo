@@ -26,9 +26,9 @@ class LearningPathIndexAdmin extends Component
 
         sweetalert()
             ->showDenyButton()
-            ->option('confirmButtonText', 'Ya, Hapus Tiket!')
+            ->option('confirmButtonText', 'Ya, Hapus jalur!')
             ->option('denyButtonText', 'Batal')
-            ->warning('Apakah Anda yakin ingin menghapus tiket ini?');
+            ->warning('Apakah Anda yakin ingin menghapus jalur ini?');
     }
 
     #[On('sweetalert:confirmed')]
