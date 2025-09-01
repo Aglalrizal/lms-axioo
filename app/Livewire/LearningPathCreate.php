@@ -108,7 +108,7 @@ class LearningPathCreate extends Component
             }
 
             flash()->success('Learning Path berhasil dibuat!', [], 'Sukses');
-            return $this->redirect(route('admin.learning-paths.index'), true);
+            return $this->redirect(route('admin.learning-paths.index'));
         });
     }
 

@@ -3,17 +3,17 @@
     <section style="padding: 4rem 0;">
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10 col-12">
-                <!-- Breadcrumb -->
+                {{-- <!-- Breadcrumb -->
                 <nav aria-label="breadcrumb" class="mb-4">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('public.learning-paths.index') }}">Learning
                                 Paths</a></li>
                         <li class="breadcrumb-item active" aria-current="page">{{ $path->title }}</li>
                     </ol>
-                </nav>
+                </nav> --}}
 
                 <!-- Path Header -->
-                <div class="text-center mb-5">
+                <div class="text-center">
                     <h1 class="display-4 fw-bold mb-3">{{ $path->title }}</h1>
                     <p class="lead text-muted">{{ $path->description }}</p>
 
@@ -24,7 +24,7 @@
                             </div>
                         </div>
                         <div class="text-center">
-                            <div class="badge bg-warning-soft text-warning fs-6 px-3 py-2">
+                            <div class="badge bg-primary-soft text-primary fs-6 px-3 py-2">
                                 {{ $path->steps_count * 4 }} Weeks
                             </div>
                         </div>
@@ -35,11 +35,11 @@
     </section>
 
     <!-- Learning Steps Section -->
-    <section style="padding: 4rem 0;">
+    <section>
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10 col-12">
                 <div class="mb-5">
-                    <h2 class="fs-2 mb-0">Learning Journey</h2>
+                    <h2 class="lead mb-0">Perjalanan Pembelajaran</h2>
                     <p class="">Ikuti langkah-langkah pembelajaran yang telah dirancang khusus untuk mencapai
                         tujuan pembelajaran Anda.</p>
                 </div>
@@ -104,7 +104,7 @@
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="text-center mt-5">
+                <div class="text-center my-5">
                     <a href="{{ route('public.learning-paths.index') }}" class="btn btn-outline-primary">
                         <i class="fe fe-arrow-left me-2"></i>Kembali ke Daftar Path
                     </a>
@@ -120,28 +120,3 @@
         </div>
     </section>
 </main>
-
-@assets
-    <style>
-        .bg-primary-soft {
-            background-color: rgba(13, 110, 253, 0.1);
-        }
-
-        .bg-warning-soft {
-            background-color: rgba(255, 193, 7, 0.1);
-        }
-
-        .text-warning {
-            color: #ffc107 !important;
-        }
-
-        .card {
-            transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
-        }
-    </style>
-@endassets
