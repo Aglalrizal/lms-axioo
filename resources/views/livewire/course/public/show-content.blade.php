@@ -53,7 +53,7 @@
                                         </p>
                                     </div>
                                     <div class="d-flex justify-content-end">
-                                        <a href="" class="btn btn-info">Mulai</a>
+                                        <a wire:click="playQuiz" class="btn btn-info">Mulai</a>
                                     </div>
                                 @else
                                     <div>
@@ -201,7 +201,7 @@
                                     </a>
                                 @endif
 
-                                @if (in_array($content->type, ['article', 'video']) && !$content->progresses()->first()->is_completed)
+                                @if (in_array($content->type, ['article', 'video']) && !$content->progresses()->where('is_completed', true)->exists())
                                     <a wire:click="markComplete" class="btn btn-success mx-2">
                                         Tandai selesai
                                     </a>

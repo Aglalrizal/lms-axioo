@@ -22,7 +22,7 @@ class Quiz extends Model
     }
     public function getDescriptionForEvent(string $eventName): string
     {
-        $actor = Auth::user()?->username ?? 'Sisem';
+        $actor = Auth::user()?->username ?? 'Sistem';
         $title = $this?->courseContent()->title ?? 'Kuis';
         
         return match ($eventName) {
@@ -61,9 +61,12 @@ class Quiz extends Model
 
     public function courseContent(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\CourseContent::class);
+        return $this->belongsTo(\App\Models\CourseContent::class, 'course_content_id');
     }
     public function questions() {
         return $this->hasMany(\App\Models\QuizQuestion::class);
+    }
+    public function attempts(){
+        return $this->hasMany(QuizAttempt::class);
     }
 }

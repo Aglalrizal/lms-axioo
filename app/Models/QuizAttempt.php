@@ -36,9 +36,15 @@ class QuizAttempt extends Model
             'id' => 'integer',
             'quiz_id' => 'integer',
             'user_id' => 'integer',
-            'start_time' => 'timestamp',
-            'end_time' => 'timestamp',
+            'start_time' => 'datetime',
+            'end_time' => 'datetime',
         ];
+    }
+
+        public function getTimeLeftAttribute()
+    {
+        $elapsed = now()->diffInSeconds($this->start_time);
+        return max(0, $this->quiz->duration - $elapsed);
     }
 
     public function quiz(): BelongsTo
@@ -49,5 +55,8 @@ class QuizAttempt extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+    public function answers(){
+        return $this->hasMany(QuizAnswer::class);
     }
 }

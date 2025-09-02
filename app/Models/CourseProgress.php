@@ -28,6 +28,6 @@ class CourseProgress extends Model
 
     public function content()
     {
-        return $this->belongsTo(CourseContent::class, 'content_id');
+        return $this->belongsTo(CourseContent::class, 'course_content_id');
     }
 }
