@@ -22,7 +22,7 @@
 
     <link rel="stylesheet" href="{{ asset('assets/libs/tiny-slider/dist/tiny-slider.css') }}" />
     <style>
-        <style>.navbar.fixed-top {
+        .navbar.fixed-top {
             z-index: 1020 !important;
             /* default biasanya 1030 */
         }
@@ -32,7 +32,6 @@
             /* lebih tinggi dari navbar */
         }
     </style>
-    </style>
 
     @yield('styles')
 
@@ -41,7 +40,12 @@
 </head>
 
 <body class="bg-white">
-    @yield('container')
+
+    @hasSection('container')
+        @yield('container')
+    @else
+        {{ $slot ?? '' }}
+    @endif
 
     <!-- Scripts -->
     <!-- Libs JS -->

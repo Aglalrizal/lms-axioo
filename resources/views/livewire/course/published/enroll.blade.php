@@ -13,7 +13,7 @@
                             <label class="form-label" for="select-user">Calon Peserta</label>
                             <select class="form-select" id="select-user" wire:model="selectedUser" style="width: 100%;"
                                 name="users[]" multiple="multiple">
-                                <option value="">Pilih Kategori
+                                <option value="">Pilih Peserta
                                 </option>
                                 @foreach ($users as $user)
                                     <option value="{{ $user->id }}">{{ $user->first_name . ' ' . $user->surname }}

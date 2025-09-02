@@ -22,7 +22,7 @@ class StepOne extends Component
     public $categories;
     public $instructors;
     public $programs;
-    public $courseCategory, $courseInstructor, $program_id, $title, $courseLevel, $accessType, $duration, $description, $short_desc, $price;
+    public $courseCategory, $courseInstructor, $program_id, $title, $courseLevel, $accessType, $duration, $description = '', $short_desc, $price;
 
     public ?Course $course = null;
 
@@ -33,7 +33,7 @@ class StepOne extends Component
         return [
             'courseCategory'    => 'required|integer|exists:course_categories,id',
             'courseInstructor'  => 'required|integer|exists:users,id',
-            'program_id'        => 'nullable|integer|exist:programs.id',
+            'program_id'        => 'nullable|integer|exists:programs,id',
             'title'             => 'required|string|max:255',
             'courseLevel'       => 'required|string|max:100',
             'accessType'        => 'required|string|max:100',
@@ -43,8 +43,8 @@ class StepOne extends Component
                 'string',
                 function ($attribute, $value, $fail) {
                     $plainText = trim(strip_tags($value));
-                    if (strlen($plainText) < 20) {
-                        $fail('Deskripsi kursus minimal 20 karakter teks.');
+                    if (strlen($plainText) < 100) {
+                        $fail('Deskripsi kursus minimal 100 karakter teks.');
                     }
                 },
             ],
@@ -64,7 +64,7 @@ class StepOne extends Component
             'courseInstructor.integer' => 'Instruktur tidak valid.',
             'courseInstructor.exists'  => 'Instruktur yang dipilih tidak ditemukan.',
 
-            'program_id.exist'         => 'Program tidak ditemukan',
+            'program_id.exists'         => 'Program tidak ditemukan',
 
             'title.required'           => 'Judul kursus wajib diisi.',
             'title.string'             => 'Judul kursus harus berupa teks.',
@@ -119,8 +119,8 @@ class StepOne extends Component
                 $this->dispatch('init-program', [
                     $this->program_id
                 ]);
-                $this->courseLevel = $this->course->level;
-                $this->accessType = $this->course->access_type;
+                $this->courseLevel = $this->course->level->value;
+                $this->accessType = $this->course->access_type->value;
             }
         }
 
@@ -191,7 +191,7 @@ class StepOne extends Component
                 'description' => $data['description'],
                 'duration' => $data['duration'],
                 'short_desc' => $data['short_desc'],
-                'price' => $data['price']
+                'price' => $data['price'] ?? 0
             ]);
             flash()->success('Kursus Berhasil Disimpan!', [], 'Sukses');
             $this->slug = $this->course->slug;

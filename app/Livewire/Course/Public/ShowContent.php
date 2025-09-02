@@ -9,6 +9,7 @@ use App\Models\CourseContent;
 use App\Models\CourseProgress;
 use Livewire\Attributes\Layout;
 use App\Models\AssignmentSubmission;
+use App\Models\QuizAttempt;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,6 +40,20 @@ class ShowContent extends Component
             ]
         );
         flash()->success("Berhasil menyelesaikan {$this->content->type_formatted}.", [], 'Sukses');
+    }
+
+    public function playQuiz(){
+        $attempt = QuizAttempt::create(
+            [
+                'quiz_id' => $this->content->quiz->id,
+                'user_id' => Auth::id(),
+                'start_time' => now(),
+                'end_time' => now()->addMinutes($this->content->quiz->duration),
+                'status' => 'in_progress',
+                'total_score' => 0
+            ]
+        );
+        return redirect(route('quiz.player', $attempt));
     }
 
     public function save()

@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/cms/faqs', \App\Livewire\Admin\Faqs\Index::class)->name('admin.cms.faqs');
     });
     Route::get('/course/{slug}/{syllabusId}/{courseContentId}', \App\Livewire\Course\Public\ShowContent::class)->name('course.show.content');
+    Route::get('/course/quiz/{attempt}', \App\Livewire\Quiz\Player::class)->name('quiz.player');
 });
 
 Route::middleware('auth')->group(function () {

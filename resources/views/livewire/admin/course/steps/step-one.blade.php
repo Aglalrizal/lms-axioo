@@ -17,8 +17,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="short_desc" class="form-label">Deskripsi Singkat</label>
-                    <textarea wire:model="short_desc" class="form-control" id="short_desc" rows="3"
-                        placeholder="Minimal 75 karakter dan maksimal 150 karakter"></textarea>
+                    <textarea wire:model="short_desc" class="form-control" id="short_desc" rows="2"
+                        placeholder="Minimal 75 karakter dan maksimal 150 karakter" maxlength="150"
+                        oninput="document.getElementById('shortDescCount').textContent = this.value.length"></textarea>
+                    <small id="shortDescCount" class="text-muted">0</small>
+                    <small class="text-muted">/ 150 karakter</small>
                     @error('short_desc')
                         <small class="d-block mt-2 text-danger">{{ $message }}</small>
                     @enderror
@@ -36,7 +39,7 @@
                     <div wire:ignore>
                         <label class="form-label" for="select-program">Program</label>
                         <select class="form-select" id="select-program" wire:model="program_id" style="width: 100%">
-                            <option value="">Pilih Program
+                            <option value="null">Pilih Program
                             </option>
                             @foreach ($programs as $item)
                                 <option value="{{ $item->id }}">{{ Str::title($item->name) }}</option>
@@ -112,9 +115,7 @@
                     <label for="price" class="form-label">Harga Kursus</label>
                     <input id="price" wire:model="price" class="form-control @error('price') is-invalid @enderror"
                         type="number" min="0" x-on:wheel.prevent x-on:keydown.arrow-up.prevent
-                        x-on:keydown.arrow-down.prevent
-                        placeholder="Kosongkan jika tipe kursus
-                            adalah gratis" />
+                        x-on:keydown.arrow-down.prevent placeholder="Kosongkan jika tipe kursus adalah gratis" />
                     @error('price')
                         <small class="d-block mt-2 text-danger">{{ $message }}</small>
                     @enderror
@@ -122,6 +123,8 @@
                 <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
                     <livewire:jodit-text-editor wire:model.live="description" />
+                    <div class="form-text">
+                        Deskripsi minimal 100 karakter</div>
                     @error('description')
                         <small class="d-block mt-2 text-danger">{{ $message }}</small>
                     @enderror
@@ -145,9 +148,9 @@
 
 @script
     <script>
-        $('#select-category').select2();
-        $('#select-instructor').select2();
-        $('#select-program').select2();
+        let selectCategory = $('#select-category').select2();
+        let selectInstructor = $('#select-instructor').select2();
+        let selectProgram = $('#select-program').select2();
 
         Livewire.on('init-category', ([categoryId]) => {
             $('#select-category').val(categoryId).trigger('change');
@@ -160,13 +163,12 @@
         });
 
         document.getElementById('save-button').addEventListener('click', function() {
-
-            const instructor = $('#select-instructor').val();
-            @this.set('courseInstructor', instructor);
-            const category = $('#select-category').val();
-            @this.set('courseCategory', category);
             const program = $('#select-program').val();
             @this.set('program_id', program);
+            const instructor = $('#select-instructor').val();
+            const category = $('#select-category').val();
+            @this.set('courseCategory', category);
+            @this.set('courseInstructor', instructor);
         });
     </script>
 @endscript
