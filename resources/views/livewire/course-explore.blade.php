@@ -62,10 +62,10 @@
                     <div class="col-xl-3 col-md-4 col-12 mb-4">
                         <a href="{{ route('public.course.search', ['program' => $program->slug]) }}"
                             class="text-decoration-none">
-                            <div class="card overflow-hidden hover-lift"
+                            <div class="card h-100 overflow-hidden hover-lift"
                                 style="max-height: 10rem; transition: transform 0.2s ease-in-out;">
-                                <img src={{ asset('assets/images/samples/course_thumbnail_sample_4.png') }}
-                                    class="card-img object-fit-cover" alt="...">
+                                <img src={{ asset($program->image_path ?? 'assets/images/samples/course_thumbnail_sample_4.png') }}
+                                    class="card-img object-fit-cover h-100" alt="...">
                                 <div class="card-img-overlay text-white text-center d-flex flex-column justify-content-center"
                                     style="background-color: rgba(0, 0, 0, 0.60);">
                                     <h5 class="card-title fs-3" style="color: white;">{{ $program->name }}</h5>
