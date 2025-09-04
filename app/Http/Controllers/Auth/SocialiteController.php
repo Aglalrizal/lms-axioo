@@ -33,7 +33,7 @@ public function redirectToProvider($provider)
         try {
             $googleUser = Socialite::driver('google')->user();
         } catch (Throwable $e) {
-            return redirect('/')->with('error', 'Google authentication failed.');
+            return redirect('/')->with('error', 'Gagal masuk dengan google.');
         }
 
         // Cari user berdasarkan email
@@ -42,19 +42,21 @@ public function redirectToProvider($provider)
         if (!$user) {
             // Buat user baru kalau belum ada
             $user = User::create([
-                'username'             => Str::slug($googleUser->name, '') . now()->timestamp,
-                'first_name'           => strstr($googleUser->name, " ", true),
-                'surname'              => ltrim(strstr($googleUser->name, " ")),
-                'email'                => $googleUser->email,
-                'email_verified_at'    => now(),
-                'provider_id'          => $googleUser->id,
-                'provider_name'        => 'google',
-                'provider_token'       => $googleUser->token,
+                'username'   => Str::slug($googleUser->name, '') . now()->timestamp,
+                'first_name' => strstr($googleUser->name, " ", true) ?: $googleUser->name, // fallback
+                'surname'    => ltrim(strstr($googleUser->name, " ")) ?: '', // fallback
+                'email'      => $googleUser->email,
+                'email_verified_at' => now(),
+                'provider_id'       => $googleUser->id,
+                'provider_name'     => 'google',
+                'provider_token'    => $googleUser->token ?? null,
                 'provider_refresh_token' => $googleUser->refreshToken ?? null,
             ]);
 
             // Assign role default (misalnya student)
             $user->assignRole('student');
+            Auth::login($user, true);
+            return redirect(route('user.dashboard.profile', $user->username));
         }
 
         Auth::login($user, true);

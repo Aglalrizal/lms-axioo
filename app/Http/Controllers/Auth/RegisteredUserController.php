@@ -30,15 +30,29 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'username' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', 'unique:users', 'alpha_dash'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ],[
+            'username.required' => 'Username wajib diisi.',
+            'username.string'   => 'Username harus berupa teks.',
+            'username.min'      => 'Username minimal :min karakter.',
+            'username.max'      => 'Username maksimal :max karakter.',
+            'username.alpha_dash' => 'Username hanya boleh huruf, angka, tanda hubung, dan underscore.',
+            'username.unique'   => 'Username sudah digunakan.',
+
+            'email.required'    => 'Email wajib diisi.',
+            'email.email'       => 'Format email tidak valid.',
+            'email.unique'      => 'Email sudah digunakan.',
+
+            'password.required' => 'Password wajib diisi.',
+            'password.string'   => 'Password harus berupa teks.',
+            'password.min'      => 'Password minimal :min karakter.',
+            'password.confirmed'=> 'Konfirmasi password tidak cocok.',
         ]);
 
-        dd();
-
         $user = User::create([
-            'username' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -48,6 +62,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('user.dashboard.profile', $user->username,absolute: false));
     }
 }

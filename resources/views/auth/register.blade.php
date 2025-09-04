@@ -11,10 +11,10 @@
                             {{-- <a href="../index.html"><img src="../assets/images/brand/logo/logo-icon.svg" class="mb-4"
                                     alt="logo" /></a> --}}
                             <div class="d-flex flex-column gap-1">
-                                <h1 class="mb-0 fw-bold">Sign up</h1>
+                                <h1 class="mb-0 fw-bold">Daftar</h1>
                                 <span>
-                                    Already have an account?
-                                    <a href="{{ route('login') }}" class="ms-1">Sign in</a>
+                                    Sudah punya akun?
+                                    <a href="{{ route('login') }}" class="ms-1">Masuk</a>
                                 </span>
                             </div>
                         </div>
@@ -53,29 +53,29 @@
                                     <input type="checkbox" class="form-check-input" id="agreeCheck" required />
                                     <label class="form-check-label" for="agreeCheck">
                                         <span>
-                                            I agree to the
-                                            <a href="terms-condition-page.html">Terms of Service</a>
-                                            and
-                                            <a href="terms-condition-page.html">Privacy Policy.</a>
+                                            Saya setuju dengan
+                                            <a href="terms-condition-page.html">syarat dan ketentuan </a>
+                                            serta
+                                            <a href="terms-condition-page.html">kebijakan privasi.</a>
                                         </span>
                                     </label>
-                                    <div class="invalid-feedback">You must agree before submitting.</div>
+                                    <div class="invalid-feedback">Anda harus setuju sebelum mengirim.</div>
                                 </div>
                             </div>
                             <div>
                                 <!-- Button -->
                                 <div class="d-grid">
-                                    <x-primary-button type="submit">Create Account</x-primary-button>
+                                    <x-primary-button type="submit">Buat akun</x-primary-button>
                                 </div>
                             </div>
                         </form>
                         <div class="d-flex align-items-center">
                             <hr class="flex-grow-1">
-                            <span class="mx-2 text-muted">or</span>
+                            <span class="mx-2 text-muted">Atau</span>
                             <hr class="flex-grow-1">
                         </div>
                         {{-- Login with Google Button --}}
-                        <x-google-button title="Sign Up"></x-google-button>
+                        <x-google-button title="Masuk/daftar"></x-google-button>
                     </div>
                 </div>
             </div>
