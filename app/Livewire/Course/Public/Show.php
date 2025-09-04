@@ -110,14 +110,14 @@ class Show extends Component
                         $q->where('student_id', $user->id)
                         ->where('is_completed', true);
                     })
-                    ->orderBy('order', 'desc')
+                    ->orderBy('course_contents.order', 'desc')
                     ->first();
 
                 if ($lastCompleted) {
                     $nextContent = $this->course->contents()
-                        ->where('order', '>', $lastCompleted->order)
-                        ->orderBy('order')
-                        ->first();
+                    ->where('course_contents.order', '>', $lastCompleted->order)
+                    ->orderBy('course_contents.order')
+                    ->first();
 
                     if ($nextContent && $nextContent->is_unlocked) {
                         $this->url = route('course.show.content', [

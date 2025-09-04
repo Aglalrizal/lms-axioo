@@ -37,11 +37,11 @@
                         <div class="d-flex mb-5 lh-1">
                             <span class="d-none d-md-block">
                                 <i class="bi bi-bar-chart-fill"></i>
-                                <span>{{ Str::title($course->level) }}</span>
+                                <span>{{ Str::title($course->level->label()) }}</span>
                             </span>
                             <span class="ms-4 d-none d-md-block">
                                 <i class="bi bi-cash"></i>
-                                <span>{{ Str::title($course->access_type) }}</span>
+                                <span>{{ Str::title($course->access_type->label()) }}</span>
                             </span>
                         </div>
                         <div class="d-flex justify-content-between">
