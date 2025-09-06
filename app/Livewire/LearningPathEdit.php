@@ -8,6 +8,7 @@ use App\Models\LearningPathStep;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
+use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -22,169 +23,134 @@ class LearningPathEdit extends Component
     #[Rule('required|string')]
     public $description = '';
 
-    public $steps = [];
-
-    // Track steps that should be deleted when saving
-    public $stepsToDelete = [];
-
-    protected function rules()
-    {
-        return [
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'steps' => 'required|array|min:1',
-            'steps.*.title' => 'required|string|max:255',
-            'steps.*.description' => 'required|string',
-            'steps.*.course_id' => 'required|exists:courses,id',
-        ];
-    }
-
-    protected $messages = [
-        'title.required' => 'Judul learning path wajib diisi.',
-        'description.required' => 'Deskripsi learning path wajib diisi.',
-        'steps.required' => 'Minimal harus ada 1 step.',
-        'steps.min' => 'Minimal harus ada 1 step.',
-        'steps.*.title.required' => 'Judul step wajib diisi.',
-        'steps.*.description.required' => 'Deskripsi step wajib diisi.',
-        'steps.*.course_id.required' => 'Course untuk step wajib dipilih.',
-        'steps.*.course_id.exists' => 'Course yang dipilih tidak valid.',
-    ];
+    public $stepToDelete = null;
 
     public function mount($slug)
     {
-        $this->learningPath = LearningPath::with('steps')->where('slug', $slug)->firstOrFail();
-
+        $this->learningPath = LearningPath::where('slug', $slug)->firstOrFail();
         $this->title = $this->learningPath->title;
         $this->description = $this->learningPath->description;
 
-        // Load existing steps with consistent temp_id generation
-        $this->steps = $this->learningPath->steps->map(function ($step) {
-            return [
-                'id' => $step->id,
-                'title' => $step->title,
-                'description' => $step->description,
-                'course_id' => $step->course_id,
-                'temp_id' => 'existing_' . $step->id, // Consistent temp_id for existing steps
-                'is_existing' => true
-            ];
-        })->toArray();
-
-        // Initialize empty array for steps to delete
-        $this->stepsToDelete = [];
-
-        if (empty($this->steps)) {
+        // Ensure at least one step exists
+        if ($this->learningPath->steps()->count() == 0) {
             $this->addStep();
         }
     }
 
     public function addStep()
     {
-        $this->steps[] = [
-            'id' => null,
-            'title' => '',
-            'description' => '',
-            'course_id' => null,
-            'temp_id' => 'new_' . uniqid(),
-            'is_existing' => false
-        ];
+        // Auto-save new step like FAQ implementation
+        $maxOrder = LearningPathStep::where('learning_path_id', $this->learningPath->id)->max('order') ?? 0;
+
+        // Ambil course pertama sebagai default karena course_id required di database
+        $firstCourse = Course::where('is_published', true)->first();
+
+        if (!$firstCourse) {
+            flash()->error('Tidak ada kursus yang tersedia untuk dijadikan default. Buat kursus terlebih dahulu.', [], 'Error');
+            return;
+        }
+
+        LearningPathStep::create([
+            'learning_path_id' => $this->learningPath->id,
+            'title' => 'Langkah Baru',
+            'description' => 'Deskripsi langkah baru',
+            'course_id' => $firstCourse->id, // Set ke course pertama, bukan null
+            'order' => $maxOrder + 1,
+        ]);
+
+        flash()->success('Langkah baru berhasil ditambahkan!', [], 'Sukses');
+    }
+    public function updateStep($stepId, $field, $value)
+    {
+        // Update database directly like FAQ
+        LearningPathStep::where('id', $stepId)
+            ->where('learning_path_id', $this->learningPath->id)
+            ->update([$field => $value]);
+
+        flash()->success('Data berhasil diperbarui!', [], 'Sukses');
     }
 
-    public function removeStep($index)
+    #[On('delete-step')]
+    public function confirmDeleteStep($id)
     {
-        if (count($this->steps) > 1) {
-            $stepToRemove = $this->steps[$index];
+        $stepCount = LearningPathStep::where('learning_path_id', $this->learningPath->id)->count();
 
-            // If it's an existing step, mark it for deletion instead of deleting immediately
-            if (isset($stepToRemove['id']) && $stepToRemove['id'] && $stepToRemove['is_existing']) {
-                $this->stepsToDelete[] = $stepToRemove['id'];
+        if ($stepCount <= 1) {
+            flash()->error('Minimal harus ada 1 langkah!', [], 'Error');
+            return;
+        }
+
+        $this->stepToDelete = $id;
+
+        sweetalert()
+            ->showDenyButton()
+            ->option('confirmButtonText', 'Ya, hapus ini!')
+            ->option('denyButtonText', 'Batal')
+            ->option('id', $id)
+            ->warning('Apakah Anda yakin ingin menghapus langkah pembelajaran ini?', ['Konfirmasi Penghapusan']);
+    }
+
+    #[On('sweetalert:confirmed')]
+    public function deleteStep(array $payload)
+    {
+        if ($this->stepToDelete) {
+            $step = LearningPathStep::where('id', $this->stepToDelete)
+                ->where('learning_path_id', $this->learningPath->id)
+                ->first();
+
+            if ($step) {
+                $step->delete();
+                flash()->success('Langkah berhasil dihapus!', [], 'Sukses');
+            } else {
+                flash()->error('Langkah tidak ditemukan.', [], 'Error');
             }
 
-            // Remove from steps array
-            unset($this->steps[$index]);
-            $this->steps = array_values($this->steps); // Re-index array
+            $this->stepToDelete = null;
         }
     }
 
-    public function updateStepOrder($orderedIds)
+    #[On('sweetalert:denied')]
+    public function cancelDeleteStep()
     {
-        $orderedSteps = [];
-        foreach ($orderedIds as $tempId) {
-            foreach ($this->steps as $step) {
-                if ($step['temp_id'] == $tempId) {
-                    $orderedSteps[] = $step;
-                    break;
-                }
+        if ($this->stepToDelete) {
+            $this->stepToDelete = null;
+            flash()->info('Penghapusan langkah dibatalkan.', [], 'Info');
+        }
+    }
+
+    public function updateStepOrder($orderedData)
+    {
+        // Auto-save like FAQ implementation - simple and clean
+        foreach ($orderedData as $item) {
+            $stepId = $item['value'];
+            $newOrder = $item['order'];
+
+            // Only update existing steps (ignore new steps that haven't been saved yet)
+            if (is_numeric($stepId)) {
+                LearningPathStep::where('id', $stepId)
+                    ->where('learning_path_id', $this->learningPath->id)
+                    ->update(['order' => $newOrder]);
             }
         }
-        $this->steps = $orderedSteps;
+
+        flash()->success('Urutan langkah berhasil diperbarui!', [], 'Sukses');
+        // Don't refresh steps to avoid breaking sortable
     }
 
     public function save()
     {
-        $this->validate();
+        $this->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
 
-        DB::transaction(function () {
-            // Update Learning Path
-            $this->learningPath->update([
-                'title' => $this->title,
-                'description' => $this->description,
-                'modified_by' => Auth::user()->username,
-            ]);
+        $this->learningPath->update([
+            'title' => $this->title,
+            'description' => $this->description,
+            'modified_by' => Auth::user()->username,
+        ]);
 
-            // Delete marked steps
-            if (!empty($this->stepsToDelete)) {
-                LearningPathStep::whereIn('id', $this->stepsToDelete)->delete();
-            }
-
-            // Prepare batch operations
-            $stepsToUpdate = [];
-            $stepsToCreate = [];
-
-            foreach ($this->steps as $index => $stepData) {
-                if ($stepData['id'] && $stepData['is_existing']) {
-                    // Existing step - prepare for batch update
-                    $stepsToUpdate[] = [
-                        'id' => $stepData['id'],
-                        'title' => $stepData['title'],
-                        'description' => $stepData['description'],
-                        'course_id' => $stepData['course_id'],
-                        'order' => $index + 1,
-                    ];
-                } else {
-                    // New step - prepare for creation
-                    $stepsToCreate[] = [
-                        'learning_path_id' => $this->learningPath->id,
-                        'course_id' => $stepData['course_id'],
-                        'title' => $stepData['title'],
-                        'description' => $stepData['description'],
-                        'order' => $index + 1,
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ];
-                }
-            }
-
-            // Perform batch operations
-            if (!empty($stepsToUpdate)) {
-                foreach ($stepsToUpdate as $stepUpdate) {
-                    LearningPathStep::where('id', $stepUpdate['id'])->update([
-                        'title' => $stepUpdate['title'],
-                        'description' => $stepUpdate['description'],
-                        'course_id' => $stepUpdate['course_id'],
-                        'order' => $stepUpdate['order'],
-                    ]);
-                }
-            }
-
-            if (!empty($stepsToCreate)) {
-                LearningPathStep::insert($stepsToCreate);
-            }
-
-            // Clear steps to delete array
-            $this->stepsToDelete = [];
-
-            return flash()->success('Learning Path berhasil diperbarui!', [], 'Sukses');
-        });
+        flash()->success('Learning Path berhasil diperbarui!', [], 'Sukses');
     }
 
     public function togglePublish($pathId)
@@ -205,9 +171,6 @@ class LearningPathEdit extends Component
             ->select('id', 'title')
             ->orderBy('title')
             ->get();
-
-        // Dispatch event to initialize sortable after render
-        $this->dispatch('component-loaded');
 
         return view('livewire.learning-path-edit', [
             'courses' => $courses
