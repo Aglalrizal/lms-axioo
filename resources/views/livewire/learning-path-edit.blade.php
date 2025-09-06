@@ -20,9 +20,8 @@
                     </nav>
                 </div>
                 <div class="d-flex gap-2">
-
                     <a href="{{ route('admin.learning-paths.index') }}" class="btn btn-outline-secondary">
-                        <i class="fe fe-arrow-left me-2"></i>Back to Learning Paths
+                        <i class="fe fe-arrow-left me-2"></i>Kembali
                     </a>
                 </div>
             </div>
@@ -31,37 +30,69 @@
 
     <form wire:submit="save">
         <div class="row gy-4">
+
+            <!-- Publication Status -->
+            <div class="col-xl-12">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h4 class="pb-1">Status Publikasi</h4>
+
+                                <div class="d-flex align-items-center gap-2">
+                                    @if ($learningPath->is_published)
+                                        <span class="badge bg-success-soft text-success px-3 py-2">
+                                            <i class="fe fe-eye me-1"></i>Publis
+                                        </span>
+                                    @else
+                                        <span class="badge bg-warning-soft text-warning px-3 py-2">
+                                            <i class="fe fe-edit me-1"></i>Draft
+                                        </span>
+                                    @endif
+
+                                    <p class="text-muted mb-0">
+                                        @if ($learningPath->is_published)
+                                            Jalur pembelajaran ini saat ini dipublikasikan dan terlihat oleh pengguna.
+                                        @else
+                                            Jalur pembelajaran ini saat ini dalam mode draf.
+                                        @endif
+                                    </p>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button" wire:click="togglePublish({{ $learningPath->id }})"
+                                    class="btn btn-outline-{{ $learningPath->is_published ? 'warning' : 'success' }} btn-sm">
+                                    <i class="fe fe-{{ $learningPath->is_published ? 'eye-off' : 'eye' }} me-2"></i>
+                                    {{ $learningPath->is_published ? 'Batalkan Publikasi' : 'Publikasikan' }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Basic Information -->
             <div class="col-xl-12 col-lg-12 col-md-12 col-12">
                 <div class="card border-0">
                     <div class="card-header d-flex gap-2 align-items-center">
-                        <h4 class="mb-0">Basic Information</h4>
-                        @if ($learningPath->is_published)
-                            <span class="badge bg-success-soft text-success px-3 py-2">
-                                <i class="fe fe-eye me-1"></i>Published
-                            </span>
-                        @else
-                            <span class="badge bg-warning-soft text-warning px-3 py-2">
-                                <i class="fe fe-edit me-1"></i>Draft
-                            </span>
-                        @endif
+                        <h4 class="mb-0">Informasi Dasar</h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12 mb-3">
-                                <label for="title" class="form-label">Learning Path Title <span
+                                <label for="title" class="form-label">Judul Jalur Pembelajaran <span
                                         class="text-danger">*</span></label>
                                 <input wire:model="title" type="text" id="title" class="form-control"
-                                    placeholder="Enter learning path title" required />
+                                    placeholder="Masukkan judul jalur pembelajaran" required />
                                 @error('title')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-md-12 mb-3">
-                                <label for="description" class="form-label">Description <span
+                                <label for="description" class="form-label">Deskripsi <span
                                         class="text-danger">*</span></label>
                                 <textarea wire:model="description" id="description" class="form-control" rows="4"
-                                    placeholder="Describe what learners will achieve..." required></textarea>
+                                    placeholder="Jelaskan apa yang akan dicapai oleh peserta didik..." required></textarea>
                                 @error('description')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -75,9 +106,9 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-12">
                 <div class="card border-0">
                     <div class="card-header d-flex align-items-center justify-content-between">
-                        <h4 class="mb-0">Learning Steps</h4>
+                        <h4 class="mb-0">Jalur Pembelajaran</h4>
                         <button type="button" class="btn btn-outline-primary btn-sm" wire:click="addStep">
-                            <i class="fe fe-plus me-2"></i>Add Step
+                            <i class="fe fe-plus me-2"></i>Tambah Langkah
                         </button>
                     </div>
                     <div class="card-body">
@@ -108,16 +139,17 @@
 
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
-                                                <label class="form-label">Step Title <span
+                                                <label class="form-label">Judul Langkah <span
                                                         class="text-danger">*</span></label>
                                                 <input wire:model="steps.{{ $index }}.title" type="text"
-                                                    class="form-control" placeholder="Step title" />
+                                                    class="form-control" placeholder="Judul Langkah" />
                                                 @error("steps.{$index}.title")
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
+
                                             <div class="col-md-6 mb-3">
-                                                <label class="form-label">Course <span
+                                                <label class="form-label">Kursus <span
                                                         class="text-danger">*</span></label>
                                                 <select wire:model="steps.{{ $index }}.course_id"
                                                     class="form-select">
@@ -131,11 +163,12 @@
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
+
                                             <div class="col-md-12 mb-3">
-                                                <label class="form-label">Step Description <span
+                                                <label class="form-label">Deskripsi Langkah <span
                                                         class="text-danger">*</span></label>
                                                 <textarea wire:model="steps.{{ $index }}.description" class="form-control" rows="3"
-                                                    placeholder="What will students learn in this step?"></textarea>
+                                                    placeholder="Apa yang akan dipelajari siswa di langkah ini?"></textarea>
                                                 @error("steps.{$index}.description")
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -143,12 +176,6 @@
                                         </div>
                                     </div>
                                 @endforeach
-                            </div>
-
-                            <div class="alert alert-info">
-                                <i class="fe fe-info me-2"></i>
-                                <strong>Tip:</strong> You can drag and drop steps to reorder them. Changes will be saved
-                                when you submit the form.
                             </div>
                         @else
                             <div class="text-center py-4">
@@ -160,45 +187,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Actions -->
-            <div class="col-xl-12">
-                <div class="card border-0">
-                    <div class="card-body">
-                        <div class="d-flex gap-3">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fe fe-save me-2"></i>Update Learning Path
-                            </button>
-                            <a href="{{ route('admin.learning-paths.index') }}" class="btn btn-outline-secondary">
-                                Cancel
-                            </a>
-                        </div>
-
-                        <hr class="my-4">
-
-                        <!-- Additional Actions -->
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <h6 class="mb-1">Publication Status</h6>
-                                <p class="text-muted mb-0">
-                                    @if ($learningPath->is_published)
-                                        This learning path is currently published and visible to users.
-                                    @else
-                                        This learning path is currently in draft mode.
-                                    @endif
-                                </p>
-                            </div>
-                            <div>
-                                <button type="button" wire:click="togglePublish({{ $learningPath->id }})"
-                                    class="btn btn-outline-{{ $learningPath->is_published ? 'warning' : 'success' }}">
-                                    <i class="fe fe-{{ $learningPath->is_published ? 'eye-off' : 'eye' }} me-2"></i>
-                                    {{ $learningPath->is_published ? 'Unpublish' : 'Publish' }}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </form>
 </section>
@@ -206,22 +194,6 @@
 @assets
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <style>
-        .step-item {
-            transition: all 0.3s ease;
-        }
-
-        .step-item:hover {
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .sortable-ghost {
-            opacity: 0.4;
-        }
-
-        .sortable-chosen {
-            background-color: #f8f9fa;
-        }
-
         .drag-handle {
             cursor: move;
             padding: 8px;
@@ -233,22 +205,6 @@
         .drag-handle:hover {
             color: #007bff !important;
             background-color: rgba(0, 123, 255, 0.1);
-        }
-
-        .bg-primary-soft {
-            background-color: rgba(13, 110, 253, 0.1);
-        }
-
-        .text-primary {
-            color: #0d6efd !important;
-        }
-
-        .bg-success-soft {
-            background-color: rgba(25, 135, 84, 0.1);
-        }
-
-        .bg-warning-soft {
-            background-color: rgba(255, 193, 7, 0.1);
         }
     </style>
 @endassets

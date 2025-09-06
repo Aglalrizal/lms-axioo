@@ -27,8 +27,6 @@ class CourseSearch extends Component
         'level' => ['except' => ''],
     ];
 
-    public function triggerRender() {}
-
     public function render()
     {
         $query = Course::query()->where('is_published', true);
