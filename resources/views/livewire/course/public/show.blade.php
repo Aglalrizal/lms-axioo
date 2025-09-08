@@ -259,3 +259,33 @@
         </div>
     </section>
 </main>
+
+@assets
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}">
+    </script>
+@endassets
+@script
+    <script>
+        Livewire.on('midtrans-payment', ({
+            token
+        }) => {
+            console.log("Token Snap diterima:", token);
+            snap.pay(token, {
+                onSuccess: function(result) {
+                    console.log("Success:", result);
+                    location.reload();
+                },
+                onPending: function(result) {
+                    console.log("Pending:", result);
+                },
+                onError: function(result) {
+                    console.log("Error:", result);
+                    alert("Pembayaran gagal!");
+                },
+                onClose: function() {
+                    alert("Popup ditutup sebelum selesai");
+                }
+            });
+        });
+    </script>
+@endscript

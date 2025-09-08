@@ -130,7 +130,7 @@ class CourseContent extends Model
     }
     public function progresses()
     {
-        return $this->hasMany(CourseProgress::class, 'course_content_id');
+        return $this->hasMany(CourseProgress::class);
     }
 
     public function completedBy()

@@ -129,41 +129,16 @@ class ShowContent extends Component
                 ->with('error', 'Konten ini masih terkunci.');
         }
 
-        // --- Prev Content ---
-        $this->prevContent = $this->content->courseSyllabus
-            ->courseContents()
-            ->where('order', '<', $this->content->order)
-            ->orderBy('order', 'desc')
+        $this->prevContent = $this->course->contents()
+            ->where('global_order', '<', $this->content->global_order)
+            ->orderBy('global_order', 'desc')
             ->first();
 
-        if (!$this->prevContent) {
-            $prevSyllabus = $this->course->syllabus()
-                ->where('order', '<', $this->content->courseSyllabus->order)
-                ->orderBy('order', 'desc')
-                ->first();
-
-            if ($prevSyllabus) {
-                $this->prevContent = $prevSyllabus->courseContents()->orderBy('order', 'desc')->first();
-            }
-        }
-
-        // --- Next Content ---
-        $this->nextContent = $this->content->courseSyllabus
-            ->courseContents()
-            ->where('order', '>', $this->content->order)
-            ->orderBy('order', 'asc')
+        // Cari next content
+        $this->nextContent = $this->course->contents()
+            ->where('global_order', '>', $this->content->global_order)
+            ->orderBy('global_order', 'asc')
             ->first();
-
-        if (!$this->nextContent) {
-            $nextSyllabus = $this->course->syllabus()
-                ->where('order', '>', $this->content->courseSyllabus->order)
-                ->orderBy('order', 'asc')
-                ->first();
-
-            if ($nextSyllabus) {
-                $this->nextContent = $nextSyllabus->courseContents()->orderBy('order', 'asc')->first();
-            }
-        }
         if($this->content->assignment){
             $this->submission = $this->content->assignment->submission;
         }

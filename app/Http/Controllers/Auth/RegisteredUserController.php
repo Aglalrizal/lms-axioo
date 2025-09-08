@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Models\CourseProgress;
+use Illuminate\Validation\Rules;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Events\Registered;
 
 class RegisteredUserController extends Controller
 {
@@ -61,6 +62,86 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        if (session()->has('intended_course')) {
+            $courseId = session('intended_course');
+            session()->forget('intended_course');
+
+            $course = \App\Models\Course::with('syllabus.courseContents')->findOrFail($courseId);
+
+            $alreadyEnrolled = \App\Models\Enrollment::where('course_id', $courseId)
+                ->where('student_id', $user->id)
+                ->exists();
+
+            if (! $alreadyEnrolled) {
+
+                if($course->access_type->value == 'paid' || $course->access_type->value == 'free_trial'){
+                    return redirect(route('course.show', $course->slug));
+                }
+
+                $transaction = \App\Models\Transaction::create([
+                    'course_id'  => $courseId,
+                    'student_id' => $user->id,
+                    'status'     => 'paid',
+                    'created_by' => $user->username,
+                ]);
+
+                \App\Models\Enrollment::create([
+                    'transaction_id' => $transaction->id,
+                    'student_id'     => $user->id,
+                    'course_id'      => $courseId,
+                    'enrolled_by'    => $user->username,
+                    'enrolled_at'    => now(),
+                    'created_by'     => $user->username,
+                    'modified_by'    => $user->username,
+                ]);
+
+                $syllabus = $course->syllabus->sortBy('order')->first();
+                $content = $syllabus->courseContents->sortBy('order')->first();
+
+                CourseProgress::updateOrCreate(
+                    [
+                        'student_id' => $user->id,
+                        'course_id' => $course->id,
+                        'course_content_id' => $content->id,
+                    ],
+                    [
+                        'is_completed' => false,
+                    ]
+                );
+
+                $redirectUrl = route('course.show.content', [
+                    'slug' => $course->slug,
+                    'syllabusId' => $syllabus->id,
+                    'courseContentId' => $content->id
+                ]);
+            } else {
+                $lastProgress = CourseProgress::where('student_id', $user->id)
+                    ->where('course_id', $course->id)
+                    ->latest('updated_at')
+                    ->first();
+
+                if ($lastProgress) {
+                    $content = $lastProgress->courseContent;
+                    $redirectUrl = route('course.show.content', [
+                        'slug' => $course->slug,
+                        'syllabusId' => $content->syllabus_id,
+                        'courseContentId' => $content->id
+                    ]);
+                } else {
+                    $syllabus = $course->syllabus->sortBy('order')->first();
+                    $content = $syllabus->courseContents->sortBy('order')->first();
+
+                    $redirectUrl = route('course.show.content', [
+                        'slug' => $course->slug,
+                        'syllabusId' => $syllabus->id,
+                        'courseContentId' => $content->id
+                    ]);
+                }
+            }
+
+            return redirect()->to($redirectUrl);
+        }
 
         return redirect(route('user.dashboard.profile', $user->username,absolute: false));
     }
