@@ -42,6 +42,11 @@ class AuthenticatedSessionController extends Controller
                 ->exists();
 
             if (! $alreadyEnrolled) {
+
+                if($course->access_type->value == 'paid' || $course->access_type->value == 'free_trial'){
+                    return redirect(route('course.show', $course->slug));
+                }
+
                 $transaction = \App\Models\Transaction::create([
                     'course_id'  => $courseId,
                     'student_id' => $user->id,
@@ -59,7 +64,6 @@ class AuthenticatedSessionController extends Controller
                     'modified_by'    => $user->username,
                 ]);
 
-                // ambil content pertama
                 $syllabus = $course->syllabus->sortBy('order')->first();
                 $content = $syllabus->courseContents->sortBy('order')->first();
 

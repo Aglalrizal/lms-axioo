@@ -20,41 +20,68 @@ class Show extends Component
     public $is_enrolled = false;
     public $url = '';
 
-    public function confirmEnrollUser()
-    {
-        sweetalert()
-            ->showDenyButton()
-            ->option('confirmButtonText', 'Iya, daftar!')
-            ->option('denyButtonText', 'Batal')
-            ->info('Apakah kamu yakin ingin mendaftar kursus ini?');
-    }
-
-    #[On('sweetalert:confirmed')]
     public function enrollUser()
     {
         if (!Auth::check()) {
             session(['intended_course' => $this->course->id]);
             return redirect()->route('login');
         }
+
+        // kalau course gratis → langsung enroll
+        if ($this->course->access_type->value == "free") {
+            $transaction = Transaction::create([
+                'course_id'  => $this->course->id,
+                'student_id' => Auth::id(),
+                'status'     => 'paid',
+                'created_by' => Auth::user()->username,
+            ]);
+
+            Enrollment::create([
+                'transaction_id' => $transaction->id,
+                'student_id'     => Auth::id(),
+                'course_id'      => $this->course->id,
+                'enrolled_by'    => Auth::user()->username,
+                'enrolled_at'    => now(),
+                'created_by'     => Auth::user()->username,
+                'modified_by'    => Auth::user()->username,
+            ]);
+
+            flash()->success('Pendaftaran berhasil!', [], 'Sukses');
+
+            return $this->redirectToFirstContent();
+        }
+
         $transaction = Transaction::create([
             'course_id'  => $this->course->id,
-            'student_id' => Auth::user()->id,
-            'status'     => 'paid',
+            'student_id' => Auth::id(),
+            'status'     => 'pending',
             'created_by' => Auth::user()->username,
         ]);
-        Enrollment::create([
-            'transaction_id' => $transaction->id,
-            'student_id'     => Auth::user()->id,
-            'course_id'      => $this->course->id,
-            'enrolled_by'    => Auth::user()->username,
-            'enrolled_at'    => now(),
-            'created_by'     => Auth::user()->username,
-            'modified_by'    => Auth::user()->username,
+
+        \Midtrans\Config::$isProduction = config('midtrans.is_production');
+        \Midtrans\Config::$serverKey = config('midtrans.server_key');
+        \Midtrans\Config::$isSanitized = true;
+        \Midtrans\Config::$is3ds = true;
+
+        $snapToken = \Midtrans\Snap::getSnapToken([
+            'transaction_details' => [
+                'order_id'     => $transaction->id,
+                'gross_amount' => $this->course->price,
+            ],
+            'customer_details' => [
+                'email' => Auth::user()->email,
+                'first_name' => Auth::user()->first_name,
+            ]
         ]);
-        $this->dispatch('refresh-course');
-        flash()->success('Pendaftaran berhasil!', [], 'Sukses');
+        
+        $this->dispatch('midtrans-payment', token: $snapToken);
+    }
+
+    private function redirectToFirstContent()
+    {
         $syllabus = $this->course->syllabus->sortBy('order')->first();
-        $content = $syllabus->courseContents->sortBy('order')->first();
+        $content  = $syllabus?->courseContents->sortBy('order')->first();
+
         CourseProgress::updateOrCreate(
             [
                 'student_id' => Auth::id(),
@@ -64,18 +91,13 @@ class Show extends Component
             [
                 'is_completed' => false,
             ]
-        );
-        return redirect(route('course.show.content', [
-            'slug' => $this->slug,
-            'syllabusId' => $syllabus->id,
-            'courseContentId' => $content->id
-        ]));
-    }
+    );
 
-    #[On('sweetalert:denied')]
-    public function cancelEnrollment()
-    {
-        flash()->info('Pendaftaran dibatalkan.', [], 'Informasi');
+        return redirect()->route('course.show.content', [
+            'slug'           => $this->slug,
+            'syllabusId'     => $syllabus->id,
+            'courseContentId'=> $content->id
+        ]);
     }
 
     #[On('refresh-course')]
@@ -98,26 +120,47 @@ class Show extends Component
             ->firstOrFail();
 
         if (Auth::check()) {
+
+            $paidTransaction = Transaction::where('course_id', $this->course->id)->where('student_id', Auth::id())->where('status', 'paid')->first();
+
             $this->is_enrolled = Enrollment::where('course_id', $this->course->id)
                 ->where('student_id', Auth::id())
                 ->exists();
 
+            if($paidTransaction && !$this->is_enrolled){
+                Enrollment::create([
+                'transaction_id' => $paidTransaction->id,
+                'student_id'     => Auth::id(),
+                'course_id'      => $this->course->id,
+                'enrolled_by'    => Auth::user()->username,
+                'enrolled_at'    => now(),
+                'created_by'     => Auth::user()->username,
+                'modified_by'    => Auth::user()->username,
+            ]);
+
+                flash()->success('Pendaftaran berhasil!', [], 'Sukses');
+
+                return $this->redirectToFirstContent();
+            }
+
             if ($this->is_enrolled) {
                 $user = Auth::user();
 
+                // Cari last completed berdasarkan global_order
                 $lastCompleted = $this->course->contents()
                     ->whereHas('progresses', function ($q) use ($user) {
                         $q->where('student_id', $user->id)
                         ->where('is_completed', true);
                     })
-                    ->orderBy('course_contents.order', 'desc')
+                    ->orderBy('global_order', 'desc')
                     ->first();
 
                 if ($lastCompleted) {
+                    // Cari next content dari lastCompleted
                     $nextContent = $this->course->contents()
-                    ->where('course_contents.order', '>', $lastCompleted->order)
-                    ->orderBy('course_contents.order')
-                    ->first();
+                        ->where('global_order', '>', $lastCompleted->global_order)
+                        ->orderBy('global_order', 'asc')
+                        ->first();
 
                     if ($nextContent && $nextContent->is_unlocked) {
                         $this->url = route('course.show.content', [
@@ -133,13 +176,15 @@ class Show extends Component
                         ]);
                     }
                 } else {
-                    $firstSyllabus = $this->course->syllabus->sortBy('order')->first();
-                    $firstContent  = $firstSyllabus?->courseContents->sortBy('order')->first();
+                    // Kalau belum ada yang completed → ambil content dengan global_order terkecil
+                    $firstContent = $this->course->contents()
+                        ->orderBy('global_order', 'asc')
+                        ->first();
 
                     if ($firstContent) {
                         $this->url = route('course.show.content', [
                             'slug' => $this->slug,
-                            'syllabusId' => $firstSyllabus->id,
+                            'syllabusId' => $firstContent->courseSyllabus->id,
                             'courseContentId' => $firstContent->id
                         ]);
                     } else {

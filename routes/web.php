@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ProfileController;
 
+use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\FaqController as UserFaq;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
@@ -105,7 +106,7 @@ Route::get('/help-center/guide/{slug}', function () {
 // DEVELOPMENT AND TESTING 
 //  
 
-Route::get('/temp', function () {
+Route::get('/test', function () {
     return view('public.wrwrwrwr');
 })->name('temp');
 
