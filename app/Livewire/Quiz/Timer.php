@@ -9,11 +9,9 @@ use App\Models\QuizAttempt;
 #[Layout('layouts.base')]
 class Timer extends Component
 {
-    public $attemptId;
+public $attemptId;
     public $timeLeft;
-
     protected $listeners = ['tick' => 'updateTimer'];
-
     public function mount($attemptId)
     {
         $this->attemptId = $attemptId;
@@ -21,15 +19,15 @@ class Timer extends Component
 
         $this->timeLeft = $attempt->time_left;
     }
-
     public function updateTimer()
     {
-        $attempt = QuizAttempt::findOrFail($this->attemptId);
-        $this->timeLeft = $attempt->time_left;
+        $this->timeLeft--;
 
-        if ($this->timeLeft <= 0 && !$attempt->is_finished) {
-            $attempt->update(['is_finished' => true]);
-            // trigger event untuk auto-submit jawaban
+        if ($this->timeLeft <= 0) {
+            $attempt = QuizAttempt::findOrFail($this->attemptId);
+            if ($attempt->status !== 'graded') {
+                $attempt->update(['status' => 'graded']);
+            }
             $this->dispatch('quiz-finished');
         }
     }

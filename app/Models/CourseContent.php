@@ -82,11 +82,11 @@ class CourseContent extends Model
 
     public function course()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Course::class, 'course_id');
     }
     public function courseSyllabus(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\CourseSyllabus::class);
+        return $this->belongsTo(\App\Models\CourseSyllabus::class, 'course_syllabus_id');
     }
     public function quiz(){
         return $this->hasOne(Quiz::class);

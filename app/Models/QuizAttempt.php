@@ -40,13 +40,17 @@ class QuizAttempt extends Model
             'end_time' => 'datetime',
         ];
     }
-
-        public function getTimeLeftAttribute()
+    public function getTimeLeftAttribute(): int
     {
-        $elapsed = now()->diffInSeconds($this->start_time);
-        return max(0, $this->quiz->duration - $elapsed);
+        return max(0, now()->diffInSeconds($this->end_time, false));
     }
-
+    public function getPercentageAttribute(){
+        $number_of_questions = $this->quiz->questions->count();
+        if ($number_of_questions === 0) {
+            return 0;
+        }
+        return round(($this->total_score / $number_of_questions) * 100, 1);
+    }
     public function quiz(): BelongsTo
     {
         return $this->belongsTo(Quiz::class);

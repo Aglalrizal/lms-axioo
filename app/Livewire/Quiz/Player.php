@@ -2,12 +2,15 @@
 
 namespace App\Livewire\Quiz;
 
-use App\Models\CourseContent;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Models\QuizAnswer;
 use App\Models\QuizAttempt;
+use Livewire\Attributes\On;
 use App\Models\QuizQuestion;
+use App\Models\CourseContent;
+use App\Models\CourseProgress;
+use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Auth;
 
 #[Layout('layouts.base')]
 class Player extends Component
@@ -20,12 +23,25 @@ class Player extends Component
     public function mount($attempt)
     {
         $this->attempt = QuizAttempt::findOrFail($attempt);
+        if ($this->attempt->user_id !== Auth::id()) {
+            return abort(403);;
+        }
         $this->quiz = $this->attempt->quiz;
         $this->content = CourseContent::findOrFail($this->quiz->course_content_id);
         $this->questions = $this->quiz->questions()->with('choices')->get();
 
         foreach ($this->attempt->answers as $ans) {
             $this->answers[$ans->quiz_question_id] = $ans->answer;
+        }
+        if ($this->attempt->time_left <= 0) {
+            $attempt = QuizAttempt::findOrFail($this->attempt->id);
+            if ($attempt->status !== 'graded') {
+                $attempt->update(['status' => 'graded']);
+            }
+            $this->quizEnded();
+        }
+        if($this->attempt->status === 'graded'){
+            $this->quizEnded();
         }
     }
 
@@ -64,13 +80,38 @@ class Player extends Component
             'status' => 'graded',
             'total_score' => $totalScore,
         ]);
+        if($this->attempt->percentage >= 75 ){
+            CourseProgress::updateOrCreate(
+            [
+                'student_id' => Auth::id(),
+                'course_id' => $this->content->course->id,
+                'course_content_id' => $this->content->id,
+            ],
+            [
+                'is_completed' => true,
+            ]
+        );
+        }
+        flash()->success('Jawaban berhasil disimpan', [], 'Sukses');
+        return redirect(route('course.show.content', [
+            'slug' => $this->quiz->courseContent->course->slug,
+            'syllabusId' => $this->quiz->courseContent->courseSyllabus->id,
+            'courseContentId' => $this->quiz->courseContent->id
+        ]));
+    }
 
-        dd($totalScore);
-        //return redirect()->route('quiz.result', $this->attempt->id);
+    #[On('quiz-finished')]
+    public function quizEnded(){
+        flash()->info('Kuis telah selesai', [], 'Informasi');
+        return redirect(route('course.show.content', [
+            'slug' => $this->quiz->courseContent->course->slug,
+            'syllabusId' => $this->quiz->courseContent->courseSyllabus->id,
+            'courseContentId' => $this->quiz->courseContent->id
+        ]));
     }
 
     public function render(){
-        return view('livewire.quiz.player');
+        return view('livewire.quiz.show');
     }
 
 }
