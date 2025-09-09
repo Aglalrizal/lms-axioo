@@ -18,7 +18,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{{ route('public.course.explore') }}">
             <i class="nav-icon fe fe-folder me-2"></i>
             Program
         </a>

@@ -7,9 +7,20 @@
         <div class="ms-auto d-flex align-items-center order-lg-3">
             <div class="d-flex align-items-center gap-2">
                 @auth
+                    @php
+                        $userRole = auth()->user()->getRoleNames()->first();
+                        $goto = '';
+                        if ($userRole == 'admin' || $userRole == 'super-admin') {
+                            $goto = route('admin.dashboard');
+                        } elseif ($userRole == 'instructor') {
+                            $goto = route('instructor.dashboard');
+                        } else {
+                            $goto = route('user.dashboard');
+                        }
+                    @endphp
                     <ul class="navbar-nav me-3">
                         <li class="nav-item ">
-                            <a class="nav-link" href="#" id="navbarBrowse"
+                            <a class="nav-link" href="{{ $goto }}" id="navbarBrowse"
                                 aria-haspopup="true"data-bs-display="static">Dashboard</a>
                         </li>
                     </ul>
@@ -18,8 +29,8 @@
                 @endauth
                 @guest
                     @if (!(Route::is('login') || Route::is('register')))
-                        <a href="{{ route('login') }}" class="btn btn-outline-dark">Login</a>
-                        <a href="{{ route('register') }}" class="btn btn-dark d-none d-md-block">Join Now</a>
+                        <a href="{{ route('login') }}" class="btn btn-outline-dark">Masuk</a>
+                        <a href="{{ route('register') }}" class="btn btn-dark d-none d-md-block">Daftar</a>
                     @endif
                 @endguest
             </div>

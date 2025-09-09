@@ -1,7 +1,7 @@
 <div>
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container-fluid px-0 justify-content-start" style="padding: 3.5px 0">
-            <a class="navbar-brand" href="{{ route('course.show', $course->slug) }}"><i
+            <a class="navbar-brand" href="{{ route('user.dashboard.courses') }}"><i
                     class="bi bi-arrow-left fw-bold text-dark"></i></a>
             <h2 class="mb-0">{{ $content->title }}</h2>
         </div>

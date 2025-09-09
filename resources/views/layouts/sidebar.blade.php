@@ -1,9 +1,8 @@
 <nav class="navbar-vertical navbar">
     <div class="vh-100" data-simplebar>
         <!-- Brand logo -->
-        <a class="navbar-brand" href="/">
-            <img src="{{ asset('assets/images/brand/logo/logo-inverse.svg') }}" alt="UpMySkill" />
-        </a>
+        <a class="navbar-brand text-center" href="/"><img src="{{ asset('assets/images/upmyskill_logo_light.png') }}"
+                alt="UpMysSkill" style="height: 50px; width: auto;filter:brightness(0) invert(1)" /></a>
         <!-- Navbar nav -->
 
         {{-- <li class="nav-item">
