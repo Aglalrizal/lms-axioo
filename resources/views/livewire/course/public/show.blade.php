@@ -95,12 +95,14 @@
                                         <h3 class="mb-2">Deskripsi Kursus</h3>
                                         {!! $course->description !!}
                                     </div>
-                                    <div class="mb-3">
-                                        <hr />
-                                        <h3 class="mb-2">Lain-lain</h3>
-                                        <hr />
-                                        {!! $course->extra_description !!}
-                                    </div>
+                                    @if ($course->extra_description)
+                                        <div class="mb-3">
+                                            <hr />
+                                            <h3 class="mb-2">Lain-lain</h3>
+                                            <hr />
+                                            {!! $course->extra_description !!}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="tab-pane fade" id="instructor" role="tabpanel"
                                     aria-labelledby="instructor-tab">
@@ -145,7 +147,7 @@
                                             <div class="col border-start">
                                                 <div class="pe-1 ps-3 py-3">
                                                     <h5 class="mb-0">{{ $course->teacher->courses->count() }}</h5>
-                                                    <span>Courses</span>
+                                                    <span>Kursus</span>
                                                 </div>
                                             </div>
                                             <div class="col border-start">
@@ -197,13 +199,20 @@
                                 @foreach ($course->syllabus as $syllabus)
                                     <li class="list-group-item p-0">
                                         <!-- Toggle -->
-                                        <a class="h4 mb-0 d-flex align-items-center py-3 px-4"
+                                        <a class="h4 mb-0 d-flex justify-content-between py-3 px-4 w-100 border-bottom"
                                             data-bs-toggle="collapse" href="#syllabus{{ $syllabus->order }}"
                                             role="button" aria-expanded="false"
                                             aria-controls="syllabus{{ $syllabus->order }}">
-                                            <div class="me-auto">
-                                                {{ $syllabus->title }}
-                                                <p class="mb-0 fs-6 mt-1 fw-normal">
+
+                                            <div class="me-auto d-flex flex-column">
+                                                <span>{{ $syllabus->title }}</span>
+
+                                                <div class="fs-5 fw-normal text-break">
+                                                    {{ $syllabus->description }}
+                                                </div>
+
+                                                <p
+                                                    class="mb-0 fs-6 mt-3 fw-normal badge text-light-emphasis bg-light-subtle border border-light-subtle">
                                                     {{ $syllabus->courseContents->where('type', 'article')->count() }}
                                                     Artikel,
                                                     {{ $syllabus->courseContents->where('type', 'video')->count() }}
@@ -211,12 +220,14 @@
                                                     {{ $syllabus->courseContents->where('type', 'quiz')->count() }}
                                                     Kuis,
                                                     {{ $syllabus->courseContents->where('type', 'assignment')->count() }}
-                                                    Assignment</p>
+                                                    Tugas
+                                                </p>
                                             </div>
+
                                             <!-- Chevron -->
-                                            <span class="chevron-arrow ms-4">
+                                            <div class="chevron-arrow ms-4 d-flex align-items-center">
                                                 <i class="fe fe-chevron-down fs-4"></i>
-                                            </span>
+                                            </div>
                                         </a>
                                         <!-- Row -->
                                         <!-- Collapse -->

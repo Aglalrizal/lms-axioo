@@ -52,6 +52,38 @@
                                             Selamat Mengerjakan!
                                         </p>
                                     </div>
+                                    @if ($data)
+                                        <div>
+                                            <h4>Riwayat Pengerjaan</h4>
+                                            <table class="table table-responsive align-middle text-center">
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Waktu dan Tanggal Pengerjaan</th>
+                                                    <th>Persentase</th>
+                                                    <th>Keterangan</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                                @foreach ($data as $a)
+                                                    <tr>
+                                                        <th>{{ $loop->iteration }}</th>
+                                                        <th>{{ $a->end_time->format('d M Y H:i') }}</th>
+                                                        <th>{{ $a->percentage }}%</th>
+                                                        @if ($a->percentage >= 75)
+                                                            <th>
+                                                                <span class="alert alert-success py-2 px-3">Lulus</span>
+                                                            </th>
+                                                        @else
+                                                            <th><span class="alert alert-danger py-2 px-3">Tidak
+                                                                    Lulus</span>
+                                                            </th>
+                                                        @endif
+                                                        <th><a class="btn btn-info">Detail</a></th>
+                                                    </tr>
+                                                @endforeach
+                                            </table>
+                                            {{ $data->links() }}
+                                        </div>
+                                    @endif
                                     <div class="d-flex justify-content-end">
                                         <a wire:click="playQuiz" class="btn btn-info">Mulai</a>
                                     </div>

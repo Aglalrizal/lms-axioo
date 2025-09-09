@@ -3,10 +3,14 @@
 namespace App\Livewire\Admin\Course;
 
 use App\Models\Course;
+use App\Models\Program;
 use Livewire\Component;
+use App\Enums\AccessType;
+use App\Enums\CourseLevel;
 use Livewire\Attributes\On;
-use Livewire\Attributes\Layout;
 use Livewire\WithPagination;
+use App\Models\CourseCategory;
+use Livewire\Attributes\Layout;
 
 #[Layout('layouts.dashboard')]
 class Index extends Component
@@ -19,22 +23,43 @@ class Index extends Component
     public $sortDirection = 'asc';
 
     public $courseToDelete;
+    public $program, $accessType, $category, $level;
 
     public function refresh() {}
 
     public function render()
     {
-        $courses = Course::with(['courseCategory', 'teacher', 'syllabus.courseContents'])
-            ->when($this->search, function ($query) {
-                $query->where('title', 'like', '%' . $this->search . '%');
-            })
-            ->when($this->filterType, function ($query) {
-                $query->where('access_type', $this->filterType);
-            })
+        $query = Course::query();
+
+        if ($this->search) {
+            $query->where('title', 'like', '%' . $this->search . '%');
+        }
+
+        if ($this->program) {
+            $query->whereHas('program', fn($q) => $q->where('slug', $this->program));
+        }
+
+        if ($this->accessType) {
+            $query->where('access_type', $this->accessType);
+        }
+
+        if ($this->category) {
+            $query->whereHas('courseCategory', fn($q) => $q->where('slug', $this->category));
+        }
+
+        if ($this->level) {
+            $query->where('level', $this->level);
+        }
+
+        $courses = $query->with(['courseCategory', 'teacher', 'program'])
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate(10);
 
         return view('livewire.admin.course.index', [
+            'programs' => Program::query()->select('id', 'name', 'slug')->get(),
+            'categories' => CourseCategory::query()->select('id', 'name', 'slug')->get(),
+            'accessTypes' => AccessType::toArray(),
+            'courseLevels' => CourseLevel::toArray(),
             'courses' => $courses
         ]);
     }

@@ -5,17 +5,18 @@ namespace App\Livewire\Course\Public;
 use App\Models\Course;
 use Livewire\Component;
 use Livewire\Attributes\On;
-use App\Models\CourseContent;
 use App\Models\CourseProgress;
 use Livewire\Attributes\Layout;
 use App\Models\AssignmentSubmission;
 use App\Models\QuizAttempt;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
 
 #[Layout('layouts.courseContent')]
 class ShowContent extends Component
 {
+    use WithPagination;
     public $content;
     public $course;
     public $currentSyllabus;
@@ -145,6 +146,14 @@ class ShowContent extends Component
     }
     public function render()
     {
+        if($this->content->quiz){
+            if(QuizAttempt::where('user_id', Auth::id())->where('quiz_id', $this->content->quiz->id)){
+                $attempts = QuizAttempt::where('user_id', Auth::id())->where('quiz_id', $this->content->quiz->id)->orderBy('end_time', 'desc')->paginate(5);
+                return view('livewire.course.public.show-content', [
+                'data' => $this->attempts ?? $attempts
+                ]);
+            }
+        }
         return view('livewire.course.public.show-content');
     }
 }

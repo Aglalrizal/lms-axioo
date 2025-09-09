@@ -5,7 +5,7 @@
             <div
                 class="border-bottom pb-3 mb-3 d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between">
                 <div class="d-flex flex-column gap-1">
-                    <h1 class="mb-0 h2 fw-bold">Kursus</h1>
+                    <h1 class="mb-0 h2 fw-bold">Seluruh Kursus</h1>
                 </div>
                 <div>
                     <a href="{{ route('admin.course.create') }}" class="btn btn-primary">Tambah Kursus</a>
@@ -22,31 +22,56 @@
                     <!-- Form -->
                     <div class="d-flex align-items-center col-12 col-md-12 col-lg-12">
                         <span class="position-absolute ps-3 search-icon"><i class="fe fe-search"></i></span>
-                        <input type="search" class="form-control ps-6" placeholder="Search Course"
-                            wire.model.live="search" />
+                        <input type="search" class="form-control ps-6" placeholder="Cari kursus"
+                            wire:model.live="search" />
                     </div>
-                    <div class="d-flex justify-content-between align-items-center my-3">
-                        <div class="d-flex align-items-center gap-2">
-                            <div>
-                                <select wire:model.live="filterType" class="form-select">
-                                    <option value="">Filter: Semua Tipe</option>
-                                    <option value="free_trial">Gratis Percobaan</option>
-                                    <option value="free">Gratis</option>
-                                    <option value="paid">Berbayar</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center gap-2">
-                            <select wire:model.live="sortBy" class="form-select">
-                                <option value="title">Judul</option>
-                                <option value="created_at">Tanggal Dibuat</option>
+                    <div class="d-flex justify-content-between align-items-center mt-3 w-100">
+                        <div class="mb-3 col-12 col-md-3 flex-grow-1" wire:ignore>
+                            <select id="select-program" class="form-select text-secondary">
+                                <option value="">Pilih Program</option>
+                                @foreach ($programs as $program)
+                                    <option value="{{ $program->slug }}">{{ $program->name }}</option>
+                                @endforeach
                             </select>
+                        </div>
+                        <!-- Course Topic -->
+                        <div class="mb-3 col-12 col-md-3" wire:ignore>
+                            <select id="select-category" class="form-select text-secondary">
+                                <option value="">Topik Kursus</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->slug }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <!-- Access Type -->
+                        <div class="mb-3 col-12 col-md-3" wire:ignore>
+                            <select id="select-access-type" class="form-select text-secondary">
+                                <option value="">Tipe Akses</option>
+                                @foreach ($accessTypes as $type)
+                                    <option value="{{ $type['value'] }}">{{ $type['label'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <!-- Difficulty Level -->
+                        <div class="mb-3 col-12 col-md-3" wire:ignore>
+                            <select id="select-level" class="form-select text-secondary">
+                                <option value="">Tingkat Kesulitan</option>
+                                @foreach ($courseLevels as $level)
+                                    <option value="{{ $level['value'] }}">{{ $level['label'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-flex col-lg-4">
+                        <select wire:model.live="sortBy" class="form-select">
+                            <option value="title">Judul</option>
+                            <option value="created_at">Tanggal Dibuat</option>
+                        </select>
 
-                            <select wire:model.live="sortDirection" class="form-select">
-                                <option value="asc">A-Z / Terlama</option>
-                                <option value="desc">Z-A / Terbaru</option>
-                            </select>
-                        </div>
+                        <select wire:model.live="sortDirection" class="form-select">
+                            <option value="asc">A-Z / Terlama</option>
+                            <option value="desc">Z-A / Terbaru</option>
+                        </select>
                     </div>
                 </div>
                 <div>
@@ -60,6 +85,7 @@
                                         <thead class="table-light">
                                             <tr>
                                                 <th>Nama Kursus</th>
+                                                <th>Program</th>
                                                 <th>Kategori</th>
                                                 <th>Instruktur</th>
                                                 <th>Tipe Kursus</th>
@@ -94,11 +120,18 @@
                                                                 <div class="d-flex flex-column gap-1">
                                                                     <h4 class="mb-0 text-primary-hover">
                                                                         {{ Str::title($course->title) }}</h4>
-                                                                    <span>Added on
+                                                                    <span>Dibuat pada
                                                                         {{ $course->created_at->translatedFormat('d F, Y') }}</span>
                                                                 </div>
                                                             </div>
                                                         </a>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center flex-row gap-2">
+                                                            <h5 class="mb-0">
+                                                                {{ Str::title($course->program->name ?? '-') }}
+                                                            </h5>
+                                                        </div>
                                                     </td>
                                                     <td>
                                                         <div class="d-flex align-items-center flex-row gap-2">
@@ -127,7 +160,8 @@
                                                                 @break
 
                                                                 @case('Free Trial')
-                                                                    <span class="badge bg-warning text-dark">Free Trial</span>
+                                                                    <span class="badge bg-warning text-dark">Gratis
+                                                                        Percobaan</span>
                                                                 @break
 
                                                                 @case('Berbayar')
@@ -137,9 +171,11 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <span
-                                                            class="badge-dot bg-warning me-1 d-inline-block align-middle"></span>
-                                                        {{ $course->is_published ? 'Published' : 'Draft' }}
+                                                        @if ($course->is_published)
+                                                            <span class="alert alert-success py-1 px-2">Aktif</span>
+                                                        @else
+                                                            <span class="alert alert-warning py-1 px-2">Draft</span>
+                                                        @endif
                                                     </td>
                                                     <td>
                                                         <span class="dropdown dropstart">
@@ -176,14 +212,14 @@
                                                 </tr>
                                                 @empty
                                                     <tr>
-                                                        Belum ada course.
+                                                        Tidak ada kursus.
                                                     </tr>
                                                 @endforelse
                                             </tbody>
                                         </table>
                                     </div>
                                 @else
-                                    <p class="text-center">Belum ada course.</p>
+                                    <p class="text-center">Tidak ada kursus.</p>
                                 @endif
                             </div>
                         </div>
@@ -196,3 +232,47 @@
             </div>
         </div>
     </section>
+
+    @assets
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
+
+        <style>
+            .select2-container--default .select2-selection--single {
+                border-radius: 0.75rem !important;
+            }
+        </style>
+
+        <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    @endassets
+
+    @script
+        <script>
+            // Sync on initial load (for URL parameters)
+            $(document).ready(function() {
+                $('#select-program').select2();
+                $('#select-access-type').select2();
+                $('#select-category').select2();
+                $('#select-level').select2();
+
+                $('#select-program').val(@this.program).trigger('change');
+                $('#select-access-type').val(@this.accessType).trigger('change');
+                $('#select-category').val(@this.category).trigger('change');
+                $('#select-level').val(@this.level).trigger('change');
+
+                $('#select-program').on('change', function(e) {
+                    @this.set('program', e.target.value);
+                });
+                $('#select-access-type').on('change', function(e) {
+                    @this.set('accessType', e.target.value);
+                });
+                $('#select-category').on('change', function(e) {
+                    @this.set('category', e.target.value);
+                });
+                $('#select-level').on('change', function(e) {
+                    @this.set('level', e.target.value);
+                });
+            });
+        </script>
+    @endscript

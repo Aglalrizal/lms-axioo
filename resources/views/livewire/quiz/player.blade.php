@@ -1,6 +1,6 @@
 <div class="container py-6">
     <h2>{{ $content->title }}</h2>
-
+    <livewire:quiz.timer :attemptId="$attempt->id"></livewire:quiz.timer>
     @foreach ($questions as $q)
         <div class="card mb-3">
             <div class="card-body">
