@@ -45,7 +45,7 @@
             <div class="container">
                 <div class="card rounded-3 shadow-sm">
                     <div class="row">
-                        <div class="col-md-4 col-12 border-end-md">
+                        <div class="col-md-6 col-12 border-end-md">
                             <!-- features  -->
                             <div class="border-bottom border-bottom-md-0 mb-3 mb-lg-0">
                                 <div class="p-5">
@@ -79,40 +79,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 col-12 border-end-md">
-                            <!-- features  -->
-                            <div class="border-bottom border-bottom-md-0 mb-3 mb-lg-0">
-                                <div class="p-5">
-                                    <div class="mb-4">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="feather feather-book text-primary">
-                                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                    <!-- heading  -->
-                                    <h3 class="fw-semibold"><a href="{{ route('public.help-center.guide') }}"
-                                            class="text-inherit">Guides
-                                            & Resources</a></h3>
-                                    <!-- para  -->
-                                    <p>UI Style Guides are a design & development tool that brings cohesion to a digital
-                                        product user interface & experience</p>
-                                    <!-- button  -->
-                                    <a href="{{ route('public.help-center.guide') }}" class="link-primary fw-semibold">
-                                        Browse Guides
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                            fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-                                            <path fill-rule="evenodd"
-                                                d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-12">
+                        <div class="col-md-6 col-12">
                             <div>
                                 <div class="p-5">
                                     <div class="mb-4">

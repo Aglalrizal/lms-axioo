@@ -12,10 +12,10 @@
                             {{-- <a href="../index.html"><img src="../assets/images/brand/logo/logo-icon.svg" class="mb-4"
                                     alt="logo-icon" /></a> --}}
                             <div class="d-flex flex-column gap-1">
-                                <h1 class="mb-0 fw-bold">Sign in</h1>
+                                <h1 class="mb-0 fw-bold">Masuk</h1>
                                 <span>
-                                    Don’t have an account?
-                                    <a href="{{ route('register') }}" class="ms-1">Sign up</a>
+                                    Belum punya akun?
+                                    <a href="{{ route('register') }}" class="ms-1">Daftar</a>
                                 </span>
                             </div>
                         </div>
@@ -45,13 +45,13 @@
                                     <div class="invalid-feedback">You must agree before submitting.</div>
                                 </div> --}}
                                 <div>
-                                    <a href="{{ route('password.email') }}">Forgot your password?</a>
+                                    <a href="{{ route('password.email') }}">Lupa kata sandi?</a>
                                 </div>
                             </div>
                             <div>
                                 <!-- Button -->
                                 <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary">Sign in</button>
+                                    <button type="submit" class="btn btn-primary">Masuk</button>
                                 </div>
                             </div>
                         </form>

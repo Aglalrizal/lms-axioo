@@ -95,14 +95,6 @@ Route::get('/help-center', [UserFaq::class, 'show_most_asked'])->name('public.he
 Route::get('/help-center/faqs', [UserFaq::class, 'show'])->name('public.help-center.faqs');
 Route::get('/help-center/support', \App\Livewire\SupportTicketCreate::class)->name('public.help-center.support');
 
-Route::get('/help-center/guide', function () {
-    return view('public.help-center.guide');
-})->name('public.help-center.guide');
-
-Route::get('/help-center/guide/{slug}', function () {
-    return view('public.help-center.guide-single');
-})->name('public.help-center.guide-single');
-
 // 
 // DEVELOPMENT AND TESTING 
 //  

@@ -3,10 +3,10 @@
         title_bottom="UNTUK TUMBUH BERSAMA"
         description="Temukan artikel, tips, dan insight terbaru seputar pengembangan diri, teknologi, dan dunia kerja masa kini." />
 
-    <section class="pb-8 pt-4">
+    <section class="    ">
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-12">
-                <ul x-data="{ selected: 'berita' }" class="nav nav-pills nav-fill mb-6 border border-3 rounded" id="tab"
+                <ul x-data="{ selected: 'berita' }" class="nav nav-pills nav-fill border border-3 rounded" id="tab"
                     role="tablist">
 
                     {{-- @foreach ($categories as $category)

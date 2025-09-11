@@ -90,7 +90,7 @@
                             <a href="#!" class="nav-link">Affiliate</a>
                         </li>
                         <li>
-                            <a href="#!" class="nav-link">Blog</a>
+                            <a href="{{ route('public.blog.index') }}" class="nav-link">Blog</a>
                         </li>
                         <li>
                             <a href="#!" class="nav-link">Geeks Business</a>
