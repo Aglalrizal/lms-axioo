@@ -81,6 +81,11 @@
                                 href="#enrolled" role="tab" aria-controls="enrolled"
                                 aria-selected="false">Peserta</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link @if ($activeTab === 'quiz') active @endif"
+                                wire:click.prevent="setActiveTab('quiz')" id="quiz-tab" data-bs-toggle="pill"
+                                href="#quiz" role="tab" aria-controls="quiz" aria-selected="false">Quiz</a>
+                        </li>
                     </ul>
                 </div>
                 <!-- Card -->
@@ -126,45 +131,113 @@
                                             href="{{ route('admin.course.published.import', $course->slug) }}">Import</a>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="card">
+                                    <!-- Table -->
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-centered">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Nama</th>
+                                                    <th>Tanggal Daftar</th>
+                                                    <th>Progres</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($enrolledStudents as $enroll)
+                                                    <tr>
+                                                        <td>{{ $enroll->student->first_name . ' ' . $enroll->student->surname }}
+                                                        </td>
+                                                        <td>{{ $enroll->enrolled_at->format('d M Y H:i') }}
+                                                        </td>
+                                                        <td>0%</td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="3" class="text-center">
+                                                            <i class="bi bi-exclamation-triangle"></i>
+                                                            Belum ada yang mendaftar
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="p-3">
+                                        {{ $enrolledStudents->links() }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade @if ($activeTab === 'quiz') show active @endif"
+                                id="quiz" role="tabpanel" aria-labelledby="quiz-tab">
+                                <div class="row mb-5">
                                     <div class="col-12">
-                                        <div class="card">
-                                            <!-- Table -->
-                                            <div class="table-responsive">
-                                                <table class="table table-hover table-centered">
-                                                    <thead class="table-light">
-                                                        <tr>
-                                                            <th>Nama</th>
-                                                            <th>Tanggal Daftar</th>
-                                                            <th>Progres</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @forelse ($enrolledStudents as $enroll)
-                                                            <tr>
-                                                                <td>{{ $enroll->student->first_name . ' ' . $enroll->student->surname }}
-                                                                </td>
-                                                                <td>{{ $enroll->enrolled_at->format('d M Y H:i') }}
-                                                                </td>
-                                                                <td>0%</td>
-                                                            </tr>
-                                                        @empty
-                                                            <tr>
-                                                                <td colspan="3" class="text-center">
-                                                                    <i class="bi bi-exclamation-triangle"></i> Belum
-                                                                    ada
-                                                                    yang
-                                                                    mendaftar
-                                                                </td>
-                                                            </tr>
-                                                        @endforelse
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="p-3">
-                                                {{ $enrolledStudents->links() }}
-                                            </div>
+                                        <div>
+                                            <h1 class="h2 mb-0">Kuis</h1>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-5">
+                                    <div class="col-md-6 col-12">
+                                        <input type="search" class="form-control"
+                                            placeholder="Cari berdasarkan nama" wire:model.live="search" />
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <!-- Table -->
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-centered">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Nama Kuis</th>
+                                                    <th>Siswa</th>
+                                                    <th>Nilai</th>
+                                                    {{-- <th>Aksi</th> --}}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($quizzes as $quiz)
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <a href="{{ route('admin.course.published.quiz', $course->slug) }}?quiz_id={{ $quiz->id }}"
+                                                                    class="mb-0">
+                                                                    {{ $quiz->courseContent->title }}</a>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            {{ $quiz->attempts_count ?? 0 }} siswa
+                                                        </td>
+                                                        <td>
+                                                            @php
+                                                                $avgScore =
+                                                                    $quiz
+                                                                        ->attempts()
+                                                                        ->whereIn('status', ['completed', 'graded'])
+                                                                        ->avg('total_score') ?? 0;
+                                                            @endphp
+                                                            @if ($quiz->attempts_count > 0)
+                                                                {{ number_format($avgScore, 1) }}%
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </td>
+                                                        {{-- <td>
+                                                            <a href="{{ route('admin.course.published.quiz', $course->slug) }}?quiz_id={{ $quiz->id }}"
+                                                                class="btn btn-sm btn-primary">
+                                                                <i class="bi bi-eye me-1"></i>Detail
+                                                            </a>
+                                                        </td> --}}
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="4" class="text-center">
+                                                            <i class="bi bi-exclamation-triangle"></i>
+                                                            Belum ada kuis untuk kursus ini
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -172,6 +245,8 @@
                     </div>
                 </div>
             </div>
+
+
             <div class="col-xl-4 col-lg-12 col-md-12 col-12">
                 <div class="card" id="courseAccordion">
                     <div>

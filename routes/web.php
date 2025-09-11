@@ -21,6 +21,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/course/', \App\Livewire\Admin\Course\Index::class)->name('admin.course.all');
         Route::get('/admin/course/published', \App\Livewire\Course\Published\Index::class)->name('admin.course.published');
         Route::get('/admin/course/published/{slug}', \App\Livewire\Course\Published\Show::class)->name('admin.course.published.show');
+        Route::get('/admin/course/published/{slug}/quiz', \App\Livewire\Course\Published\QuizReport::class)->name('admin.course.published.quiz');
         Route::get('/admin/course/published/{slug}/enroll/import', \App\Livewire\Course\Published\Import::class)->name('admin.course.published.import');
         Route::get('/admin/course/create/{slug?}', \App\Livewire\Admin\Course\CreateCourse::class)->name('admin.course.create');
         Route::get('/admin/course/category', \App\Livewire\Admin\Course\CourseCategory::class)->name('admin.course.category');

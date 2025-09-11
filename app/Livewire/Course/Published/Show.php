@@ -2,19 +2,21 @@
 
 namespace App\Livewire\Course\Published;
 
+use App\Models\Quiz;
 use App\Models\Course;
 use Livewire\Component;
 use App\Models\Enrollment;
 use Livewire\Attributes\On;
-use Livewire\Attributes\Layout;
 use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Log;
 
 #[Layout('layouts.dashboard')]
 class Show extends Component
 {
     use WithPagination;
     public $course;
-    public $slug;    
+    public $slug;
     public $search = '';
     public $activeTab = 'description';
     protected $updatesQueryString = ['activeTab', 'search'];
@@ -22,7 +24,8 @@ class Show extends Component
     {
         $this->activeTab = $tab;
     }
-    public function updatingSearch(){
+    public function updatingSearch()
+    {
         $this->resetPage();
     }
 
@@ -48,15 +51,36 @@ class Show extends Component
             ->where('course_id', $this->course->id)
             ->when($this->search, function ($query) {
                 $query->whereHas('student', function ($q) {
-                    $q->where('first_name', 'like', '%'.$this->search.'%')
-                    ->orWhere('surname', 'like', '%'.$this->search.'%');
+                    $q->where('first_name', 'like', '%' . $this->search . '%')
+                        ->orWhere('surname', 'like', '%' . $this->search . '%');
                 });
             })
             ->orderBy('enrolled_at', 'desc')
             ->paginate(10);
 
+        // $courseSyllabus = $this->course->syllabus()->get();
+
+        // Debug: Alternative approach to ensure attempts_count works
+        $quizzes = Quiz::query()
+            ->whereHas('courseContent', function ($query) {
+                $query->whereHas('courseSyllabus', function ($syllabusQuery) {
+                    $syllabusQuery->where('course_id', $this->course->id);
+                })->where('type', 'quiz');
+            })
+            ->with([
+                'courseContent:id,course_syllabus_id,title,type,order',
+                'courseContent.courseSyllabus:id,course_id,title,order',
+                'questions:id,quiz_id,question,question_type',
+            ])
+            ->withCount(['attempts' => function ($query) {
+                $query->whereIn('status', ['completed', 'graded']);
+            }]) // Count attempts with completed or graded status
+            ->get();
+
         return view('livewire.course.published.show', [
             'enrolledStudents' => $enrolledStudents,
+            // 'courseSyllabus' => $courseSyllabus,
+            'quizzes' => $quizzes,
         ]);
     }
 }

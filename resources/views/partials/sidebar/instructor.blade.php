@@ -21,9 +21,7 @@
             data-bs-parent="#sideNavbar">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link "
-                        href="{{ route('instructor.profile', ['username' => auth()->user()->username]) }}">Profil</a>
-                </li>
+                    <a class="nav-link " {{-- href="{{ route('instructor.profile', ['username' => auth()->user()->username]) }}">Profil</a> --}} </li>
             </ul>
             <ul class="nav flex-column">
                 <li class="nav-item">
