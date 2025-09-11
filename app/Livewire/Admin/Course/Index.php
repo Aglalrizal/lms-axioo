@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Course;
 
+use App\Models\User;
 use App\Models\Course;
 use App\Models\Program;
 use Livewire\Component;
@@ -23,7 +24,7 @@ class Index extends Component
     public $sortDirection = 'asc';
 
     public $courseToDelete;
-    public $program, $accessType, $category, $level;
+    public $program, $accessType, $category, $instructor, $level, $status;
 
     public function refresh() {}
 
@@ -39,16 +40,23 @@ class Index extends Component
             $query->whereHas('program', fn($q) => $q->where('slug', $this->program));
         }
 
-        if ($this->accessType) {
-            $query->where('access_type', $this->accessType);
-        }
-
         if ($this->category) {
             $query->whereHas('courseCategory', fn($q) => $q->where('slug', $this->category));
         }
 
+        if ($this->instructor) {
+            $query->where('teacher_id', $this->instructor);
+        }
+        
+        if ($this->accessType) {
+            $query->where('access_type', $this->accessType);
+        }
+        
         if ($this->level) {
             $query->where('level', $this->level);
+        }
+        if ($this->status){
+            $query->where('is_published', $this->status);
         }
 
         $courses = $query->with(['courseCategory', 'teacher', 'program'])
@@ -58,6 +66,7 @@ class Index extends Component
         return view('livewire.admin.course.index', [
             'programs' => Program::query()->select('id', 'name', 'slug')->get(),
             'categories' => CourseCategory::query()->select('id', 'name', 'slug')->get(),
+            'instructors' => User::has('courses')->get(),
             'accessTypes' => AccessType::toArray(),
             'courseLevels' => CourseLevel::toArray(),
             'courses' => $courses

@@ -5,8 +5,13 @@
                 <div class="position-relative rounded-4 overflow-hidden"
                     style="{{ $course->thumbnail ? '' : 'height: 300px' }}">
                     @if ($course->thumbnail)
-                        <img src="{{ asset('storage/' . $course->thumbnail) }}" alt="{{ $course->title }}-cover"
-                            class="w-100 h-100 object-cover">
+                        @if (str_contains($course->thumbnail, 'samples'))
+                            <img src="{{ asset($course->thumbnail) }}" alt="{{ $course->title }}-cover"
+                                class="w-100 h-100 object-cover">
+                        @else
+                            <img src="{{ asset('storage/' . $course->thumbnail) }}" alt="{{ $course->title }}-cover"
+                                class="w-100 h-100 object-cover">
+                        @endif
                     @else
                         <img src="{{ asset('assets/images/course-bg.jpg') }}" alt="{{ $course->title }}-cover"
                             class="w-100 h-100 object-fit-cover position-absolute top-0 start-0">
@@ -42,18 +47,21 @@
                             <span class="ms-4 d-none d-md-block">
                                 <i class="bi bi-cash"></i>
                                 <span>{{ Str::title($course->access_type->label()) }}</span>
+                                @if ($course->access_type->value == 'paid' || $course->access_type->value == 'free_trial')
+                                    | {{ $course->price_formatted }}
+                                @endif
                             </span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <div class="d-flex align-items-center">
                                 <img src="{{ optional($course->teacher)->profile_picture
                                     ? asset('storage/' . $course->teacher->profile_picture)
-                                    : 'https://ui-avatars.com/api/?background=random&name=' . urlencode(optional($course->teacher)->first_name) }}"
-                                    alt="{{ $course->teacher->first_name . '-avatar' }}"
+                                    : 'https://ui-avatars.com/api/?background=random&name=' . urlencode(optional($course->teacher)->full_name) }}"
+                                    alt="{{ $course->teacher->full_name . '-avatar' }}"
                                     class="rounded-circle avatar-xs" />
                                 <div class="ms-2 lh-1">
                                     <h4 class="mb-1">
-                                        {{ $course->teacher->first_name . ' ' . $course->teacher->surname }}
+                                        {{ $course->teacher->full_name }}
                                     </h4>
                                     <p class="fs-6 mb-0">{{ '@' . $course->teacher->username }}</p>
                                 </div>
@@ -83,10 +91,18 @@
                             <!-- Tab pane -->
                             <div class="tab-pane fade @if ($activeTab === 'description') show active @endif"
                                 id="description" role="tabpanel" aria-labelledby="description-tab">
-                                <div>
+                                <div class="mb-3">
                                     <h3 class="mb-2">Deskripsi Kursus</h3>
                                     {!! $course->description !!}
                                 </div>
+                                @if ($course->extra_description)
+                                    <div class="mb-3">
+                                        <hr />
+                                        <h3 class="mb-2">Lain-lain</h3>
+                                        <hr />
+                                        {!! $course->extra_description !!}
+                                    </div>
+                                @endif
                             </div>
                             <div class="tab-pane fade @if ($activeTab === 'enrolled') show active @endif"
                                 id="enrolled" role="tabpanel" aria-labelledby="enrolled-tab">
@@ -135,7 +151,8 @@
                                                         @empty
                                                             <tr>
                                                                 <td colspan="3" class="text-center">
-                                                                    <i class="bi bi-exclamation-triangle"></i> Belum ada
+                                                                    <i class="bi bi-exclamation-triangle"></i> Belum
+                                                                    ada
                                                                     yang
                                                                     mendaftar
                                                                 </td>
@@ -163,23 +180,35 @@
                             @foreach ($course->syllabus as $syllabus)
                                 <li class="list-group-item p-0">
                                     <!-- Toggle -->
-                                    <a class="h4 mb-0 d-flex align-items-center py-3 px-4" data-bs-toggle="collapse"
-                                        href="#syllabus{{ $syllabus->order }}" role="button" aria-expanded="false"
+                                    <a class="h4 mb-0 d-flex justify-content-between py-3 px-4 w-100 border-bottom"
+                                        data-bs-toggle="collapse" href="#syllabus{{ $syllabus->order }}"
+                                        role="button" aria-expanded="false"
                                         aria-controls="syllabus{{ $syllabus->order }}">
-                                        <div class="me-auto">
-                                            {{ $syllabus->title }}
-                                            <p class="mb-0 fs-6 mt-1 fw-normal">
+
+                                        <div class="me-auto d-flex flex-column">
+                                            <span>{{ $syllabus->title }}</span>
+
+                                            <div class="fs-5 fw-normal text-break">
+                                                {{ $syllabus->description }}
+                                            </div>
+
+                                            <p
+                                                class="mb-0 fs-6 mt-3 fw-normal badge text-light-emphasis bg-light-subtle border border-light-subtle">
                                                 {{ $syllabus->courseContents->where('type', 'article')->count() }}
                                                 Artikel,
-                                                {{ $syllabus->courseContents->where('type', 'video')->count() }} Video,
-                                                {{ $syllabus->courseContents->where('type', 'quiz')->count() }} Kuis,
+                                                {{ $syllabus->courseContents->where('type', 'video')->count() }}
+                                                Video,
+                                                {{ $syllabus->courseContents->where('type', 'quiz')->count() }}
+                                                Kuis,
                                                 {{ $syllabus->courseContents->where('type', 'assignment')->count() }}
-                                                Assignment</p>
+                                                Tugas
+                                            </p>
                                         </div>
+
                                         <!-- Chevron -->
-                                        <span class="chevron-arrow ms-4">
+                                        <div class="chevron-arrow ms-4 d-flex align-items-center">
                                             <i class="fe fe-chevron-down fs-4"></i>
-                                        </span>
+                                        </div>
                                     </a>
                                     <!-- Row -->
                                     <!-- Collapse -->
@@ -190,15 +219,19 @@
                                             @foreach ($syllabus->courseContents as $content)
                                                 <!-- List group item -->
                                                 <li class="list-group-item">
-                                                    <div class="d-flex align-items-center text-inherit">
-                                                        <div class="border border-primary rounded-circle"
+                                                    <div class="text-truncate text-dark">
+                                                        <span
+                                                            class="icon-shape bg-light text-primary icon-md rounded-circle me-2"
                                                             data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-title="{{ Str::title($content->type) }}">
-                                                            <i class="bi {{ $content->icon }} p-2"></i>
-                                                        </div>
-                                                        <div>
-                                                            <span>{{ $content->title }}</span>
-                                                        </div>
+                                                            data-bs-title="{{ Str::title($content->type_formatted) }}">
+                                                            <i
+                                                                class="bi
+                                                                {{ $content->icon }}">
+                                                            </i>
+                                                        </span>
+                                                        <span>
+                                                            {{ $content->title }}
+                                                        </span>
                                                     </div>
                                                 </li>
                                             @endforeach
