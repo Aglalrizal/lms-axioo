@@ -41,8 +41,8 @@
                                 {{-- <a href="../index.html"><img src="../assets/images/brand/logo/logo-icon.svg" class="mb-4"
                                         alt="logo-icon" /></a> --}}
                                 <div class="d-flex flex-column gap-1">
-                                    <h1 class="mb-0 fw-bold">Forgot Password</h1>
-                                    <p class="mb-0">Fill the form to reset your password.</p>
+                                    <h1 class="mb-0 fw-bold">Lupa Kata Sandi</h1>
+                                    <p class="mb-0">Isi formulir untuk mengatur ulang kata sandi Anda.</p>
                                 </div>
                             </div>
                             <!-- Form -->
@@ -58,12 +58,12 @@
                                 <!-- Button -->
                                 <div class="d-flex align-items-center justify-content-end mt-3">
                                     <x-primary-button>
-                                        {{ __('Email Password Reset Link') }}
+                                        {{ __('Kirim Email Atur Ulang Kata Sandi') }}
                                     </x-primary-button>
                                 </div>
                                 <div class="mt-2">
-                                    Return to
-                                    <a href="{{ route('login') }}">sign in</a>
+                                    Kembali ke
+                                    <a href="{{ route('login') }}">masuk</a>
                                 </div>
                             </form>
                         </div>
