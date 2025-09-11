@@ -58,13 +58,13 @@
                 <input type="search" id="search" class="form-control ps-6 rounded-5" placeholder="Search Courses">
             </form>
 
-            <ul class="navbar-nav mt-3 mt-lg-0 mx-lg-auto">
+            <ul class="navbar-nav mt-3 mt-lg-0 mx-lg-auto gap-3">
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="{{ route('public.about-us') }}" id="navbarBrowse"
                         aria-haspopup="true"data-bs-display="static">Tentang Kami</a>
                 </li>
 
-                <li class="nav-item dropdown mx-lg-3 mx-xl-6">
+                <li class="nav-item dropdown">
                     <a class="nav-link" href="{{ route('public.course.explore') }}" id="navbarBrowse"
                         aria-haspopup="true"data-bs-display="static">Kursus</a>
                 </li>
@@ -89,6 +89,11 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="#" id="navbarBrowse"
                         aria-haspopup="true"data-bs-display="static">Langganan</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href={{ route('public.learning-paths.index') }} id="navbarBrowse"
+                        aria-haspopup="true"data-bs-display="static">Learning Path</a>
                 </li>
 
             </ul>
