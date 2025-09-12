@@ -86,6 +86,11 @@ class DatabaseSeeder extends Seeder
             ->count(50)
             ->create();
 
+        // Create special courses with detailed syllabus and content
+        $this->call([
+            CourseContentSeeder::class
+        ]);
+
         Blog::factory()
             ->withBase64Images()
             ->count(50)

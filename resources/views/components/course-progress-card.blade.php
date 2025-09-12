@@ -14,7 +14,7 @@
     <div class="custom-card-body">
         <div class="custom-card-body-top">
             <div class="custom-card-meta-container">
-                <p class="custom-card-meta-left text-secondary"> {{ $course->program->name }}</p>
+                <p class="custom-card-meta-left text-secondary"> {{ $course->program->name ?? '' }}</p>
             </div>
             <p class="custom-card-title"> {{ $course->title }} </p>
             <div class="pt-2 d-flex flex-column gap-1">

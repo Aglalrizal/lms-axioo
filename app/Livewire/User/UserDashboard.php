@@ -30,7 +30,7 @@ class UserDashboard extends Component
     public $showModal = false;
     public $action;
 
-    public $user, $enrolledCourses, $recommendCourses, $rencanaBelajar;
+    public $user, $courses, $totalEnrolledCourses, $recommendCourses, $rencanaBelajar, $totalCompletedCourses;
 
     public function messages()
     {
@@ -47,18 +47,22 @@ class UserDashboard extends Component
     public function mount()
     {
         $this->user = Auth::user();
-        $this->enrolledCourses = $this->user->enrolledCourses;
-        $this->recommendCourses = Course::query()
-            ->whereDoesntHave('enrollments', function ($q) {
-                $q->where('student_id', $this->user->id);
-            })
-            ->select('id', 'title', 'thumbnail', 'level', 'access_type', 'program_id', 'course_category_id', 'short_desc', 'slug', 'duration')
-            ->with([
-                'program:id,name',
-                'courseCategory:id,name'
-            ])
-            ->limit(4)
-            ->get();
+        $this->user->loadCount('enrolledCourses');
+
+        $this->totalEnrolledCourses = $this->user->enrolled_courses_count;
+
+        $this->totalCompletedCourses = $this->user
+            ->enrolledCourses()
+            ->select('courses.id')
+            ->withCount('contents as total_contents')
+            ->withCount(['progresses as completed_contents' => function ($query) {
+                $query->where('student_id', Auth::id());
+                $query->where('is_completed', true);
+            }])
+            ->havingRaw('completed_contents = total_contents')
+            ->count();
+
+        $this->recommendCourses = $this->user->getIntelligentRecommendations(4);
     }
 
     public function openModal($studyPlanId = null)
@@ -80,7 +84,7 @@ class UserDashboard extends Component
     public function closeModal()
     {
         $this->showModal = false;
-        $this->resetExcept(['user', 'enrolledCourses', 'recommendCourses', 'rencanaBelajar']);
+        $this->resetExcept(['user', 'totalEnrolledCourses', 'totalCompletedCourses', 'rencanaBelajar']);
     }
 
     public function store()
@@ -142,34 +146,11 @@ class UserDashboard extends Component
             ->where('user_id', $this->user->id)
             ->get();
 
-        $baseQuery = Auth::user()
-            ->enrolledCourses()
-            ->select('courses.id', 'courses.slug', 'courses.thumbnail', 'courses.title', 'courses.level', 'courses.duration', 'courses.program_id')
-            ->with('program:id,name')
-            ->withCount('contents as total_contents')
-            ->withCount(['progresses as completed_contents' => function ($query) {
-                $query->where('student_id', Auth::id());
-                $query->where('is_completed', true);
-            }])
-            ->addSelect([
-                'last_progress' => CourseProgress::query()->select('course_content_id')
-                    ->whereColumn('course_id', 'courses.id')
-                    ->where('student_id', Auth::id())
-                    ->latest()
-                    ->take(1)
-            ]);
-
-        // if ($this->isShowing === 'completed') {
-        //     // Only courses with 100% completion
-        //     $baseQuery->havingRaw('completed_contents = total_contents');
-        // } else {
-        //     // Only courses with less than 100% completion
-        //     $baseQuery->havingRaw('completed_contents < total_contents OR total_contents = 0');
-        // }
-
-        $courses = $baseQuery
-            ->orderBy('last_progress', 'desc')
+        $this->courses = Auth::user()
+            ->courseProgressInformation()
+            // ->havingRaw('completed_contents < total_contents OR total_contents = 0')
             ->get()
+            ->take(4)
             ->map(function ($course) {
                 $course->progress_percentage = $course->total_contents > 0
                     ? round(($course->completed_contents / $course->total_contents) * 100)
@@ -177,6 +158,8 @@ class UserDashboard extends Component
                 return $course;
             });
 
-        return view('livewire.user-dashboard');
+        return view('livewire.user-dashboard', [
+            // 'courses' => $courses,
+        ]);
     }
 }

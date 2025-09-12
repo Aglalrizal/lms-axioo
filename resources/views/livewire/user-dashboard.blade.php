@@ -9,7 +9,7 @@
             <div class="card mb-4 mb-lg-0">
                 <!-- card body -->
                 <div class="card-body p-5 text-center">
-                    <h3 class="mb-2 display-3 text-dark">0</h3>
+                    <h3 class="mb-2 display-3 text-dark">{{ $totalCompletedCourses }}</h3>
                     <p class="mb-0 text-dark">Kelas yang diselesaikan</p>
                 </div>
             </div>
@@ -19,7 +19,7 @@
             <div class="card mb-4 mb-lg-0">
                 <!-- card body -->
                 <div class="card-body p-5 text-center">
-                    <h3 class="mb-2 display-3 text-dark">{{ $enrolledCourses->count() }}</h3>
+                    <h3 class="mb-2 display-3 text-dark">{{ $totalEnrolledCourses }}</h3>
                     <p class="mb-0 text-dark">Kelas yang Dipelajari</p>
                 </div>
             </div>
@@ -47,38 +47,16 @@
                     <a href="#" class="text-dark"><u>Lainnya</u></a>
                 </div>
                 <div class="row">
-                    @forelse($enrolledCourses as $course)
-                        <div class="col-md-4 col-12">
-                            <!-- card -->
-                            <div class="card mb-2 mb-lg-0 h-100">
-                                <!-- card body -->
-                                <a href="{{ route('course.show', ['slug' => $course->slug]) }}">
-                                    @if ($course->thumbnail)
-                                        <img src="{{ asset('storage/' . $course->thumbnail) }}"
-                                            alt="{{ $course->title }}-gambar-sampul"
-                                            class="img-fluid w-100 rounded-top-3">
-                                    @else
-                                        <img src="{{ asset('assets/images/course-bg.jpg') }}"
-                                            alt="{{ $course->title }}-gambar-sampul"
-                                            class="img-fluid w-100 rounded-top-3">
-                                    @endif
-                                </a>
-                                <div class="card-body">
-                                    <h4 class="mb-2 text-truncate">
-                                        <a href="{{ route('course.show', ['slug' => $course->slug]) }}"
-                                            class="text-wrap">{{ $course->title }}</a>
-                                    </h4>
-                                </div>
-                                <div class="card-footer text-end">
-                                    <a href="{{ route('course.show', ['slug' => $course->slug]) }}"
-                                        class="btn btn-light-primary text-primary">Lihat Kursus</a>
-                                </div>
-                            </div>
+                    @forelse ($courses as $course)
+                        <div class="col-md-6 col-lg-4 col-xl-3 col-12 mb-3 d-flex justify-content-center">
+                            <x-course-progress-card :key="$course->id" :course="$course" />
                         </div>
                     @empty
                         <div class="card">
                             <div class="card-body text-center">
-                                <p class="text-muted mb-0 text-dark">Eh, kamu belum daftar kursus manapun.</p>
+                                <p class="text-muted mb-0">Belum ada kelas yang sedang dipelajari.</p>
+                                <a href="{{ route('public.course.explore') }}" class="btn btn-primary mt-2">Ikuti
+                                    Kelas</a>
                             </div>
                         </div>
                     @endforelse
