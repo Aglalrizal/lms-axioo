@@ -62,19 +62,13 @@
                     <span class="text-white-stable">Company</span>
                     <ul class="list-unstyled mb-0 d-flex flex-column nav nav-footer nav-x-0">
                         <li>
-                            <a href="#!" class="nav-link">About us</a>
+                            <a href="{{ route('public.about-us') }}" class="nav-link">About us</a>
                         </li>
                         <li>
-                            <a href="#!" class="nav-link">Contact us</a>
+                            <a href="{{ route('public.about-us') }}" class="nav-link">Contact us</a>
                         </li>
                         <li>
-                            <a href="#!" class="nav-link">News and Blogs</a>
-                        </li>
-                        <li>
-                            <a href="#!" class="nav-link">Career</a>
-                        </li>
-                        <li>
-                            <a href="#!" class="nav-link">Investors</a>
+                            <a href="{{ route('public.blog.index') }}" class="nav-link">News and Blogs</a>
                         </li>
                     </ul>
                 </div>
@@ -87,13 +81,7 @@
                             <a href="{{ route('public.help-center') }}" class="nav-link">Help and Support</a>
                         </li>
                         <li>
-                            <a href="#!" class="nav-link">Affiliate</a>
-                        </li>
-                        <li>
                             <a href="{{ route('public.blog.index') }}" class="nav-link">Blog</a>
-                        </li>
-                        <li>
-                            <a href="#!" class="nav-link">Geeks Business</a>
                         </li>
                     </ul>
                 </div>
@@ -158,7 +146,7 @@
                                 );
                         </script>
                     </span>
-                    GeeksTheme. Powered Codescandy
+                    UpMysSkill
                 </span>
             </div>
             <!-- Links -->

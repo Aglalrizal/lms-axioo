@@ -35,7 +35,9 @@ class CourseSearch extends Component
             $query->where('title', 'like', '%' . $this->search . '%');
         }
 
-        if ($this->program) {
+        if ($this->program === 'no-program') {
+            $query->whereNull('program_id');
+        } elseif ($this->program) {
             $query->whereHas('program', fn($q) => $q->where('slug', $this->program));
         }
 

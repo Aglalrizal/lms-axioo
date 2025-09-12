@@ -7,6 +7,7 @@ use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 
 class Create extends Component
 {
@@ -17,9 +18,9 @@ class Create extends Component
     public $changePassword=false;
 
     public $user;
-
     public $username;
     public $email;
+    public $userRole;
     public $password;
     public function rules()
     {
@@ -37,6 +38,10 @@ class Create extends Component
                 'email',
                 'min:8',
                 Rule::unique('users', 'email')->ignore($this->user?->id),
+            ],
+            'userRole' => [
+                'required',
+                'exists:roles,name'
             ]
         ];
 
@@ -64,9 +69,13 @@ class Create extends Component
             'email.email'       => 'Format email tidak valid.',
             'email.unique'      => 'Email sudah digunakan.',
 
+            'userRole.required'     => 'Role wajib diisi.',
+            'userRole.exists'       => 'Role tidak ada',
+
             'password.required' => 'Password wajib diisi.',
             'password.string'   => 'Password harus berupa teks.',
             'password.min'      => 'Password minimal :min karakter.',
+
         ];
     }
     public function mount(){
@@ -93,25 +102,27 @@ class Create extends Component
 
     #[On('edit-mode')]
     public function edit($id){
-        //dd($id);
         $this->editform=true;
         $this->formtitle='Edit '.$this->title;
         $this->user=User::findOrfail($id);
         $this->username=$this->user->username;
         $this->email=$this->user->email;
+        $this->userRole = $this->user->getRoleNames()->first();
         $this->password = "";
     }
     public function update(){
         $this->validate();
-        $validated=$this->validate();
+        $validated = $this->validate();
         $original = [
             'username' => $this->user->username,
-            'email' => $this->user->email
+            'email' => $this->user->email,
+            'role'  => $this->user->getRoleNames()->first()
         ];
 
         $current = [
             'username' => $validated['username'],
             'email' => $validated['email'],
+            'role'  => $validated['userRole']
         ];
 
         $passwordChanged = isset($validated['password']);
@@ -122,10 +133,22 @@ class Create extends Component
             return;
         }
 
-        $this->user->update($validated);
-        flash()->success('Berhasil memperbarui data '.$this->title.'.');
+        $this->user->update([
+            'username' => $validated['username'],
+            'email' => $validated['email'],
+        ]);
+
+        if ($passwordChanged) {
+            $this->user->update([
+                'password' => Hash::make($this->password)
+            ]);
+        }
+
+        $this->user->removeRole($this->role)->assignRole($this->userRole);
+
+        flash()->success('Berhasil memperbarui data.');
         $this->dispatch('refresh-users');
-        $this->reset(['username', 'email', 'password', 'formtitle', 'changePassword', 'editform']);
+        $this->reset(['username', 'email', 'userRole','password', 'formtitle', 'changePassword', 'editform']);
     }
     public function render()
     {

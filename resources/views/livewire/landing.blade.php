@@ -177,7 +177,8 @@
                             </div>
 
                             <div>
-                                <a href="#!" class="btn btn-warning">Lihat Selengkapnya</a>
+                                <a href="{{ route('public.about-us') }}" class="btn btn-warning">Lihat
+                                    Selengkapnya</a>
                             </div>
                         </div>
                     </div>
@@ -190,28 +191,28 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="d-flex flex-column align-items-center">
                         <i class="bi bi-people-fill text-warning mb-n3" style="font-size: 6.5rem;"></i>
-                        <h3 class="text-dark fs-1 fw-bold mb-1">1.000 +</h3>
+                        <h3 class="text-dark fs-1 fw-bold mb-1">1.000+</h3>
                         <p class="text-muted">Siswa Aktif</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="d-flex flex-column align-items-center">
                         <i class="bi bi-mortarboard-fill text-warning mb-n3" style="font-size: 6.5rem;"></i>
-                        <h3 class="text-dark fs-1 fw-bold mb-1">12.000 +</h3>
+                        <h3 class="text-dark fs-1 fw-bold mb-1">12.000+</h3>
                         <p class="text-muted">Lulusan</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="d-flex flex-column align-items-center">
                         <i class="bi bi-collection-play-fill text-warning mb-n3" style="font-size: 6.5rem;"></i>
-                        <h3 class="text-dark fs-1 fw-bold mb-1">90 +</h3>
+                        <h3 class="text-dark fs-1 fw-bold mb-1">90+</h3>
                         <p class="text-muted">Kursus Gratis</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="d-flex flex-column align-items-center">
                         <i class="bi bi-award-fill text-warning mb-n3" style="font-size: 6.5rem;"></i>
-                        <h3 class="text-dark fs-1 fw-bold mb-1">150 +</h3>
+                        <h3 class="text-dark fs-1 fw-bold mb-1">150+</h3>
                         <p class="text-muted">Kursus Aktif</p>
                     </div>
                 </div>

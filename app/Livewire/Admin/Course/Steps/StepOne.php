@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Program;
 use Livewire\Component;
 use Livewire\Attributes\Rule;
+use App\Models\category;
 use App\Models\CourseCategory;
 use Livewire\Attributes\Layout;
 use App\Traits\HandlesBase64Images;
@@ -22,7 +23,7 @@ class StepOne extends Component
     public $categories;
     public $instructors;
     public $programs;
-    public $courseCategory, $courseInstructor, $program_id, $title, $courseLevel, $accessType, $duration, $description = '', $short_desc, $price;
+    public $category, $instructor, $program, $title, $level, $accessType, $duration, $description = '', $short_desc, $price;
 
     public ?Course $course = null;
 
@@ -31,11 +32,11 @@ class StepOne extends Component
     public function rules()
     {
         return [
-            'courseCategory'    => 'required|integer|exists:course_categories,id',
-            'courseInstructor'  => 'required|integer|exists:users,id',
-            'program_id'        => 'nullable|integer|exists:programs,id',
+            'category'    => 'required|integer|exists:course_categories,id',
+            'instructor'  => 'required|integer|exists:users,id',
+            'program'        => 'nullable|integer|exists:programs,id',
             'title'             => 'required|string|max:255',
-            'courseLevel'       => 'required|string|max:100',
+            'level'       => 'required|string|max:100',
             'accessType'        => 'required|string|max:100',
             'duration'          => 'required|integer|min:1',
             'description'       => [
@@ -56,23 +57,21 @@ class StepOne extends Component
     public function messages()
     {
         return [
-            'courseCategory.required'  => 'Kategori kursus wajib dipilih.',
-            'courseCategory.integer'   => 'Kategori kursus tidak valid.',
-            'courseCategory.exists'    => 'Kategori kursus yang dipilih tidak ditemukan.',
+            'category.required'  => 'Kategori kursus wajib dipilih.',
+            'category.integer'   => 'Kategori kursus tidak valid.',
+            'category.exists'    => 'Kategori kursus yang dipilih tidak ditemukan.',
 
-            'courseInstructor.required' => 'Instruktur wajib dipilih.',
-            'courseInstructor.integer' => 'Instruktur tidak valid.',
-            'courseInstructor.exists'  => 'Instruktur yang dipilih tidak ditemukan.',
-
-            'program_id.exists'         => 'Program tidak ditemukan',
+            'instructor.required' => 'Instruktur wajib dipilih.',
+            'instructor.integer' => 'Instruktur tidak valid.',
+            'instructor.exists'  => 'Instruktur yang dipilih tidak ditemukan.',
 
             'title.required'           => 'Judul kursus wajib diisi.',
             'title.string'             => 'Judul kursus harus berupa teks.',
             'title.max'                => 'Judul kursus tidak boleh lebih dari :max karakter.',
 
-            'courseLevel.required'     => 'Level kursus wajib dipilih.',
-            'courseLevel.string'       => 'Level kursus harus berupa teks.',
-            'courseLevel.max'          => 'Level kursus tidak boleh lebih dari :max karakter.',
+            'level.required'     => 'Level kursus wajib dipilih.',
+            'level.string'       => 'Level kursus harus berupa teks.',
+            'level.max'          => 'Level kursus tidak boleh lebih dari :max karakter.',
 
             'accessType.required'      => 'Tipe kursus wajib dipilih.',
             'accessType.string'        => 'Tipe kursus harus berupa teks.',
@@ -102,24 +101,15 @@ class StepOne extends Component
             $this->course = Course::where('slug', $this->slug)->firstOrFail();
             if ($this->course) {
                 $this->title = $this->course->title;
-                $this->courseCategory = $this->course->course_category_id;
-                $this->courseInstructor = $this->course->teacher_id;
-                $this->program_id = $this->course->program_id;
+                $this->category = $this->course->course_category_id;
+                $this->instructor = $this->course->teacher_id;
+                $this->program = $this->course->program;
                 $this->duration = $this->course->duration;
                 $this->description = $this->course->description;
                 $this->short_desc = $this->course->short_desc;
                 $this->price = $this->course->price;
                 $this->dispatch('update-jodit-content', [$this->description]);
-                $this->dispatch('init-category', [
-                    $this->courseCategory
-                ]);
-                $this->dispatch('init-instructor', [
-                    $this->courseInstructor
-                ]);
-                $this->dispatch('init-program', [
-                    $this->program_id
-                ]);
-                $this->courseLevel = $this->course->level->value;
+                $this->level = $this->course->level->value;
                 $this->accessType = $this->course->access_type->value;
             }
         }
@@ -137,6 +127,10 @@ class StepOne extends Component
 
         $data = $this->validate();
 
+        
+        $data['program'] = $data['program'] ?: null;
+        $data['price'] = $data['price'] ?: 0;
+        
         if ($this->course && $this->course->exists) {
             $oldDescription = $this->course->description;
             $this->removeUnusedImages($oldDescription, $this->description, 'course_images');
@@ -146,11 +140,11 @@ class StepOne extends Component
                 $this->course->slug = "";
                 $this->course->update([
                     'title' => $data['title'],
-                    'course_category_id' => $data['courseCategory'],
-                    'teacher_id' => $data['courseInstructor'],
-                    'program_id' => $data['program_id'],
+                    'course_category_id' => $data['category'],
+                    'teacher_id' => $data['instructor'],
+                    'program_id' => $data['program'],
                     'modified_by' => Auth::user()->username,
-                    'level' => $data['courseLevel'],
+                    'level' => $data['level'],
                     'access_type' => $data['accessType'],
                     'description' => $data['description'],
                     'duration' => $data['duration'],
@@ -164,11 +158,11 @@ class StepOne extends Component
             } else {
                 $this->course->update([
                     'title' => $data['title'],
-                    'course_category_id' => $data['courseCategory'],
-                    'teacher_id' => $data['courseInstructor'],
-                    'program_id' => $data['program_id'],
+                    'course_category_id' => $data['category'],
+                    'teacher_id' => $data['instructor'],
+                    'program_id' => $data['program'],
                     'modified_by' => Auth::user()->username,
-                    'level' => $data['courseLevel'],
+                    'level' => $data['level'],
                     'access_type' => $data['accessType'],
                     'description' => $data['description'],
                     'duration' => $data['duration'],
@@ -180,12 +174,12 @@ class StepOne extends Component
         } else {
             $this->course = Course::create([
                 'title' => $data['title'],
-                'course_category_id' => $data['courseCategory'],
-                'teacher_id' => $data['courseInstructor'],
-                'program_id' => $data['program_id'],
+                'course_category_id' => $data['category'],
+                'teacher_id' => $data['instructor'],
+                'program_id' => $data['program'],
                 'created_by' => Auth::user()->username,
                 'modified_by' => Auth::user()->username,
-                'level' => $data['courseLevel'],
+                'level' => $data['level'],
                 'access_type' => $data['accessType'],
                 'is_published' => 0,
                 'description' => $data['description'],

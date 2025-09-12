@@ -20,7 +20,7 @@
                     <textarea wire:model="short_desc" class="form-control" id="short_desc" rows="2"
                         placeholder="Minimal 75 karakter dan maksimal 150 karakter" maxlength="150"
                         oninput="document.getElementById('shortDescCount').textContent = this.value.length"></textarea>
-                    <small id="shortDescCount" class="text-muted">0</small>
+                    <small id="shortDescCount" class="text-muted">{{ Str::length($short_desc ?? '') }}</small>
                     <small class="text-muted">/ 150 karakter</small>
                     @error('short_desc')
                         <small class="d-block mt-2 text-danger">{{ $message }}</small>
@@ -39,7 +39,7 @@
                     <div wire:ignore>
                         <label class="form-label" for="select-program">Program</label>
                         <select class="form-select" id="select-program" wire:model="program_id" style="width: 100%">
-                            <option value="null">Pilih Program
+                            <option value="">Tidak ada program
                             </option>
                             @foreach ($programs as $item)
                                 <option value="{{ $item->id }}">{{ Str::title($item->name) }}</option>
@@ -57,8 +57,7 @@
                 <div class="mb-3">
                     <div wire:ignore>
                         <label class="form-label" for="select-category">Kategori</label>
-                        <select class="form-select" id="select-category" wire:model="courseCategory"
-                            style="width: 100%">
+                        <select class="form-select" id="select-category" wire:model="category" style="width: 100%">
                             <option value="">Pilih Kategori
                             </option>
                             @foreach ($categories as $item)
@@ -73,8 +72,7 @@
                 <div class="mb-3">
                     <div wire:ignore>
                         <label class="form-label" for="select-instructor">Instruktur</label>
-                        <select class="form-select" id="select-instructor" wire:model="courseInstructor"
-                            style="width: 100%">
+                        <select class="form-select" id="select-instructor" wire:model="instructor" style="width: 100%">
                             <option value="">Pilih Instruktur
                             </option>
                             @foreach ($instructors as $item)
@@ -89,7 +87,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="addCourseLevel">Level Kursus</label>
-                    <select class="form-select text-dark" id="addCourseLevel" wire:model="courseLevel">
+                    <select class="form-select text-dark" id="select-level" wire:model="level">
                         <option value="">Pilih Level</option>
                         <option value="beginner">Pemula</option>
                         <option value="intermediate">Menengah</option>
@@ -100,8 +98,8 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="addAccessType">Tipe Kursus</label>
-                    <select class="form-select text-dark" id="addAccessType" wire:model="accessType">
+                    <label class="form-label" for="select-access-type">Tipe Kursus</label>
+                    <select class="form-select text-dark" id="select-access-type" wire:model="accessType">
                         <option value="">Pilih Level</option>
                         <option value="free_trial">Gratis Percobaan</option>
                         <option value="free">Gratis</option>
@@ -148,27 +146,34 @@
 
 @script
     <script>
-        let selectCategory = $('#select-category').select2();
-        let selectInstructor = $('#select-instructor').select2();
-        let selectProgram = $('#select-program').select2();
+        $(document).ready(function() {
+            $('#select-program').select2();
+            $('#select-category').select2();
+            $('#select-instructor').select2();
+            $('#select-access-type').select2();
+            $('#select-level').select2();
 
-        Livewire.on('init-category', ([categoryId]) => {
-            $('#select-category').val(categoryId).trigger('change');
-        });
-        Livewire.on('init-instructor', ([instructorId]) => {
-            $('#select-instructor').val(instructorId).trigger('change');
-        });
-        Livewire.on('init-program', ([programId]) => {
-            $('#select-program').val(programId).trigger('change');
-        });
+            $('#select-program').val(@this.program).trigger('change');
+            $('#select-category').val(@this.category).trigger('change');
+            $('#select-instructor').val(@this.instructor).trigger('change');
+            $('#select-access-type').val(@this.accessType).trigger('change');
+            $('#select-level').val(@this.level).trigger('change');
 
-        document.getElementById('save-button').addEventListener('click', function() {
-            const program = $('#select-program').val();
-            @this.set('program_id', program);
-            const instructor = $('#select-instructor').val();
-            const category = $('#select-category').val();
-            @this.set('courseCategory', category);
-            @this.set('courseInstructor', instructor);
+            $('#select-program').on('change', function(e) {
+                @this.set('program', e.target.value);
+            });
+            $('#select-category').on('change', function(e) {
+                @this.set('category', e.target.value);
+            });
+            $('#select-instructor').on('change', function(e) {
+                @this.set('instructor', e.target.value);
+            });
+            $('#select-access-type').on('change', function(e) {
+                @this.set('accessType', e.target.value);
+            });
+            $('#select-level').on('change', function(e) {
+                @this.set('level', e.target.value);
+            });
         });
     </script>
 @endscript

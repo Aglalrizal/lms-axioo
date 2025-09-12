@@ -14,11 +14,11 @@
                             data-bs-target="#importUserModal">
                             Import
                         </button> --}}
-                        <a href="{{ route('admin.user.import') }}" class="btn btn-outline-secondary">
+                        <a href="{{ route('admin.user.import') }}" class="btn btn-outline-primary">
                             Import
                         </a>
                     @endif
-                    <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createUserModal">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createUserModal">
                         Tambah
                     </button>
                 </div>
@@ -32,12 +32,12 @@
                 <!-- card header -->
                 <div class="card-header">
                     <input wire:model.live="search" class="form-control"
-                        placeholder="Search {{ Str::of($role)->replace('-', ' ')->title() }}" />
+                        placeholder="Cari {{ Str::of($role)->replace('-', ' ')->title() }}" />
                     <div class="d-flex justify-content-between align-items-center my-3">
                         <div class="d-flex align-items-center gap-2">
                             <select wire:model.live="sortBy" class="form-select">
                                 <option value="username">Username</option>
-                                <option value="created_at">Tanggal Dibuat</option>
+                                <option value="created_at">Tanggal Bergabung</option>
                                 <option value="first_name">Nama</option>
                                 <option value="Email">Email</option>
                             </select>
@@ -57,7 +57,7 @@
                                 <th>Username</th>
                                 <th>Nama</th>
                                 <th>Email</th>
-                                <th>Joined</th>
+                                <th>Tanggal Bergabung</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -91,11 +91,11 @@
                                                     <i class="fe fe-more-vertical"></i>
                                                 </a>
                                                 <span class="dropdown-menu">
-                                                    <span class="dropdown-header">Settings</span>
+                                                    <span class="dropdown-header">Pengaturan</span>
                                                     <a class="dropdown-item"
                                                         href="{{ route('admin.user.profile', ['username' => $user->username]) }}">
                                                         <i class="fe fe-user dropdown-item-icon"></i>
-                                                        Profile
+                                                        Profil
                                                     </a>
                                                     <button @click="$dispatch('edit-mode',{id:{{ $user->id }}})"
                                                         type="button" class="dropdown-item" data-bs-toggle="modal"
@@ -107,7 +107,7 @@
                                                         wire:click="$dispatch('delete-user',{id: {{ $user->id }}})"
                                                         class="dropdown-item text-danger">
                                                         <i class="fe fe-trash dropdown-item-icon text-danger"></i>
-                                                        Remove
+                                                        Hapus
                                                     </button>
                                                 </span>
                                             </span>
@@ -116,7 +116,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-center">No users found</td>
+                                    <td colspan="4" class="text-center">Pengguna tidak ada.</td>
                                 </tr>
                             @endforelse
                         </tbody>

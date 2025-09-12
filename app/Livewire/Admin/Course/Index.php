@@ -36,7 +36,9 @@ class Index extends Component
             $query->where('title', 'like', '%' . $this->search . '%');
         }
 
-        if ($this->program) {
+        if ($this->program === 'no-program') {
+            $query->whereNull('program_id');
+        } elseif ($this->program) {
             $query->whereHas('program', fn($q) => $q->where('slug', $this->program));
         }
 
@@ -55,6 +57,7 @@ class Index extends Component
         if ($this->level) {
             $query->where('level', $this->level);
         }
+
         if ($this->status){
             $query->where('is_published', $this->status);
         }
