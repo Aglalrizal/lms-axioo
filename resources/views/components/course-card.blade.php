@@ -22,5 +22,5 @@
         <div class="custom-card-body-bottom text-secondary">
             <p>{{ ucfirst($course->level->value) }} &#9702; {{ $course->duration }} Jam</p>
         </div>
-    </div>re
+    </div>
 </a>
