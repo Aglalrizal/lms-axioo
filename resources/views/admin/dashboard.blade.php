@@ -8,15 +8,6 @@
                     <div>
                         <h1 class="mb-0 h2 fw-bold">Dashboard</h1>
                     </div>
-                    <div class="d-flex gap-3">
-                        <div class="input-group">
-                            <input class="form-control flatpickr" type="text" placeholder="Select Date"
-                                aria-describedby="basic-addon2" />
-
-                            <span class="input-group-text" id="basic-addon2"><i class="fe fe-calendar"></i></span>
-                        </div>
-                        <a href="#" class="btn btn-primary">Setting</a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -28,7 +19,7 @@
                     <div class="card-body d-flex flex-column gap-3">
                         <div class="d-flex align-items-center justify-content-between lh-1">
                             <div>
-                                <span class="fs-6 text-uppercase fw-semibold ls-md">Sales</span>
+                                <span class="fs-6 text-uppercase fw-semibold ls-md">Penjualan</span>
                             </div>
                             <div>
                                 <span class="fe fe-shopping-bag fs-3 text-primary"></span>

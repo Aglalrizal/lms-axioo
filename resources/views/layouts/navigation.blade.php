@@ -55,7 +55,7 @@
                     <i class="fe fe-search"></i>
                 </span>
                 <label for="search" class="visually-hidden"></label>
-                <input type="search" id="search" class="form-control ps-6 rounded-5" placeholder="Search Courses">
+                <input type="search" id="search" class="form-control ps-6 rounded-5" placeholder="Cari Kursus">
             </form>
 
             <ul class="navbar-nav mt-3 mt-lg-0 mx-lg-auto">
@@ -87,7 +87,7 @@
                 </li> --}}
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link" href="#" id="navbarBrowse"
+                    <a class="nav-link" href="{{ route('public.course.explore') }}" id="navbarBrowse"
                         aria-haspopup="true"data-bs-display="static">Langganan</a>
                 </li>
 

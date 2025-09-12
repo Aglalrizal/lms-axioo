@@ -31,6 +31,7 @@
                         <div class="mb-3 col-12 col-md-2 flex-grow-1 flex-lg-grow-2" wire:ignore>
                             <select id="select-program" class="form-select text-secondary">
                                 <option value="">Pilih Program</option>
+                                <option value="no-program">Tidak Ada Program</option>
                                 @foreach ($programs as $program)
                                     <option value="{{ $program->slug }}">{{ $program->name }}</option>
                                 @endforeach
@@ -271,10 +272,10 @@
 
             $('#select-program').val(@this.program).trigger('change');
             $('#select-category').val(@this.category).trigger('change');
-            $('#select-instructor').val(@this.category).trigger('change');
+            $('#select-instructor').val(@this.instructor).trigger('change');
             $('#select-access-type').val(@this.accessType).trigger('change');
             $('#select-level').val(@this.level).trigger('change');
-            $('#select-status').val(@this.level).trigger('change');
+            $('#select-status').val(@this.status).trigger('change');
 
             $('#select-program').on('change', function(e) {
                 @this.set('program', e.target.value);

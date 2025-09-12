@@ -16,6 +16,7 @@
         <div class="mb-3 col-12 col-md-3" wire:ignore>
             <select id="select-program" class="form-select text-secondary">
                 <option value="">Pilih Program</option>
+                <option value="no-program">Tidak Ada Program</option>
                 @foreach ($programs as $program)
                     <option value="{{ $program->slug }}">{{ $program->name }}</option>
                 @endforeach
