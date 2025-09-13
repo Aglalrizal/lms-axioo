@@ -273,9 +273,16 @@
                                     </div>
 
                                     <!-- Questions Detail -->
-                                    @foreach ($selectedQuiz->questions->filter(function ($question) {
-        return empty($this->search) || str_contains(strtolower($question->question), strtolower($this->search));
-    }) as $index => $question)
+                                    @php
+                                        $searchTerm = $this->search ?? '';
+                                        $filteredQuestions = $selectedQuiz->questions->filter(function ($question) use (
+                                            $searchTerm,
+                                        ) {
+                                            return empty($searchTerm) ||
+                                                str_contains(strtolower($question->question), strtolower($searchTerm));
+                                        });
+                                    @endphp
+                                    @foreach ($filteredQuestions as $index => $question)
                                         <div class="card mb-4">
                                             <div class="card-header d-flex justify-content-between align-items-center">
                                                 <div class="d-flex align-items-center">
@@ -419,18 +426,15 @@
                                         </div>
                                     @endforeach
 
-                                    @if (
-                                        $selectedQuiz->questions->filter(function ($question) {
-                                                return empty($this->search) || str_contains(strtolower($question->question), strtolower($this->search));
-                                            })->count() === 0)
+                                    @if ($filteredQuestions->count() === 0)
                                         <div class="card">
                                             <div class="card-body text-center py-5">
                                                 <i class="bi bi-search text-muted mb-3" style="font-size: 3rem;"></i>
                                                 <h5 class="text-muted">Tidak Ada Pertanyaan</h5>
                                                 <p class="text-muted">
-                                                    @if ($this->search)
+                                                    @if ($searchTerm)
                                                         Tidak ada pertanyaan yang sesuai dengan pencarian
-                                                        "{{ $this->search }}"
+                                                        "{{ $searchTerm }}"
                                                     @else
                                                         Belum ada pertanyaan untuk quiz ini
                                                     @endif

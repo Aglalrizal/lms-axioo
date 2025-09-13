@@ -58,8 +58,16 @@ class QuizReport extends Component
 
         // Only get participants if specific quiz is selected
         if ($this->selectedQuiz) {
-            $participants = QuizAttempt::query()
+            // Get the latest attempt for each user
+            $latestAttempts = QuizAttempt::query()
+                ->selectRaw('MAX(id) as latest_attempt_id')
                 ->where('quiz_id', $this->selectedQuiz->id)
+                ->whereIn('status', ['completed', 'graded'])
+                ->groupBy('user_id')
+                ->pluck('latest_attempt_id');
+
+            $participants = QuizAttempt::query()
+                ->whereIn('id', $latestAttempts)
                 ->with([
                     'user',
                     'quiz.courseContent',
@@ -71,8 +79,6 @@ class QuizReport extends Component
                             ->orWhere('surname', 'like', '%' . $this->search . '%');
                     });
                 })
-                // Include both completed and graded status
-                ->whereIn('status', ['completed', 'graded'])
                 ->orderBy('total_score', 'desc')
                 ->paginate(10);
         }

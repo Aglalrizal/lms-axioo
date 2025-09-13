@@ -41,8 +41,8 @@
                                                             name="question_{{ $question->id }}"
                                                             id="q{{ $question->id }}_opt{{ $choiceIndex }}"
                                                             value="{{ $choice->id }}"
-                                                            wire:click="saveAnswer({{ $q->id }}, {{ $choice->id }})"
-                                                            @checked(isset($answers[$q->id]) && $answers[$q->id] == $choice->id)>
+                                                            wire:click="saveAnswer({{ $question->id }}, {{ $choice->id }})"
+                                                            @checked(isset($answers[$question->id]) && $answers[$question->id] == $choice->id)>
                                                         <label class="form-check-label stretched-link"
                                                             for="q{{ $question->id }}_opt{{ $choiceIndex }}">
                                                             {{ $choice->answer_option }}
