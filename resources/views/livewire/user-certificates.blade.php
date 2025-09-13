@@ -8,35 +8,34 @@
                 <p class="display-6 mb-0 text-dark">Sertifikat Yang Didapat</p>
             </div>
 
-            @for ($i = 0; $i < 3; $i++)
-                {{-- @forelse ($certificates as $certificate) --}}
+            @forelse ($completedCourses as $certificate)
                 <div class="card mb-3">
                     <div class="card-body d-flex flex-row justify-content-between align-items-center">
                         <div class="d-flex gap-3 align-items-center">
-                            <img src="{{ asset('../assets/images/education/edu-webinar-1.jpg') }}" alt="Certificate"
-                                class="img-fluid mb-2" style="width: 5rem; height: 5rem;">
+                            {{-- <img src="{{ asset('../assets/images/education/edu-webinar-1.jpg') }}" alt="Certificate"
+                                class="img-fluid mb-2" style="width: 5rem; height: 5rem;"> --}}
                             <div>
-                                <p class="mb-0 fw-semibold fs-4 text-dark">Computer Hardware Fundamental</p>
-                                <p class="mb-0 text-secondary text-dark">Completion date: 10 Dec, 2022</p>
-                                <p class="mb-0 text-secondary text-dark">Issued on: 12 Dec, 2022</p>
+                                <p class="mb-0 fw-semibold fs-4 text-dark">{{ $certificate->title }}</p>
+                                <p class="mb-0 text-secondary text-dark">Waktu penyelesaian:
+                                    {{ $certificate->last_progress->translatedFormat('l, jS F Y') }}</p>
+                                {{-- <p class="mb-0 text-secondary text-dark">Issued on: 12 Dec, 2022</p> --}}
                             </div>
                         </div>
-                        <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-outline-primary">Lihat</a>
-                            <a href="#" class="btn btn-primary">Unduh Sertifikat</a>
-                        </div>
+
+                        <a href="#" class="btn btn-primary">Unduh Sertifikat</a>
+
                     </div>
                 </div>
-                {{-- @empty
+            @empty
                 <div class="card">
                     <div class="card-body text-center">
                         <p class="mb-0">Kamu belum memiliki sertifikat apapun.</p>
                         <p class="mb-0">Mulailah belajar untuk mendapatkan sertifikat.</p>
                     </div>
                 </div>
-            @endforelse --}}
-            @endfor
+            @endforelse
 
+            {{ $completedCourses->links() }}
         </div>
 
         <div class="col-4 mb-3">
@@ -46,12 +45,12 @@
 
             <div class="card ">
                 <div class="card-body">
-                    <ul class="list-unstyled mt-3">
-                        <li class="fs-5 mb-2 badge rounded-pill bg-primary">Data Analyst</li>
-                        <li class="fs-5 mb-2 badge rounded-pill bg-primary">UI Designer</li>
-                        <li class="fs-5 mb-2 badge rounded-pill bg-primary">UI/UX</li>
-                        <li class="fs-5 mb-2 badge rounded-pill bg-primary">Web Development</li>
-                        <li class="fs-5 mb-2 badge rounded-pill bg-primary">Data Scientist</li>
+                    <ul class="list-unstyled mb-0 d-inline-flex flex-wrap gap-2 ">
+                        @forelse ($completedCourses as $skill)
+                            <li class="fs-5 p-2 badge bg-primary">{{ $skill->courseCategory->name }}</li>
+                        @empty
+                            <li class="fs-5 badge rounded-pill bg-primary">Belum ada keterampilan</li>
+                        @endforelse
                     </ul>
                 </div>
             </div>
