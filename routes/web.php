@@ -18,12 +18,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/user/{role}', \App\Livewire\Admin\User\Index::class)->name('admin.user');
         Route::get('/admin/user/create/import', \App\Livewire\Admin\User\Import::class)->name('admin.user.import');
         Route::get('/admin/user/{username}/profile', \App\Livewire\Admin\User\ManageProfile::class)->name('admin.user.profile');
-        Route::get('/admin/course/', \App\Livewire\Admin\Course\Index::class)->name('admin.course.all');
-        Route::get('/admin/course/published', \App\Livewire\Course\Published\Index::class)->name('admin.course.published');
-        Route::get('/admin/course/published/{slug}', \App\Livewire\Course\Published\Show::class)->name('admin.course.published.show');
-        Route::get('/admin/course/published/{slug}/quiz', \App\Livewire\Course\Published\QuizReport::class)->name('admin.course.published.quiz');
-        Route::get('/admin/course/published/{slug}/enroll/import', \App\Livewire\Course\Published\Import::class)->name('admin.course.published.import');
-        Route::get('/admin/course/create/{slug?}', \App\Livewire\Admin\Course\CreateCourse::class)->name('admin.course.create');
         Route::get('/admin/course/category', \App\Livewire\Admin\Course\CourseCategory::class)->name('admin.course.category');
         Route::get('/admin/course/program', \App\Livewire\Course\Program\Index::class)->name('admin.course.program');
         Route::get('admin/report/activity-log', \App\Livewire\Admin\Reports\ActivityLog\Index::class)->name('admin.report.activity-log');
@@ -45,6 +39,20 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/admin/cms/about-us', \App\Livewire\AboutUsCMS::class)->name('admin.cms.about-us');
         Route::get('/admin/cms/our-team', \App\Livewire\OurTeamCMS::class)->name('admin.cms.our-team');
+    });
+
+    // Allow super-admin, admin, and instructor to access Course pages
+    Route::middleware(['role:super-admin|admin|instructor'])->group(function () {
+        Route::get('/admin/course/', \App\Livewire\Admin\Course\Index::class)->name('admin.course.all');
+        Route::get('/admin/course/create/{slug?}', \App\Livewire\Admin\Course\CreateCourse::class)->name('admin.course.create');
+        Route::get('/admin/course/published', \App\Livewire\Course\Published\Index::class)->name('admin.course.published');
+        Route::get('/admin/course/published/{slug}', \App\Livewire\Course\Published\Show::class)->name('admin.course.published.show');
+        Route::get('/admin/course/published/{slug}/quiz', \App\Livewire\Course\Published\QuizReport::class)->name('admin.course.published.quiz');
+    });
+
+    // Import enrollment is restricted to super-admin only
+    Route::middleware(['role:super-admin'])->group(function () {
+        Route::get('/admin/course/published/{slug}/enroll/import', \App\Livewire\Course\Published\Import::class)->name('admin.course.published.import');
     });
     Route::middleware('role:instructor')->group(function () {
         Route::get('/instructor/dashboard', \App\Livewire\Instructor\Dashboard::class)->name('instructor.dashboard');

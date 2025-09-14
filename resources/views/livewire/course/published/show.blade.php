@@ -131,10 +131,12 @@
                                     </div>
                                     <!-- Button -->
                                     <div class="col-md-4 col-12">
-                                        <a class="btn btn-success text-center" data-bs-toggle="modal"
-                                            data-bs-target="#enrollUserModal"><i class="bi bi-plus fs-5"></i></a>
-                                        <a class="btn btn-success text-center"
-                                            href="{{ route('admin.course.published.import', $course->slug) }}">Import</a>
+                                        @role('super-admin')
+                                            <a class="btn btn-success text-center" data-bs-toggle="modal"
+                                                data-bs-target="#enrollUserModal"><i class="bi bi-plus fs-5"></i></a>
+                                            <a class="btn btn-success text-center"
+                                                href="{{ route('admin.course.published.import', $course->slug) }}">Import</a>
+                                        @endrole
                                     </div>
                                 </div>
                                 <div class="card">
@@ -382,23 +384,29 @@
             </div>
         </div>
     </div>
-    <livewire:course.published.enroll :courseId="$course->id" />
+    @role('super-admin')
+        <livewire:course.published.enroll :courseId="$course->id" />
+    @endrole
 </section>
 @script
     <script>
         Livewire.on('refresh-course', (event) => {
-            var enrollUserModalEl = document.querySelector('#enrollUserModal')
-            var enrollUserModal = bootstrap.Modal.getOrCreateInstance(enrollUserModalEl)
-            enrollUserModal.hide();
-            Livewire.dispatch('reset-enroll-modal');
+            const enrollUserModalEl = document.getElementById('enrollUserModal');
+            if (enrollUserModalEl) {
+                const enrollUserModal = bootstrap.Modal.getOrCreateInstance(enrollUserModalEl);
+                enrollUserModal.hide();
+                Livewire.dispatch('reset-enroll-modal');
+            }
         })
 
-        var enrollUserModalEl = document.getElementById('enrollUserModal')
-        enrollUserModalEl.addEventListener('hidden.bs.modal', (event) => {
-            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-            document.body.classList.remove('modal-open');
-            document.body.style.overflow = '';
-            Livewire.dispatch('reset-enroll-modal');
-        })
+        const enrollUserModalEl = document.getElementById('enrollUserModal');
+        if (enrollUserModalEl) {
+            enrollUserModalEl.addEventListener('hidden.bs.modal', (event) => {
+                document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+                document.body.classList.remove('modal-open');
+                document.body.style.overflow = '';
+                Livewire.dispatch('reset-enroll-modal');
+            })
+        }
     </script>
 @endscript

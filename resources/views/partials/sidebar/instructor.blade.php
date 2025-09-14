@@ -12,6 +12,19 @@
         </a>
     </li>
     <li class="nav-item">
+        <a class="nav-link {{ Route::is('admin.course.all') ? 'active' : '' }}" href="{{ route('admin.course.all') }}">
+            <i class="nav-icon fe fe-layers me-2"></i>
+            Semua Kursus
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ Route::is('admin.course.published*') ? 'active' : '' }}"
+            href="{{ route('admin.course.published') }}">
+            <i class="nav-icon fe fe-check-square me-2"></i>
+            Kursus Publish
+        </a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link  collapsed " data-bs-toggle="collapse" data-bs-target="#navSetting" aria-expanded="false"
             aria-controls="navSetting">
             <i class="bi bi-gear me-2"></i>
