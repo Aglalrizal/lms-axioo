@@ -251,14 +251,40 @@
                                     });
                                 @endphp
                                 @foreach ($filteredQuestions as $index => $question)
+                                    @php
+                                        // Pre-compute answers and quick stats for header usage (only for multiple choice)
+                                        $questionAnswers = collect();
+                                        $totalAnswers = 0;
+                                        $correctCount = 0;
+                                        $wrongCount = 0;
+
+                                        if ($question->question_type === 'multiple_choice') {
+                                            foreach ($participants as $participant) {
+                                                $answer = $participant->answers
+                                                    ->where('quiz_question_id', $question->id)
+                                                    ->first();
+                                                if ($answer) {
+                                                    $questionAnswers->push($answer);
+                                                }
+                                            }
+                                            $totalAnswers = $questionAnswers->count();
+                                            $correctCount = $questionAnswers->where('is_correct', true)->count();
+                                            $wrongCount = $totalAnswers - $correctCount;
+                                        }
+                                    @endphp
                                     <div class="card mb-4">
                                         <div class="card-header d-flex justify-content-between align-items-center">
-                                            <div class="d-flex align-items-center">
-                                                <span
-                                                    class="badge bg-primary me-2">{{ $question->question_type === 'multiple_choice' ? 'Pilihan ganda' : ucfirst(str_replace('_', ' ', $question->question_type)) }}</span>
-                                                {{-- <span class="badge bg-success">{{ $question->score ?? 1 }}
-                                                        point</span> --}}
-                                            </div>
+                                            <span
+                                                class="badge bg-primary me-2">{{ $question->question_type === 'multiple_choice' ? 'Pilihan ganda' : ucfirst(str_replace('_', ' ', $question->question_type)) }}
+                                            </span>
+                                            @if ($question->question_type === 'multiple_choice')
+                                                <div class="d-flex align-items-center small text-muted">
+                                                    <span class="badge bg-success-soft text-success me-2">Benar
+                                                        {{ $correctCount }}</span>
+                                                    <span class="badge bg-danger-soft text-danger me-2">Salah
+                                                        {{ $wrongCount }}</span>
+                                                </div>
+                                            @endif
                                         </div>
                                         <div class="card-body">
                                             <h5 class="card-title mb-4">
@@ -266,23 +292,8 @@
                                             </h5>
 
                                             @if ($question->question_type === 'multiple_choice' && $question->choices->count() > 0)
-                                                @php
-                                                    // Get all answers for this question from participants
-                                                    $questionAnswers = collect();
-                                                    foreach ($participants as $participant) {
-                                                        $answer = $participant->answers
-                                                            ->where('quiz_question_id', $question->id)
-                                                            ->first();
-                                                        if ($answer) {
-                                                            $questionAnswers->push($answer);
-                                                        }
-                                                    }
-                                                    $totalAnswers = $questionAnswers->count();
-                                                @endphp
-
                                                 <div class="row">
-                                                    <div class="col-12">
-                                                        <h6 class="mb-3">Opsi</h6>
+                                                    <div class="col-12 d-flex flex-column gap-3">
                                                         @foreach ($question->choices as $optionIndex => $choice)
                                                             @php
                                                                 $optionLetter =
@@ -303,7 +314,7 @@
                                                                 $isCorrect = $choice->is_correct;
                                                             @endphp
 
-                                                            <div class="row mb-3 align-items-center">
+                                                            <div class="row align-items-center">
                                                                 <div class="col-md-8">
                                                                     <div class="d-flex align-items-center">
                                                                         <span
@@ -344,45 +355,6 @@
                                                                 </div>
                                                             </div>
                                                         @endforeach
-                                                    </div>
-
-                                                    <!-- Summary Statistics -->
-                                                    <div class="col-12 mt-4">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="me-3">
-                                                                        <div
-                                                                            class="bg-success text-white rounded px-2 py-1 small">
-                                                                            Benar
-                                                                        </div>
-                                                                    </div>
-                                                                    <div>
-                                                                        @php
-                                                                            $correctCount = $questionAnswers
-                                                                                ->where('is_correct', true)
-                                                                                ->count();
-                                                                        @endphp
-                                                                        <strong>{{ $correctCount }}
-                                                                            students</strong>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="me-3">
-                                                                        <div
-                                                                            class="bg-danger text-white rounded px-2 py-1 small">
-                                                                            Salah
-                                                                        </div>
-                                                                    </div>
-                                                                    <div>
-                                                                        <strong>{{ $questionAnswers->where('is_correct', false)->count() }}
-                                                                            students</strong>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             @else
