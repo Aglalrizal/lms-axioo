@@ -11,17 +11,15 @@
                     <div class="mb-3">
                         <div wire:ignore>
                             <label class="form-label" for="select-user">Calon Peserta</label>
-                            <select class="form-select" id="select-user" wire:model="selectedUser" style="width: 100%;"
-                                name="users[]" multiple="multiple">
-                                <option value="">Pilih Peserta
-                                </option>
+                            <select class="form-select" id="select-user" style="width: 100%;" name="users[]"
+                                multiple="multiple">
                                 @foreach ($users as $user)
                                     <option value="{{ $user->id }}">{{ $user->first_name . ' ' . $user->surname }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
-                        @error('selectedUser')
+                        @error('selectedUsers')
                             <small class="d-block mt-2 text-danger">{{ $message }}</small>
                         @enderror
                     </div>
@@ -49,10 +47,23 @@
     <script>
         let selectUsers = $('#select-user').select2({
             dropdownParent: $('#enrollUserModal'),
-            placeholder: 'Dapat lebih dari satu'
+            placeholder: 'Dapat lebih dari satu',
+            allowClear: true
         });
         selectUsers.on('change', function() {
             @this.set('selectedUsers', $(this).val());
         });
+
+        // Clear Select2 UI when modal is fully hidden
+        const enrollUserModalEl = document.getElementById('enrollUserModal');
+        if (enrollUserModalEl) {
+            enrollUserModalEl.addEventListener('hidden.bs.modal', () => {
+                const $select = $('#select-user');
+                if ($select.length && $select.data('select2')) {
+                    // Clear to an empty array to avoid selecting an empty option implicitly
+                    $select.val([]).trigger('change');
+                }
+            });
+        }
     </script>
 @endscript

@@ -47,7 +47,7 @@
             <li>
                 <a class="dropdown-item"
                     href="{{ auth()->user()->getRoleNames()->first() == 'instructor'
-                        ? route('instructor.profile')
+                        ? route('instructor.profile', ['username' => auth()->user()->username])
                         : route('user.dashboard.profile', auth()->user()->username) }}">
                     <i class="fe fe-user me-2"></i> Profil
                 </a>
