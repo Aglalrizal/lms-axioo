@@ -86,6 +86,12 @@
                                 wire:click.prevent="setActiveTab('quiz')" id="quiz-tab" data-bs-toggle="pill"
                                 href="#quiz" role="tab" aria-controls="quiz" aria-selected="false">Quiz</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link @if ($activeTab === 'assignment') active @endif"
+                                wire:click.prevent="setActiveTab('assignment')" id="assignment-tab"
+                                data-bs-toggle="pill" href="#assignment" role="tab" aria-controls="assignment"
+                                aria-selected="false">Tugas</a>
+                        </li>
                     </ul>
                 </div>
                 <!-- Card -->
@@ -121,7 +127,7 @@
                                 <div class="row mb-5 gap-2 gap-md-0">
                                     <div class="col-md-6 col-12">
                                         <input type="search" class="form-control" placeholder="Cari berdasarkan nama"
-                                            wire:model.live="search" />
+                                            wire:model.live="searchEnrolled" />
                                     </div>
                                     <!-- Button -->
                                     <div class="col-md-4 col-12">
@@ -134,7 +140,7 @@
                                 <div class="card">
                                     <!-- Table -->
                                     <div class="table-responsive">
-                                        <table class="table table-hover table-centered">
+                                        <table class="table table-hover table-centered m-0">
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>Nama</th>
@@ -149,7 +155,15 @@
                                                         </td>
                                                         <td>{{ $enroll->enrolled_at->format('d M Y H:i') }}
                                                         </td>
-                                                        <td>0%</td>
+                                                        <td>
+                                                            @php
+                                                                $completed = (int) ($enroll->completed_contents ?? 0);
+                                                                $total = (int) ($totalContents ?? 0);
+                                                                $progress =
+                                                                    $total > 0 ? round(($completed / $total) * 100) : 0;
+                                                            @endphp
+                                                            {{ $progress }}%
+                                                        </td>
                                                     </tr>
                                                 @empty
                                                     <tr>
@@ -162,9 +176,9 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="p-3">
-                                        {{ $enrolledStudents->links() }}
-                                    </div>
+                                </div>
+                                <div class="p-3">
+                                    {{ $enrolledStudents->links() }}
                                 </div>
                             </div>
                             <div class="tab-pane fade @if ($activeTab === 'quiz') show active @endif"
@@ -179,13 +193,13 @@
                                 <div class="row mb-5">
                                     <div class="col-md-6 col-12">
                                         <input type="search" class="form-control"
-                                            placeholder="Cari berdasarkan nama" wire:model.live="search" />
+                                            placeholder="Cari berdasarkan nama" wire:model.live="searchQuiz" />
                                     </div>
                                 </div>
                                 <div class="card">
                                     <!-- Table -->
                                     <div class="table-responsive">
-                                        <table class="table table-hover table-centered">
+                                        <table class="table table-hover table-centered m-0">
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>Nama Kuis</th>
@@ -205,18 +219,11 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            {{ $quiz->attempts_count ?? 0 }} siswa
+                                                            {{ $quiz->participants_count ?? 0 }} siswa
                                                         </td>
                                                         <td>
-                                                            @php
-                                                                $avgScore =
-                                                                    $quiz
-                                                                        ->attempts()
-                                                                        ->whereIn('status', ['completed', 'graded'])
-                                                                        ->avg('total_score') ?? 0;
-                                                            @endphp
-                                                            @if ($quiz->attempts_count > 0)
-                                                                {{ number_format($avgScore, 1) }}%
+                                                            @if (($quiz->participants_count ?? 0) > 0 && ($quiz->questions_count ?? 0) > 0)
+                                                                {{ number_format($quiz->average_percentage ?? 0, 1) }}%
                                                             @else
                                                                 -
                                                             @endif
@@ -239,6 +246,61 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
+                                <div class="p-3">
+                                    {{ $quizzes->links() }}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade @if ($activeTab === 'assignment') show active @endif"
+                                id="assignment" role="tabpanel" aria-labelledby="assignment-tab">
+                                <div class="row mb-5">
+                                    <div class="col-12">
+                                        <div>
+                                            <h1 class="h2 mb-0">Tugas</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-5">
+                                    <div class="col-md-6 col-12">
+                                        <input type="search" class="form-control"
+                                            placeholder="Cari berdasarkan nama" wire:model.live="searchAssignment" />
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <!-- Table -->
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-centered m-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Judul Tugas</th>
+                                                    <th>Siswa Mengumpulkan</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($assignments as $assignment)
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <span
+                                                                    class="mb-0">{{ $assignment->courseContent->title }}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td>{{ $assignment->submitters_count ?? 0 }} siswa</td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="2" class="text-center">
+                                                            <i class="bi bi-exclamation-triangle"></i>
+                                                            Belum ada tugas untuk kursus ini
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="p-3">
+                                    {{ $assignments->links() }}
                                 </div>
                             </div>
                         </div>
