@@ -20,14 +20,16 @@
                         <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
                         <div class="carousel-caption d-flex align-items-center justify-content-center h-100 bottom-0">
                             <div class="text-center">
-                                <h3 class="text-white fs-2">Keep Learning</h3>
+                                <h3 class="text-white fs-2">Terus Belajar</h3>
                                 <p>Tetap unggul dalam karier dengan mempelajari keterampilan terbaru, kapan pun dan
                                     di
                                     mana pun. Bersama UpMySkill, pembelajaran jadi fleksibel dan memberdayakan kamu
                                     untuk tumbuh sesuai ritmemu sendiri.</p>
                                 <div class="d-flex gap-3 justify-content-center">
-                                    <button class="btn btn-outline-warning">Uji Coba Gratis 7 Hari</button>
-                                    <button class="btn btn-warning">Mulai Belajar</button>
+                                    <a href="{{ route('public.course.search', ['accessType' => 'free_trial']) }}"
+                                        class="btn btn-outline-warning">Uji Coba Gratis 7 Hari</a>
+                                    <a href="{{ route('public.course.search') }}" class="btn btn-warning">Mulai
+                                        Belajar</a>
                                 </div>
                             </div>
                         </div>
@@ -38,14 +40,16 @@
                         <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
                         <div class="carousel-caption d-flex align-items-center justify-content-center h-100 bottom-0">
                             <div class="text-center">
-                                <h3 class="text-white fs-2">Practice with Purpose</h3>
+                                <h3 class="text-white fs-2">Berlatih Dengan Tujuan</h3>
                                 <p>Ubah pengetahuan jadi dampak nyata. Kursus praktik langsung dan jalur
                                     pembelajaran
                                     terarah kami membantumu membangun kepercayaan diri dan kompetensi menghadapi
                                     tantangan industri.</p>
                                 <div class="d-flex gap-3 justify-content-center mt-3">
-                                    <button class="btn btn-outline-warning">Uji Coba Gratis 7 Hari</button>
-                                    <button class="btn btn-warning">Mulai Belajar</button>
+                                    <a href="{{ route('public.course.search', ['accessType' => 'free_trial']) }}"
+                                        class="btn btn-outline-warning">Uji Coba Gratis 7 Hari</a>
+                                    <a href="{{ route('public.course.search') }}" class="btn btn-warning">Mulai
+                                        Belajar</a>
                                 </div>
                             </div>
                         </div>
@@ -56,14 +60,16 @@
                         <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
                         <div class="carousel-caption d-flex align-items-center justify-content-center h-100 bottom-0">
                             <div class="text-center">
-                                <h3 class="text-white fs-2">Grow with Passion</h3>
+                                <h3 class="text-white fs-2">Tumbuh Dengan Passion</h3>
                                 <p>Maksimalkan potensimu lewat pengalaman belajar yang menarik dan dipandu oleh para
                                     ahli. UpMySkill membantumu menjelajahi apa yang kamu suka—dan menjadikannya
                                     keahlian
                                     yang kamu kuasai.</p>
                                 <div class="d-flex gap-3 justify-content-center mt-3">
-                                    <button class="btn btn-outline-warning">Uji Coba Gratis 7 Hari</button>
-                                    <button class="btn btn-warning">Mulai Belajar</button>
+                                    <a href="{{ route('public.course.search', ['accessType' => 'free_trial']) }}"
+                                        class="btn btn-outline-warning">Uji Coba Gratis 7 Hari</a>
+                                    <a href="{{ route('public.course.search') }}" class="btn btn-warning">Mulai
+                                        Belajar</a>
                                 </div>
                             </div>
                         </div>
