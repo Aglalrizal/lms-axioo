@@ -2,22 +2,25 @@
 
 namespace App\Livewire\Course\CourseContents\Assignment;
 
-use App\Models\Assignment;
-use App\Models\CourseContent;
-use App\Traits\HandlesBase64Images;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use App\Models\Assignment;
+use Livewire\Attributes\On;
+use App\Models\CourseContent;
+use Livewire\WithFileUploads;
+use App\Traits\HandlesBase64Images;
 use Mews\Purifier\Facades\Purifier;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class Create extends Component
 {
-    use HandlesBase64Images;
+    use HandlesBase64Images, WithFileUploads;
 
     public $courseId;
 
     public $syllabus_id;
 
-    public $title;
+    public $title, $url, $file;
 
     public $instruction;
 
@@ -39,6 +42,8 @@ class Create extends Component
                     }
                 },
             ],
+            'url' => 'nullable',
+            'file'    => 'nullable|file|max:10240',
         ];
     }
 
@@ -50,6 +55,7 @@ class Create extends Component
             'title.max' => 'Judul artikel maksimal :max karakter.',
             'instruction.required' => 'Instruksi wajib diisi.',
             'instruction.min' => 'Instruksi minimal :min karakter.',
+            'file.max' => 'Dokumen yang diunggah maksimal sebesar :max'
         ];
     }
 
@@ -60,8 +66,10 @@ class Create extends Component
 
             if ($this->courseContent) {
                 $this->title = $this->courseContent->title;
-                $this->instruction = $this->courseContent->assignment->instruction;
                 $this->syllabus_id = $this->courseContent->course_syllabus_id;
+                $this->instruction = $this->courseContent->assignment->instruction;
+                $this->url = $this->courseContent->assignment->url;
+                $this->file = $this->courseContent->assignment->file_path;
             }
         }
     }
@@ -71,22 +79,39 @@ class Create extends Component
         $this->instruction = $this->processBase64Images($this->instruction, 'course_assignment_images');
         $this->instruction = Purifier::clean($this->instruction, 'course_description');
         $validated = $this->validate();
+
+        $filePath = null;
+        if (isset($validated['file']) && $validated['file'] instanceof \Illuminate\Http\UploadedFile) {
+            $filePath = $validated['file']->store('course_assignment_files', 'public');
+        }
+
+
         if ($this->courseContentId && $this->courseContent) {
-            $oldInstruction = $this->courseContent->assignment->instruction;
+            $oldInstruction = $this->courseContent->assignment->instruction ?? null;
+            $oldFile        = $this->courseContent->assignment->file_path;
+
             $this->courseContent->update([
                 'title' => $validated['title'],
                 'modified_by' => Auth::user()->username,
             ]);
-            Assignment::where('course_content_id', $this->courseContent->id)->update([
+
+            if ($filePath && $oldFile) {
+                Storage::disk('public')->delete($oldFile);
+            }
+
+            $this->courseContent->assignment()->update([
                 'instruction' => $validated['instruction'],
+                'url'   => $validated['url'],
+                'file_path'   => $filePath ?: $oldFile,
             ]);
 
-            $this->removeUnusedImages($oldInstruction, $this->instruction, 'course_assigment_images');
+            $this->removeUnusedImages($oldInstruction, $this->instruction, 'course_assignment_images');
 
             flash()->success('Tugas berhasil diperbarui!', [], 'Sukses');
         } else {
             $lastOrder = CourseContent::where('course_syllabus_id', $this->syllabus_id)->max('order') ?? 0;
-            CourseContent::create([
+
+            $this->courseContent = CourseContent::create([
                 'course_id' => $this->courseId,
                 'course_syllabus_id' => $this->syllabus_id,
                 'title' => $validated['title'],
@@ -94,24 +119,51 @@ class Create extends Component
                 'order' => $lastOrder + 1,
                 'created_by' => Auth::user()->username,
                 'modified_by' => Auth::user()->username,
-            ])->assignment()->create(
-                [
-                    'instruction' => $validated['instruction'],
-                ]
-            );
+            ]);
+
+            $this->courseContent->assignment()->create([
+                'instruction' => $validated['instruction'],
+                'url'   => $validated['url'],
+                'file_path'   => $filePath,
+            ]);
+
+            $this->courseContent->load('assignment');
 
             flash()->success('Tugas berhasil dibuat!', [], 'Sukses');
         }
+
         $this->dispatch('close-add-page');
-        $this->dispatch('refresh-syllabus');
-        $this->resetExcept('syllabus_id');
-        $this->courseContentId = null;
     }
 
     public function close()
     {
         $this->dispatch('close-add-page');
         $this->reset();
+    }
+    public function confirmDelete()
+    {
+        sweetalert()
+            ->showConfirmButton()
+            ->showDenyButton()
+            ->option('confirmButtonText', 'Iya hapus!')
+            ->option('denyButtonText', 'Batal')
+            ->warning('Apakah kamu yakin ingin menghapus dokumen ini?');
+    }
+
+    #[On('sweetalert:confirmed')]
+    public function deleteFile()
+    {
+        Storage::delete($this->courseContent->assignment->file_path);
+        $this->courseContent->assignment->update(
+            ['file_path' => null]
+        );
+        flash()->success('Berhasil menghapus dokumen!', [], 'Sukses');
+    }
+
+    #[On('sweetalert:denied')]
+    public function cancelDelete()
+    {
+        flash()->info('Penghapusan dokumen dibatalkan', [], 'Informasi');
     }
 
     public function render()

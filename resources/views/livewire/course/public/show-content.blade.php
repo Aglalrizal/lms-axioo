@@ -52,7 +52,7 @@
                                             Selamat Mengerjakan!
                                         </p>
                                     </div>
-                                    @if ($data)
+                                    @if ($data->count() > 0)
                                         <div>
                                             <h4>Riwayat Pengerjaan</h4>
                                             <table class="table table-responsive align-middle text-center">
@@ -127,6 +127,19 @@
                                                 aria-labelledby="pills-accordion-flush-instruction-tab">
                                                 <div class="py-2">
                                                     <div class="container">
+                                                        @if ($content->assignment->url)
+                                                            <div class="my-2">
+                                                                Tautan Dokumen: <a
+                                                                    href="{{ $content->assignment->url }}"
+                                                                    target="_blank" rel="noopener noreferrer">Tautan</a>
+                                                            </div>
+                                                        @endif
+                                                        @if ($content->assignment->file_path)
+                                                            <div class="my-2">Dokumen: <a
+                                                                    class="btn btn-info py-1 px-2"
+                                                                    wire:click="downloadFile">Unduh</a>
+                                                            </div>
+                                                        @endif
                                                         {!! $content->assignment->instruction !!}
                                                     </div>
                                                 </div>
@@ -201,14 +214,16 @@
                                                                     <div class="mb-3">
                                                                         <p>Dokumen:
                                                                             @if ($submission->file_path)
-                                                                                <a href="">Dokumen</a>
+                                                                                <a wire:click="downloadMyFile"
+                                                                                    class="link-underline-primary">Dokumen</a>
                                                                             @else
                                                                                 Tidak ada dokumen yang diunggah
                                                                             @endif
                                                                         </p>
                                                                     </div>
                                                                     <div class="mb-3">
-                                                                        <p>Jawaban: {{ $submission->text_answer }}</p>
+                                                                        <p>Jawaban:
+                                                                            {{ $submission->text_answer ?? '-' }}</p>
                                                                     </div>
                                                                 </div>
                                                                 <div class="card-footer text-end">

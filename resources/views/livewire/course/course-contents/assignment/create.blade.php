@@ -3,7 +3,7 @@
         <!-- Card -->
         <div class="card mb-3">
             <div class="card-header border-bottom px-4 py-3">
-                <h4 class="mb-0">Tambah Assignment</h4>
+                <h4 class="mb-0">Tambah Tugas</h4>
             </div>
             <!-- Card body -->
             <div class="card-body">
@@ -12,6 +12,31 @@
                     <input id="title" wire:model="title" class="form-control @error('title') is-invalid @enderror"
                         type="text" autocomplete="off" />
                     @error('title')
+                        <small class="d-block mt-2 text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="file" class="form-label">Dokumen <small
+                            class="text-help ">(opsional)</small></label>
+                    <div class="d-flex gap-2">
+                        <input type="file" class="form-control" wire:model="file">
+                        @if ($courseContent->assignment && $courseContent->assignment->file_path)
+                            <a href="{{ Storage::url($courseContent->assignment->file_path) }}" target="_blank"
+                                class="btn btn-info"><i class="bi bi-eye-fill"></i></a>
+                            <a wire:click="confirmDelete" target="_blank" class="btn btn-danger"><i
+                                    class="bi bi-trash-fill"></i></a>
+                        @endif
+                    </div>
+                    @error('file')
+                        <small class="d-block mt-2 text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="url" class="form-label">Tautan Dokumen <small
+                            class="text-help ">(opsional)</small></label>
+                    <input id="url" wire:model="url" class="form-control @error('url') is-invalid @enderror"
+                        type="text" autocomplete="off" />
+                    @error('url')
                         <small class="d-block mt-2 text-danger">{{ $message }}</small>
                     @enderror
                 </div>
