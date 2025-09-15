@@ -8,11 +8,10 @@
                             alt="UpMysSkill logo" />
                     </div>
                     <p class="mb-0">
-                        Nascetur nibh feugiat vulputate urna mauris tincidunt
-                        porttitor ultricies. Et dis augue praesent congue.
+                        Empower Your Potential with UpMySkill!
                     </p>
                     <div class="d-flex gap-2">
-                        <a href="#langaugeModal" class="btn btn-outline-secondary" data-bs-toggle="modal">
+                        {{-- <a href="#langaugeModal" class="btn btn-outline-secondary" data-bs-toggle="modal">
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                     fill="currentColor" class="bi bi-globe" viewBox="0 0 16 16">
@@ -21,7 +20,7 @@
                                 </svg>
                             </span>
                             <span class="ms-2">English</span>
-                        </a>
+                        </a> --}}
                         <div class="dropdown">
                             <button class="btn btn-outline-secondary btn-icon rounded-circle d-flex align-items-center"
                                 type="button" aria-expanded="false" data-bs-toggle="dropdown"
@@ -75,14 +74,14 @@
             </div>
             <div class="col-xl-2 col-md-3 col-6">
                 <div class="d-flex flex-column gap-3">
-                    <span class="text-white-stable">Community</span>
+                    <span class="text-white-stable">Support</span>
                     <ul class="list-unstyled mb-0 d-flex flex-column nav nav-footer nav-x-0">
                         <li>
                             <a href="{{ route('public.help-center') }}" class="nav-link">Help and Support</a>
                         </li>
-                        <li>
+                        {{-- <li>
                             <a href="{{ route('public.blog.index') }}" class="nav-link">Blog</a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
             </div>
@@ -106,19 +105,12 @@
                 <div class="d-flex flex-column gap-5">
                     <div class="d-flex flex-column gap-3">
                         <span class="text-white-stable">Contact</span>
-                        <ul class="list-unstyled mb-0 d-flex flex-column nav nav-footer nav-x-0">
-                            <li>
-                                Toll free:
-                                <span class="fw-semibold">+1234 567 890</span>
-                            </li>
-                            <li>
-                                Time:
-                                <span class="fw-semibold">9AM to 8:PM IST</span>
-                            </li>
-                            <li>
-                                Email:
-                                <span class="fw-semibold">example@gmail.com</span>
-                            </li>
+                        <ul class="list-unstyled mb-0 d-flex flex-column nav nav-footer nav-x-0 gap-1">
+                            <li class="fw-bold">CV. EDUKASI INDUSTRI</li>
+                            <li>Komp. Taman Millenium</li>
+                            <li>Jl. Sukawarna, Pajajaran, Kec. Cicendo</li>
+                            <li>Bandung 40173</li>
+                            <li>Jawa Barat Indonesia</li>
                         </ul>
                     </div>
                     <div class="d-flex flex-row gap-2">
