@@ -27,7 +27,7 @@
                 <div class="mb-3">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <label class="form-label mb-0">Misi Kami</label>
-                        <button type="button" class="btn btn-sm btn-outline-primary" wire:click="addMisi">
+                        <button type="button" class="btn btn-sm btn-primary" wire:click="addMisi">
                             <i class="fas fa-plus"></i> Tambah Misi
                         </button>
                     </div>
@@ -97,7 +97,7 @@
                 <div class="d-flex justify-content-end gap-2">
                     <button type="submit" class="btn btn-primary" wire:loading.attr="disabled">
                         <span wire:loading.remove wire:target="save">
-                            <i class="fas fa-save"></i> Update Konten
+                            <i class="fas fa-save"></i> Perbarui Konten
                         </span>
                         <span wire:loading wire:target="save">
                             <i class="fas fa-spinner fa-spin"></i> Menyimpan...

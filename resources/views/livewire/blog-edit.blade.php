@@ -6,20 +6,19 @@
                 class="border-bottom pb-3 mb-3 d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between">
                 <div class="d-flex flex-column gap-1">
 
-                    <h1 class="mb-0 h2 fw-bold">Edit Blog "{{ $blog->title }}"</h1>
+                    <h1 class="mb-0 h2 fw-bold">Sunting Blog "{{ $blog->title }}"</h1>
                     <!-- Breadcrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="#">Dashboard</a>
-                            </li>
                             <li class="breadcrumb-item"><a href="#">CMS</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Edit Post</li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.cms.blog.index') }}">Blog</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Sunting</li>
                         </ol>
                     </nav>
                 </div>
                 <div>
-                    <a href="{{ route('admin.cms.blog.index') }}" class="btn btn-outline-secondary">Back to All Post</a>
+                    <a href="{{ route('admin.cms.blog.index') }}" class="btn btn-outline-secondary">Kembali ke Semua
+                        Blog</a>
                 </div>
             </div>
         </div>
@@ -30,7 +29,7 @@
             <div class="card border-0">
                 <!-- Card header -->
                 <div class="card-header">
-                    <h4 class="mb-0">Edit Post</h4>
+                    <h4 class="mb-0">Sunting Blog</h4>
                 </div>
                 <form wire:submit="save" class="needs-validation" novalidate>
                     <!-- Card body -->
@@ -54,7 +53,7 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
 
-                        <p class="mb-2 text-secondary   ">Gambar thumbnail sebaiknya memiliki rasio 21:9 dan berukuran
+                        <p class="mb-2 text-secondary">Gambar thumbnail sebaiknya memiliki rasio 21:9 dan berukuran
                             tidak lebih dari 2MB.</p>
                         <input type="file" accept="image/*" wire:model="form.photo" id="photo"
                             class="form-control mb-3 d-none">
@@ -95,7 +94,7 @@
                                 </div>
                                 <!-- Category -->
                                 <div class="mb-3 ">
-                                    <label class="form-label" for="category">Category</label>
+                                    <label class="form-label" for="category">Kategori</label>
                                     <select wire:model="form.blog_category_id" class="form-select" id="category"
                                         required>
                                         <option selected value="">Select</option>
@@ -117,7 +116,7 @@
                         </div>
                         <!-- button -->
                         <button type="submit" wire:click.debounce="$refresh" id="save-btn"
-                            class="btn btn-primary">Save</button>
+                            class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -128,12 +127,12 @@
                 <div class="card">
                     <!-- Card Header -->
                     <div class="card-header d-lg-flex">
-                        <h4 class="mb-0">Post Info</h4>
+                        <h4 class="mb-0">Info Blog</h4>
                     </div>
                     <!-- List Group -->
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                            <span class="text-body">Post ID</span>
+                            <span class="text-body">Blog ID</span>
                             <h5 class="mb-0">{{ $blog->id }}</h5>
                         </li>
                         <li class="list-group-item">
@@ -182,26 +181,26 @@
                 <div class="card">
                     <!-- Card Header -->
                     <div class="card-header d-lg-flex">
-                        <h4 class="mb-0">Actions</h4>
+                        <h4 class="mb-0">Aksi</h4>
                     </div>
                     <!-- List group -->
                     <ul class="list-group list-group-flush">
                         @if ($blog->status == 'drafted')
                             <button wire:click="publish"
                                 class="btn btn-light list-group-item d-flex justify-content-between align-items-center">
-                                <span class="text-secondary">Publish</span>
+                                <span class="text-secondary">Terbitkan</span>
                                 <i class="fe fe-arrow-up-circle fs-4"></i>
                             </button>
                         @else
                             <button wire:click="unpublish"
                                 class="btn btn-light list-group-item d-flex justify-content-between align-items-center">
-                                <span class="text-secondary">Unpublish</span>
+                                <span class="text-secondary">Batalkan Publikasi</span>
                                 <i class="fe fe-x-circle fs-4"></i>
                             </button>
                         @endif
                         <button wire:click="confirmation"
                             class="btn btn-light list-group-item d-flex justify-content-between align-items-center">
-                            <span class="text-danger">Delete</span>
+                            <span class="text-danger">Hapus</span>
                             <i class="fe fe-trash text-danger fs-4"></i>
                         </button>
                     </ul>

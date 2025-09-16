@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\ContactUs;
+use App\Enums\ContactStatus;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
@@ -14,7 +15,7 @@ class ContactUsIndex extends Component
 {
     use WithPagination;
 
-    // protected $paginationTheme = 'bootstrap';
+    protected $paginationTheme = 'bootstrap';
 
     public $isShowing = 'all';
     public $query = '';
@@ -24,13 +25,13 @@ class ContactUsIndex extends Component
     public function setShow(string $status): void
     {
         $this->isShowing = $status;
-        $this->resetPage(pageName: 'inbox_page');
+        $this->resetPage(pageName: 'messages_page');
     }
 
     public function search()
     {
         // Refresh component when searching
-        $this->resetPage();
+        $this->resetPage(pageName: 'messages_page');
     }
 
     public function confirmation($id, $action)
@@ -86,6 +87,7 @@ class ContactUsIndex extends Component
                 ->whereAny(['full_name', 'email'], 'like', '%' . $this->query . '%')
                 ->orderBy('created_at', 'desc')
                 ->paginate(10, pageName: 'messages_page'),
+            'statuses' => ContactStatus::toArray(),
         ]);
     }
 }

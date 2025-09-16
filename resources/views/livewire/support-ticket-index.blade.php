@@ -27,7 +27,7 @@
                         <li class="nav-item">
                             <button class="nav-link" @click=" selected = 'all' "
                                 :class="selected === 'all' ? 'active' : ''"
-                                wire:click="setShow('all')">All</button>
+                                wire:click="setShow('all')">Semua</button>
                         </li>
 
                         @foreach ($statuses as $status)
@@ -41,7 +41,7 @@
                         <li class="nav-item">
                             <button class="nav-link" @click=" selected = 'deleted' "
                                 :class="selected === 'deleted' ? 'active' : ''"
-                                wire:click="setShow('deleted')">Deleted</button>
+                                wire:click="setShow('deleted')">Dihapus</button>
                         </li>
                     </ul>
 
@@ -53,7 +53,7 @@
                             <i class="fe fe-search"></i>
                         </span>
                         <input wire:model="query" wire:keydown.debounce="search()" type="search"
-                            class="form-control ps-6" placeholder="Search Post" />
+                            class="form-control ps-6" placeholder="Cari Post" />
                     </form>
                 </div>
                 <div>

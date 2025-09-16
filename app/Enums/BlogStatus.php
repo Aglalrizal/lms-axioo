@@ -16,9 +16,9 @@ enum BlogStatus: string implements LabelledEnum
     public function label(): string
     {
         return match ($this) {
-            self::DRAFTED => 'Drafted',
-            self::PUBLISHED => 'Published',
-            // self::SCHEDULED => 'Scheduled',
+            self::DRAFTED => 'Draf',
+            self::PUBLISHED => 'Diterbitkan',
+            // self::SCHEDULED => 'Dijadwalkan',
         };
     }
 }

@@ -8,22 +8,21 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalCenterTitle">Ganti Status Tiket</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <select wire:model="status" class="form-select" id="selectSubject" required>
-                                <option value="open">Open</option>
-                                <option value="resolved">Resolved</option>
-                                <option value="closed">Closed</option>
+                            <select wire:model="status" class="form-select" id="selectSubject">
+                                @foreach (App\Enums\TicketStatus::cases() as $status)
+                                    <option value="{{ $status->value }}">{{ $status->label() }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                         <button wire:click="updateStatus" type="button" data-bs-dismiss="modal"
-                            class="btn btn-primary">Save changes</button>
+                            class="btn btn-primary">Simpan Perubahan</button>
                     </div>
                 </div>
             </div>
@@ -38,26 +37,26 @@
                             <i class=" fe fe-arrow-left "></i></a>
                     </div>
                     <div class="ms-3 py-1 px-3 rounded-md bg-secondary-soft">
-                        @if ($ticket->status === 'open')
-                            <span class="badge-dot bg-warning me-1 d-inline-block align-middle"></span>
-                            {{ $ticket->status }}
-                        @elseif ($ticket->status === 'resolved')
-                            <span class="badge-dot bg-success me-1 d-inline-block align-middle"></span>
-                            {{ $ticket->status }}
-                        @elseif ($ticket->status === 'closed')
-                            <span class="badge-dot bg-danger me-1 d-inline-block align-middle"></span>
-                            {{ $ticket->status }}
-                        @else
-                            <span class="badge-dot bg-warning me-1 d-inline-block align-middle"></span>
-                            {{ $ticket->status }}
-                        @endif
+
+                        @php
+                            $badgeClass = $ticket->deleted_at
+                                ? 'bg-secondary'
+                                : match ($ticket->status) {
+                                    \App\Enums\TicketStatus::RESOLVED => 'bg-success',
+                                    \App\Enums\TicketStatus::OPEN => 'bg-warning',
+                                    \App\Enums\TicketStatus::CLOSED => 'bg-danger',
+                                };
+                        @endphp
+
+                        <span class="badge-dot {{ $badgeClass }} me-1 d-inline-block align-middle"></span>
+                        {{ $ticket->status->label() }}
                     </div>
                 </div>
                 <!-- button -->
                 <div class="d-flex align-items-center">
                     <div class="ms-2">
                         <button type="button" class="btn btn-outline-secondary btn-sm fs-5" data-bs-toggle="modal"
-                            data-bs-target="#exampleModalCenter"> <i class=" fe fe-toggle-left me-1  "></i>Ubah Status
+                            data-bs-target="#exampleModalCenter"> <i class=" fe fe-toggle-left me-1"></i>Ubah Status
                         </button>
                     </div>
                     <div class="ms-2">
@@ -144,7 +143,7 @@
         <!-- card footer -->
 
         <div class="card-footer py-4">
-            @if ($ticket->status !== 'closed' && !$ticket->reply)
+            @if ($ticket->status !== \App\Enums\TicketStatus::CLOSED && !$ticket->reply)
                 <button wire:click="toggleReplyForm" class="btn btn-outline-secondary btn-sm fs-5 me-2 mb-2 mb-md-0">
                     <span class="me-1 align-text-bottom">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

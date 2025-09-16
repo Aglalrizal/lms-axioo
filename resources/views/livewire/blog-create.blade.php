@@ -5,20 +5,19 @@
             <div
                 class="border-bottom pb-3 mb-3 d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between">
                 <div class="d-flex flex-column gap-1">
-                    <h1 class="mb-0 h2 fw-bold">Add New Post</h1>
+                    <h1 class="mb-0 h2 fw-bold">Buat Blog Baru</h1>
                     <!-- Breadcrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="#">Dashboard</a>
-                            </li>
                             <li class="breadcrumb-item"><a href="#">CMS</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Add New Post</li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.cms.blog.index') }}">Blog</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Buat</li>
                         </ol>
                     </nav>
                 </div>
                 <div>
-                    <a href="{{ route('admin.cms.blog.index') }}" class="btn btn-outline-secondary">Back to All Post</a>
+                    <a href="{{ route('admin.cms.blog.index') }}" class="btn btn-outline-secondary">Kembali ke Semua
+                        Blog</a>
                 </div>
             </div>
         </div>
@@ -29,7 +28,7 @@
             <div class="card border-0">
                 <!-- Card header -->
                 <div class="card-header">
-                    <h4 class="mb-0">Create Post</h4>
+                    <h4 class="mb-0">Buat Blog</h4>
                 </div>
                 <form wire:submit="save()">
                     <!-- Card body -->
@@ -66,9 +65,9 @@
                             <div class="row">
                                 <div class="mb-3 ">
                                     <!-- Title -->
-                                    <label for="postTitle" class="form-label">Title</label>
+                                    <label for="postTitle" class="form-label">Judul</label>
                                     <input wire:model="form.title" type="text" id="postTitle"
-                                        class="form-control text-dark" placeholder="Post Title" required />
+                                        class="form-control text-dark" placeholder="Judul Post" required />
                                     @error('form.title')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -88,10 +87,10 @@
                                 </div>
                                 <!-- Category -->
                                 <div class="mb-3 ">
-                                    <label class="form-label" for="category">Category</label>
+                                    <label class="form-label" for="category">Kategori</label>
                                     <select wire:model="form.blog_category_id" class="form-select" id="category"
                                         required>
-                                        <option selected value="">Select</option>
+                                        <option selected value="">Pilih</option>
 
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}">{{ str($category->name)->ucfirst() }}
@@ -105,15 +104,15 @@
                             </div>
                         </div>
                         <!-- Editor -->
-                        <label class="form-label">Content</label>
+                        <label class="form-label">Konten</label>
                         <div class="mt-2 mb-4" wire:ignore>
                             <livewire:jodit-text-editor wire:model.live="form.content" />
                         </div>
                         <!-- button -->
                         <button wire:click="$dispatch('status', { status: 'published' })" type="submit"
-                            id="publish-btn" class="btn btn-primary">Publish</button>
+                            id="publish-btn" class="btn btn-primary">Terbitkan</button>
                         <button wire:click="$dispatch('status', { status: 'drafted' })" type="submit" id="draft-btn"
-                            class="btn btn-outline-secondary">Save to Draft</button>
+                            class="btn btn-outline-secondary">Simpan sebagai Draf</button>
                     </div>
                 </form>
             </div>

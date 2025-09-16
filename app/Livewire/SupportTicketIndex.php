@@ -26,13 +26,13 @@ class SupportTicketIndex extends Component
     public function setShow(string $status): void
     {
         $this->isShowing = $status;
-        $this->resetPage(pageName: 'tickets_page');
+        $this->resetPage('tickets_page');
     }
 
     public function search()
     {
         // Refresh component when searching
-        $this->resetPage();
+        $this->resetPage('tickets_page');
     }
 
     public function confirmation($id, $action)

@@ -7,9 +7,6 @@
                     <h1 class="mb-0 h2 fw-bold">Semua Pesan</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="../dashboard/admin-dashboard.html">Dashboard</a>
-                            </li>
                             <li class="breadcrumb-item active" aria-current="page">Semua Pesan</li>
                         </ol>
                     </nav>
@@ -23,26 +20,25 @@
             <div class="card rounded-3">
                 <!-- Card Header -->
                 <div class="card-header p-0">
-                    <ul x-data="{ selected: 'all' }" class="nav nav-lb-tab border-bottom-0" id="tab" role="tablist">
+                    <ul x-data="{ selected: $wire.entangle('isShowing') }" class="nav nav-lb-tab border-bottom-0" id="tab" role="tablist">
                         <li class="nav-item">
                             <button class="nav-link" @click=" selected = 'all' "
                                 :class="selected === 'all' ? 'active' : ''"
-                                wire:click="setShow('all')">All</button>
+                                wire:click="setShow('all')">Semua</button>
                         </li>
-                        <li class="nav-item">
-                            <button class="nav-link" @click=" selected = 'open' "
-                                :class="selected === 'open' ? 'active' : ''"
-                                wire:click="setShow('open')">Open</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" @click=" selected = 'replied' "
-                                :class="selected === 'replied' ? 'active' : ''"
-                                wire:click="setShow('replied')">Replied</button>
-                        </li>
+                        @foreach ($statuses as $status)
+                            <li class="nav-item">
+                                <button class="nav-link" @click=" selected = '{{ $status['value'] }}' "
+                                    :class="selected === '{{ $status['value'] }}' ? 'active' : ''"
+                                    wire:click="setShow('{{ $status['value'] }}')">
+                                    {{ $status['label'] }}
+                                </button>
+                            </li>
+                        @endforeach
                         <li class="nav-item">
                             <button class="nav-link" @click=" selected = 'deleted' "
                                 :class="selected === 'deleted' ? 'active' : ''"
-                                wire:click="setShow('deleted')">Deleted</button>
+                                wire:click="setShow('deleted')">Dihapus</button>
                         </li>
                     </ul>
 
@@ -54,7 +50,7 @@
                             <i class="fe fe-search"></i>
                         </span>
                         <input wire:model="query" wire:keydown.debounce="search()" type="search"
-                            class="form-control ps-6" placeholder="Search Post" />
+                            class="form-control ps-6" placeholder="Cari Pesan" />
                     </form>
                 </div>
                 <div>
@@ -124,7 +120,9 @@
 
                                                         $displayText = $message->deleted_at
                                                             ? 'Deleted'
-                                                            : ucfirst($message->status);
+                                                            : App\Enums\ContactStatus::tryFrom(
+                                                                    $message->status,
+                                                                )?->label() ?? ucfirst($message->status);
                                                     @endphp
                                                     <span
                                                         class="badge-dot {{ $badgeClass }} me-1 d-inline-block align-middle"></span>
@@ -139,22 +137,22 @@
                                                             <i class="fe fe-more-vertical"></i>
                                                         </a>
                                                         <span class="dropdown-menu" aria-labelledby="courseDropdown1">
-                                                            <span class="dropdown-header">Settings</span>
+                                                            <span class="dropdown-header">Pengaturan</span>
                                                             <a class="dropdown-item" href="#">
                                                                 <i class="fe fe-edit dropdown-item-icon"></i>
-                                                                Change Status
+                                                                Ubah Status
                                                             </a>
                                                             @if ($message->deleted_at)
                                                                 <a wire:click="confirmation({{ $message->id }}, 'restore')"
                                                                     wire:loading.attr="disabled" class="dropdown-item">
                                                                     <i class="fe fe-rotate-cw dropdown-item-icon"></i>
-                                                                    Restore
+                                                                    Pulihkan
                                                                 </a>
                                                             @else
                                                                 <a wire:click="confirmation({{ $message->id }}, 'delete')"
                                                                     wire:loading.attr="disabled" class="dropdown-item">
                                                                     <i class="fe fe-trash dropdown-item-icon"></i>
-                                                                    Delete
+                                                                    Hapus
                                                                 </a>
                                                             @endif
 
