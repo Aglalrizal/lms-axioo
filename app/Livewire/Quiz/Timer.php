@@ -2,16 +2,19 @@
 
 namespace App\Livewire\Quiz;
 
+use App\Models\QuizAttempt;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use App\Models\QuizAttempt;
 
 #[Layout('layouts.base')]
 class Timer extends Component
 {
-public $attemptId;
+    public $attemptId;
+
     public $timeLeft;
+
     protected $listeners = ['tick' => 'updateTimer'];
+
     public function mount($attemptId)
     {
         $this->attemptId = $attemptId;
@@ -19,6 +22,7 @@ public $attemptId;
 
         $this->timeLeft = $attempt->time_left;
     }
+
     public function updateTimer()
     {
         $this->timeLeft--;
@@ -31,6 +35,7 @@ public $attemptId;
             $this->dispatch('quiz-finished');
         }
     }
+
     public function render()
     {
         return view('livewire.quiz.timer');

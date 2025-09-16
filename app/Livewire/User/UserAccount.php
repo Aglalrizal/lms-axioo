@@ -5,9 +5,9 @@ namespace App\Livewire\User;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 #[Layout('layouts.dashboard')]
 
@@ -17,10 +17,13 @@ class UserAccount extends Component
 
     #[Validate('required|email')]
     public $old_email;
+
     #[Validate('required|email')]
     public $new_email;
+
     #[Validate('required')]
     public $old_password;
+
     #[Validate('required')]
     public $new_password;
 
@@ -54,7 +57,7 @@ class UserAccount extends Component
         if ($this->old_email == $this->user->email) {
 
             $this->user->update([
-                'email' => $this->new_email
+                'email' => $this->new_email,
             ]);
 
             flash()->success('Email berhasil diubah.');
@@ -71,7 +74,7 @@ class UserAccount extends Component
 
         if (Hash::check($this->old_password, $this->user->password)) {
             $this->user->update([
-                'password' => Hash::make($this->new_password)
+                'password' => Hash::make($this->new_password),
             ]);
 
             flash()->success('Password berhasil diubah.');
@@ -81,7 +84,6 @@ class UserAccount extends Component
             flash()->error('password lama tidak sesuai ');
         }
     }
-
 
     public function render()
     {

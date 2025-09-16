@@ -2,12 +2,12 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use Livewire\Attributes\On;
-use App\Models\BlogCategory;
-use Livewire\WithFileUploads;
-use Livewire\Attributes\Layout;
 use App\Livewire\Forms\BlogForm;
+use App\Models\BlogCategory;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('layouts.dashboard')]
 
@@ -46,7 +46,7 @@ class BlogCreate extends Component
         return view(
             'livewire.blog-create',
             [
-                'categories' => BlogCategory::get()
+                'categories' => BlogCategory::get(),
             ]
         );
     }

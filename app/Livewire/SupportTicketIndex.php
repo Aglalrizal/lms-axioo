@@ -3,12 +3,11 @@
 namespace App\Livewire;
 
 use App\Enums\TicketStatus;
-use Livewire\Component;
-use Livewire\Attributes\On;
-use App\Enums\TicketSubject;
-use Livewire\WithPagination;
 use App\Models\SupportTicket;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.dashboard')]
 
@@ -19,8 +18,11 @@ class SupportTicketIndex extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $isShowing = 'all';
+
     public $query = '';
+
     public $ticketId;
+
     public $ticketAction;
 
     public function setShow(string $status): void
@@ -42,10 +44,10 @@ class SupportTicketIndex extends Component
 
         sweetalert()
             ->showDenyButton()
-            ->option('confirmButtonText', 'Yes, ' . $action . ' it!')
+            ->option('confirmButtonText', 'Yes, '.$action.' it!')
             ->option('denyButtonText', 'Cancel')
             ->option('id', $id)
-            ->warning('Are you sure you want to ' . $action . ' this ticket?');
+            ->warning('Are you sure you want to '.$action.' this ticket?');
     }
 
     #[On('sweetalert:confirmed')]
@@ -83,11 +85,11 @@ class SupportTicketIndex extends Component
 
         return view('livewire.support-ticket-index', [
             'tickets' => $query
-                ->whereAny(['title', 'email'], 'like', '%' . $this->query . '%')
+                ->whereAny(['title', 'email'], 'like', '%'.$this->query.'%')
                 ->orderBy('created_at', 'desc')
                 ->select('id', 'title', 'email', 'created_at', 'status', 'subject')
                 ->paginate(10, pageName: 'tickets_page'),
-            'statuses' => TicketStatus::toArray()
+            'statuses' => TicketStatus::toArray(),
         ]);
     }
 }

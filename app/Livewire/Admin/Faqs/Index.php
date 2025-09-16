@@ -2,17 +2,17 @@
 
 namespace App\Livewire\Admin\Faqs;
 
-use Livewire\Component;
-use App\Models\FaqCategory;
 use App\Models\Faq;
-use Livewire\Attributes\On;
+use App\Models\FaqCategory;
 use Livewire\Attributes\Layout;
-
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 #[Layout('layouts.dashboard')]
 class Index extends Component
 {
     public $categories = [];
+
     public $faqToDelete = null;
 
     public $categoryToDelete = null;
@@ -22,7 +22,7 @@ class Index extends Component
     public function updateFaqOrder($groups)
     {
         foreach ($groups as $group) {
-        // Update urutan kategori jika ada
+            // Update urutan kategori jika ada
             if ($group['order'] !== null) {
                 FaqCategory::where('id', $group['value'])->update(['order' => $group['order']]);
             }
@@ -37,6 +37,7 @@ class Index extends Component
         flash()->success('Berhasil mengubah urutan FAQ', [], 'Sukses');
         $this->dispatch('refresh-faqs');
     }
+
     public function updateCategoryFaqOrder($groups)
     {
         $changed = false;
@@ -55,7 +56,6 @@ class Index extends Component
         }
     }
 
-
     #[On('delete-faq-category')]
     public function confirmDeleteCategory($id)
     {
@@ -69,7 +69,6 @@ class Index extends Component
             ->warning('Are you sure you want to delete this FAQ category?', ['Confirm Deletion']);
     }
 
-
     #[On('delete-faq')]
     public function confirmDelete($id)
     {
@@ -79,7 +78,7 @@ class Index extends Component
             ->showDenyButton()
             ->option('confirmButtonText', 'Yes, delete it!')
             ->option('denyButtonText', 'Cancel')
-            ->option('id', $id) 
+            ->option('id', $id)
             ->warning('Are you sure you want to delete this faq?', ['Confirm Deletion']);
     }
 
@@ -97,6 +96,7 @@ class Index extends Component
 
             $this->categoryToDelete = null;
             $this->refreshFaqs();
+
             return;
         }
         if ($this->faqToDelete) {
@@ -116,27 +116,30 @@ class Index extends Component
     #[On('sweetalert:denied')]
     public function cancelDelete()
     {
-        if($this->categoryToDelete){
+        if ($this->categoryToDelete) {
             $this->categoryToDelete = null;
             $this->dispatch('refresh-categories')->to(CreateFaqs::class);
             flash()->info('Category Faq deletion cancelled.');
         }
-        if($this->faqToDelete){
+        if ($this->faqToDelete) {
             $this->faqToDelete = null;
             flash()->info('Faq deletion cancelled.');
         }
     }
 
-    public function mount(){
-        $this->categories=FaqCategory::with(['faqs' => fn($q) => $q->orderBy('order')])->orderBy('order')->get();
+    public function mount()
+    {
+        $this->categories = FaqCategory::with(['faqs' => fn ($q) => $q->orderBy('order')])->orderBy('order')->get();
     }
+
     public function render()
     {
         return view('livewire.admin.faqs.index');
     }
+
     #[On('refresh-faqs')]
-    public function refreshFaqs(){
-        $this->categories=FaqCategory::with(['faqs' => fn($q) => $q->orderBy('order')])->orderBy('order')->get();
+    public function refreshFaqs()
+    {
+        $this->categories = FaqCategory::with(['faqs' => fn ($q) => $q->orderBy('order')])->orderBy('order')->get();
     }
 }
-

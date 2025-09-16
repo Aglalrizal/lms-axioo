@@ -2,16 +2,16 @@
 
 namespace App\Livewire\Admin\Course;
 
-use App\Models\User;
-use App\Models\Course;
-use App\Models\Program;
-use Livewire\Component;
 use App\Enums\AccessType;
 use App\Enums\CourseLevel;
-use Livewire\Attributes\On;
-use Livewire\WithPagination;
+use App\Models\Course;
 use App\Models\CourseCategory;
+use App\Models\Program;
+use App\Models\User;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.dashboard')]
 class Index extends Component
@@ -19,12 +19,26 @@ class Index extends Component
     use WithPagination;
 
     public $search = '';
+
     public $filterType = '';
+
     public $sortBy = 'title';
+
     public $sortDirection = 'asc';
 
     public $courseToDelete;
-    public $program, $accessType, $category, $instructor, $level, $status;
+
+    public $program;
+
+    public $accessType;
+
+    public $category;
+
+    public $instructor;
+
+    public $level;
+
+    public $status;
 
     public function refresh() {}
 
@@ -33,32 +47,32 @@ class Index extends Component
         $query = Course::query();
 
         if ($this->search) {
-            $query->where('title', 'like', '%' . $this->search . '%');
+            $query->where('title', 'like', '%'.$this->search.'%');
         }
 
         if ($this->program === 'no-program') {
             $query->whereNull('program_id');
         } elseif ($this->program) {
-            $query->whereHas('program', fn($q) => $q->where('slug', $this->program));
+            $query->whereHas('program', fn ($q) => $q->where('slug', $this->program));
         }
 
         if ($this->category) {
-            $query->whereHas('courseCategory', fn($q) => $q->where('slug', $this->category));
+            $query->whereHas('courseCategory', fn ($q) => $q->where('slug', $this->category));
         }
 
         if ($this->instructor) {
             $query->where('teacher_id', $this->instructor);
         }
-        
+
         if ($this->accessType) {
             $query->where('access_type', $this->accessType);
         }
-        
+
         if ($this->level) {
             $query->where('level', $this->level);
         }
 
-        if ($this->status){
+        if ($this->status) {
             $query->where('is_published', $this->status);
         }
 
@@ -72,9 +86,10 @@ class Index extends Component
             'instructors' => User::has('courses')->get(),
             'accessTypes' => AccessType::toArray(),
             'courseLevels' => CourseLevel::toArray(),
-            'courses' => $courses
+            'courses' => $courses,
         ]);
     }
+
     #[On('delete-course')]
     public function confirmDelete($id)
     {

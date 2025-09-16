@@ -2,33 +2,34 @@
 
 namespace App\Models;
 
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class QuizChoice extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
-    function getActivitylogOptions(): LogOptions
+    public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logAll()
             ->useLogName('quizOption');
     }
+
     public function getDescriptionForEvent(string $eventName): string
     {
         $actor = Auth::user()?->username ?? 'System';
-        
+
         return match ($eventName) {
             'created' => "[{$actor}] membuat opsi \"{$this->answer_option}\"",
             'updated' => "[{$actor}] memperbarui opsi \"{$this->answer_option}\"",
             'deleted' => "[{$actor}] menghapus opsi \"{$this->answer_option}\"",
-            default => ucfirst($eventName) . " opsi \"{$this->answer_option}\"",
+            default => ucfirst($eventName)." opsi \"{$this->answer_option}\"",
         };
     }
 
@@ -49,7 +50,7 @@ class QuizChoice extends Model
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
-     */   
+     */
     protected function casts(): array
     {
         return [

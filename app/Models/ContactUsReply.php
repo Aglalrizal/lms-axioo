@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class ContactUsReply extends Model
 {
     const EMAIL_STATUS_PENDING = 'pending';
+
     const EMAIL_STATUS_SENT = 'sent';
+
     const EMAIL_STATUS_FAILED = 'failed';
 
     protected $fillable = [

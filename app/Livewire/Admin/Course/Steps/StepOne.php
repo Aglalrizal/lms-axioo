@@ -2,17 +2,15 @@
 
 namespace App\Livewire\Admin\Course\Steps;
 
-use App\Models\User;
 use App\Models\Course;
-use App\Models\Program;
-use Livewire\Component;
-use Livewire\Attributes\Rule;
-use App\Models\category;
 use App\Models\CourseCategory;
-use Livewire\Attributes\Layout;
+use App\Models\Program;
+use App\Models\User;
 use App\Traits\HandlesBase64Images;
-use Mews\Purifier\Facades\Purifier;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
+use Mews\Purifier\Facades\Purifier;
 
 #[Layout('layouts.dashboard')]
 class StepOne extends Component
@@ -20,10 +18,32 @@ class StepOne extends Component
     use HandlesBase64Images;
 
     public $step = 1;
+
     public $categories;
+
     public $instructors;
+
     public $programs;
-    public $category, $instructor, $program, $title, $level, $accessType, $duration, $description = '', $short_desc, $price;
+
+    public $category;
+
+    public $instructor;
+
+    public $program;
+
+    public $title;
+
+    public $level;
+
+    public $accessType;
+
+    public $duration;
+
+    public $description = '';
+
+    public $short_desc;
+
+    public $price;
 
     public ?Course $course = null;
 
@@ -32,14 +52,14 @@ class StepOne extends Component
     public function rules()
     {
         return [
-            'category'    => 'required|integer|exists:course_categories,id',
-            'instructor'  => 'required|integer|exists:users,id',
-            'program'        => 'nullable|integer|exists:programs,id',
-            'title'             => 'required|string|max:255',
-            'level'       => 'required|string|max:100',
-            'accessType'        => 'required|string|max:100',
-            'duration'          => 'required|integer|min:1',
-            'description'       => [
+            'category' => 'required|integer|exists:course_categories,id',
+            'instructor' => 'required|integer|exists:users,id',
+            'program' => 'nullable|integer|exists:programs,id',
+            'title' => 'required|string|max:255',
+            'level' => 'required|string|max:100',
+            'accessType' => 'required|string|max:100',
+            'duration' => 'required|integer|min:1',
+            'description' => [
                 'required',
                 'string',
                 function ($attribute, $value, $fail) {
@@ -50,51 +70,52 @@ class StepOne extends Component
                 },
             ],
             'short_desc' => 'required|string|min:75|max:150',
-            'price' => 'nullable|numeric|min:0'
+            'price' => 'nullable|numeric|min:0',
         ];
     }
 
     public function messages()
     {
         return [
-            'category.required'  => 'Kategori kursus wajib dipilih.',
-            'category.integer'   => 'Kategori kursus tidak valid.',
-            'category.exists'    => 'Kategori kursus yang dipilih tidak ditemukan.',
+            'category.required' => 'Kategori kursus wajib dipilih.',
+            'category.integer' => 'Kategori kursus tidak valid.',
+            'category.exists' => 'Kategori kursus yang dipilih tidak ditemukan.',
 
             'instructor.required' => 'Instruktur wajib dipilih.',
             'instructor.integer' => 'Instruktur tidak valid.',
-            'instructor.exists'  => 'Instruktur yang dipilih tidak ditemukan.',
+            'instructor.exists' => 'Instruktur yang dipilih tidak ditemukan.',
 
-            'title.required'           => 'Judul kursus wajib diisi.',
-            'title.string'             => 'Judul kursus harus berupa teks.',
-            'title.max'                => 'Judul kursus tidak boleh lebih dari :max karakter.',
+            'title.required' => 'Judul kursus wajib diisi.',
+            'title.string' => 'Judul kursus harus berupa teks.',
+            'title.max' => 'Judul kursus tidak boleh lebih dari :max karakter.',
 
-            'level.required'     => 'Level kursus wajib dipilih.',
-            'level.string'       => 'Level kursus harus berupa teks.',
-            'level.max'          => 'Level kursus tidak boleh lebih dari :max karakter.',
+            'level.required' => 'Level kursus wajib dipilih.',
+            'level.string' => 'Level kursus harus berupa teks.',
+            'level.max' => 'Level kursus tidak boleh lebih dari :max karakter.',
 
-            'accessType.required'      => 'Tipe kursus wajib dipilih.',
-            'accessType.string'        => 'Tipe kursus harus berupa teks.',
-            'accessType.max'           => 'Tipe kursus tidak boleh lebih dari :max karakter.',
+            'accessType.required' => 'Tipe kursus wajib dipilih.',
+            'accessType.string' => 'Tipe kursus harus berupa teks.',
+            'accessType.max' => 'Tipe kursus tidak boleh lebih dari :max karakter.',
 
-            'duration.required'        => 'Durasi kursus wajib diisi.',
-            'duration.integer'         => 'Durasi kursus harus berupa angka (jam/menit).',
-            'duration.min'             => 'Durasi kursus minimal :min (jam/menit).',
+            'duration.required' => 'Durasi kursus wajib diisi.',
+            'duration.integer' => 'Durasi kursus harus berupa angka (jam/menit).',
+            'duration.min' => 'Durasi kursus minimal :min (jam/menit).',
 
-            'description.required'     => 'Deskripsi kursus wajib diisi.',
-            'description.string'       => 'Deskripsi kursus harus berupa teks.',
-            'description.min'          => 'Deskripsi kursus minimal :min karakter.',
-            'description.max'          => 'Deskripsi kursus maksimal :max karakter.',
+            'description.required' => 'Deskripsi kursus wajib diisi.',
+            'description.string' => 'Deskripsi kursus harus berupa teks.',
+            'description.min' => 'Deskripsi kursus minimal :min karakter.',
+            'description.max' => 'Deskripsi kursus maksimal :max karakter.',
 
-            'short_desc.required'     => 'Deskripsi singkat wajib diisi.',
-            'short_desc.string'       => 'Deskripsi singkat harus berupa teks.',
-            'short_desc.min'          => 'Deskripsi singkat minimal :min karakter.',
-            'short_desc.max'          => 'Deskripsi singkat maksimal :max karakter.',
+            'short_desc.required' => 'Deskripsi singkat wajib diisi.',
+            'short_desc.string' => 'Deskripsi singkat harus berupa teks.',
+            'short_desc.min' => 'Deskripsi singkat minimal :min karakter.',
+            'short_desc.max' => 'Deskripsi singkat maksimal :max karakter.',
 
-            'price.numeric'           => 'Harga kursus harus berupa angka.',
-            'price.min'               => 'Harga kursus tidak boleh negatif.',
+            'price.numeric' => 'Harga kursus harus berupa angka.',
+            'price.min' => 'Harga kursus tidak boleh negatif.',
         ];
     }
+
     public function mount()
     {
         if ($this->slug) {
@@ -119,7 +140,6 @@ class StepOne extends Component
         $this->instructors = User::role('instructor')->get();
     }
 
-
     public function stepOne()
     {
         $this->description = $this->processBase64Images($this->description, 'course_images');
@@ -127,17 +147,16 @@ class StepOne extends Component
 
         $data = $this->validate();
 
-        
         $data['program'] = $data['program'] ?: null;
         $data['price'] = $data['price'] ?: 0;
-        
+
         if ($this->course && $this->course->exists) {
             $oldDescription = $this->course->description;
             $this->removeUnusedImages($oldDescription, $this->description, 'course_images');
             $data['description'] = $this->description;
             if ($this->title != $this->course->title) {
                 $this->slug = '';
-                $this->course->slug = "";
+                $this->course->slug = '';
                 $this->course->update([
                     'title' => $data['title'],
                     'course_category_id' => $data['category'],
@@ -149,11 +168,12 @@ class StepOne extends Component
                     'description' => $data['description'],
                     'duration' => $data['duration'],
                     'short_desc' => $data['short_desc'],
-                    'price' => $data['price']
+                    'price' => $data['price'],
                 ]);
                 flash()->success('Kursus Berhasil Diperbarui!', [], 'Sukses');
                 $this->slug = $this->course->slug;
                 $this->dispatch('set-course', ['slug' => $this->course->slug]);
+
                 return redirect()->route('admin.course.create', ['slug' => $this->slug]);
             } else {
                 $this->course->update([
@@ -167,7 +187,7 @@ class StepOne extends Component
                     'description' => $data['description'],
                     'duration' => $data['duration'],
                     'short_desc' => $data['short_desc'],
-                    'price' => $data['price']
+                    'price' => $data['price'],
                 ]);
                 flash()->success('Kursus Berhasil Diperbarui!', [], 'Sukses');
             }
@@ -185,18 +205,21 @@ class StepOne extends Component
                 'description' => $data['description'],
                 'duration' => $data['duration'],
                 'short_desc' => $data['short_desc'],
-                'price' => $data['price'] ?? 0
+                'price' => $data['price'] ?? 0,
             ]);
             flash()->success('Kursus Berhasil Disimpan!', [], 'Sukses');
             $this->slug = $this->course->slug;
             $this->dispatch('set-course', ['slug' => $this->course->slug]);
+
             return $this->redirect(route('admin.course.create', ['slug' => $this->slug]), true);
         }
     }
+
     public function render()
     {
         $this->categories = CourseCategory::all();
         $this->instructors = User::role('instructor')->get();
+
         return view('livewire.admin.course.steps.step-one');
     }
 }

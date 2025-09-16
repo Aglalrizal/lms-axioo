@@ -2,12 +2,12 @@
 
 namespace App\Livewire;
 
-use App\Models\ContactUs;
 use App\Enums\ContactStatus;
-use Livewire\Component;
-use Livewire\Attributes\On;
-use Livewire\WithPagination;
+use App\Models\ContactUs;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.dashboard')]
 
@@ -18,8 +18,11 @@ class ContactUsIndex extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $isShowing = 'all';
+
     public $query = '';
+
     public $messageId;
+
     public $messageAction;
 
     public function setShow(string $status): void
@@ -43,10 +46,10 @@ class ContactUsIndex extends Component
 
         sweetalert()
             ->showDenyButton()
-            ->option('confirmButtonText', 'Yes, ' . $aksi . ' it!')
+            ->option('confirmButtonText', 'Yes, '.$aksi.' it!')
             ->option('denyButtonText', 'Cancel')
             ->option('id', $id)
-            ->warning('Apakah kamu yakin ingin ' . $aksi . ' pesan ini?');
+            ->warning('Apakah kamu yakin ingin '.$aksi.' pesan ini?');
     }
 
     #[On('sweetalert:confirmed')]
@@ -84,7 +87,7 @@ class ContactUsIndex extends Component
 
         return view('livewire.contact-us-index', [
             'messages' => $query
-                ->whereAny(['full_name', 'email'], 'like', '%' . $this->query . '%')
+                ->whereAny(['full_name', 'email'], 'like', '%'.$this->query.'%')
                 ->orderBy('created_at', 'desc')
                 ->paginate(10, pageName: 'messages_page'),
             'statuses' => ContactStatus::toArray(),

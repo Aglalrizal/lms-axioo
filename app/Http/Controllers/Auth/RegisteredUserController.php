@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-use App\Models\CourseProgress;
-use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
+use App\Models\CourseProgress;
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Auth\Events\Registered;
+use Illuminate\Validation\Rules;
+use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
@@ -34,22 +34,22 @@ class RegisteredUserController extends Controller
             'username' => ['required', 'string', 'max:255', 'unique:users', 'alpha_dash'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ],[
+        ], [
             'username.required' => 'Username wajib diisi.',
-            'username.string'   => 'Username harus berupa teks.',
-            'username.min'      => 'Username minimal :min karakter.',
-            'username.max'      => 'Username maksimal :max karakter.',
+            'username.string' => 'Username harus berupa teks.',
+            'username.min' => 'Username minimal :min karakter.',
+            'username.max' => 'Username maksimal :max karakter.',
             'username.alpha_dash' => 'Username hanya boleh huruf, angka, tanda hubung, dan underscore.',
-            'username.unique'   => 'Username sudah digunakan.',
+            'username.unique' => 'Username sudah digunakan.',
 
-            'email.required'    => 'Email wajib diisi.',
-            'email.email'       => 'Format email tidak valid.',
-            'email.unique'      => 'Email sudah digunakan.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah digunakan.',
 
             'password.required' => 'Password wajib diisi.',
-            'password.string'   => 'Password harus berupa teks.',
-            'password.min'      => 'Password minimal :min karakter.',
-            'password.confirmed'=> 'Konfirmasi password tidak cocok.',
+            'password.string' => 'Password harus berupa teks.',
+            'password.min' => 'Password minimal :min karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
 
         $user = User::create([
@@ -75,25 +75,25 @@ class RegisteredUserController extends Controller
 
             if (! $alreadyEnrolled) {
 
-                if($course->access_type->value == 'paid' || $course->access_type->value == 'free_trial'){
+                if ($course->access_type->value == 'paid' || $course->access_type->value == 'free_trial') {
                     return redirect(route('course.show', $course->slug));
                 }
 
                 $transaction = \App\Models\Transaction::create([
-                    'course_id'  => $courseId,
+                    'course_id' => $courseId,
                     'student_id' => $user->id,
-                    'status'     => 'paid',
+                    'status' => 'paid',
                     'created_by' => $user->username,
                 ]);
 
                 \App\Models\Enrollment::create([
                     'transaction_id' => $transaction->id,
-                    'student_id'     => $user->id,
-                    'course_id'      => $courseId,
-                    'enrolled_by'    => $user->username,
-                    'enrolled_at'    => now(),
-                    'created_by'     => $user->username,
-                    'modified_by'    => $user->username,
+                    'student_id' => $user->id,
+                    'course_id' => $courseId,
+                    'enrolled_by' => $user->username,
+                    'enrolled_at' => now(),
+                    'created_by' => $user->username,
+                    'modified_by' => $user->username,
                 ]);
 
                 $syllabus = $course->syllabus->sortBy('order')->first();
@@ -113,7 +113,7 @@ class RegisteredUserController extends Controller
                 $redirectUrl = route('course.show.content', [
                     'slug' => $course->slug,
                     'syllabusId' => $syllabus->id,
-                    'courseContentId' => $content->id
+                    'courseContentId' => $content->id,
                 ]);
             } else {
                 $lastProgress = CourseProgress::where('student_id', $user->id)
@@ -126,7 +126,7 @@ class RegisteredUserController extends Controller
                     $redirectUrl = route('course.show.content', [
                         'slug' => $course->slug,
                         'syllabusId' => $content->syllabus_id,
-                        'courseContentId' => $content->id
+                        'courseContentId' => $content->id,
                     ]);
                 } else {
                     $syllabus = $course->syllabus->sortBy('order')->first();
@@ -135,7 +135,7 @@ class RegisteredUserController extends Controller
                     $redirectUrl = route('course.show.content', [
                         'slug' => $course->slug,
                         'syllabusId' => $syllabus->id,
-                        'courseContentId' => $content->id
+                        'courseContentId' => $content->id,
                     ]);
                 }
             }
@@ -143,6 +143,6 @@ class RegisteredUserController extends Controller
             return redirect()->to($redirectUrl);
         }
 
-        return redirect(route('user.dashboard.profile', $user->username,absolute: false));
+        return redirect(route('user.dashboard.profile', $user->username, absolute: false));
     }
 }

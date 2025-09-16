@@ -2,30 +2,34 @@
 
 namespace App\Livewire\Course\Published;
 
-use App\Models\Quiz;
-use App\Models\Course;
-use Livewire\Component;
-use App\Models\Enrollment;
-use App\Models\QuizAttempt;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Url;
-use Livewire\WithPagination;
-use App\Models\CourseProgress;
-use Livewire\Attributes\Layout;
-use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\Assignment;
 use App\Models\AssignmentSubmission;
+use App\Models\Course;
+use App\Models\CourseProgress;
+use App\Models\Enrollment;
+use App\Models\Quiz;
+use App\Models\QuizAttempt;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.dashboard')]
 class Show extends Component
 {
     use WithPagination;
+
     public Course $course;
+
     public ?string $slug = null;
 
     // Separate search states for each tab (no URL binding to avoid collisions)
     public string $searchEnrolled = '';
+
     public string $searchQuiz = '';
+
     public string $searchAssignment = '';
 
     #[Url]
@@ -42,14 +46,17 @@ class Show extends Component
         $this->resetPage('quizzesPage');
         $this->resetPage('assignmentsPage');
     }
+
     public function updatingSearchEnrolled()
     {
         $this->resetPage('enrolledPage');
     }
+
     public function updatingSearchQuiz()
     {
         $this->resetPage('quizzesPage');
     }
+
     public function updatingSearchAssignment()
     {
         $this->resetPage('assignmentsPage');
@@ -114,6 +121,7 @@ class Show extends Component
         );
         // Align the page name to avoid conflicts when rendering links
         $paginator->setPageName($pageName);
+
         return $paginator;
     }
 
@@ -126,8 +134,8 @@ class Show extends Component
             ->where('course_id', $this->course->id)
             ->when($this->searchEnrolled, function ($query) {
                 $query->whereHas('student', function ($q) {
-                    $q->where('first_name', 'like', '%' . $this->searchEnrolled . '%')
-                        ->orWhere('surname', 'like', '%' . $this->searchEnrolled . '%');
+                    $q->where('first_name', 'like', '%'.$this->searchEnrolled.'%')
+                        ->orWhere('surname', 'like', '%'.$this->searchEnrolled.'%');
                 });
             })
             ->select('enrollments.*')
@@ -155,7 +163,7 @@ class Show extends Component
             })
             ->when($this->searchQuiz, function ($q) {
                 $q->whereHas('courseContent', function ($c) {
-                    $c->where('title', 'like', '%' . $this->searchQuiz . '%');
+                    $c->where('title', 'like', '%'.$this->searchQuiz.'%');
                 });
             })
             ->with([
@@ -198,6 +206,7 @@ class Show extends Component
             $quiz->average_percentage = ($questionCount > 0 && $participants > 0)
                 ? round((($sumPoints / $participants) / $questionCount) * 100, 1)
                 : 0.0;
+
             return $quiz;
         });
 
@@ -217,7 +226,7 @@ class Show extends Component
             })
             ->when($this->searchAssignment, function ($q) {
                 $q->whereHas('courseContent', function ($c) {
-                    $c->where('title', 'like', '%' . $this->searchAssignment . '%');
+                    $c->where('title', 'like', '%'.$this->searchAssignment.'%');
                 });
             })
             ->with(['courseContent:id,title'])
@@ -234,6 +243,7 @@ class Show extends Component
 
         $assignments->getCollection()->transform(function (Assignment $assignment) use ($submissionCounts) {
             $assignment->submitters_count = (int) ($submissionCounts[$assignment->id] ?? 0);
+
             return $assignment;
         });
 

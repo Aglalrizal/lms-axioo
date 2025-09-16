@@ -2,13 +2,15 @@
 
 namespace App\Livewire\Quiz;
 
-use Livewire\Component;
 use App\Models\QuizAttempt;
+use Livewire\Component;
 
 class QuizResultModal extends Component
 {
     public $attemptId;
+
     public $quizAttempt;
+
     public function updatedAttemptId($value)
     {
         $this->loadAttempt();
@@ -24,7 +26,8 @@ class QuizResultModal extends Component
         }
     }
 
-    public function mount(){
+    public function mount()
+    {
         if ($this->attemptId) {
             $this->quizAttempt = QuizAttempt::with([
                 'quiz.questions.choices',

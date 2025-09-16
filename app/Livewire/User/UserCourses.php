@@ -2,10 +2,9 @@
 
 namespace App\Livewire\User;
 
-use App\Models\CourseProgress;
-use Livewire\Component;
-use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
 
 #[Layout('layouts.dashboard')]
 
@@ -37,6 +36,7 @@ class UserCourses extends Component
                 $course->progress_percentage = $course->total_contents > 0
                     ? round(($course->completed_contents / $course->total_contents) * 100)
                     : 0;
+
                 return $course;
             });
 

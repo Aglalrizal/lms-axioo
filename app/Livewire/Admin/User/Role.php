@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Admin\User;
 
-use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Component;
 
 #[Layout('layouts.dashboard')]
 class Role extends Component

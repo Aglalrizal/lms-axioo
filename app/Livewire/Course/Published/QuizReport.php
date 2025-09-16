@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Course\Published;
 
-use App\Models\Quiz;
 use App\Models\Course;
-use Livewire\Component;
+use App\Models\Quiz;
 use App\Models\QuizAttempt;
-use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.dashboard')]
 class QuizReport extends Component
@@ -16,14 +16,20 @@ class QuizReport extends Component
     use WithPagination;
 
     public Course $course;
+
     public ?string $slug = null;
+
     #[Url]
     public ?int $quiz_id = null;
+
     public ?Quiz $selectedQuiz = null;
+
     #[Url]
     public string $search = '';
+
     #[Url]
     public string $activeTab = 'participants';
+
     public int $totalQuestions = 0;
 
     public function setActiveTab($tab)
@@ -68,7 +74,7 @@ class QuizReport extends Component
             ->whereIn('status', ['completed', 'graded'])
             ->groupBy('user_id');
 
-        // mendapatkan id unik dari percobaan terakhir per pengguna bila terjadi 
+        // mendapatkan id unik dari percobaan terakhir per pengguna bila terjadi
         // dua percobaan dengan updated_at yang sama persis (misalnya terjadi dalam satu detik yang sama)
         // $latestAttemptIdPerUser = QuizAttempt::query()
         //     ->selectRaw('quiz_attempts.user_id, MAX(quiz_attempts.id) as id')
@@ -97,7 +103,6 @@ class QuizReport extends Component
             ? ($avgPoints / $this->totalQuestions) * 100
             : 0.0;
 
-
         // Participants list with relations
         $participantsQuery = QuizAttempt::query()
             ->select('quiz_attempts.*')
@@ -116,8 +121,8 @@ class QuizReport extends Component
             )
             ->when($this->search && $this->activeTab === 'participants', function ($query) {
                 $query->whereHas('user', function ($q) {
-                    $q->where('first_name', 'like', '%' . $this->search . '%')
-                        ->orWhere('surname', 'like', '%' . $this->search . '%');
+                    $q->where('first_name', 'like', '%'.$this->search.'%')
+                        ->orWhere('surname', 'like', '%'.$this->search.'%');
                 });
             })
             ->orderBy('quiz_attempts.total_score', 'desc');
@@ -128,7 +133,6 @@ class QuizReport extends Component
         if ($this->activeTab === 'questions') {
             $this->selectedQuiz->loadMissing(['questions.choices']);
         }
-
 
         return view('livewire.course.published.quiz-report', [
             'participants' => $participants,

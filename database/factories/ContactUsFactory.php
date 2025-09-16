@@ -20,7 +20,7 @@ class ContactUsFactory extends Factory
             'full_name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'message' => fake()->paragraph(12),
-            'status' => 'open'
+            'status' => 'open',
         ];
     }
 }

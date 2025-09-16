@@ -3,24 +3,25 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class CourseCategory extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity, Sluggable;
+    use HasFactory, LogsActivity, Sluggable, SoftDeletes;
 
-    function getActivitylogOptions(): LogOptions
+    public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logAll()
             ->useLogName('courseCategory');
     }
+
     public function getDescriptionForEvent(string $eventName): string
     {
         $actor = Auth::user()?->username ?? 'System';
@@ -29,10 +30,9 @@ class CourseCategory extends Model
             'created' => "[{$actor}] membuat kategori kursus \"{$this->name}\"",
             'updated' => "[{$actor}] memperbarui kategori kursus \"{$this->name}\"",
             'deleted' => "[{$actor}] menghapus kategori kursus \"{$this->name}\"",
-            default => ucfirst($eventName) . " kategori kursus \"{$this->name}\"",
+            default => ucfirst($eventName)." kategori kursus \"{$this->name}\"",
         };
     }
-
 
     /**
      * The attributes that are mass assignable.
@@ -41,15 +41,15 @@ class CourseCategory extends Model
      */
     protected $fillable = [
         'name',
-        'slug'
+        'slug',
     ];
 
     public function sluggable(): array
     {
         return [
             'slug' => [
-                'source' => 'name'
-            ]
+                'source' => 'name',
+            ],
         ];
     }
 

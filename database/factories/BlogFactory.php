@@ -3,9 +3,9 @@
 namespace Database\Factories;
 
 use App\Enums\BlogStatus;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Blog;
 use App\Models\BlogCategory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Blog>
@@ -18,7 +18,6 @@ class BlogFactory extends Factory
      * @var string
      */
     protected $model = Blog::class;
-
 
     /**
      * Define the model's default state.
@@ -45,45 +44,44 @@ class BlogFactory extends Factory
         ];
     }
 
-
     /**
      * Generate realistic Jodit editor content
      */
     private function generateJoditContent(): string
     {
         $paragraphs = [
-            "<p>Selamat datang di kursus yang akan mengubah karir Anda! Kursus ini dirancang khusus untuk memberikan pemahaman mendalam tentang teknologi terkini dengan pendekatan praktis dan mudah dipahami.</p>",
+            '<p>Selamat datang di kursus yang akan mengubah karir Anda! Kursus ini dirancang khusus untuk memberikan pemahaman mendalam tentang teknologi terkini dengan pendekatan praktis dan mudah dipahami.</p>',
 
-            "<p><strong>Apa yang akan Anda pelajari:</strong></p>
+            '<p><strong>Apa yang akan Anda pelajari:</strong></p>
             <ul>
                 <li>Konsep fundamental dan teori dasar</li>
                 <li>Implementasi praktis dengan studi kasus nyata</li>
                 <li>Best practices dan industry standards</li>
                 <li>Tips dan trik dari para ahli</li>
-            </ul>",
+            </ul>',
 
-            "<p><em>Kursus ini cocok untuk:</em></p>
+            '<p><em>Kursus ini cocok untuk:</em></p>
             <ol>
                 <li>Pemula yang ingin memulai karir di bidang teknologi</li>
                 <li>Profesional yang ingin meningkatkan skill</li>
                 <li>Mahasiswa yang mencari pengetahuan praktis</li>
                 <li>Entrepreneur yang ingin memahami teknologi</li>
-            </ol>",
+            </ol>',
 
-            "<blockquote>
-                <p>\"Investasi terbaik adalah investasi pada pengetahuan dan keterampilan diri sendiri. Kursus ini akan memberikan Anda foundation yang kuat untuk berkembang di era digital.\"</p>
-            </blockquote>",
+            '<blockquote>
+                <p>"Investasi terbaik adalah investasi pada pengetahuan dan keterampilan diri sendiri. Kursus ini akan memberikan Anda foundation yang kuat untuk berkembang di era digital."</p>
+            </blockquote>',
 
-            "<p>Dengan materi yang <strong>terstruktur</strong> dan <em>up-to-date</em>, Anda akan mendapatkan pembelajaran yang komprehensif. Setiap modul dilengkapi dengan:</p>
+            '<p>Dengan materi yang <strong>terstruktur</strong> dan <em>up-to-date</em>, Anda akan mendapatkan pembelajaran yang komprehensif. Setiap modul dilengkapi dengan:</p>
             <ul>
                 <li>Video pembelajaran berkualitas tinggi</li>
                 <li>Materi bacaan lengkap</li>
                 <li>Quiz interaktif</li>
                 <li>Assignment praktis</li>
                 <li>Forum diskusi dengan instruktur dan peserta lain</li>
-            </ul>",
+            </ul>',
 
-            "<p>Jangan lewatkan kesempatan untuk meningkatkan kemampuan Anda. Daftar sekarang dan mulai perjalanan pembelajaran yang mengubah hidup!</p>"
+            '<p>Jangan lewatkan kesempatan untuk meningkatkan kemampuan Anda. Daftar sekarang dan mulai perjalanan pembelajaran yang mengubah hidup!</p>',
         ];
 
         // Pilih 3-5 paragraf secara acak
@@ -114,9 +112,9 @@ class BlogFactory extends Factory
             // Simplified: langsung ambil single base64 image
             $base64Image = $this->loadSingleBase64Image();
 
-            $contentWithImages = $attributes['content'] .
-                "\n\n<p>Contoh gambar dalam konten:</p>" .
-                "\n<p><img src=\"{$base64Image}\" alt=\"Course Sample Image\" width=\"400\" height=\"300\" style=\"border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);\" /></p>" .
+            $contentWithImages = $attributes['content'].
+                "\n\n<p>Contoh gambar dalam konten:</p>".
+                "\n<p><img src=\"{$base64Image}\" alt=\"Course Sample Image\" width=\"400\" height=\"300\" style=\"border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);\" /></p>".
                 "\n\n<p>Gambar ini adalah placeholder yang menyerupai thumbnail course professional seperti yang biasa ditemukan di platform pembelajaran online.</p>";
 
             return [
@@ -132,14 +130,14 @@ class BlogFactory extends Factory
     {
         $filePath = public_path('assets/images/base64sample.txt');
 
-        if (!file_exists($filePath)) {
+        if (! file_exists($filePath)) {
             // Fallback jika file tidak ada
             return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==';
         }
 
         $content = trim(file_get_contents($filePath));
 
-        return !empty($content) ?
+        return ! empty($content) ?
             $content :
             'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==';
     }
@@ -152,7 +150,7 @@ class BlogFactory extends Factory
         $samplesPath = public_path('assets/images/samples');
 
         // Check if samples directory exists
-        if (!is_dir($samplesPath)) {
+        if (! is_dir($samplesPath)) {
             throw new \Exception("Directory sample images tidak ditemukan: {$samplesPath}. Silakan buat folder dan upload sample images terlebih dahulu.");
         }
 
@@ -161,7 +159,9 @@ class BlogFactory extends Factory
 
         // Get all image files from samples directory
         foreach (scandir($samplesPath) as $file) {
-            if ($file === '.' || $file === '..') continue;
+            if ($file === '.' || $file === '..') {
+                continue;
+            }
 
             $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
             if (in_array($extension, $imageExtensions)) {
@@ -176,6 +176,7 @@ class BlogFactory extends Factory
 
         // Return random sample image path
         $randomImage = fake()->randomElement($sampleImages);
-        return 'assets/images/samples/' . $randomImage;
+
+        return 'assets/images/samples/'.$randomImage;
     }
 }

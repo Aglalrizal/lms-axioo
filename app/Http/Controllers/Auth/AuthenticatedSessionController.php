@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-use App\Models\CourseProgress;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\CourseProgress;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -43,25 +43,25 @@ class AuthenticatedSessionController extends Controller
 
             if (! $alreadyEnrolled) {
 
-                if($course->access_type->value == 'paid' || $course->access_type->value == 'free_trial'){
+                if ($course->access_type->value == 'paid' || $course->access_type->value == 'free_trial') {
                     return redirect(route('course.show', $course->slug));
                 }
 
                 $transaction = \App\Models\Transaction::create([
-                    'course_id'  => $courseId,
+                    'course_id' => $courseId,
                     'student_id' => $user->id,
-                    'status'     => 'paid',
+                    'status' => 'paid',
                     'created_by' => $user->username,
                 ]);
 
                 \App\Models\Enrollment::create([
                     'transaction_id' => $transaction->id,
-                    'student_id'     => $user->id,
-                    'course_id'      => $courseId,
-                    'enrolled_by'    => $user->username,
-                    'enrolled_at'    => now(),
-                    'created_by'     => $user->username,
-                    'modified_by'    => $user->username,
+                    'student_id' => $user->id,
+                    'course_id' => $courseId,
+                    'enrolled_by' => $user->username,
+                    'enrolled_at' => now(),
+                    'created_by' => $user->username,
+                    'modified_by' => $user->username,
                 ]);
 
                 $syllabus = $course->syllabus->sortBy('order')->first();
@@ -81,7 +81,7 @@ class AuthenticatedSessionController extends Controller
                 $redirectUrl = route('course.show.content', [
                     'slug' => $course->slug,
                     'syllabusId' => $syllabus->id,
-                    'courseContentId' => $content->id
+                    'courseContentId' => $content->id,
                 ]);
             } else {
                 $lastProgress = CourseProgress::where('student_id', $user->id)
@@ -94,7 +94,7 @@ class AuthenticatedSessionController extends Controller
                     $redirectUrl = route('course.show.content', [
                         'slug' => $course->slug,
                         'syllabusId' => $content->syllabus_id,
-                        'courseContentId' => $content->id
+                        'courseContentId' => $content->id,
                     ]);
                 } else {
                     $syllabus = $course->syllabus->sortBy('order')->first();
@@ -103,7 +103,7 @@ class AuthenticatedSessionController extends Controller
                     $redirectUrl = route('course.show.content', [
                         'slug' => $course->slug,
                         'syllabusId' => $syllabus->id,
-                        'courseContentId' => $content->id
+                        'courseContentId' => $content->id,
                     ]);
                 }
             }
@@ -111,8 +111,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->to($redirectUrl);
         }
 
-        
-        if ($user->hasRole(['super-admin','admin'])) {
+        if ($user->hasRole(['super-admin', 'admin'])) {
             return redirect()->intended('/admin/dashboard');
         } elseif ($user->hasRole('instructor')) {
             return redirect()->intended('/instructor/dashboard');

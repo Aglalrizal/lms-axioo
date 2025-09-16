@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FaqCategory;
 use App\Http\Requests\StoreFaqCategoryRequest;
 use App\Http\Requests\UpdateFaqCategoryRequest;
+use App\Models\FaqCategory;
 
 class FaqCategoryController extends Controller
 {

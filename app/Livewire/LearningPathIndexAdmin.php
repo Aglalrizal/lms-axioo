@@ -2,11 +2,11 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use Livewire\Attributes\On;
 use App\Models\LearningPath;
-use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.dashboard')]
 class LearningPathIndexAdmin extends Component
@@ -14,10 +14,11 @@ class LearningPathIndexAdmin extends Component
     use WithPagination;
 
     public $search = '';
+
     public $selectedPath = null;
 
     protected $queryString = [
-        'search' => ['except' => '']
+        'search' => ['except' => ''],
     ];
 
     public function confirmDelete($pathId)
@@ -50,7 +51,7 @@ class LearningPathIndexAdmin extends Component
     public function togglePublish($pathId)
     {
         $path = LearningPath::findOrFail($pathId);
-        $path->update(['is_published' => !$path->is_published]);
+        $path->update(['is_published' => ! $path->is_published]);
 
         $status = $path->is_published ? 'dipublikasikan' : 'di-unpublish';
         flash()->success("Learning Path berhasil {$status}!", [], 'Sukses');
@@ -61,14 +62,14 @@ class LearningPathIndexAdmin extends Component
         $learningPaths = LearningPath::query()
             ->withCount(['steps'])
             ->when($this->search, function ($query) {
-                $query->where('title', 'like', '%' . $this->search . '%')
-                    ->orWhere('description', 'like', '%' . $this->search . '%');
+                $query->where('title', 'like', '%'.$this->search.'%')
+                    ->orWhere('description', 'like', '%'.$this->search.'%');
             })
             ->latest()
             ->paginate(10);
 
         return view('livewire.learning-path-index-admin', [
-            'learningPaths' => $learningPaths
+            'learningPaths' => $learningPaths,
         ]);
     }
 }

@@ -2,33 +2,34 @@
 
 namespace App\Models;
 
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class QuizQuestion extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
-    function getActivitylogOptions(): LogOptions
+    public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logAll()
             ->useLogName('quizQuestion');
     }
+
     public function getDescriptionForEvent(string $eventName): string
     {
         $actor = Auth::user()?->username ?? 'System';
-        
+
         return match ($eventName) {
             'created' => "[{$actor}] membuat pertanyaan \"{$this->question}\"",
             'updated' => "[{$actor}] memperbarui pertanyaan \"{$this->question}\"",
             'deleted' => "[{$actor}] menghapus pertanyaan \"{$this->question}\"",
-            default => ucfirst($eventName) . " pertanyaan \"{$this->question}\"",
+            default => ucfirst($eventName)." pertanyaan \"{$this->question}\"",
         };
     }
 
@@ -64,7 +65,9 @@ class QuizQuestion extends Model
     {
         return $this->belongsTo(Quiz::class);
     }
-    public function choices(){
+
+    public function choices()
+    {
         return $this->hasMany(QuizChoice::class, 'question_id');
     }
 }

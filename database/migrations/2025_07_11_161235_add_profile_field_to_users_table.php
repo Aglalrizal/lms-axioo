@@ -46,7 +46,7 @@ return new class extends Migration
                 'address',
                 'education',
                 'institution',
-                'major'
+                'major',
             ]);
         });
     }

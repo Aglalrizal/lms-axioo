@@ -32,7 +32,7 @@ class LearningPathFactory extends Factory
      */
     public function published(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'is_published' => true,
         ]);
     }
@@ -42,7 +42,7 @@ class LearningPathFactory extends Factory
      */
     public function unpublished(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'is_published' => false,
         ]);
     }

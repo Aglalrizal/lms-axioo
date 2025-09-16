@@ -13,6 +13,6 @@ class OurTeam extends Model
         'deskripsi',
         'jabatan',
         'linkedin',
-        'photo_path'
+        'photo_path',
     ];
 }

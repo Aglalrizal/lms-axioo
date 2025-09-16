@@ -2,22 +2,28 @@
 
 namespace App\Livewire\Quiz;
 
-use App\Models\Quiz;
-use Livewire\Attributes\On;
-use Livewire\Component;
 use App\Models\QuizChoice;
 use App\Models\QuizQuestion;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class CreateQuizQuestion extends Component
 {
     public $quizId;
+
     public $questionText;
+
     public $question;
+
     public $formtitle = 'Tambah Pertanyaan';
+
     public $editform = false;
+
     public $question_type = 'multiple_choice';
+
     public $choices = [];
+
     public ?int $correctIndex = 0;
 
     public function mount()
@@ -67,7 +73,7 @@ class CreateQuizQuestion extends Component
     {
         $this->reset([
             'questionText', 'choices', 'correctIndex',
-            'question_type', 'editform', 'formtitle', 'question'
+            'question_type', 'editform', 'formtitle', 'question',
         ]);
         $this->question_type = 'multiple_choice';
         $this->initializeChoices();
@@ -113,13 +119,13 @@ class CreateQuizQuestion extends Component
         $this->question_type = $this->question->question_type;
 
         if ($this->question_type === 'multiple_choice') {
-            $this->choices = $this->question->choices->map(fn($choice) => [
+            $this->choices = $this->question->choices->map(fn ($choice) => [
                 'id' => $choice->id,
                 'text' => $choice->answer_option,
                 'is_correct' => $choice->is_correct,
             ])->toArray();
 
-            $this->correctIndex = collect($this->choices)->search(fn($c) => $c['is_correct'] === true);
+            $this->correctIndex = collect($this->choices)->search(fn ($c) => $c['is_correct'] === true);
         } else {
             $this->choices = [];
             $this->correctIndex = null;

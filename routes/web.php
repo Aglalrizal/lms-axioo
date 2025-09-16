@@ -1,16 +1,14 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
+use App\Http\Controllers\Auth\SocialiteController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\FaqController as UserFaq;
+use App\Http\Controllers\ProfileController;
+use App\Mail\SupportTicketReplyMail;
 use App\Models\Course;
 use App\Models\SupportTicket;
-use App\Mail\SupportTicketReplyMail;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BlogController;
-use App\Http\Controllers\ProfileController;
-
-use App\Http\Controllers\MidtransController;
-use App\Http\Controllers\Auth\SocialiteController;
-use App\Http\Controllers\FaqController as UserFaq;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:super-admin|admin'])->group(function () {
@@ -105,9 +103,9 @@ Route::get('/help-center', [UserFaq::class, 'show_most_asked'])->name('public.he
 Route::get('/help-center/faqs', [UserFaq::class, 'show'])->name('public.help-center.faqs');
 Route::get('/help-center/support', \App\Livewire\SupportTicketCreate::class)->name('public.help-center.support');
 
-// 
-// DEVELOPMENT AND TESTING 
-//  
+//
+// DEVELOPMENT AND TESTING
+//
 
 Route::get('/test', function () {
     return view('public.wrwrwrwr');
@@ -118,14 +116,14 @@ Route::get('/preview-email/{ticketId}', function ($ticketId) {
     try {
         $ticket = SupportTicket::with('reply')->findOrFail($ticketId);
 
-        if (!$ticket->reply) {
-            return '<h1>No reply found for ticket #' . $ticketId . '</h1><p>Ticket ini belum memiliki reply dari admin.</p>';
+        if (! $ticket->reply) {
+            return '<h1>No reply found for ticket #'.$ticketId.'</h1><p>Ticket ini belum memiliki reply dari admin.</p>';
         }
 
         return new SupportTicketReplyMail($ticket, $ticket->reply);
     } catch (Exception $e) {
-        return '<h1>Error</h1><p>Error: ' . $e->getMessage() . '</p>';
+        return '<h1>Error</h1><p>Error: '.$e->getMessage().'</p>';
     }
 })->middleware('web');
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

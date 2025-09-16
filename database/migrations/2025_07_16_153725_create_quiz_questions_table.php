@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('quiz_id')->constrained()->cascadeOnDelete();
             $table->longText('question');
-            $table->enum('question_type', ["multiple_choice","short_answer","true_false"]);
+            $table->enum('question_type', ['multiple_choice', 'short_answer', 'true_false']);
             $table->integer('score');
             $table->integer('order');
             $table->string('created_by');

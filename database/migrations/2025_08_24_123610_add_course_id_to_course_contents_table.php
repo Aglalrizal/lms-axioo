@@ -1,9 +1,9 @@
 <?php
 
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -20,11 +20,11 @@ return new class extends Migration
                 ->cascadeOnDelete();
         });
 
-        DB::statement("
+        DB::statement('
             UPDATE course_contents cc
             JOIN course_syllabi cs ON cc.course_syllabus_id = cs.id
             SET cc.course_id = cs.course_id
-        ");
+        ');
 
         Schema::table('course_contents', function (Blueprint $table) {
             $table->foreignId('course_id')->nullable(false)->change();

@@ -2,36 +2,38 @@
 
 namespace App\Models;
 
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Quiz extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
-    function getActivitylogOptions(): LogOptions
+    public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logAll()
             ->useLogName('kuis');
     }
+
     public function getDescriptionForEvent(string $eventName): string
     {
         $actor = Auth::user()?->username ?? 'Sistem';
         $title = $this?->courseContent()->title ?? 'Kuis';
-        
+
         return match ($eventName) {
             'created' => "[{$actor}] membuat kuis \"{$title}\"",
             'updated' => "[{$actor}] memperbarui kuis \"{$title}\"",
             'deleted' => "[{$actor}] menghapus kuis \"{$title}\"",
-            default => ucfirst($eventName) . " kuis \"{$title}\"",
+            default => ucfirst($eventName)." kuis \"{$title}\"",
         };
     }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -63,10 +65,14 @@ class Quiz extends Model
     {
         return $this->belongsTo(\App\Models\CourseContent::class, 'course_content_id');
     }
-    public function questions() {
+
+    public function questions()
+    {
         return $this->hasMany(\App\Models\QuizQuestion::class);
     }
-    public function attempts(){
+
+    public function attempts()
+    {
         return $this->hasMany(QuizAttempt::class);
     }
 }

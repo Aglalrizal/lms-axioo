@@ -3,12 +3,11 @@
 namespace App\Livewire;
 
 use App\Models\AboutUs;
-use App\Models\Mission;
-use App\Models\OurTeam;
-use Livewire\Component;
 use App\Models\ContactUs;
+use App\Models\OurTeam;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 #[Layout('layouts.app')]
 
@@ -16,8 +15,10 @@ class AboutUsPublic extends Component
 {
     #[Validate('required|string|max:64')]
     public $full_name;
+
     #[Validate('required|email')]
     public $email;
+
     #[Validate('required|string|max:2000|min:32')]
     public $message;
 

@@ -22,7 +22,7 @@ class LearningPathIndexPublic extends Component
             ->paginate(12);
 
         return view('livewire.learning-path-index-public', [
-            'learningPaths' => $learningPaths
+            'learningPaths' => $learningPaths,
         ]);
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use App\Models\SupportTicket;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 #[Layout('layouts.app')]
 
@@ -13,12 +13,16 @@ class SupportTicketCreate extends Component
 {
     #[Validate('required|string|max:64')]
     public $full_name;
+
     #[Validate('required|email')]
     public $email;
+
     #[Validate('required|string|max:64')]
     public $title;
+
     #[Validate('required|in:General,Technical,Accounts,Payment,Other')]
     public $subject;
+
     #[Validate('required|string|max:2000|min:32')]
     public $description;
 

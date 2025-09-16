@@ -2,15 +2,14 @@
 
 namespace App\Livewire\Course\CourseContents\Assignment;
 
-use Livewire\Component;
-use App\Models\Assignment;
-use Livewire\Attributes\On;
 use App\Models\CourseContent;
-use Livewire\WithFileUploads;
 use App\Traits\HandlesBase64Images;
-use Mews\Purifier\Facades\Purifier;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\On;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use Mews\Purifier\Facades\Purifier;
 
 class Create extends Component
 {
@@ -20,7 +19,11 @@ class Create extends Component
 
     public $syllabus_id;
 
-    public $title, $url, $file;
+    public $title;
+
+    public $url;
+
+    public $file;
 
     public $instruction;
 
@@ -43,7 +46,7 @@ class Create extends Component
                 },
             ],
             'url' => 'nullable',
-            'file'    => 'nullable|file|max:10240',
+            'file' => 'nullable|file|max:10240',
         ];
     }
 
@@ -55,7 +58,7 @@ class Create extends Component
             'title.max' => 'Judul artikel maksimal :max karakter.',
             'instruction.required' => 'Instruksi wajib diisi.',
             'instruction.min' => 'Instruksi minimal :min karakter.',
-            'file.max' => 'Dokumen yang diunggah maksimal sebesar :max'
+            'file.max' => 'Dokumen yang diunggah maksimal sebesar :max',
         ];
     }
 
@@ -85,10 +88,9 @@ class Create extends Component
             $filePath = $validated['file']->store('course_assignment_files', 'public');
         }
 
-
         if ($this->courseContentId && $this->courseContent) {
             $oldInstruction = $this->courseContent->assignment->instruction ?? null;
-            $oldFile        = $this->courseContent->assignment->file_path;
+            $oldFile = $this->courseContent->assignment->file_path;
 
             $this->courseContent->update([
                 'title' => $validated['title'],
@@ -101,8 +103,8 @@ class Create extends Component
 
             $this->courseContent->assignment()->update([
                 'instruction' => $validated['instruction'],
-                'url'   => $validated['url'],
-                'file_path'   => $filePath ?: $oldFile,
+                'url' => $validated['url'],
+                'file_path' => $filePath ?: $oldFile,
             ]);
 
             $this->removeUnusedImages($oldInstruction, $this->instruction, 'course_assignment_images');
@@ -123,8 +125,8 @@ class Create extends Component
 
             $this->courseContent->assignment()->create([
                 'instruction' => $validated['instruction'],
-                'url'   => $validated['url'],
-                'file_path'   => $filePath,
+                'url' => $validated['url'],
+                'file_path' => $filePath,
             ]);
 
             $this->courseContent->load('assignment');
@@ -140,6 +142,7 @@ class Create extends Component
         $this->dispatch('close-add-page');
         $this->reset();
     }
+
     public function confirmDelete()
     {
         sweetalert()

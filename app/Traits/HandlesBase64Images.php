@@ -2,17 +2,17 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 trait HandlesBase64Images
 {
     /**
      * Process base64 images in content and convert them to stored images
      *
-     * @param string $content Content with potential base64 images
-     * @param string $folder Storage folder for images (default: 'content_images')
+     * @param  string  $content  Content with potential base64 images
+     * @param  string  $folder  Storage folder for images (default: 'content_images')
      * @return string Content with base64 images replaced with file URLs
      */
     public function processBase64Images(string $content, string $folder = 'content_images'): string
@@ -33,20 +33,20 @@ trait HandlesBase64Images
                 }
 
                 // Generate filename
-                $filename = Str::uuid() . '.' . $imageType;
-                $path = $folder . '/' . $filename;
+                $filename = Str::uuid().'.'.$imageType;
+                $path = $folder.'/'.$filename;
 
                 // Store image
                 Storage::disk('public')->put($path, $imageData);
 
                 // Replace dengan URL yang benar
-                $newSrc = asset('storage/' . $path);
-                $imgTag = str_replace($matches[0], preg_replace('/src="[^"]*"/', 'src="' . $newSrc . '"', $matches[0]), $matches[0]);
+                $newSrc = asset('storage/'.$path);
+                $imgTag = str_replace($matches[0], preg_replace('/src="[^"]*"/', 'src="'.$newSrc.'"', $matches[0]), $matches[0]);
 
                 return $imgTag;
             } catch (\Exception $e) {
                 // Log error untuk debugging
-                Log::warning("Failed to process base64 image: " . $e->getMessage());
+                Log::warning('Failed to process base64 image: '.$e->getMessage());
 
                 // Jika gagal, ganti dengan placeholder
                 return '[Image could not be processed]';
@@ -57,14 +57,15 @@ trait HandlesBase64Images
     /**
      * Remove unused images from storage when they are deleted from content
      *
-     * @param string|null $oldContent Previous content
-     * @param string $newContent New content
-     * @param string $folder Storage folder to check (default: 'content_images')
-     * @return void
+     * @param  string|null  $oldContent  Previous content
+     * @param  string  $newContent  New content
+     * @param  string  $folder  Storage folder to check (default: 'content_images')
      */
     public function removeUnusedImages(?string $oldContent, string $newContent, string $folder): void
     {
-        if (!$oldContent) return;
+        if (! $oldContent) {
+            return;
+        }
 
         // Dapatkan semua URL gambar dari konten lama
         $oldImages = $this->extractImageUrls($oldContent, $folder);
@@ -84,8 +85,8 @@ trait HandlesBase64Images
     /**
      * Extract image URLs from content for specific folder
      *
-     * @param string $content Content to extract images from
-     * @param string $folder Storage folder to filter by
+     * @param  string  $content  Content to extract images from
+     * @param  string  $folder  Storage folder to filter by
      * @return array Array of image URLs
      */
     protected function extractImageUrls(string $content, string $folder = 'content_images'): array
@@ -97,7 +98,7 @@ trait HandlesBase64Images
         if (isset($matches[1])) {
             foreach ($matches[1] as $url) {
                 // Hanya ambil gambar yang ada di folder yang ditentukan
-                if (strpos($url, '/storage/' . $folder . '/') !== false) {
+                if (strpos($url, '/storage/'.$folder.'/') !== false) {
                     $imageUrls[] = $url;
                 }
             }
@@ -109,8 +110,7 @@ trait HandlesBase64Images
     /**
      * Delete image file from storage based on URL
      *
-     * @param string $imageUrl Image URL to delete
-     * @return void
+     * @param  string  $imageUrl  Image URL to delete
      */
     protected function deleteImageFromStorage(string $imageUrl): void
     {
@@ -131,15 +131,15 @@ trait HandlesBase64Images
             }
         } catch (\Exception $e) {
             // Log error tapi jangan biarkan gagal
-            Log::warning("Failed to delete image: " . $imageUrl . " - " . $e->getMessage());
+            Log::warning('Failed to delete image: '.$imageUrl.' - '.$e->getMessage());
         }
     }
 
     /**
      * Get all images from content for cleanup purposes
      *
-     * @param string $content Content to extract images from
-     * @param string $folder Storage folder to filter by
+     * @param  string  $content  Content to extract images from
+     * @param  string  $folder  Storage folder to filter by
      * @return array Array of file paths (relative to storage/app/public)
      */
     public function getContentImages(string $content, string $folder = 'content_images'): array
@@ -162,8 +162,8 @@ trait HandlesBase64Images
     /**
      * Clean up all images in a folder that are not referenced in any content
      *
-     * @param array $allContentWithImages Array of content strings to check against
-     * @param string $folder Storage folder to clean
+     * @param  array  $allContentWithImages  Array of content strings to check against
+     * @param  string  $folder  Storage folder to clean
      * @return array Array of deleted file paths
      */
     public function cleanupOrphanImages(array $allContentWithImages, string $folder = 'content_images'): array
@@ -192,7 +192,7 @@ trait HandlesBase64Images
                     $deletedFiles[] = $file;
                 }
             } catch (\Exception $e) {
-                Log::warning("Failed to delete orphan image: " . $file . " - " . $e->getMessage());
+                Log::warning('Failed to delete orphan image: '.$file.' - '.$e->getMessage());
             }
         }
 

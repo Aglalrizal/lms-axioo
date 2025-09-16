@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Program;
-use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Str;
 
 class ProgramSeeder extends Seeder
 {
@@ -28,7 +27,7 @@ class ProgramSeeder extends Seeder
             'EL Shaddai',
             'Fablab Makers Academy',
             'Metrix Flasher',
-            'IT Smart Coding'
+            'IT Smart Coding',
         ];
 
         foreach ($programs as $program) {
@@ -36,7 +35,7 @@ class ProgramSeeder extends Seeder
                 'name' => $program,
                 'slug' => Str::slug($program),
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ]);
         }
     }

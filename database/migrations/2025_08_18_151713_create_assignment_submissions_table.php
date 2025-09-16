@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('url')->nullable();
             $table->string('file_path')->nullable();
 
-            $table->enum('status', ['submitted','under review','graded', 'late'])->default('submitted');
+            $table->enum('status', ['submitted', 'under review', 'graded', 'late'])->default('submitted');
             $table->float('grade')->nullable();
             $table->foreignId('graded_by')->nullable()
                 ->constrained('users')

@@ -4,16 +4,19 @@ namespace App\Livewire;
 
 use App\Models\AboutUs;
 use App\Models\Mission;
-use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Component;
 
 #[Layout('layouts.dashboard')]
 
 class AboutUsCMS extends Component
 {
     public $tentangKami = '';
+
     public $visiKami = '';
+
     public $misiKami = [];
+
     public $aboutUsId = null;
 
     public function rules()
@@ -74,7 +77,7 @@ class AboutUsCMS extends Component
             ['id' => $this->aboutUsId],
             [
                 'about_description' => $this->tentangKami,
-                'vision_description' => $this->visiKami
+                'vision_description' => $this->visiKami,
             ]
         );
 
@@ -102,14 +105,14 @@ class AboutUsCMS extends Component
                 // Update existing mission
                 Mission::where('id', $misi['id'])->update([
                     'title' => $misi['title'],
-                    'description' => $misi['description']
+                    'description' => $misi['description'],
                 ]);
             } else {
                 // Create new mission
                 Mission::create([
                     'about_us_id' => $aboutUs->id,
                     'title' => $misi['title'],
-                    'description' => $misi['description']
+                    'description' => $misi['description'],
                 ]);
             }
         }

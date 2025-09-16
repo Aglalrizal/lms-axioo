@@ -3,10 +3,10 @@
 namespace App\Livewire;
 
 use App\Models\OurTeam;
-use Livewire\Component;
-use Livewire\Attributes\Layout;
-use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('layouts.dashboard')]
 
@@ -15,6 +15,7 @@ class OurTeamCMS extends Component
     use WithFileUploads;
 
     public $timKami = [];
+
     public $photos = [];
 
     protected function rules()
@@ -60,7 +61,7 @@ class OurTeamCMS extends Component
         } else {
             // Initialize with one empty team member
             $this->timKami = [
-                ['id' => null, 'nama' => '', 'deskripsi' => '', 'jabatan' => '', 'linkedin' => '', 'photo_path' => null]
+                ['id' => null, 'nama' => '', 'deskripsi' => '', 'jabatan' => '', 'linkedin' => '', 'photo_path' => null],
             ];
 
             $this->photos = [null];
@@ -143,7 +144,7 @@ class OurTeamCMS extends Component
                     'deskripsi' => $team['deskripsi'],
                     'jabatan' => $team['jabatan'],
                     'linkedin' => $team['linkedin'],
-                    'photo_path' => $photoPath
+                    'photo_path' => $photoPath,
                 ]);
             } else {
                 // Create new team member
@@ -152,7 +153,7 @@ class OurTeamCMS extends Component
                     'deskripsi' => $team['deskripsi'],
                     'jabatan' => $team['jabatan'],
                     'linkedin' => $team['linkedin'],
-                    'photo_path' => $photoPath
+                    'photo_path' => $photoPath,
                 ]);
             }
         }

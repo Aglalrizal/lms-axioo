@@ -3,20 +3,19 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasRoles, HasFactory, Notifiable, LogsActivity, SoftDeletes;
+    use HasFactory, HasRoles, LogsActivity, Notifiable, SoftDeletes;
 
     public function getActivitylogOptions(): LogOptions
     {
@@ -33,7 +32,7 @@ class User extends Authenticatable
             'created' => "[{$actor}] membuat user \"{$this->username}\"",
             'updated' => "[{$actor}] memperbarui user \"{$this->username}\"",
             'deleted' => "[{$actor}] menghapus user \"{$this->username}\"",
-            default => ucfirst($eventName) . " user \"{$this->username}\"",
+            default => ucfirst($eventName)." user \"{$this->username}\"",
         };
     }
 
@@ -57,7 +56,7 @@ class User extends Authenticatable
         'address',
         'education',
         'institution',
-        'major'
+        'major',
     ];
 
     /**
@@ -69,7 +68,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'provider_token',
-        'provider_refresh_token'
+        'provider_refresh_token',
     ];
 
     /**
@@ -84,16 +83,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
     public function getFullNameAttribute()
     {
         return trim("{$this->first_name} {$this->surname}");
     }
+
     public function getAvatarUrlAttribute()
     {
         return $this->profile_picture_path
-            ? asset('storage/' . $this->profile_picture_path)
-            : 'https://ui-avatars.com/api/?background=random&name=' . urlencode(optional($this)->full_name);
+            ? asset('storage/'.$this->profile_picture_path)
+            : 'https://ui-avatars.com/api/?background=random&name='.urlencode(optional($this)->full_name);
     }
+
     public function posts()
     {
         return $this->hasMany(Blog::class);
@@ -103,10 +105,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(StudyPlan::class);
     }
+
     public function courses()
     {
         return $this->hasMany(Course::class, 'teacher_id');
     }
+
     public function enrollments()
     {
         return $this->hasMany(Enrollment::class, 'student_id');
@@ -116,14 +120,17 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Course::class, 'enrollments', 'student_id', 'course_id');
     }
+
     public function assignmentSubmissions()
     {
         return $this->hasMany(AssignmentSubmission::class, 'student_id');
     }
+
     public function gradedSubmissions()
     {
         return $this->hasMany(AssignmentSubmission::class, 'graded_by');
     }
+
     public function progresses()
     {
         return $this->hasMany(CourseProgress::class, 'student_id');
@@ -149,7 +156,7 @@ class User extends Authenticatable
                     ->whereColumn('course_id', 'courses.id')
                     ->where('student_id', Auth::id())
                     ->latest()
-                    ->take(1)
+                    ->take(1),
             ])
             ->orderBy('last_progress', 'desc');
     }
@@ -170,10 +177,11 @@ class User extends Authenticatable
             ->get()
             ->mapWithKeys(function ($item) {
                 $program = Program::select('id', 'name')->find($item->program_id);
+
                 return [$item->program_id => [
                     'count' => $item->enrollment_count,
                     'weight' => $item->enrollment_count,
-                    'program' => $program
+                    'program' => $program,
                 ]];
             });
     }
@@ -194,10 +202,11 @@ class User extends Authenticatable
             ->get()
             ->mapWithKeys(function ($item) {
                 $category = CourseCategory::select('id', 'name')->find($item->course_category_id);
+
                 return [$item->course_category_id => [
                     'count' => $item->enrollment_count,
                     'weight' => $item->enrollment_count,
-                    'category' => $category
+                    'category' => $category,
                 ]];
             });
     }
@@ -269,6 +278,7 @@ class User extends Authenticatable
                 }
 
                 $course->recommendation_score = $score;
+
                 return $course;
             })
             ->sortByDesc('recommendation_score')

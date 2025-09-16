@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use App\Observers\CourseContentObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 #[ObservedBy([CourseContentObserver::class])]
 class CourseContent extends Model
@@ -29,7 +29,7 @@ class CourseContent extends Model
         'is_free_preview',
         'created_by',
         'modified_by',
-        'global_order'
+        'global_order',
     ];
 
     /**
@@ -63,20 +63,21 @@ class CourseContent extends Model
     {
         return match ($this->type) {
             'article' => 'bi-book',
-            'video'   => 'bi-play-fill',
-            'quiz'    => 'bi-question-lg',
-            'assignment'   => 'bi-file-earmark-fill',
-            default     => 'bi-book'
+            'video' => 'bi-play-fill',
+            'quiz' => 'bi-question-lg',
+            'assignment' => 'bi-file-earmark-fill',
+            default => 'bi-book'
         };
     }
+
     public function getTypeFormattedAttribute()
     {
         return match ($this->type) {
             'article' => 'artikel',
-            'video'   => 'video',
-            'quiz'    => 'kuis',
-            'assignment'   => 'tugas',
-            default     => 'bi-book'
+            'video' => 'video',
+            'quiz' => 'kuis',
+            'assignment' => 'tugas',
+            default => 'bi-book'
         };
     }
 
@@ -84,27 +85,37 @@ class CourseContent extends Model
     {
         return $this->belongsTo(Course::class, 'course_id');
     }
+
     public function courseSyllabus(): BelongsTo
     {
         return $this->belongsTo(\App\Models\CourseSyllabus::class, 'course_syllabus_id');
     }
-    public function quiz(){
+
+    public function quiz()
+    {
         return $this->hasOne(Quiz::class);
     }
-    public function article(){
+
+    public function article()
+    {
         return $this->hasOne(Article::class);
     }
-    public function video(){
+
+    public function video()
+    {
         return $this->hasOne(Video::class);
     }
-    public function assignment(){
+
+    public function assignment()
+    {
         return $this->hasOne(Assignment::class);
     }
+
     public function getIsUnlockedAttribute()
     {
         $user = User::find(Auth::id());
-        if (!$user) {
-            return false; 
+        if (! $user) {
+            return false;
         }
 
         $allContents = $this->course
@@ -128,6 +139,7 @@ class CourseContent extends Model
 
         return in_array($previous->id, $completedIds);
     }
+
     public function progresses()
     {
         return $this->hasMany(CourseProgress::class);
@@ -136,6 +148,6 @@ class CourseContent extends Model
     public function completedBy()
     {
         return $this->belongsToMany(User::class, 'course_progress', 'content_id', 'student_id')
-                    ->withPivot('is_completed');
+            ->withPivot('is_completed');
     }
 }

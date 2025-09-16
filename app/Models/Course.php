@@ -4,40 +4,38 @@ namespace App\Models;
 
 use App\Enums\AccessType;
 use App\Enums\CourseLevel;
-use App\Models\CourseProgress;
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Course extends Model
 {
-    use HasFactory, Sluggable, SoftDeletes, LogsActivity;
+    use HasFactory, LogsActivity, Sluggable, SoftDeletes;
 
     /**
      * Return the sluggable configuration array for this model.
-     *
-     * @return array
      */
     public function sluggable(): array
     {
         return [
             'slug' => [
-                'source' => 'title'
-            ]
+                'source' => 'title',
+            ],
         ];
     }
-    function getActivitylogOptions(): LogOptions
+
+    public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logAll()
             ->useLogName('course');
     }
+
     public function getDescriptionForEvent(string $eventName): string
     {
         $actor = Auth::user()?->username ?? 'System';
@@ -46,9 +44,10 @@ class Course extends Model
             'created' => "[{$actor}] membuat kursus \"{$this->title}\"",
             'updated' => "[{$actor}] memperbarui kursus \"{$this->title}\"",
             'deleted' => "[{$actor}] menghapus kursus \"{$this->title}\"",
-            default => ucfirst($eventName) . " course \"{$this->title}\"",
+            default => ucfirst($eventName)." course \"{$this->title}\"",
         };
     }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -89,13 +88,16 @@ class Course extends Model
             'level' => CourseLevel::class,
         ];
     }
+
     public function getPriceFormattedAttribute()
     {
         if (is_null($this->price) || $this->price == 0) {
             return 'Gratis';
         }
-        return 'Rp ' . number_format($this->price, 0, ',', '.');
+
+        return 'Rp '.number_format($this->price, 0, ',', '.');
     }
+
     // public function getLevelFormattedAttribute(){
     //     return match ($this->level){
     //         'beginner' => 'Pemula',
@@ -107,27 +109,32 @@ class Course extends Model
     {
         return $this->belongsTo(User::class, 'teacher_id');
     }
+
     public function program()
     {
         return $this->belongsTo(Program::class);
     }
+
     public function courseCategory(): BelongsTo
     {
         return $this->belongsTo(CourseCategory::class);
     }
+
     public function syllabus()
     {
         return $this->hasMany(CourseSyllabus::class);
     }
+
     public function contents()
     {
         return $this->hasManyThrough(
             CourseContent::class,
             CourseSyllabus::class,
-            'course_id',     
+            'course_id',
             'course_syllabus_id',
         );
     }
+
     public function hasAssignment(): bool
     {
         return $this->contents()
@@ -135,6 +142,7 @@ class Course extends Model
             ->withoutTrashed()
             ->exists();
     }
+
     public function enrollments()
     {
         return $this->hasMany(Enrollment::class);
@@ -145,6 +153,7 @@ class Course extends Model
         return $this->belongsToMany(User::class, 'enrollments', 'course_id', 'student_id')
             ->withPivot(['transaction_id', 'enrolled_by', 'enrolled_at']);
     }
+
     public function progresses()
     {
         return $this->hasMany(CourseProgress::class);
@@ -153,6 +162,6 @@ class Course extends Model
     public function studentProgress()
     {
         return $this->belongsToMany(User::class, 'course_progress', 'course_id', 'student_id')
-                    ->withPivot('is_completed');
+            ->withPivot('is_completed');
     }
 }

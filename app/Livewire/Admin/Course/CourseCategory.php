@@ -2,20 +2,21 @@
 
 namespace App\Livewire\Admin\Course;
 
-use Livewire\Component;
-use Livewire\Attributes\On;
-use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.dashboard')]
 class CourseCategory extends Component
 {
     use WithPagination;
+
     public $search = '';
 
     public $categoryToDelete;
 
-        #[On('delete-category')]
+    #[On('delete-category')]
     public function confirmDelete($id)
     {
         $this->categoryToDelete = $id;
@@ -54,18 +55,22 @@ class CourseCategory extends Component
     {
         $this->resetPage();
     }
+
     public function render()
     {
-        $courseCategories= \App\Models\CourseCategory::with('courses')
-        ->where(function ($query) {
-            $query->where('name', 'like', '%' . $this->search . '%');
-        })
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
+        $courseCategories = \App\Models\CourseCategory::with('courses')
+            ->where(function ($query) {
+                $query->where('name', 'like', '%'.$this->search.'%');
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
         return view('livewire.admin.course.course-category', compact('courseCategories'));
     }
+
     #[On('refresh-categories')]
-    public function refreshCourseCategories(){
+    public function refreshCourseCategories()
+    {
         $this->resetPage();
     }
 }

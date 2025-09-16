@@ -3,10 +3,9 @@
 namespace App\Livewire\User;
 
 use App\Models\CourseProgress;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Component;
 
 #[Layout('layouts.dashboard')]
 
@@ -26,7 +25,7 @@ class UserCertificates extends Component
                     ->whereColumn('course_id', 'courses.id')
                     ->where('student_id', Auth::id())
                     ->latest('updated_at')
-                    ->take(1)
+                    ->take(1),
             ])
             ->withCasts(['last_progress' => 'datetime'])
             ->with('courseCategory:id,name')

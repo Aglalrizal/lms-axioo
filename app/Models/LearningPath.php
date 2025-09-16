@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Cviebrock\EloquentSluggable\Sluggable;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class LearningPath extends Model
 {
-    use HasFactory, SoftDeletes, Sluggable, LogsActivity;
+    use HasFactory, LogsActivity, Sluggable, SoftDeletes;
 
     protected $fillable = [
         'title',
@@ -35,8 +35,8 @@ class LearningPath extends Model
     {
         return [
             'slug' => [
-                'source' => 'title'
-            ]
+                'source' => 'title',
+            ],
         ];
     }
 
@@ -58,7 +58,7 @@ class LearningPath extends Model
             'created' => "[{$actor}] membuat learning path \"{$this->title}\"",
             'updated' => "[{$actor}] memperbarui learning path \"{$this->title}\"",
             'deleted' => "[{$actor}] menghapus learning path \"{$this->title}\"",
-            default => ucfirst($eventName) . " learning path \"{$this->title}\"",
+            default => ucfirst($eventName)." learning path \"{$this->title}\"",
         };
     }
 

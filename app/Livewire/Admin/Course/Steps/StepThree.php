@@ -3,12 +3,12 @@
 namespace App\Livewire\Admin\Course\Steps;
 
 use App\Models\Course;
-use Livewire\Component;
-use Illuminate\Support\Str;
-use Livewire\Attributes\On;
 use App\Models\CourseContent;
 use App\Models\CourseSyllabus;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 #[Layout('layouts.dashboard')]
 class StepThree extends Component
@@ -51,6 +51,7 @@ class StepThree extends Component
         flash()->success('Berhasil mengubah urutan konten', [], 'Sukses');
         $this->dispatch('refresh-syllabus');
     }
+
     public function updateSyllabusOrder($groups)
     {
         $changed = false;

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->boolean('is_correct');
             $table->integer('score');
             $table->softDeletes();
-            $table->timestamps();  
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

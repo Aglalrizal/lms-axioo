@@ -13,7 +13,7 @@ class Mission extends Model
     protected $fillable = [
         'about_us_id',
         'title',
-        'description'
+        'description',
     ];
 
     public function aboutUs(): BelongsTo

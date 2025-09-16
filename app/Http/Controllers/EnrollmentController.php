@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Enrollment;
 use App\Http\Requests\StoreEnrollmentRequest;
 use App\Http\Requests\UpdateEnrollmentRequest;
+use App\Models\Enrollment;
 
 class EnrollmentController extends Controller
 {

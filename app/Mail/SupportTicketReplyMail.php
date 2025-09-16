@@ -5,7 +5,6 @@ namespace App\Mail;
 use App\Models\SupportTicket;
 use App\Models\SupportTicketReply;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -31,7 +30,7 @@ class SupportTicketReplyMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reply to your support ticket: ' . $this->ticket->title,
+            subject: 'Reply to your support ticket: '.$this->ticket->title,
         );
     }
 

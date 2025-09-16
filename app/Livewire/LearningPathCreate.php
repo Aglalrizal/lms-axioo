@@ -5,11 +5,11 @@ namespace App\Livewire;
 use App\Models\Course;
 use App\Models\LearningPath;
 use App\Models\LearningPathStep;
-use Livewire\Component;
-use Livewire\Attributes\Layout;
-use Livewire\Attributes\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Rule;
+use Livewire\Component;
 
 #[Layout('layouts.dashboard')]
 class LearningPathCreate extends Component
@@ -56,7 +56,7 @@ class LearningPathCreate extends Component
             'title' => '',
             'description' => '',
             'course_id' => null,
-            'temp_id' => uniqid()
+            'temp_id' => uniqid(),
         ];
     }
 
@@ -108,6 +108,7 @@ class LearningPathCreate extends Component
             }
 
             flash()->success('Learning Path berhasil dibuat!', [], 'Sukses');
+
             return $this->redirect(route('admin.learning-paths.index'));
         });
     }
@@ -121,7 +122,7 @@ class LearningPathCreate extends Component
         $this->dispatch('component-loaded');
 
         return view('livewire.learning-path-create', [
-            'courses' => $courses
+            'courses' => $courses,
         ]);
     }
 }

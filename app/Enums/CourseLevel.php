@@ -2,7 +2,6 @@
 
 namespace App\Enums;
 
-use App\Enums\LabelledEnum;
 use App\Traits\EnumHelper;
 
 enum CourseLevel: string implements LabelledEnum

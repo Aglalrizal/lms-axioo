@@ -2,14 +2,14 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use Livewire\Attributes\On;
+use App\Mail\ContactUsReplyMail;
 use App\Models\ContactUs;
 use App\Models\ContactUsReply;
-use App\Mail\ContactUsReplyMail;
-use Livewire\Attributes\Layout;
-use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Mail;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 #[Layout('layouts.dashboard')]
 
@@ -19,6 +19,7 @@ class ContactUsShow extends Component
 
     #[Validate('required|in:open,replied')]
     public $status;
+
     #[Validate('required|string|min:10')]
     public $replyMessage = '';
 
@@ -38,9 +39,9 @@ class ContactUsShow extends Component
 
     public function toggleReplyForm()
     {
-        $this->showReplyForm = !$this->showReplyForm;
+        $this->showReplyForm = ! $this->showReplyForm;
 
-        if (!$this->showReplyForm) {
+        if (! $this->showReplyForm) {
             $this->reset(['replyMessage']);
             $this->resetValidation();
         }
@@ -55,6 +56,7 @@ class ContactUsShow extends Component
         // Check if reply already exists
         if ($this->contactUs->reply) {
             flash()->error('Pesan ini sudah memiliki balasan. Satu pesan hanya bisa dibalas sekali.');
+
             return;
         }
 
@@ -64,7 +66,7 @@ class ContactUsShow extends Component
             'admin_name' => $this->adminName,
             'message' => $this->replyMessage,
             'sent_at' => now(),
-            'email_status' => ContactUsReply::EMAIL_STATUS_SENT
+            'email_status' => ContactUsReply::EMAIL_STATUS_SENT,
         ]);
 
         // Update contact us status to replied
@@ -90,19 +92,21 @@ class ContactUsShow extends Component
             flash()->success('Reply berhasil dikirim dan email telah dikirim ke customer.');
         } catch (\Exception $e) {
             $reply->update(['email_status' => ContactUsReply::EMAIL_STATUS_FAILED]);
-            flash()->warning('Reply berhasil dikirim tetapi terjadi masalah saat mengirim email: ' . $e->getMessage());
+            flash()->warning('Reply berhasil dikirim tetapi terjadi masalah saat mengirim email: '.$e->getMessage());
         }
     }
 
     public function resendEmail()
     {
-        if (!$this->contactUs->reply) {
+        if (! $this->contactUs->reply) {
             flash()->error('Tidak ada balasan yang tersedia untuk dikirim ulang.');
+
             return;
         }
 
         if ($this->contactUs->reply->isEmailSent()) {
             flash()->error('Email sudah dikirim sebelumnya.');
+
             return;
         }
 
@@ -116,7 +120,7 @@ class ContactUsShow extends Component
 
         $this->contactUs->update(
             $this->only([
-                'status'
+                'status',
             ])
         );
 

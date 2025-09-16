@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Course;
-use Illuminate\Http\Request;
-use App\Models\CourseCategory;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Course;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\Models\Activity;
 
 class DashboardController extends Controller
 {
-
-    public function index(){
+    public function index()
+    {
         $now = now();
         $thisMonth = \App\Models\Transaction::where('status', 'paid')
             ->whereMonth('created_at', $now->month)
@@ -26,8 +24,8 @@ class DashboardController extends Controller
             ->whereYear('created_at', $now->year)
             ->sum('price');
 
-        $revenueGrowth = $lastMonth > 0 
-            ? (($thisMonth - $lastMonth) / $lastMonth) * 100 
+        $revenueGrowth = $lastMonth > 0
+            ? (($thisMonth - $lastMonth) / $lastMonth) * 100
             : 0;
         $publishedCourses = Course::where('is_published', true)->count();
         $allCourses = Course::count();
@@ -84,29 +82,30 @@ class DashboardController extends Controller
         $ongoing = $totalEnrollments - $completed;
         $data = [
             'labels' => ['Selesai', 'Sedang dipelajari'],
-            'values' => [$completed, $ongoing]
+            'values' => [$completed, $ongoing],
         ];
         $popularInstructors = User::role('instructor')
-        ->withCount(['courses', 'courses as total_students' => function ($q) {
-            $q->join('enrollments', 'courses.id', '=', 'enrollments.course_id');
-        }])
-        ->orderByDesc('total_students')
-        ->take(7)
-        ->get();
+            ->withCount(['courses', 'courses as total_students' => function ($q) {
+                $q->join('enrollments', 'courses.id', '=', 'enrollments.course_id');
+            }])
+            ->orderByDesc('total_students')
+            ->take(7)
+            ->get();
         $latestCourses = Course::with('teacher')->latest()->take(6)->get();
         $latestStudentActivities = Activity::whereHasMorph(
-            'causer', 
+            'causer',
             [User::class],
             function ($q) {
-                $q->whereHas('roles', fn($r) => $r->where('name', 'student'));
+                $q->whereHas('roles', fn ($r) => $r->where('name', 'student'));
             }
         )
-        ->latest() 
-        ->take(4)
-        ->get();
+            ->latest()
+            ->take(4)
+            ->get();
+
         return view('admin.dashboard', compact(
-            ["thisMonth", "lastMonth", "revenueGrowth", "publishedCourses", "allCourses", "allStudents", "studentGrowth", "allInstructors", "instructorGrowth",
-            "revenueChartLabels", "revenueChartData", "data", "completed", "ongoing", "popularInstructors", "latestCourses", "latestStudentActivities"]
+            ['thisMonth', 'lastMonth', 'revenueGrowth', 'publishedCourses', 'allCourses', 'allStudents', 'studentGrowth', 'allInstructors', 'instructorGrowth',
+                'revenueChartLabels', 'revenueChartData', 'data', 'completed', 'ongoing', 'popularInstructors', 'latestCourses', 'latestStudentActivities']
         ));
     }
 }

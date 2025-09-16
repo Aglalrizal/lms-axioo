@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\QuizAnswer;
 use App\Models\QuizAttempt;
 use App\Models\QuizQuestion;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class QuizAnswerFactory extends Factory
 {

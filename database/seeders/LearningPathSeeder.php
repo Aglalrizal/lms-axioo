@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\LearningPath;
-use Illuminate\Database\Seeder;
 use App\Models\LearningPathStep;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
 
 class LearningPathSeeder extends Seeder
 {
@@ -35,7 +34,7 @@ class LearningPathSeeder extends Seeder
                     ['title' => 'React.js Framework', 'description' => 'Build modern web applications with React.js'],
                     ['title' => 'Node.js & Express', 'description' => 'Server-side development with Node.js and Express framework'],
                     ['title' => 'Database Design', 'description' => 'Learn database design principles and SQL'],
-                ]
+                ],
             ],
             [
                 'title' => 'UI/UX Design Mastery',
@@ -48,7 +47,7 @@ class LearningPathSeeder extends Seeder
                     ['title' => 'User Research', 'description' => 'Methods and techniques for understanding users'],
                     ['title' => 'Wireframing & Prototyping', 'description' => 'Create wireframes and interactive prototypes'],
                     ['title' => 'Visual Design', 'description' => 'Color theory, typography, and visual hierarchy'],
-                ]
+                ],
             ],
             [
                 'title' => 'Data Science Foundations',
@@ -62,7 +61,7 @@ class LearningPathSeeder extends Seeder
                     ['title' => 'Data Visualization', 'description' => 'Create meaningful visualizations with matplotlib and seaborn'],
                     ['title' => 'Machine Learning Basics', 'description' => 'Introduction to machine learning algorithms'],
                     ['title' => 'Data Analysis Projects', 'description' => 'Apply your skills to real-world data projects'],
-                ]
+                ],
             ],
             [
                 'title' => 'Digital Marketing Strategy',
@@ -74,8 +73,8 @@ class LearningPathSeeder extends Seeder
                     ['title' => 'Digital Marketing Fundamentals', 'description' => 'Core concepts of digital marketing'],
                     ['title' => 'SEO & Content Marketing', 'description' => 'Search engine optimization and content strategy'],
                     ['title' => 'Social Media Marketing', 'description' => 'Marketing across social media platforms'],
-                ]
-            ]
+                ],
+            ],
         ];
 
         // Track used courses to avoid repetition within same learning path

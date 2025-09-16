@@ -3,47 +3,50 @@
 namespace App\Livewire\Course\Public;
 
 use App\Models\Course;
-use Livewire\Component;
+use App\Models\CourseProgress;
 use App\Models\Enrollment;
 use App\Models\Transaction;
-use Livewire\Attributes\On;
-use App\Models\CourseProgress;
-use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 #[Layout('layouts.app')]
 class Show extends Component
 {
     public $course;
+
     public $slug;
 
     public $is_enrolled = false;
+
     public $url = '';
 
     public function enrollUser()
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             session(['intended_course' => $this->course->id]);
+
             return redirect()->route('login');
         }
 
         // kalau course gratis → langsung enroll
-        if ($this->course->access_type->value == "free") {
+        if ($this->course->access_type->value == 'free') {
             $transaction = Transaction::create([
-                'course_id'  => $this->course->id,
+                'course_id' => $this->course->id,
                 'student_id' => Auth::id(),
-                'status'     => 'paid',
+                'status' => 'paid',
                 'created_by' => Auth::user()->username,
             ]);
 
             Enrollment::create([
                 'transaction_id' => $transaction->id,
-                'student_id'     => Auth::id(),
-                'course_id'      => $this->course->id,
-                'enrolled_by'    => Auth::user()->username,
-                'enrolled_at'    => now(),
-                'created_by'     => Auth::user()->username,
-                'modified_by'    => Auth::user()->username,
+                'student_id' => Auth::id(),
+                'course_id' => $this->course->id,
+                'enrolled_by' => Auth::user()->username,
+                'enrolled_at' => now(),
+                'created_by' => Auth::user()->username,
+                'modified_by' => Auth::user()->username,
             ]);
 
             flash()->success('Pendaftaran berhasil!', [], 'Sukses');
@@ -52,9 +55,9 @@ class Show extends Component
         }
 
         $transaction = Transaction::create([
-            'course_id'  => $this->course->id,
+            'course_id' => $this->course->id,
             'student_id' => Auth::id(),
-            'status'     => 'pending',
+            'status' => 'pending',
             'created_by' => Auth::user()->username,
         ]);
 
@@ -65,22 +68,22 @@ class Show extends Component
 
         $snapToken = \Midtrans\Snap::getSnapToken([
             'transaction_details' => [
-                'order_id'     => $transaction->id,
+                'order_id' => $transaction->id,
                 'gross_amount' => $this->course->price,
             ],
             'customer_details' => [
                 'email' => Auth::user()->email,
                 'first_name' => Auth::user()->first_name,
-            ]
+            ],
         ]);
-        
+
         $this->dispatch('midtrans-payment', token: $snapToken);
     }
 
     private function redirectToFirstContent()
     {
         $syllabus = $this->course->syllabus->sortBy('order')->first();
-        $content  = $syllabus?->courseContents->sortBy('order')->first();
+        $content = $syllabus?->courseContents->sortBy('order')->first();
 
         CourseProgress::updateOrCreate(
             [
@@ -91,12 +94,12 @@ class Show extends Component
             [
                 'is_completed' => false,
             ]
-    );
+        );
 
         return redirect()->route('course.show.content', [
-            'slug'           => $this->slug,
-            'syllabusId'     => $syllabus->id,
-            'courseContentId'=> $content->id
+            'slug' => $this->slug,
+            'syllabusId' => $syllabus->id,
+            'courseContentId' => $content->id,
         ]);
     }
 
@@ -106,12 +109,13 @@ class Show extends Component
         $this->course = Course::where('slug', $this->slug)
             ->with(['teacher.courses', 'syllabus.courseContents'])
             ->firstOrFail();
-        if(Auth::user()){
+        if (Auth::user()) {
             $this->is_enrolled = Enrollment::where('course_id', $this->course->id)
-            ->where('student_id', Auth::user()->id)
-            ->exists();
+                ->where('student_id', Auth::user()->id)
+                ->exists();
         }
     }
+
     public function mount($slug = null)
     {
         $this->slug = $slug;
@@ -127,16 +131,16 @@ class Show extends Component
                 ->where('student_id', Auth::id())
                 ->exists();
 
-            if($paidTransaction && !$this->is_enrolled){
+            if ($paidTransaction && ! $this->is_enrolled) {
                 Enrollment::create([
-                'transaction_id' => $paidTransaction->id,
-                'student_id'     => Auth::id(),
-                'course_id'      => $this->course->id,
-                'enrolled_by'    => Auth::user()->username,
-                'enrolled_at'    => now(),
-                'created_by'     => Auth::user()->username,
-                'modified_by'    => Auth::user()->username,
-            ]);
+                    'transaction_id' => $paidTransaction->id,
+                    'student_id' => Auth::id(),
+                    'course_id' => $this->course->id,
+                    'enrolled_by' => Auth::user()->username,
+                    'enrolled_at' => now(),
+                    'created_by' => Auth::user()->username,
+                    'modified_by' => Auth::user()->username,
+                ]);
 
                 flash()->success('Pendaftaran berhasil!', [], 'Sukses');
 
@@ -150,7 +154,7 @@ class Show extends Component
                 $lastCompleted = $this->course->contents()
                     ->whereHas('progresses', function ($q) use ($user) {
                         $q->where('student_id', $user->id)
-                        ->where('is_completed', true);
+                            ->where('is_completed', true);
                     })
                     ->orderBy('global_order', 'desc')
                     ->first();
@@ -166,13 +170,13 @@ class Show extends Component
                         $this->url = route('course.show.content', [
                             'slug' => $this->slug,
                             'syllabusId' => $nextContent->courseSyllabus->id,
-                            'courseContentId' => $nextContent->id
+                            'courseContentId' => $nextContent->id,
                         ]);
                     } else {
                         $this->url = route('course.show.content', [
                             'slug' => $this->slug,
                             'syllabusId' => $lastCompleted->courseSyllabus->id,
-                            'courseContentId' => $lastCompleted->id
+                            'courseContentId' => $lastCompleted->id,
                         ]);
                     }
                 } else {
@@ -185,7 +189,7 @@ class Show extends Component
                         $this->url = route('course.show.content', [
                             'slug' => $this->slug,
                             'syllabusId' => $firstContent->courseSyllabus->id,
-                            'courseContentId' => $firstContent->id
+                            'courseContentId' => $firstContent->id,
                         ]);
                     } else {
                         $this->url = route('course.show', $this->slug);
@@ -194,6 +198,7 @@ class Show extends Component
             }
         }
     }
+
     public function render()
     {
         return view('livewire.course.public.show');

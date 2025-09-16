@@ -4,27 +4,32 @@ namespace App\Livewire\Quiz;
 
 use App\Models\Course;
 use App\Models\Quiz;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use Livewire\Attributes\Layout;
 
 #[Layout('layouts.dashboard')]
 class Index extends Component
 {
     public $courses;
+
     public $selectedCourse = null;
+
     public $quizzes;
 
     public $syllabusId;
+
     public $courseContentId;
+
     public $selectedQuiz;
+
     public $openQuiz = false;
 
     public $quizToDelete;
 
-
     #[On('refresh-list')]
-    public function refresh(){
+    public function refresh()
+    {
         $this->quizzes = collect();
 
         foreach ($this->selectedCourse->syllabus as $syl) {
@@ -35,6 +40,7 @@ class Index extends Component
             }
         }
     }
+
     public function mount()
     {
         $this->courses = Course::with('syllabus.courseContents.quiz')->get();
@@ -54,24 +60,32 @@ class Index extends Component
             }
         }
     }
-    public function addNewQuiz(){
+
+    public function addNewQuiz()
+    {
         $this->openQuiz = true;
     }
-    public function openQuizPage($quizId){
+
+    public function openQuizPage($quizId)
+    {
         $this->selectedQuiz = Quiz::with('courseContent.courseSyllabus')->findOrFail($quizId);
         $this->syllabusId = $this->selectedQuiz->courseContent->courseSyllabus->id;
         $this->courseContentId = $this->selectedQuiz->courseContent->id;
         $this->openQuiz = true;
     }
+
     #[On('close-add-quiz')]
-    public function closeQuizPage(){
+    public function closeQuizPage()
+    {
         $this->openQuiz = false;
-        $this->reset(['selectedQuiz','syllabusId', 'courseContentId']);
+        $this->reset(['selectedQuiz', 'syllabusId', 'courseContentId']);
     }
+
     public function render()
     {
         return view('livewire.quiz.index');
     }
+
     #[On('delete-quiz')]
     public function confirmDelete($id)
     {
@@ -81,7 +95,7 @@ class Index extends Component
             ->showDenyButton()
             ->option('confirmButtonText', 'Iya, hapus!')
             ->option('denyButtonText', 'Batal')
-            ->option('id', $id) 
+            ->option('id', $id)
             ->warning('Apakah anda yakin ingin menghapus kuis ini?', ['Confirm Deletion']);
     }
 
@@ -109,7 +123,7 @@ class Index extends Component
     #[On('sweetalert:denied')]
     public function cancelDelete()
     {
-        if($this->quizToDelete){
+        if ($this->quizToDelete) {
             $this->quizToDelete = null;
             flash()->info('Penghapusan kuis dibatalkan.');
         }

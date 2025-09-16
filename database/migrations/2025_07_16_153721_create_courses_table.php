@@ -1,10 +1,10 @@
 <?php
 
+use App\Enums\AccessType;
+use App\Enums\CourseLevel;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Enums\AccessType;
-use App\Enums\CourseLevel;
 
 return new class extends Migration
 {

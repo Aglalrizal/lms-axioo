@@ -3,13 +3,13 @@
 namespace App\Livewire\User;
 
 use App\Models\User;
-use Livewire\Component;
-use Livewire\Attributes\On;
-use Livewire\WithFileUploads;
-use Illuminate\Validation\Rule;
-use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('layouts.dashboard')]
 
@@ -19,7 +19,32 @@ class UserProfile extends Component
 
     public ?User $user;
 
-    public $photo, $first_name, $surname, $email, $id_number, $phone_number, $place_of_birth, $date_of_birth, $city, $address, $education, $institution, $major;
+    public $photo;
+
+    public $first_name;
+
+    public $surname;
+
+    public $email;
+
+    public $id_number;
+
+    public $phone_number;
+
+    public $place_of_birth;
+
+    public $date_of_birth;
+
+    public $city;
+
+    public $address;
+
+    public $education;
+
+    public $institution;
+
+    public $major;
+
     public $profile_picture_path = '';
 
     protected function rules()
@@ -31,7 +56,7 @@ class UserProfile extends Component
             'email' => [
                 'required',
                 'email',
-                Rule::unique('users')->ignore($this->user)
+                Rule::unique('users')->ignore($this->user),
             ],
             'id_number' => 'nullable|string|max:16',
             'place_of_birth' => 'nullable|string|max:255',
@@ -59,11 +84,11 @@ class UserProfile extends Component
             'address',
             'education',
             'institution',
-            'major'
+            'major',
         ];
 
         foreach ($fields as $field) {
-            $messages[$field . '.max'] = ':attribute tidak boleh lebih dari :value karakter.';
+            $messages[$field.'.max'] = ':attribute tidak boleh lebih dari :value karakter.';
         }
 
         // Special cases
@@ -124,7 +149,7 @@ class UserProfile extends Component
             'address',
             'education',
             'institution',
-            'major'
+            'major',
         ]);
 
         if ($this->profile_picture_path) {

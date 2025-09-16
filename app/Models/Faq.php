@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Faq extends Model
 {
@@ -17,8 +17,8 @@ class Faq extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logAll()
-        ->useLogName('faqItem');
+            ->logAll()
+            ->useLogName('faqItem');
     }
 
     public function getDescriptionForEvent(string $eventName): string
@@ -35,10 +35,11 @@ class Faq extends Model
     }
 
     protected $fillable = [
-        'question', 'answer', 'order', 'faq_category_id', 'is_active'
+        'question', 'answer', 'order', 'faq_category_id', 'is_active',
     ];
 
-    public function categories (){
+    public function categories()
+    {
         return $this->belongsTo(FaqCategory::class);
     }
 }

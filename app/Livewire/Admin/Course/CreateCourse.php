@@ -2,36 +2,39 @@
 
 namespace App\Livewire\Admin\Course;
 
-use App\Livewire\Admin\Course\Steps\StepOne;
 use App\Models\Course;
-use Livewire\Component;
-use Livewire\Attributes\On;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 #[Layout('layouts.dashboard')]
 class CreateCourse extends Component
 {
     public $step = 1;
+
     public $slug;
 
     public $course;
 
     protected $queryString = [
-        'step' => ['except' => 1]
+        'step' => ['except' => 1],
     ];
 
-
     #[On('next')]
-    public function next(){
+    public function next()
+    {
         $this->step++;
     }
+
     #[On('back')]
-    public function back(){
+    public function back()
+    {
         $this->step--;
     }
 
     #[On('set-course')]
-    public function setCourse($slug){
+    public function setCourse($slug)
+    {
         $this->course = Course::where('slug', $slug)->firstOrFail();
     }
 

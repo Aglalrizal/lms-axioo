@@ -5,12 +5,11 @@ namespace App\Livewire;
 use App\Models\Course;
 use App\Models\LearningPath;
 use App\Models\LearningPathStep;
-use Livewire\Component;
-use Livewire\Attributes\Layout;
-use Livewire\Attributes\Rule;
-use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
+use Livewire\Component;
 
 #[Layout('layouts.dashboard')]
 class LearningPathEdit extends Component
@@ -45,8 +44,9 @@ class LearningPathEdit extends Component
         // Ambil course pertama sebagai default karena course_id required di database
         $firstCourse = Course::where('is_published', true)->first();
 
-        if (!$firstCourse) {
+        if (! $firstCourse) {
             flash()->error('Tidak ada kursus yang tersedia untuk dijadikan default. Buat kursus terlebih dahulu.', [], 'Error');
+
             return;
         }
 
@@ -60,6 +60,7 @@ class LearningPathEdit extends Component
 
         flash()->success('Langkah baru berhasil ditambahkan!', [], 'Sukses');
     }
+
     public function updateStep($stepId, $field, $value)
     {
         // Update database directly like FAQ
@@ -77,6 +78,7 @@ class LearningPathEdit extends Component
 
         if ($stepCount <= 1) {
             flash()->error('Minimal harus ada 1 langkah!', [], 'Error');
+
             return;
         }
 
@@ -156,7 +158,7 @@ class LearningPathEdit extends Component
     public function togglePublish($pathId)
     {
         $path = LearningPath::findOrFail($pathId);
-        $path->update(['is_published' => !$path->is_published]);
+        $path->update(['is_published' => ! $path->is_published]);
 
         $status = $path->is_published ? 'dipublikasikan' : 'di-unpublish';
         flash()->success("Learning Path berhasil {$status}!", [], 'Sukses');
@@ -173,7 +175,7 @@ class LearningPathEdit extends Component
             ->get();
 
         return view('livewire.learning-path-edit', [
-            'courses' => $courses
+            'courses' => $courses,
         ]);
     }
 }

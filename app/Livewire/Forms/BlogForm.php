@@ -2,30 +2,36 @@
 
 namespace App\Livewire\Forms;
 
-use Livewire\Form;
 use App\Models\Blog;
-use Illuminate\Support\Str;
 use App\Models\BlogCategory;
-use Illuminate\Validation\Rule;
+use App\Traits\HandlesBase64Images;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
-use App\Traits\HandlesBase64Images;
+use Illuminate\Validation\Rule;
+use Livewire\Form;
 
 class BlogForm extends Form
 {
     use HandlesBase64Images;
+
     public $blog;
+
     public $photo;
+
     public $title;
+
     public $slug;
+
     public $blog_category_id;
+
     public $content;
+
     public $excerpt;
 
     public $status;
 
     public $old_photo_path = '';
+
     public $photo_path = '';
 
     public $excerptMaxLength = 256; // Tambah property ini
@@ -51,11 +57,11 @@ class BlogForm extends Form
                 'string',
                 'max:80',
                 'lowercase',
-                Rule::unique('blogs')->ignore($this->blog)
+                Rule::unique('blogs')->ignore($this->blog),
             ],
             'blog_category_id' => [
                 'required',
-                Rule::in(BlogCategory::pluck('id')->toArray())
+                Rule::in(BlogCategory::pluck('id')->toArray()),
             ],
             'content' => 'required',
         ];
@@ -85,13 +91,15 @@ class BlogForm extends Form
 
     public function publish()
     {
-        if (!$this->old_photo_path && !$this->photo) {
+        if (! $this->old_photo_path && ! $this->photo) {
             flash()->error('Thumbnail dibutuhkan ketika ingin publish.');
+
             return;
         }
 
-        if (!Storage::disk('public')->exists($this->photo_path)) {
+        if (! Storage::disk('public')->exists($this->photo_path)) {
             flash()->error('Thumbnail Belum disimpan. Simpan blog terlebih dahulu.');
+
             return;
         }
 
@@ -159,7 +167,7 @@ class BlogForm extends Form
                 'slug',
                 'blog_category_id',
                 'content',
-                'excerpt'
+                'excerpt',
             ])
         );
     }
@@ -171,7 +179,7 @@ class BlogForm extends Form
 
         // Potong sesuai max length
         $this->excerpt = strlen($this->excerpt) > $this->excerptMaxLength
-            ? substr($this->excerpt, 0, $this->excerptMaxLength) . '...'
+            ? substr($this->excerpt, 0, $this->excerptMaxLength).'...'
             : $this->excerpt;
     }
 

@@ -11,19 +11,18 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class UsersImport implements ToModel, withHeadingRow
 {
     use Importable;
+
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
         if (User::where('email', $row['email'])->orWhere('username', $row['username'])->exists()) {
-        return null;
+            return null;
         }
         $user = new User([
             'username' => $row['username'],
-            'email'    => $row['email'],
+            'email' => $row['email'],
             'password' => Hash::make($row['password']),
         ]);
 

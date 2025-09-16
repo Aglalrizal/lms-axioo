@@ -2,12 +2,12 @@
 
 namespace App\Livewire;
 
-use App\Models\Blog;
-use Livewire\Component;
 use App\Enums\BlogStatus;
-use Livewire\Attributes\On;
-use Livewire\WithPagination;
+use App\Models\Blog;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.dashboard')]
 
@@ -18,7 +18,9 @@ class BlogIndexAdmin extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $isShowing = 'all';
+
     public $query = '';
+
     public $blogId;
 
     public function setShow(string $status): void
@@ -57,7 +59,6 @@ class BlogIndexAdmin extends Component
         $this->blogId = null;
     }
 
-
     public function render()
     {
         $query = Blog::query();
@@ -76,10 +77,10 @@ class BlogIndexAdmin extends Component
             'blogs' => $query
                 ->select('id', 'title', 'slug', 'status', 'created_at', 'updated_at', 'user_id', 'blog_category_id')
                 ->with(['author:id,username', 'category:id,name'])
-                ->whereAny(['title'], 'like', '%' . $this->query . '%')
+                ->whereAny(['title'], 'like', '%'.$this->query.'%')
                 ->orderBy('created_at', 'desc')
                 ->paginate(10, pageName: 'posts_page'),
-            'statuses' => BlogStatus::toArray()
+            'statuses' => BlogStatus::toArray(),
         ]);
     }
 }

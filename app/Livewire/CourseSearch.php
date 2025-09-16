@@ -2,13 +2,13 @@
 
 namespace App\Livewire;
 
-use App\Models\Course;
-use App\Models\Program;
-use Livewire\Component;
 use App\Enums\AccessType;
 use App\Enums\CourseLevel;
+use App\Models\Course;
 use App\Models\CourseCategory;
+use App\Models\Program;
 use Livewire\Attributes\Layout;
+use Livewire\Component;
 use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
@@ -17,7 +17,15 @@ class CourseSearch extends Component
 {
     use WithPagination;
 
-    public $search, $program, $accessType, $category, $level;
+    public $search;
+
+    public $program;
+
+    public $accessType;
+
+    public $category;
+
+    public $level;
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -32,13 +40,13 @@ class CourseSearch extends Component
         $query = Course::query()->where('is_published', true);
 
         if ($this->search) {
-            $query->where('title', 'like', '%' . $this->search . '%');
+            $query->where('title', 'like', '%'.$this->search.'%');
         }
 
         if ($this->program === 'no-program') {
             $query->whereNull('program_id');
         } elseif ($this->program) {
-            $query->whereHas('program', fn($q) => $q->where('slug', $this->program));
+            $query->whereHas('program', fn ($q) => $q->where('slug', $this->program));
         }
 
         if ($this->accessType) {
@@ -46,7 +54,7 @@ class CourseSearch extends Component
         }
 
         if ($this->category) {
-            $query->whereHas('courseCategory', fn($q) => $q->where('slug', $this->category));
+            $query->whereHas('courseCategory', fn ($q) => $q->where('slug', $this->category));
         }
 
         if ($this->level) {
@@ -57,7 +65,7 @@ class CourseSearch extends Component
             ->select('id', 'title', 'thumbnail', 'level', 'access_type', 'program_id', 'course_category_id', 'short_desc', 'slug', 'duration')
             ->with([
                 'program:id,name',
-                'courseCategory:id,name'
+                'courseCategory:id,name',
             ])
             ->paginate(12);
 
@@ -66,7 +74,7 @@ class CourseSearch extends Component
             'categories' => CourseCategory::query()->select('id', 'name', 'slug')->get(),
             'accessTypes' => AccessType::toArray(),
             'courseLevels' => CourseLevel::toArray(),
-            'courses' => $courses
+            'courses' => $courses,
         ]);
     }
 }

@@ -3,14 +3,15 @@
 namespace App\Livewire\Course\Program;
 
 use Livewire\Attributes\Layout;
-use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Component;
 use Livewire\WithPagination;
 
 #[Layout('layouts.dashboard')]
 class Index extends Component
 {
     use WithPagination;
+
     public $search = '';
 
     public $programToDelete;
@@ -54,19 +55,22 @@ class Index extends Component
     {
         $this->resetPage();
     }
+
     #[On('refresh-program')]
     public function refreshProgramPage()
     {
         $this->resetPage();
     }
+
     public function render()
     {
         $programs = \App\Models\Program::with('courses')
             ->where(function ($query) {
-                $query->where('name', 'like', '%' . $this->search . '%');
+                $query->where('name', 'like', '%'.$this->search.'%');
             })
             ->orderBy('created_at', 'desc')
             ->paginate(10);
+
         return view('livewire.course.program.index', compact('programs'));
     }
 }

@@ -2,19 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\CourseCategory;
 use App\Models\Blog;
 use App\Models\ContactUs;
 use App\Models\Course;
-use App\Models\Program;
 use App\Models\SupportTicket;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
-
 
 class DatabaseSeeder extends Seeder
 {
@@ -31,30 +27,30 @@ class DatabaseSeeder extends Seeder
             CourseCategorySeeder::class,
             ProgramSeeder::class,
             TransactionSeeder::class,
-            EnrollmentSeeder::class
+            EnrollmentSeeder::class,
         ]);
 
-        //akun admin
+        // akun admin
         $admin = User::factory()->create([
             'username' => 'Admin',
             'email' => 'super@admin.com',
-            'password' => Hash::make('password')
+            'password' => Hash::make('password'),
         ]);
         $admin2 = User::factory()->create([
             'username' => 'Admin 2',
             'email' => 'super2@admin.com',
-            'password' => Hash::make('password')
+            'password' => Hash::make('password'),
         ]);
         $admin->assignRole('super-admin');
         $instructor = User::factory()->create([
             'username' => 'Instructor',
             'email' => 'instructor@test.com',
-            'password' => Hash::make('password')
+            'password' => Hash::make('password'),
         ]);
         $student = User::factory()->create([
             'username' => 'student',
             'email' => 'student@test.com',
-            'password' => Hash::make('password')
+            'password' => Hash::make('password'),
         ]);
         $student->assignRole('student');
         $instructor->assignRole('instructor');
@@ -90,7 +86,7 @@ class DatabaseSeeder extends Seeder
 
         // Create special courses with detailed syllabus and content
         $this->call([
-            CourseContentSeeder::class
+            CourseContentSeeder::class,
         ]);
 
         Blog::factory()
@@ -100,7 +96,7 @@ class DatabaseSeeder extends Seeder
 
         // Create learning paths with steps
         $this->call([
-            LearningPathSeeder::class
+            LearningPathSeeder::class,
         ]);
     }
 }

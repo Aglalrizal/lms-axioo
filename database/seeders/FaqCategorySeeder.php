@@ -3,8 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\FaqCategory;
-use Illuminate\Container\Attributes\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class FaqCategorySeeder extends Seeder
@@ -15,9 +13,9 @@ class FaqCategorySeeder extends Seeder
     public function run(): void
     {
         $data = [
-            ['name'=>'most asked', 'order'=>1],
-            ['name'=>'general inquiries', 'order'=>1],
-            ['name'=>'support', 'order'=>3],
+            ['name' => 'most asked', 'order' => 1],
+            ['name' => 'general inquiries', 'order' => 1],
+            ['name' => 'support', 'order' => 3],
         ];
         FaqCategory::insert($data);
     }

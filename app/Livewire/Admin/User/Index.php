@@ -3,25 +3,28 @@
 namespace App\Livewire\Admin\User;
 
 use App\Models\User;
-use Livewire\Component;
-use Livewire\Attributes\On;
-use App\Imports\UsersImport;
-use Livewire\WithPagination;
-use Maatwebsite\Excel\Excel;
-use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 #[Layout('layouts.dashboard')]
 
 class Index extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $role;
+
     public $search = '';
+
     public $sortBy = 'username';
+
     public $sortDirection = 'asc';
+
     protected $paginationTheme = 'bootstrap';
+
     public $userToDelete;
 
     public function mount($role = 'admin')
@@ -78,12 +81,13 @@ class Index extends Component
     public function render()
     {
         $users = User::role($this->role)
-        ->where(function ($query) {
-            $query->where('username', 'like', '%' . $this->search . '%')
-                    ->orWhere('email', 'like', '%' . $this->search . '%');
-        })
-        ->orderBy($this->sortBy, $this->sortDirection)
-        ->paginate(10);
+            ->where(function ($query) {
+                $query->where('username', 'like', '%'.$this->search.'%')
+                    ->orWhere('email', 'like', '%'.$this->search.'%');
+            })
+            ->orderBy($this->sortBy, $this->sortDirection)
+            ->paginate(10);
+
         return view('livewire.admin.user.index', [
             'users' => $users,
             'role' => $this->role,

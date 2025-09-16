@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Admin\Reports\ActivityLog;
 
-use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
 class ShowDetail extends Component
 {
@@ -14,10 +14,13 @@ class ShowDetail extends Component
     {
         $this->log = \Spatie\Activitylog\Models\Activity::findOrFail($id);
     }
+
     #[On('reset-log-detail')]
-    public function resetLog() {
+    public function resetLog()
+    {
         $this->log = null;
     }
+
     public function render()
     {
         return view('livewire.admin.reports.activity-log.show-detail');

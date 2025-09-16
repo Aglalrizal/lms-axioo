@@ -3,7 +3,6 @@
 namespace App\Enums;
 
 use App\Traits\EnumHelper;
-use App\Enums\LabelledEnum;
 
 enum AccessType: string implements LabelledEnum
 {
@@ -25,7 +24,7 @@ enum AccessType: string implements LabelledEnum
     public static function toArray(): array
     {
         return array_map(
-            fn($case) => ['value' => $case->value, 'label' => $case->label()],
+            fn ($case) => ['value' => $case->value, 'label' => $case->label()],
             self::cases()
         );
     }

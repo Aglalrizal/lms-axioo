@@ -2,21 +2,32 @@
 
 namespace App\Livewire\Course\Published\Submission;
 
-use App\Models\Course;
-use Livewire\Component;
 use App\Models\Assignment;
-use Livewire\Attributes\Url;
-use Livewire\Attributes\Layout;
 use App\Models\AssignmentSubmission;
+use App\Models\Course;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Url;
+use Livewire\Component;
+
 #[Layout('layouts.dashboard')]
 class Show extends Component
 {
     #[Url]
     public string $activeTab = 'instructions';
-    public $course, $assignment, $submission;
-    public $feedback, $grade = '';
-    public function mount($slug, $assignmentId, $submissionId){
+
+    public $course;
+
+    public $assignment;
+
+    public $submission;
+
+    public $feedback;
+
+    public $grade = '';
+
+    public function mount($slug, $assignmentId, $submissionId)
+    {
         $this->course = Course::where('slug', $slug)->first();
         $this->assignment = Assignment::with('courseContent')->where('id', $assignmentId)->firstOrFail();
         $this->submission = AssignmentSubmission::findOrFail($submissionId);
@@ -27,16 +38,22 @@ class Show extends Component
             $this->grade = 'accept';
         }
     }
-    public function setActiveTab($tab){
+
+    public function setActiveTab($tab)
+    {
         $this->activeTab = $tab;
     }
-    public function rules(){
+
+    public function rules()
+    {
         return [
             'feedback' => 'required|min:25|max:500|string',
-            'grade' => 'required|in:accept,reject'
-        ]; 
+            'grade' => 'required|in:accept,reject',
+        ];
     }
-    public function messages(){
+
+    public function messages()
+    {
         return [
             'feedback.required' => 'Feedback wajib diisi',
             'feedback.string' => 'Feedback haruslah berupa kalimat',
@@ -44,9 +61,10 @@ class Show extends Component
             'feedback.max' => 'Feedback maksimal :max karakter',
 
             'grade.required' => 'Status wajib diisi',
-            'grade.in' => 'Status hanya boleh lulus dan tidak lulus'
+            'grade.in' => 'Status hanya boleh lulus dan tidak lulus',
         ];
     }
+
     public function save()
     {
         $validated = $this->validate();
@@ -58,11 +76,11 @@ class Show extends Component
         }
 
         $this->submission->update([
-            'feedback'    => $validated['feedback'],
-            'grade'       => $validated['grade'],
-            'status'      => 'graded',
-            'graded_by'   => Auth::id(),
-            'graded_at'   => now(),
+            'feedback' => $validated['feedback'],
+            'grade' => $validated['grade'],
+            'status' => 'graded',
+            'graded_by' => Auth::id(),
+            'graded_at' => now(),
         ]);
 
         if ($validated['grade'] === 1) {

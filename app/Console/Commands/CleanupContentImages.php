@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Blog;
 use App\Models\Course;
 use App\Models\CourseContent;
 use App\Traits\HandlesBase64Images;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
 
 class CleanupContentImages extends Command
 {
@@ -46,7 +46,7 @@ class CleanupContentImages extends Command
 
             foreach ($folders as $folderName) {
                 $orphans = $this->scanFolder($folderName);
-                if (!empty($orphans)) {
+                if (! empty($orphans)) {
                     $allOrphans[$folderName] = $orphans;
                 }
             }
@@ -74,7 +74,7 @@ class CleanupContentImages extends Command
         }
 
         // Single folder cleanup still uses the old method for individual confirmation
-        if ($folder && !$isDryRun) {
+        if ($folder && ! $isDryRun) {
             $this->info('Image cleanup completed successfully!');
         }
     }
@@ -90,6 +90,7 @@ class CleanupContentImages extends Command
 
         if (empty($allContent)) {
             $this->warn("No content found for folder: {$folder}");
+
             return;
         }
 
@@ -99,7 +100,7 @@ class CleanupContentImages extends Command
             if (empty($deletedFiles)) {
                 $this->info("✅ No orphan images found in {$folder}");
             } else {
-                $this->warn("🗑️  Found " . count($deletedFiles) . " orphan images in {$folder}:");
+                $this->warn('🗑️  Found '.count($deletedFiles)." orphan images in {$folder}:");
                 foreach ($deletedFiles as $file) {
                     $this->line("   - {$file}");
                 }
@@ -110,20 +111,21 @@ class CleanupContentImages extends Command
             if (empty($filesToDelete)) {
                 $this->info("✅ No orphan images found in {$folder}");
             } else {
-                $this->info("🗑️  Found " . count($filesToDelete) . " orphan images in {$folder}:");
+                $this->info('🗑️  Found '.count($filesToDelete)." orphan images in {$folder}:");
                 foreach ($filesToDelete as $file) {
                     $this->line("   - {$file}");
                 }
 
                 // Ask for confirmation before deleting
-                if ($this->confirm("Do you want to delete these " . count($filesToDelete) . " orphan images?")) {
+                if ($this->confirm('Do you want to delete these '.count($filesToDelete).' orphan images?')) {
                     $actuallyDeleted = $this->performDeletion($filesToDelete);
-                    $this->info("🗑️  Deleted " . count($actuallyDeleted) . " orphan images from {$folder}:");
+                    $this->info('🗑️  Deleted '.count($actuallyDeleted)." orphan images from {$folder}:");
                     foreach ($actuallyDeleted as $file) {
                         $this->line("   ✓ {$file}");
                     }
                 } else {
-                    $this->info("Operation cancelled. No files were deleted.");
+                    $this->info('Operation cancelled. No files were deleted.');
+
                     return;
                 }
             }
@@ -173,8 +175,8 @@ class CleanupContentImages extends Command
                 foreach ($blogs as $blog) {
                     // Create fake content with img tag for thumbnail processing
                     if ($blog->photo_path) {
-                        $thumbnailUrl = asset('storage/' . $blog->photo_path);
-                        $fakeContent = '<img src="' . $thumbnailUrl . '" />';
+                        $thumbnailUrl = asset('storage/'.$blog->photo_path);
+                        $fakeContent = '<img src="'.$thumbnailUrl.'" />';
                         $allContent[] = $fakeContent;
                     }
                 }
@@ -186,8 +188,8 @@ class CleanupContentImages extends Command
                 foreach ($courses as $course) {
                     // Create fake content with img tag for thumbnail processing
                     if ($course->thumbnail) {
-                        $thumbnailUrl = asset('storage/' . $course->thumbnail);
-                        $fakeContent = '<img src="' . $thumbnailUrl . '" />';
+                        $thumbnailUrl = asset('storage/'.$course->thumbnail);
+                        $fakeContent = '<img src="'.$thumbnailUrl.'" />';
                         $allContent[] = $fakeContent;
                     }
                 }
@@ -199,8 +201,8 @@ class CleanupContentImages extends Command
 
                 foreach ($users as $user) {
                     if ($user->profile_picture_path) {
-                        $profileUrl = asset('storage/' . $user->profile_picture_path);
-                        $fakeContent = '<img src="' . $profileUrl . '" />';
+                        $profileUrl = asset('storage/'.$user->profile_picture_path);
+                        $fakeContent = '<img src="'.$profileUrl.'" />';
                         $allContent[] = $fakeContent;
                     }
                 }
@@ -249,7 +251,7 @@ class CleanupContentImages extends Command
                     $deletedFiles[] = $file;
                 }
             } catch (\Exception $e) {
-                $this->error("Failed to delete: {$file} - " . $e->getMessage());
+                $this->error("Failed to delete: {$file} - ".$e->getMessage());
             }
         }
 
@@ -266,8 +268,9 @@ class CleanupContentImages extends Command
         $allContent = $this->getAllContentForFolder($folder);
 
         // Check if folder exists
-        if (!Storage::disk('public')->exists($folder)) {
+        if (! Storage::disk('public')->exists($folder)) {
             $this->line("Folder {$folder} does not exist");
+
             return [];
         }
 
@@ -276,11 +279,13 @@ class CleanupContentImages extends Command
 
         if (empty($allFiles)) {
             $this->line("No files found in folder: {$folder}");
+
             return [];
         }
 
         if (empty($allContent)) {
             $this->line("No content found for folder: {$folder} - all files are orphans");
+
             return $allFiles; // All files are orphans if no content references them
         }
 

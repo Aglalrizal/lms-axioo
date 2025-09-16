@@ -2,9 +2,7 @@
 
 namespace Database\Factories;
 
-use Illuminate\Support\Str;
 use App\Models\CourseContent;
-use App\Models\CourseSyllabu;
 use App\Models\CourseSyllabus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

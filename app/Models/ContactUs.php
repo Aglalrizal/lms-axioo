@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ContactUs extends Model
 {
-    use  HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'contact_us';
 

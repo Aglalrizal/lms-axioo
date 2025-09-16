@@ -2,40 +2,41 @@
 
 namespace App\Models;
 
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Blog extends Model
 {
     /** @use HasFactory<\Database\Factories\BlogFactory> */
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
-    function getActivitylogOptions(): LogOptions
+    public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logAll()
             ->useLogName('blog');
     }
+
     public function getDescriptionForEvent(string $eventName): string
     {
         $actor = Auth::user()?->username ?? 'System';
-        
+
         return match ($eventName) {
             'created' => "[{$actor}] membuat blog \"{$this->title}\"",
             'updated' => "[{$actor}] memperbarui blog \"{$this->title}\"",
             'deleted' => "[{$actor}] menghapus blog \"{$this->title}\"",
-            default => ucfirst($eventName) . " blog \"{$this->title}\"",
+            default => ucfirst($eventName)." blog \"{$this->title}\"",
         };
     }
 
     protected $casts = [
-        'published_at' => 'datetime'
+        'published_at' => 'datetime',
     ];
 
     protected $fillable = [
@@ -47,7 +48,7 @@ class Blog extends Model
         'status',
         'excerpt',
         'photo_path',
-        'published_at'
+        'published_at',
     ];
 
     protected static function boot()
@@ -84,7 +85,7 @@ class Blog extends Model
             // Hapus semua gambar di konten
             $this->deleteContentImages();
         } catch (\Exception $e) {
-            Log::warning("Failed to delete blog images for blog ID {$this->id}: " . $e->getMessage());
+            Log::warning("Failed to delete blog images for blog ID {$this->id}: ".$e->getMessage());
         }
     }
 
@@ -93,7 +94,7 @@ class Blog extends Model
      */
     private function deleteContentImages()
     {
-        if (!$this->content) {
+        if (! $this->content) {
             return;
         }
 
@@ -131,7 +132,7 @@ class Blog extends Model
                 }
             }
         } catch (\Exception $e) {
-            Log::warning("Failed to delete image: " . $imageUrl . " - " . $e->getMessage());
+            Log::warning('Failed to delete image: '.$imageUrl.' - '.$e->getMessage());
         }
     }
 }

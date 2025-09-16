@@ -3,7 +3,6 @@
 namespace App\Enums;
 
 use App\Traits\EnumHelper;
-use App\Enums\LabelledEnum;
 
 enum BlogStatus: string implements LabelledEnum
 {

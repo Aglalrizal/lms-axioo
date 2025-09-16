@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class LearningPathStep extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'learning_path_id',
@@ -46,7 +46,7 @@ class LearningPathStep extends Model
             'created' => "[{$actor}] membuat step \"{$this->title}\"",
             'updated' => "[{$actor}] memperbarui step \"{$this->title}\"",
             'deleted' => "[{$actor}] menghapus step \"{$this->title}\"",
-            default => ucfirst($eventName) . " step \"{$this->title}\"",
+            default => ucfirst($eventName)." step \"{$this->title}\"",
         };
     }
 

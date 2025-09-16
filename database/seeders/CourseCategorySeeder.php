@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\CourseCategory;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
 class CourseCategorySeeder extends Seeder
@@ -28,7 +28,7 @@ class CourseCategorySeeder extends Seeder
             'Content Writing',
             'Video Editing',
             'Photography',
-            'Business Analytics'
+            'Business Analytics',
         ];
 
         foreach ($categories as $category) {
@@ -36,7 +36,7 @@ class CourseCategorySeeder extends Seeder
                 'name' => $category,
                 'slug' => Str::slug($category),
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ]);
         }
     }

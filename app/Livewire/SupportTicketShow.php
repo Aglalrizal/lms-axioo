@@ -3,14 +3,14 @@
 namespace App\Livewire;
 
 use App\Enums\TicketStatus;
-use Livewire\Component;
-use Livewire\Attributes\On;
+use App\Mail\SupportTicketReplyMail;
 use App\Models\SupportTicket;
 use App\Models\SupportTicketReply;
-use App\Mail\SupportTicketReplyMail;
-use Livewire\Attributes\Layout;
-use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Mail;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 #[Layout('layouts.dashboard')]
 
@@ -20,6 +20,7 @@ class SupportTicketShow extends Component
 
     #[Validate('required|in:open,resolved,closed')]
     public $status;
+
     #[Validate('required|string|min:10')]
     public $replyMessage = '';
 
@@ -39,9 +40,9 @@ class SupportTicketShow extends Component
 
     public function toggleReplyForm()
     {
-        $this->showReplyForm = !$this->showReplyForm;
+        $this->showReplyForm = ! $this->showReplyForm;
 
-        if (!$this->showReplyForm) {
+        if (! $this->showReplyForm) {
             $this->reset(['replyMessage']);
             $this->resetValidation();
         }
@@ -56,6 +57,7 @@ class SupportTicketShow extends Component
         // Check if reply already exists
         if ($this->ticket->reply) {
             flash()->error('Ticket ini sudah memiliki balasan. Satu ticket hanya bisa dibalas sekali.');
+
             return;
         }
 
@@ -91,19 +93,21 @@ class SupportTicketShow extends Component
             flash()->success('Reply berhasil disimpan dan email telah dikirim ke customer.');
         } catch (\Exception $e) {
             $reply->update(['email_status' => SupportTicketReply::EMAIL_STATUS_FAILED]);
-            flash()->warning('Reply berhasil disimpan tetapi terjadi masalah saat mengirim email: ' . $e->getMessage());
+            flash()->warning('Reply berhasil disimpan tetapi terjadi masalah saat mengirim email: '.$e->getMessage());
         }
     }
 
     public function resendEmail()
     {
-        if (!$this->ticket->reply) {
+        if (! $this->ticket->reply) {
             flash()->error('Tidak ada balasan untuk dikirim ulang.');
+
             return;
         }
 
         if ($this->ticket->reply->isEmailSent()) {
             flash()->info('Email sudah berhasil dikirim sebelumnya.');
+
             return;
         }
 
@@ -117,7 +121,7 @@ class SupportTicketShow extends Component
 
         $this->ticket->update(
             $this->only([
-                'status'
+                'status',
             ])
         );
 

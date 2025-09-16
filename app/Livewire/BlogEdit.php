@@ -2,14 +2,13 @@
 
 namespace App\Livewire;
 
-use App\Models\Blog;
-use Livewire\Component;
-use Livewire\Attributes\On;
-use App\Models\BlogCategory;
-use Livewire\WithFileUploads;
-use Livewire\Attributes\Layout;
 use App\Livewire\Forms\BlogForm;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Blog;
+use App\Models\BlogCategory;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('layouts.dashboard')]
 
@@ -18,6 +17,7 @@ class BlogEdit extends Component
     use WithFileUploads;
 
     public ?Blog $blog;
+
     public BlogForm $form;
 
     public function mount()

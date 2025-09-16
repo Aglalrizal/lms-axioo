@@ -10,16 +10,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Program extends Model
 {
     /** @use HasFactory<\Database\Factories\ProgramFactory> */
-    use  SoftDeletes, Sluggable;
+    use Sluggable, SoftDeletes;
+
     protected $fillable = ['name', 'image_path', 'slug'];
+
     public function sluggable(): array
     {
         return [
             'slug' => [
-                'source' => 'name'
-            ]
+                'source' => 'name',
+            ],
         ];
     }
+
     public function courses()
     {
         return $this->hasMany(Course::class);

@@ -2,15 +2,12 @@
 
 namespace App\Livewire\User;
 
-use App\Models\Course;
-use Livewire\Component;
 use App\Models\StudyPlan;
-use App\Models\Enrollment;
-use Livewire\Attributes\On;
-use App\Models\CourseProgress;
-use Livewire\Attributes\Layout;
-use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 #[Layout('layouts.dashboard')]
 
@@ -20,17 +17,31 @@ class UserDashboard extends Component
 
     #[Validate('required|string|max:255')]
     public $kelas;
+
     #[Validate('required|string|max:255')]
     public $program;
+
     #[Validate('required|date')]
     public $tanggal;
+
     #[Validate('required|integer|min:0|max:100')]
     public $target;
 
     public $showModal = false;
+
     public $action;
 
-    public $user, $courses, $totalEnrolledCourses, $recommendCourses, $rencanaBelajar, $totalCompletedCourses;
+    public $user;
+
+    public $courses;
+
+    public $totalEnrolledCourses;
+
+    public $recommendCourses;
+
+    public $rencanaBelajar;
+
+    public $totalCompletedCourses;
 
     public function messages()
     {
@@ -95,7 +106,7 @@ class UserDashboard extends Component
             'kelas',
             'program',
             'tanggal',
-            'target'
+            'target',
         ]) + ['user_id' => Auth::user()->id]);
 
         flash()->success('Rencana belajar berhasil dibuat!');
@@ -112,7 +123,7 @@ class UserDashboard extends Component
                 'kelas',
                 'program',
                 'tanggal',
-                'target'
+                'target',
             ])
         );
 
@@ -155,6 +166,7 @@ class UserDashboard extends Component
                 $course->progress_percentage = $course->total_contents > 0
                     ? round(($course->completed_contents / $course->total_contents) * 100)
                     : 0;
+
                 return $course;
             });
 

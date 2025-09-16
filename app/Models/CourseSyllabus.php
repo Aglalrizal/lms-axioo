@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class CourseSyllabus extends Model
 {
-    use HasFactory, SoftDeletes, LogsActivity;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -29,21 +29,22 @@ class CourseSyllabus extends Model
         'modified_by',
     ];
 
-    function getActivitylogOptions(): LogOptions
+    public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logAll()
             ->useLogName('syllabus');
     }
+
     public function getDescriptionForEvent(string $eventName): string
     {
         $actor = Auth::user()?->username ?? 'System';
-        
+
         return match ($eventName) {
             'created' => "[{$actor}] membuat silabus \"{$this->title}\"",
             'updated' => "[{$actor}] memperbarui silabus \"{$this->title}\"",
             'deleted' => "[{$actor}] menghapus silabus \"{$this->title}\"",
-            default => ucfirst($eventName) . " silabus \"{$this->title}\"",
+            default => ucfirst($eventName)." silabus \"{$this->title}\"",
         };
     }
 
@@ -68,9 +69,12 @@ class CourseSyllabus extends Model
     {
         return $this->belongsTo(Course::class);
     }
-    public function courseContents(){
+
+    public function courseContents()
+    {
         return $this->hasMany(CourseContent::class);
     }
+
     public function hasAssignmentInCourse(): bool
     {
         return $this->course

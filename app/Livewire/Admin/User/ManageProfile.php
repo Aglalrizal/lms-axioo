@@ -10,10 +10,12 @@ use Livewire\Component;
 class ManageProfile extends Component
 {
     public $user;
+
     public function mount($username)
     {
         $this->user = \App\Models\User::where('username', $username)->firstOrFail();
     }
+
     public function render()
     {
         return view('livewire.admin.user.manage-profile');
