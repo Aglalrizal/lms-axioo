@@ -5,17 +5,14 @@
             <div
                 class="border-bottom pb-3 mb-3 d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between">
                 <div class="d-flex flex-column gap-1">
-                    <h1 class="mb-0 h2 fw-bold">Edit Learning Path</h1>
+                    <h1 class="mb-0 h2 fw-bold">Sunting Jalur Pembelajaran</h1>
                     <!-- Breadcrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                                <a href="{{ route('admin.learning-paths.index') }}">Jalur Pembelajaran</a>
                             </li>
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('admin.learning-paths.index') }}">Learning Paths</a>
-                            </li>
-                            <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                            <li class="breadcrumb-item active" aria-current="page">Sunting</li>
                         </ol>
                     </nav>
                 </div>
@@ -45,7 +42,7 @@
                                     </span>
                                 @else
                                     <span class="badge bg-warning-soft text-warning px-3 py-2">
-                                        <i class="fe fe-edit me-1"></i>Draft
+                                        <i class="fe fe-edit me-1"></i>Draf
                                     </span>
                                 @endif
 
@@ -60,7 +57,7 @@
                         </div>
                         <div>
                             <button type="button" wire:click="togglePublish({{ $learningPath->id }})"
-                                class="btn btn-outline-{{ $learningPath->is_published ? 'warning' : 'success' }} btn-sm">
+                                class="btn btn-{{ $learningPath->is_published ? 'warning' : 'success' }} btn-sm">
                                 <i class="fe fe-{{ $learningPath->is_published ? 'eye-off' : 'eye' }} me-2"></i>
                                 {{ $learningPath->is_published ? 'Batalkan Publikasi' : 'Publikasikan' }}
                             </button>
@@ -111,7 +108,7 @@
             <div class="card border-0">
                 <div class="card-header d-flex align-items-center justify-content-between">
                     <h4 class="mb-0">Jalur Pembelajaran</h4>
-                    <button type="button" class="btn btn-outline-primary btn-sm" wire:click="addStep">
+                    <button type="button" class="btn btn-primary btn-sm" wire:click="addStep">
                         <i class="fe fe-plus me-2"></i>Tambah Langkah
                     </button>
                 </div>
@@ -156,8 +153,7 @@
                                         </div>
 
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-label">Kursus <span
-                                                    class="text-danger">*</span></label>
+                                            <label class="form-label">Kursus <span class="text-danger">*</span></label>
                                             <select class="form-select select2-course"
                                                 id="course-select-{{ $step->id }}">
                                                 <option value="">Pilih Kursus</option>

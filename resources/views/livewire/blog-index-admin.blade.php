@@ -4,19 +4,16 @@
         <div class="col-lg-12 col-md-12 col-12">
             <div class="border-bottom pb-3 mb-3 d-flex align-items-center justify-content-between">
                 <div class="d-flex flex-column gap-1">
-                    <h1 class="mb-0 h2 fw-bold">All Posts</h1>
+                    <h1 class="mb-0 h2 fw-bold">Semua Blog</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="../dashboard/admin-dashboard.html">Dashboard</a>
-                            </li>
                             <li class="breadcrumb-item"><a href="#">CMS</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Blogs</li>
+                            <li class="breadcrumb-item active" aria-current="page">Blog</li>
                         </ol>
                     </nav>
                 </div>
                 <div>
-                    <a href="{{ route('admin.cms.blog.create') }}" class="btn btn-primary">Create Post</a>
+                    <a href="{{ route('admin.cms.blog.create') }}" class="btn btn-primary">Buat Blog</a>
                 </div>
             </div>
         </div>
@@ -31,7 +28,7 @@
                         <li class="nav-item">
                             <button class="nav-link" @click=" selected = 'all' "
                                 :class="selected === 'all' ? 'active' : ''"
-                                wire:click="setShow('all')">All</button>
+                                wire:click="setShow('all')">Semua</button>
                         </li>
 
                         @foreach ($statuses as $status)
@@ -45,7 +42,7 @@
                         <li class="nav-item">
                             <button class="nav-link" @click=" selected = 'deleted' "
                                 :class="selected === 'deleted' ? 'active' : ''"
-                                wire:click="setShow('deleted')">Deleted</button>
+                                wire:click="setShow('deleted')">Dihapus</button>
                         </li>
                     </ul>
 
@@ -57,7 +54,7 @@
                             <i class="fe fe-search"></i>
                         </span>
                         <input wire:model="query" wire:keydown.debounce="search()" type="search"
-                            class="form-control ps-6" placeholder="Search Post" />
+                            class="form-control ps-6" placeholder="Cari Blog" />
                     </form>
                 </div>
                 <div>
@@ -78,10 +75,10 @@
                                                     <label class="form-check-label" for="checkAll"></label>
                                                 </div>
                                             </th> --}}
-                                            <th>Title</th>
-                                            <th>Category</th>
-                                            <th>Date</th>
-                                            <th>Email</th>
+                                            <th>Judul</th>
+                                            <th>Kategori</th>
+                                            <th>Tanggal</th>
+                                            <th>Penulis</th>
                                             <th>Status</th>
                                             <th></th>
                                         </tr>
@@ -125,15 +122,15 @@
                                                     @if ($blog->status === 'published')
                                                         <span
                                                             class="badge-dot bg-success me-1 d-inline-block align-middle"></span>
-                                                        {{ $blog->status }}
+                                                        Diterbitkan
                                                     @elseif ($blog->status === 'drafted')
                                                         <span
                                                             class="badge-dot bg-warning me-1 d-inline-block align-middle"></span>
-                                                        {{ $blog->status }}
+                                                        Draf
                                                     @else
                                                         <span
                                                             class="badge-dot bg-info me-1 d-inline-block align-middle"></span>
-                                                        {{ $blog->status }}
+                                                        Dihapus
                                                     @endif
                                                 </td>
                                                 <td>

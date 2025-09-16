@@ -1,5 +1,5 @@
 <main class="container">
-    <!-- Learning Paths Content -->
+    <!-- Jalur Pembelajarans Content -->
     <div style="padding: 4rem 0;">
         <div class="mb-6">
             <h2 class="fs-2 mb-0">Jalur Pembelajaran Tersedia</h2>
@@ -43,7 +43,7 @@
                     <div class="col-12">
                         <div class="text-center py-5">
                             <i class="fe fe-book-open fs-1 text-muted mb-3"></i>
-                            <h4 class="text-muted">Tidak Ada Learning Path Ditemukan</h4>
+                            <h4 class="text-muted">Tidak Ada Jalur Pembelajaran Ditemukan</h4>
                         </div>
                     </div>
                 @endforelse

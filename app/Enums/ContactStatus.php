@@ -4,20 +4,18 @@ namespace App\Enums;
 
 use App\Traits\EnumHelper;
 
-enum TicketStatus: string implements LabelledEnum
+enum ContactStatus: string implements LabelledEnum
 {
     use EnumHelper;
 
     case OPEN = 'open';
-    case RESOLVED = 'resolved';
-    case CLOSED = 'closed';
+    case REPLIED = 'replied';
 
     public function label(): string
     {
         return match ($this) {
             self::OPEN => 'Dibuka',
-            self::RESOLVED => 'Diselesaikan',
-            self::CLOSED => 'Ditutup',
+            self::REPLIED => 'Dibalas',
         };
     }
 }

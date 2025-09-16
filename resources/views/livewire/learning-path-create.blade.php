@@ -5,23 +5,20 @@
             <div
                 class="border-bottom pb-3 mb-3 d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between">
                 <div class="d-flex flex-column gap-1">
-                    <h1 class="mb-0 h2 fw-bold">Create Learning Path</h1>
+                    <h1 class="mb-0 h2 fw-bold">Buat Jalur Pembelajaran</h1>
                     <!-- Breadcrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                                <a href="{{ route('admin.learning-paths.index') }}">Jalur Pembelajaran</a>
                             </li>
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('admin.learning-paths.index') }}">Learning Paths</a>
-                            </li>
-                            <li class="breadcrumb-item active" aria-current="page">Create</li>
+                            <li class="breadcrumb-item active" aria-current="page">Buat</li>
                         </ol>
                     </nav>
                 </div>
                 <div>
                     <a href="{{ route('admin.learning-paths.index') }}" class="btn btn-outline-secondary">
-                        <i class="fe fe-arrow-left me-2"></i>Back to Learning Paths
+                        <i class="fe fe-arrow-left me-2"></i>Kembali ke Daftar Jalur Pembelajaran
                     </a>
                 </div>
             </div>
@@ -34,24 +31,24 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-12">
                 <div class="card border-0">
                     <div class="card-header">
-                        <h4 class="mb-0">Basic Information</h4>
+                        <h4 class="mb-0">Informasi Dasar</h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12 mb-3">
-                                <label for="title" class="form-label">Learning Path Title <span
+                                <label for="title" class="form-label">Judul Jalur Pembelajaran <span
                                         class="text-danger">*</span></label>
                                 <input wire:model="title" type="text" id="title" class="form-control"
-                                    placeholder="Enter learning path title" required />
+                                    placeholder="Masukkan judul jalur pembelajaran" required />
                                 @error('title')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-md-12 mb-3">
-                                <label for="description" class="form-label">Description <span
+                                <label for="description" class="form-label">Deskripsi <span
                                         class="text-danger">*</span></label>
                                 <textarea wire:model="description" id="description" class="form-control" rows="4"
-                                    placeholder="Describe what learners will achieve..." required></textarea>
+                                    placeholder="Jelaskan apa yang akan dicapai oleh peserta didik..." required></textarea>
                                 @error('description')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -65,9 +62,9 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-12">
                 <div class="card border-0">
                     <div class="card-header d-flex align-items-center justify-content-between">
-                        <h4 class="mb-0">Learning Steps</h4>
-                        <button type="button" class="btn btn-outline-primary btn-sm" wire:click="addStep">
-                            <i class="fe fe-plus me-2"></i>Add Step
+                        <h4 class="mb-0">Langkah Pembelajaran</h4>
+                        <button type="button" class="btn btn-primary btn-sm" wire:click="addStep">
+                            <i class="fe fe-plus me-2"></i>Tambah Langkah
                         </button>
                     </div>
                     <div class="card-body">
@@ -93,20 +90,20 @@
 
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
-                                                <label class="form-label">Step Title <span
+                                                <label class="form-label">Judul langkah <span
                                                         class="text-danger">*</span></label>
                                                 <input wire:model="steps.{{ $index }}.title" type="text"
-                                                    class="form-control" placeholder="Step title" />
+                                                    class="form-control" placeholder="Judul langkah" />
                                                 @error("steps.{$index}.title")
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="col-md-6 mb-3">
-                                                <label class="form-label">Course <span
+                                                <label class="form-label">Kursus <span
                                                         class="text-danger">*</span></label>
                                                 <select wire:model="steps.{{ $index }}.course_id"
                                                     class="form-select">
-                                                    <option value="">Select a course</option>
+                                                    <option value="">Pilih kursus</option>
                                                     @foreach ($courses as $course)
                                                         <option value="{{ $course->id }}">{{ $course->title }}
                                                         </option>
@@ -117,10 +114,10 @@
                                                 @enderror
                                             </div>
                                             <div class="col-md-12 mb-3">
-                                                <label class="form-label">Step Description <span
+                                                <label class="form-label">Deskripsi Langkah <span
                                                         class="text-danger">*</span></label>
                                                 <textarea wire:model="steps.{{ $index }}.description" class="form-control" rows="3"
-                                                    placeholder="What will students learn in this step?"></textarea>
+                                                    placeholder="Apa yang akan dipelajari siswa di langkah ini?"></textarea>
                                                 @error("steps.{$index}.description")
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -132,14 +129,15 @@
 
                             <div class="alert alert-info">
                                 <i class="fe fe-info me-2"></i>
-                                <strong>Tip:</strong> You can drag and drop steps to reorder them. Each step should
-                                build upon the previous one.
+                                <strong>Tip:</strong> Anda dapat menyeret dan menjatuhkan langkah-langkah untuk mengubah
+                                urutannya. Setiap langkah harus
+                                dibangun di atas langkah sebelumnya.
                             </div>
                         @else
                             <div class="text-center py-4">
                                 <i class="fe fe-layers fs-1 text-muted"></i>
-                                <h6 class="text-muted mt-3">No steps added yet</h6>
-                                <p class="text-muted">Add your first step to get started</p>
+                                <h6 class="text-muted mt-3">Belum ada langkah yang ditambahkan</h6>
+                                <p class="text-muted">Tambahkan langkah pertama Anda untuk memulai</p>
                             </div>
                         @endif
                     </div>
@@ -152,10 +150,10 @@
                     <div class="card-body">
                         <div class="d-flex gap-3">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fe fe-save me-2"></i>Create Learning Path
+                                <i class="fe fe-save me-2"></i>Buat Jalur Pembelajaran
                             </button>
                             <a href="{{ route('admin.learning-paths.index') }}" class="btn btn-outline-secondary">
-                                Cancel
+                                Batal
                             </a>
                         </div>
                     </div>

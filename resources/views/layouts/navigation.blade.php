@@ -93,7 +93,7 @@
 
                 <li class="nav-item dropdown">
                     <a class="nav-link" href={{ route('public.learning-paths.index') }} id="navbarBrowse"
-                        aria-haspopup="true"data-bs-display="static">Learning Path</a>
+                        aria-haspopup="true"data-bs-display="static">Jalur Pembelajaran</a>
                 </li>
 
             </ul>

@@ -111,7 +111,7 @@
                     @if ($path->steps->isNotEmpty())
                         <a href="{{ route('course.show', $path->steps->first()->course->slug ?? '#') }}"
                             class="btn btn-primary ms-3">
-                            Mulai Learning Path
+                            Mulai Jalur Pembelajaran
                             <i class="fe fe-play-circle ms-2"></i>
                         </a>
                     @endif

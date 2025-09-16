@@ -4,19 +4,16 @@
         <div class="col-lg-12 col-md-12 col-12">
             <div class="border-bottom pb-3 mb-3 d-flex align-items-center justify-content-between">
                 <div class="d-flex flex-column gap-1">
-                    <h1 class="mb-0 h2 fw-bold">Learning Paths</h1>
+                    <h1 class="mb-0 h2 fw-bold">Jalur Pembelajaran</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
-                            </li>
-                            <li class="breadcrumb-item active" aria-current="page">Learning Paths</li>
+                            <li class="breadcrumb-item active" aria-current="page">Jalur Pembelajaran</li>
                         </ol>
                     </nav>
                 </div>
                 <div>
                     <a href="{{ route('admin.learning-paths.create') }}" class="btn btn-primary">
-                        <i class="fe fe-plus me-2"></i>Create Learning Path
+                        <i class="fe fe-plus me-2"></i>Buat Jalur Pembelajaran
                     </a>
                 </div>
             </div>
@@ -30,7 +27,7 @@
                 <div class="card-header p-0">
                     <ul class="nav nav-lb-tab border-bottom-0" id="tab" role="tablist">
                         <li class="nav-item">
-                            <button class="nav-link active">All Learning Paths</button>
+                            <button class="nav-link active">Semua Jalur Pembelajaran</button>
                         </li>
                     </ul>
                 </div>
@@ -41,7 +38,7 @@
                             <i class="fe fe-search"></i>
                         </span>
                         <input wire:model.live.debounce.300ms="search" type="search" class="form-control ps-6"
-                            placeholder="Search Learning Paths" />
+                            placeholder="Cari Jalur Pembelajaran" />
                     </form>
                 </div>
                 <div>
@@ -54,11 +51,11 @@
                                     <!-- Table Head -->
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Title</th>
-                                            <th>Steps</th>
+                                            <th>Judul</th>
+                                            <th>Langkah</th>
                                             <th>Status</th>
-                                            <th>Created</th>
-                                            <th>Author</th>
+                                            <th>Dibuat</th>
+                                            <th>Penulis</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -82,18 +79,18 @@
                                                 </td>
                                                 <td>
                                                     <span class="badge bg-light text-dark">
-                                                        {{ $path->steps_count ?? $path->steps->count() }} Steps
+                                                        {{ $path->steps_count ?? $path->steps->count() }} Langkah
                                                     </span>
                                                 </td>
                                                 <td>
                                                     @if ($path->is_published)
                                                         <span
                                                             class="badge-dot bg-success me-1 d-inline-block align-middle"></span>
-                                                        Published
+                                                        Terbit
                                                     @else
                                                         <span
                                                             class="badge-dot bg-warning me-1 d-inline-block align-middle"></span>
-                                                        Draft
+                                                        Draf
                                                     @endif
                                                 </td>
                                                 <td>
@@ -123,20 +120,20 @@
                                                             <a href="{{ route('admin.learning-paths.edit', $path->slug) }}"
                                                                 class="dropdown-item">
                                                                 <i class="fe fe-edit dropdown-item-icon"></i>
-                                                                Edit
+                                                                Sunting
                                                             </a>
                                                             <a wire:click="togglePublish({{ $path->id }})"
                                                                 wire:loading.attr="disabled" class="dropdown-item">
                                                                 <i
                                                                     class="fe fe-{{ $path->is_published ? 'eye-off' : 'eye' }} dropdown-item-icon"></i>
-                                                                {{ $path->is_published ? 'Unpublish' : 'Publish' }}
+                                                                {{ $path->is_published ? 'Batalkan terbit' : 'Terbitkan' }}
                                                             </a>
                                                             <div class="dropdown-divider"></div>
                                                             <a wire:click="confirmDelete({{ $path->id }})"
                                                                 wire:loading.attr="disabled"
                                                                 class="dropdown-item text-danger">
                                                                 <i class="fe fe-trash dropdown-item-icon"></i>
-                                                                Delete
+                                                                Hapus
                                                             </a>
                                                         </span>
                                                     </span>
@@ -148,9 +145,11 @@
                                                     <div class="d-flex justify-content-center align-items-center py-4">
                                                         <div class="text-center">
                                                             <i class="fe fe-map fs-1 text-muted mb-3"></i>
-                                                            <h5 class="text-muted">No Learning Paths Found</h5>
-                                                            <p class="text-muted mb-0">Start by creating your first
-                                                                learning path</p>
+                                                            <h5 class="text-muted">Tidak Ada Jalur Pembelajarans
+                                                                Ditemukan
+                                                            </h5>
+                                                            <p class="text-muted mb-0">Mulai dengan membuat learning
+                                                                path pertama Anda</p>
                                                         </div>
                                                     </div>
                                                 </td>

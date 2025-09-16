@@ -9,7 +9,7 @@
         <a class="nav-link  collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#navProfile"
             aria-expanded="false" aria-controls="navProfile">
             <i class="nav-icon fe fe-user me-2"></i>
-            User
+            Pengguna
         </a>
         <div id="navProfile" class="collapse {{ request()->is('admin/user/*') ? 'show' : '' }}"
             data-bs-parent="#sideNavbar">
@@ -33,7 +33,7 @@
             data-bs-parent="#sideNavbar">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link " href="{{ route('admin.learning-paths.index') }}">Learning Path</a>
+                    <a class="nav-link " href="{{ route('admin.learning-paths.index') }}">Jalur Pembelajaran</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="{{ route('admin.course.all') }}">Seluruh Kursus</a>
