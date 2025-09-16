@@ -14,16 +14,16 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <select wire:model="status" class="form-select" id="selectSubject" required>
-                                <option value="open">Open</option>
-                                <option value="replied">Replied</option>
-                                <option value="closed">Closed</option>
+                                @foreach (App\Enums\ContactStatus::cases() as $status)
+                                    <option value="{{ $status->value }}">{{ $status->label() }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                         <button wire:click="updateStatus" type="button" data-bs-dismiss="modal"
-                            class="btn btn-primary">Save changes</button>
+                            class="btn btn-primary">Simpan Perubahan</button>
                     </div>
                 </div>
             </div>
@@ -39,19 +39,18 @@
                             <i class=" fe fe-arrow-left "></i></a>
                     </div>
                     <div class="ms-3 py-1 px-3 rounded-md bg-secondary-soft">
-                        @if ($contactUs->status === 'open')
-                            <span class="badge-dot bg-warning me-1 d-inline-block align-middle"></span>
-                            {{ $contactUs->status }}
-                        @elseif ($contactUs->status === 'replied')
-                            <span class="badge-dot bg-success me-1 d-inline-block align-middle"></span>
-                            {{ $contactUs->status }}
-                        @elseif ($contactUs->status === 'closed')
-                            <span class="badge-dot bg-danger me-1 d-inline-block align-middle"></span>
-                            {{ $contactUs->status }}
-                        @else
-                            <span class="badge-dot bg-warning me-1 d-inline-block align-middle"></span>
-                            {{ $contactUs->status }}
-                        @endif
+
+                        @php
+                            $badgeClass = $contactUs->deleted_at
+                                ? 'bg-secondary'
+                                : match ($contactUs->status) {
+                                    \App\Enums\ContactStatus::REPLIED => 'bg-success',
+                                    \App\Enums\ContactStatus::OPEN => 'bg-warning',
+                                };
+                        @endphp
+
+                        <span class="badge-dot {{ $badgeClass }} me-1 d-inline-block align-middle"></span>
+                        {{ $contactUs->status->label() }}
                     </div>
                 </div>
                 <!-- button -->
@@ -152,7 +151,7 @@
                                 d="M6.598 5.013a.144.144 0 0 1 .202.134V6.3a.5.5 0 0 0 .5.5c.667 0 2.013.005 3.3.822.984.624 1.99 1.76 2.595 3.876-1.02-.983-2.185-1.516-3.205-1.799a8.74 8.74 0 0 0-1.921-.306 7.404 7.404 0 0 0-.798.008h-.013l-.005.001h-.001L7.3 9.9l-.05-.498a.5.5 0 0 0-.45.498v1.153c0 .108-.11.176-.202.134L2.614 8.254a.503.503 0 0 0-.042-.028.147.147 0 0 1 0-.252.499.499 0 0 0 .042-.028l3.984-2.933zM7.8 10.386c.068 0 .143.003.223.006.434.02 1.034.086 1.7.271 1.326.368 2.896 1.202 3.94 3.08a.5.5 0 0 0 .933-.305c-.464-3.71-1.886-5.662-3.46-6.66-1.245-.79-2.527-.942-3.336-.971v-.66a1.144 1.144 0 0 0-1.767-.96l-3.994 2.94a1.147 1.147 0 0 0 0 1.946l3.994 2.94a1.144 1.144 0 0 0 1.767-.96v-.667z" />
                         </svg>
                     </span>
-                    <span>{{ $showReplyForm ? 'Cancel Reply' : 'Reply' }}</span>
+                    <span>{{ $showReplyForm ? 'Batal Balas' : 'Balas' }}</span>
                 </button>
             @elseif($contactUs->reply)
                 <p>Pesan ini sudah memiliki balasan.</p>
@@ -164,24 +163,24 @@
     @if ($showReplyForm)
         <div class="card mt-3">
             <div class="card-header">
-                <h6 class="mb-0">Send Reply to Customer</h6>
+                <h6 class="mb-0">Kirim Balasan ke Pelanggan</h6>
             </div>
             <div class="card-body">
                 <form wire:submit.prevent="sendReply">
                     <div class="mb-3">
-                        <label for="adminName" class="form-label">Your Name</label>
+                        <label for="adminName" class="form-label">Nama Anda</label>
                         <input wire:model="adminName" type="text"
                             class="form-control @error('adminName') is-invalid @enderror" id="adminName"
-                            placeholder="Enter your name">
+                            placeholder="Masukkan nama Anda">
                         @error('adminName')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="mb-3">
-                        <label for="replyMessage" class="form-label">Reply Message</label>
+                        <label for="replyMessage" class="form-label">Pesan Balasan</label>
                         <textarea wire:model="replyMessage" class="form-control @error('replyMessage') is-invalid @enderror"
-                            id="replyMessage" rows="5" placeholder="Type your reply message here..."></textarea>
+                            id="replyMessage" rows="5" placeholder="Ketik pesan balasan Anda di sini..."></textarea>
                         @error('replyMessage')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -190,21 +189,21 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <small class="text-muted">
                             <i class="fe fe-info me-1"></i>
-                            This reply will be sent to: <strong>{{ $contactUs->email }}</strong>
+                            Pesan ini akan dikirim ke: <strong>{{ $contactUs->email }}</strong>
                             <br>
                             <i class="fe fe-check-circle me-1"></i>
-                            Message status will be automatically changed to "Replied"
+                            Status pesan akan otomatis diubah menjadi "Dibalas"
                         </small>
 
                         <div>
                             <button type="button" wire:click="toggleReplyForm" class="btn btn-secondary me-2">
-                                Cancel
+                                Batal
                             </button>
                             <button type="submit" class="btn btn-primary">
-                                <span wire:loading.remove>Send Reply & Resolve Message</span>
+                                <span wire:loading.remove>Kirim Balasan & Selesaikan Pesan</span>
                                 <span wire:loading>
                                     <span class="spinner-border spinner-border-sm me-1" role="status"></span>
-                                    Sending...
+                                    Mengirim...
                                 </span>
                             </button>
                         </div>
