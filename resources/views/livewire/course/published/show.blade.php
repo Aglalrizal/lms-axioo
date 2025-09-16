@@ -84,7 +84,7 @@
                         <li class="nav-item">
                             <a class="nav-link @if ($activeTab === 'quiz') active @endif"
                                 wire:click.prevent="setActiveTab('quiz')" id="quiz-tab" data-bs-toggle="pill"
-                                href="#quiz" role="tab" aria-controls="quiz" aria-selected="false">Quiz</a>
+                                href="#quiz" role="tab" aria-controls="quiz" aria-selected="false">Kuis</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link @if ($activeTab === 'assignment') active @endif"
@@ -275,19 +275,26 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>Judul Tugas</th>
-                                                    <th>Siswa Mengumpulkan</th>
+                                                    <th class="text-center">Siswa Mengumpulkan</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @forelse ($assignments as $assignment)
                                                     <tr>
                                                         <td>
-                                                            <div class="d-flex align-items-center">
-                                                                <span
-                                                                    class="mb-0">{{ $assignment->courseContent->title }}</span>
-                                                            </div>
+                                                            <a
+                                                                href="{{ route('admin.course.published.submission.index', [
+                                                                    'slug' => $course->slug,
+                                                                    'assignmentId' => $assignment->id,
+                                                                ]) }}">
+                                                                <div class="d-flex align-items-center">
+                                                                    <span
+                                                                        class="mb-0">{{ $assignment->courseContent->title }}</span>
+                                                                </div>
+                                                            </a>
                                                         </td>
-                                                        <td>{{ $assignment->submitters_count ?? 0 }} siswa</td>
+                                                        <td class="text-center">
+                                                            {{ $assignment->submitters_count ?? 0 }} siswa</td>
                                                     </tr>
                                                 @empty
                                                     <tr>

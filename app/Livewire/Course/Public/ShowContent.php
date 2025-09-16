@@ -2,33 +2,39 @@
 
 namespace App\Livewire\Course\Public;
 
+use App\Models\User;
 use App\Models\Course;
 use Livewire\Component;
+use App\Models\QuizAttempt;
 use Livewire\Attributes\On;
+use Livewire\WithPagination;
+use Livewire\WithFileUploads;
 use App\Models\CourseProgress;
 use Livewire\Attributes\Layout;
 use App\Models\AssignmentSubmission;
-use App\Models\QuizAttempt;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Livewire\WithPagination;
+use Illuminate\Support\Facades\Storage;
 
 #[Layout('layouts.courseContent')]
 class ShowContent extends Component
 {
-    use WithPagination;
+    use WithPagination, WithFileUploads;
     public $content;
     public $course;
     public $currentSyllabus;
     public $prevContent, $nextContent;
     public $file, $url, $textAnswer;
     public $submission;
+    public $selectedAttemptId;
     protected $rules = [
         'textAnswer' => 'nullable|string',
         'url'     => 'nullable|url',
         'file'    => 'nullable|file|max:10240',
     ];
-
+    public function setSelectedQuizAttempt($id)
+    {
+        $this->selectedAttemptId = $id;
+    }
     public function markComplete(){
         CourseProgress::updateOrCreate(
             [
@@ -56,12 +62,11 @@ class ShowContent extends Component
         );
         return redirect(route('quiz.player', $attempt));
     }
-
     public function save()
     {
         $this->validate();
 
-        $path = $this->file ? $this->file->store('assignments', 'public') : null;
+        $path = $this->file ? $this->file->store('submissions', 'public') : null;
 
         AssignmentSubmission::create([
             'assignment_id' => $this->content->assignment->id,
@@ -92,7 +97,15 @@ class ShowContent extends Component
     #[On('sweetalert:confirmed')]
     public function deleteSubmission()
     {
+        $existing = AssignmentSubmission::where('assignment_id', $this->content->assignment->id)
+        ->where('student_id', Auth::id())
+        ->first();
+
+        if ($existing && $existing->file_path) {
+            Storage::disk('public')->delete($existing->file_path);
+        }   
         $this->submission->delete();
+
         $this->refreshPage();
         flash()->success('Berhasil menghapus tugas yang dikumpulkan!', [], 'Sukses');
     }
@@ -135,13 +148,25 @@ class ShowContent extends Component
             ->orderBy('global_order', 'desc')
             ->first();
 
-        // Cari next content
+        // Cari next contents
         $this->nextContent = $this->course->contents()
             ->where('global_order', '>', $this->content->global_order)
             ->orderBy('global_order', 'asc')
             ->first();
         if($this->content->assignment){
             $this->submission = $this->content->assignment->submission;
+        }
+    }
+    public function downloadFile(){
+        if($this->content->assignment->file_path){
+            $path = storage_path($this->content->assignment->file_path);
+            return response()->download($path); 
+        }
+    }
+    public function downloadMyFile(){
+        if($this->content->assignment->submission->file_path){
+            $path = storage_path('app/public/'.$this->content->assignment->submission->file_path);
+            return response()->download($path); 
         }
     }
     public function render()

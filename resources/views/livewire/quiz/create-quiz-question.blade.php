@@ -22,7 +22,7 @@
                         </div>
 
                         {{-- Tipe Pertanyaan --}}
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="question_type" class="form-label">Tipe Pertanyaan</label>
                             <select id="question_type"
                                 class="form-select text-dark @error('question_type') is-invalid @enderror"
@@ -34,7 +34,7 @@
                             @error('question_type')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                        </div>
+                        </div> --}}
 
                         {{-- Pilihan Ganda --}}
                         @if ($question_type === 'multiple_choice')
