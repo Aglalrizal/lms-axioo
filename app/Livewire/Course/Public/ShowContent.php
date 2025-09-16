@@ -25,12 +25,16 @@ class ShowContent extends Component
     public $prevContent, $nextContent;
     public $file, $url, $textAnswer;
     public $submission;
+    public $selectedAttemptId;
     protected $rules = [
         'textAnswer' => 'nullable|string',
         'url'     => 'nullable|url',
         'file'    => 'nullable|file|max:10240',
     ];
-
+    public function setSelectedQuizAttempt($id)
+    {
+        $this->selectedAttemptId = $id;
+    }
     public function markComplete(){
         CourseProgress::updateOrCreate(
             [

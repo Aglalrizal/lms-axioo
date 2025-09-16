@@ -25,6 +25,15 @@ class AssignmentSubmission extends Model
         'graded_at' => 'datetime',
     ];
 
+    public function getStatusFormattedAttribute(){
+        return match ($this->status) {
+             'submitted' => 'Belum diperiksa',
+             'under review'=> 'Sedang diperiksa',
+             'graded' => 'Sudah diperiksa',
+             'late' => 'Terlambat'
+        };
+    }
+
     public function assignment()
     {
         return $this->belongsTo(Assignment::class);

@@ -48,6 +48,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/course/published', \App\Livewire\Course\Published\Index::class)->name('admin.course.published');
         Route::get('/admin/course/published/{slug}', \App\Livewire\Course\Published\Show::class)->name('admin.course.published.show');
         Route::get('/admin/course/published/{slug}/quiz', \App\Livewire\Course\Published\QuizReport::class)->name('admin.course.published.quiz');
+        Route::get('/admin/course/published/{slug}/{assignmentId}/submission', \App\Livewire\Course\Published\Submission\Index::class)->name('admin.course.published.submission.index');
+        Route::get('/admin/course/published/{slug}/{assignmentId}/submission/{submissionId}', \App\Livewire\Course\Published\Submission\Show::class)->name('admin.course.published.submission.show');
     });
 
     // Import enrollment is restricted to super-admin only

@@ -77,11 +77,111 @@
                                                                     Lulus</span>
                                                             </th>
                                                         @endif
-                                                        <th><a class="btn btn-info">Detail</a></th>
+                                                        <th><a class="btn btn-info" data-bs-toggle="modal"
+                                                                data-bs-target="#fullscreenModal"
+                                                                wire:click="setSelectedQuizAttempt({{ $a->id }})">Detail</a>
+                                                        </th>
+                                                        <!-- Tombol Trigger -->
+                                                        {{-- <button type="button" class="btn btn-primary"
+                                                            data-bs-toggle="modal" data-bs-target="#fullscreenModal">
+                                                            Buka Modal Fullscreen
+                                                        </button>
+                                                        <!-- Trigger -->
+                                                        <button class="btn btn-primary" data-bs-toggle="modal"
+                                                            data-bs-target="#quizResultModal">
+                                                            Lihat Hasil Kuis
+                                                        </button> --}}
+
+                                                        <!-- Modal Fullscreen -->
+                                                        {{-- <div class="modal fade" id="quizResultModal" tabindex="-1"
+                                                            aria-labelledby="quizResultModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog modal-fullscreen">
+                                                                <div class="modal-content">
+
+                                                                    <div class="modal-header border-bottom">
+                                                                        <h5 class="modal-title fw-bold"
+                                                                            id="quizResultModalLabel">Hasil Kuis</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"></button>
+                                                                    </div>
+
+                                                                    <div class="modal-body p-0">
+                                                                        <div class="row g-0">
+
+                                                                            <!-- Sidebar Skor -->
+                                                                            <div class="col-3 border-end bg-light p-4">
+                                                                                <h6 class="fw-bold">Ringkasan Nilai</h6>
+                                                                                <div class="my-3 text-center">
+                                                                                    <div
+                                                                                        class="display-4 fw-bold text-success">
+                                                                                        90</div>
+                                                                                    <span
+                                                                                        class="badge bg-success">Lulus</span>
+                                                                                </div>
+                                                                                <ul class="list-unstyled small">
+                                                                                    <li><strong>Waktu:</strong> 15 Sep
+                                                                                        2025, 18:55</li>
+                                                                                    <li><strong>Durasi:</strong> 12
+                                                                                        menit</li>
+                                                                                    <li><strong>Total Soal:</strong> 5
+                                                                                    </li>
+                                                                                    <li><strong>Benar:</strong> 4</li>
+                                                                                    <li><strong>Salah:</strong> 1</li>
+                                                                                </ul>
+                                                                            </div>
+
+                                                                            <!-- Konten Soal -->
+                                                                            <div class="col-9 p-4"
+                                                                                style="height: 100vh; overflow-y: auto;">
+                                                                                <h5 class="fw-bold mb-4">Detail Jawaban
+                                                                                </h5>
+
+                                                                                <!-- Soal 1 -->
+                                                                                <div class="mb-4 p-3 border rounded">
+                                                                                    <p class="fw-bold">1. Apa
+                                                                                        kepanjangan dari HTTP?</p>
+                                                                                    <div
+                                                                                        class="p-2 mb-2 bg-success text-white rounded">
+                                                                                        ✅ HyperText Transfer Protocol
+                                                                                    </div>
+                                                                                    <div class="p-2 border rounded">
+                                                                                        HyperText Translate Protocol
+                                                                                    </div>
+                                                                                    <div class="p-2 border rounded">
+                                                                                        HighText Transfer Program
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <!-- Soal 2 -->
+                                                                                <div class="mb-4 p-3 border rounded">
+                                                                                    <p class="fw-bold">2. Bahasa apa
+                                                                                        yang dijalankan di browser?</p>
+                                                                                    <div
+                                                                                        class="p-2 mb-2 bg-danger text-white rounded">
+                                                                                        ❌ Python (Jawaban Kamu)
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="p-2 bg-success text-white rounded">
+                                                                                        ✅ JavaScript (Jawaban Benar)
+                                                                                    </div>
+                                                                                    <div class="p-2 border rounded">
+                                                                                        PHP
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <!-- Soal lainnya tinggal looping -->
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div> --}}
+
                                                     </tr>
                                                 @endforeach
                                             </table>
                                             {{ $data->links() }}
+                                            <livewire:quiz.quiz-result-modal :attemptId="$selectedAttemptId" :key="'quiz-result-' . $selectedAttemptId" />
                                         </div>
                                     @endif
                                     <div class="d-flex justify-content-end">
@@ -137,7 +237,7 @@
                                                         @if ($content->assignment->file_path)
                                                             <div class="my-2">Dokumen: <a
                                                                     class="btn btn-info py-1 px-2"
-                                                                    wire:click="downloadFile">Unduh</a>
+                                                                    href="{{ Storage::url($content->assignment->file_path) }}">Unduh</a>
                                                             </div>
                                                         @endif
                                                         {!! $content->assignment->instruction !!}
@@ -212,9 +312,14 @@
                                                                         </p>
                                                                     </div>
                                                                     <div class="mb-3">
+                                                                        <p>Url:
+                                                                            {{ $submission->url ?? '-' }}
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="mb-3">
                                                                         <p>Dokumen:
                                                                             @if ($submission->file_path)
-                                                                                <a wire:click="downloadMyFile"
+                                                                                <a href="{{ Storage::url($submission->file_path) }}"
                                                                                     class="link-underline-primary">Dokumen</a>
                                                                             @else
                                                                                 Tidak ada dokumen yang diunggah

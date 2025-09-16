@@ -1,26 +1,5 @@
 <section class="p-lg-5 py-7">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-12 mb-5">
-                <div class="position-relative rounded-4 overflow-hidden"
-                    style="{{ $course->thumbnail ? '' : 'height: 300px' }}">
-                    @if ($course->thumbnail)
-                        <img src="{{ asset('storage/' . $course->thumbnail) }}" alt="{{ $course->title }}-cover"
-                            class="w-100 h-100 object-cover">
-                    @else
-                        <img src="{{ asset('assets/images/course-bg.jpg') }}" alt="{{ $course->title }}-cover"
-                            class="w-100 h-100 object-fit-cover position-absolute top-0 start-0">
-                        <div class="position-absolute top-0 start-0 w-100 h-100"
-                            style="background: linear-gradient(to top, rgba(0,0,0,0.25) 25%, transparent 100%);"></div>
-                        <div class="position-relative p-4 d-flex flex-column justify-content-end h-100">
-                            <h1 class="fw-bold text-white m-0" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">
-                                {{ $course->title }}
-                            </h1>
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </div>
         <!-- Content -->
         <div class="row">
             <div class="col-12">
