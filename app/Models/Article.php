@@ -13,7 +13,7 @@ class Article extends Model
     /** @use HasFactory<\Database\Factories\ArticleFactory> */
     use HasFactory;
 
-        function getActivitylogOptions(): LogOptions
+    function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logAll()

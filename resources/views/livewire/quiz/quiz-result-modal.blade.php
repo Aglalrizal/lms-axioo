@@ -1,10 +1,10 @@
-<div wire:ignore.self class="modal fade" id="fullscreenModal" tabindex="-1" aria-labelledby="fullscreenModalLabel"
+<div wire:ignore class="modal fade" id="fullscreenModal" tabindex="-1" aria-labelledby="fullscreenModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="fullscreenModalLabel">
-                    {{ $quizAttempt ? $quizAttempt->quiz->courseContent->title : '' }}
+                    {{-- {{ $quizAttempt ? $quizAttempt->quiz->courseContent->title : '' }} --}}
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -31,7 +31,7 @@
                     @if ($quizAttempt)
                         @foreach ($quizAttempt->quiz->questions as $index => $question)
                             <div class="mb-4">
-                                <h5>{{ $index + 1 }}. {{ $question->text }}</h5>
+                                <h5>{{ $index + 1 }}. {{ $question->question }}</h5>
                                 <ul class="list-group mt-2">
                                     @foreach ($question->choices as $choice)
                                         @php

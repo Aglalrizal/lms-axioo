@@ -84,6 +84,7 @@ class Create extends Component
     }
 
     public function save(){
+        $this->userRole = $this->role;
         $this->validate();
         $data = $this->validate();
         $user = User::create($data);
