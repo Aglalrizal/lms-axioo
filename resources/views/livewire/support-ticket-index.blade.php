@@ -123,15 +123,15 @@
                                                     @php
                                                         $badgeClass = $ticket->deleted_at
                                                             ? 'bg-secondary'
-                                                            : match ($ticket->status) {
+                                                            : match ($ticket->status->value) {
                                                                 'resolved' => 'bg-success',
                                                                 'open' => 'bg-warning',
-                                                                'closed' => 'bg-danger',
+                                                                default => 'bg-danger',
                                                             };
 
                                                         $displayText = $ticket->deleted_at
                                                             ? 'Deleted'
-                                                            : ucfirst($ticket->status);
+                                                            : ucfirst($ticket->status->label());
                                                     @endphp
                                                     <span
                                                         class="badge-dot {{ $badgeClass }} me-1 d-inline-block align-middle"></span>

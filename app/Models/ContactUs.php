@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ContactStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,6 +19,13 @@ class ContactUs extends Model
         'message',
         'status',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'status' => ContactStatus::class,
+        ];
+    }
 
     public function reply()
     {

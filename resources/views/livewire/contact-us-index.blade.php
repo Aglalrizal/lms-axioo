@@ -112,7 +112,7 @@
                                                     @php
                                                         $badgeClass = $message->deleted_at
                                                             ? 'bg-secondary'
-                                                            : match ($message->status) {
+                                                            : match ($message->status->value) {
                                                                 'replied' => 'bg-success',
                                                                 'open' => 'bg-warning',
                                                                 default => 'bg-secondary',
@@ -120,10 +120,9 @@
 
                                                         $displayText = $message->deleted_at
                                                             ? 'Deleted'
-                                                            : App\Enums\ContactStatus::tryFrom(
-                                                                    $message->status,
-                                                                )?->label() ?? ucfirst($message->status);
+                                                            : ucfirst($message->status->label());
                                                     @endphp
+
                                                     <span
                                                         class="badge-dot {{ $badgeClass }} me-1 d-inline-block align-middle"></span>
                                                     {{ $displayText }}
