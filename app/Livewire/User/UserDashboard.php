@@ -72,8 +72,6 @@ class UserDashboard extends Component
             }])
             ->havingRaw('completed_contents = total_contents')
             ->count();
-
-        $this->recommendCourses = $this->user->getIntelligentRecommendations(4);
     }
 
     public function openModal($studyPlanId = null)
@@ -169,6 +167,8 @@ class UserDashboard extends Component
 
                 return $course;
             });
+
+        $this->recommendCourses = $this->user->getIntelligentRecommendations(4);
 
         return view('livewire.user-dashboard', [
             // 'courses' => $courses,

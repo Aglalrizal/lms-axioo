@@ -234,6 +234,9 @@ class User extends Authenticatable
         }
 
         // Scoring algorithm berdasarkan preferensi
+        // Hindari query berulang: hitung sekali jumlah course yang pernah di-enroll user
+        $enrolledCoursesCount = $this->enrolled_courses_count ?? $this->enrolledCourses()->count();
+
         $courses = Course::query()
             ->whereDoesntHave('enrollments', function ($q) {
                 $q->where('student_id', $this->id);
@@ -242,7 +245,7 @@ class User extends Authenticatable
             ->select('id', 'title', 'thumbnail', 'level', 'access_type', 'program_id', 'course_category_id', 'short_desc', 'slug', 'duration')
             ->with(['program:id,name', 'courseCategory:id,name'])
             ->get()
-            ->map(function ($course) use ($preferredPrograms, $preferredCategories) {
+            ->map(function ($course) use ($preferredPrograms, $preferredCategories, $enrolledCoursesCount) {
                 $score = 0;
 
                 $programWeights = 0.6; // Bobot untuk preferensi program
@@ -262,7 +265,7 @@ class User extends Authenticatable
 
                 // Level compatibility (20% of total score)
                 // Berikan bonus untuk level yang sesuai dengan progress user
-                $completedCourses = $this->enrolledCourses()->count();
+                $completedCourses = $enrolledCoursesCount;
                 if ($completedCourses <= 2 && $course->level->value === 'beginner') {
                     $score += 2 * $levelWeights;
                 } elseif ($completedCourses > 2 && $completedCourses <= 5 && $course->level->value === 'intermediate') {
