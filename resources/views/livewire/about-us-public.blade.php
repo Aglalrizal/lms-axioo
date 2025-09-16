@@ -81,14 +81,10 @@
                 <div class="card h-100 bg-dark text-white border-0">
                     <div class="card-body p-4">
                         <div class="mb-3">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="10" stroke="#FFC107" stroke-width="2" />
-                                <path d="M8 12L10.5 14.5L16 9" stroke="#FFC107" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
+                            <img src="{{ asset('assets/images/icon_edu_accessible.png') }}" width="40"
+                                height="40"></img>
                         </div>
-                        <h5 class="card-title text-warning mb-3">Make Education Accessible</h5>
+                        <h4 class="card-title text-warning mb-3">Make Education Accessible</h4>
                         <p class="card-text text-light">Kami percaya bahwa setiap orang berhak mendapatkan kesempatan
                             untuk belajar, tanpa batasan lokasi, latar belakang atau kondisi ekonomi. Dengan
                             memanfaatkan teknologi, kami menghadirkan pembelajaran yang dapat diakses oleh siapa saja
@@ -100,13 +96,10 @@
                 <div class="card h-100 bg-dark text-white border-0">
                     <div class="card-body p-4">
                         <div class="mb-3">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3 3L21 21M9 9V21M15 15V21M9 3V9M15 3V15" stroke="#FFC107" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
+                            <img src="{{ asset('assets/images/icon_learn_and_grow.png') }}" width="40"
+                                height="40"></img>
                         </div>
-                        <h5 class="card-title text-warning mb-3">Learn and Grow</h5>
+                        <h4 class="card-title text-warning mb-3">Learn and Grow</h4>
                         <p class="card-text text-light">Kami menghadirkan ruang belajar yang tidak hanya menambah
                             pengetahuan, tapi juga mendorong perubahan diri, membuka cara pandang baru, dan membentuk
                             karakter yang tangguh.</p>
@@ -117,13 +110,10 @@
                 <div class="card h-100 bg-dark text-white border-0">
                     <div class="card-body p-4">
                         <div class="mb-3">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2L2 7V10C2 16 6 20.5 12 22C18 20.5 22 16 22 10V7L12 2Z" stroke="#FFC107"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
+                            <img src="{{ asset('assets/images/icon_empower_with_innovation.png') }}" width="40"
+                                height="40"></img>
                         </div>
-                        <h5 class="card-title text-warning mb-3">Empower Through Innovation</h5>
+                        <h4 class="card-title text-warning mb-3">Empower Through Innovation</h4>
                         <p class="card-text text-light">Melalui pendekatan inovatif dalam pembelajaran, kami
                             menghadirkan pengalaman belajar yang adaptif, interaktif, dan relevan dengan tantangan
                             zaman.</p>

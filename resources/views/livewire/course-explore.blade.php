@@ -6,19 +6,20 @@
                 <div class="col-lg-6 col-12">
                     <div class="d-flex flex-column gap-4 px-lg-6 p-3">
                         <div class="d-flex flex-column gap-3">
-                            <h1 class="mb-0 display-4 fw-bold">Empower Your Learning Journey Today</h1>
-                            <p class="mb-0 pe-xxl-8 me-xxl-5">Take the first step towards achieving your goals with our
-                                comprehensive and engaging online courses.</p>
+                            <h1 class="mb-0 display-4 fw-bold">Memberdayakan Perjalanan Pembelajaran Anda Hari Ini</h1>
+                            <p class="mb-0 pe-xxl-8 me-xxl-5">Ambil langkah pertama menuju pencapaian tujuan Anda dengan
+                                kursus online kami yang komprehensif dan menarik.</p>
                         </div>
                         <form>
                             <div class="input-group shadow">
-                                <label for="courseCategoryCourse" class="form-label visually-hidden">Find Mentor</label>
+                                <label for="courseCategoryCourse" class="form-label visually-hidden">Temukan
+                                    Mentor</label>
                                 <input type="text" class="form-control rounded-start-3" id="courseCategoryCourse"
-                                    name="courseCategoryCourse" placeholder="What do you want to learn?"
-                                    aria-label="What do you want to learn?" aria-describedby="basic-addon2"
+                                    name="courseCategoryCourse" placeholder="Apa yang ingin Anda pelajari?"
+                                    aria-label="Apa yang ingin Anda pelajari?" aria-describedby="basic-addon2"
                                     required="">
-                                <button class="btn btn-primary" id="basic-addon2" type="submit">Explore
-                                    Courses</button>
+                                <button class="btn btn-primary" id="basic-addon2" type="submit">Jelajahi
+                                    Kursus</button>
                             </div>
                         </form>
                         <div class="d-flex flex-row gap-1 flex-wrap">
@@ -76,7 +77,7 @@
                         </a>
                     </div>
                 @empty
-                    <p>No programs found.</p>
+                    <p>Tidak ada program ditemukan.</p>
                 @endforelse
 
             </div>
@@ -135,7 +136,7 @@
                     <div class="col-12">
                         <div class="text-center mt-8">
                             <a href="{{ route('public.course.search') }}" class="btn btn-outline-primary">
-                                <span>Show All Courses</span>
+                                <span>Tampilkan Semua Kursus</span>
 
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                     fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">

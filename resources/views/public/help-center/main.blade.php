@@ -9,9 +9,9 @@
                         <!-- caption-->
                         <div class="d-flex flex-column gap-5">
                             <div class="d-flex flex-column gap-1">
-                                <h1 class="fw-bold mb-0 display-3">How can we help you?</h1>
+                                <h1 class="fw-bold mb-0 display-3">Bagaimana kami dapat membantu Anda?</h1>
                                 <!-- para -->
-                                <p class="mb-0 text-dark">Have questions? Search through our Help Center</p>
+                                <p class="mb-0 text-dark">Ada pertanyaan? Cari di Pusat Bantuan kami</p>
                             </div>
                             <div class="d-flex flex-column gap-2">
                                 <div class="pe-md-6">
@@ -20,14 +20,15 @@
                                         <span class="position-absolute ps-3">
                                             <i class="fe fe-search"></i>
                                         </span>
-                                        <label for="SearchHelp" class="visually-hidden">Search Help</label>
+                                        <label for="SearchHelp" class="visually-hidden">Cari Pusat Bantuan</label>
                                         <!-- input  -->
                                         <input type="search" id="SearchHelp"
                                             class="form-control ps-6 border-0 py-3 smooth-shadow-md"
-                                            placeholder="Enter a question, topic or keyword" />
+                                            placeholder="Masukkan pertanyaan, topik, atau kata kunci" />
                                     </form>
                                 </div>
-                                <span class="d-block">... or choose a category to quickly find the help you need</span>
+                                <span class="d-block">... atau pilih kategori untuk dengan cepat menemukan bantuan yang Anda
+                                    butuhkan</span>
                             </div>
                         </div>
                     </div>
@@ -65,11 +66,12 @@
                                             class="text-inherit">FAQs</a>
                                     </h3>
                                     <!-- para  -->
-                                    <p>FAQ, short for frequently asked questions, is a list of commonly asked questions
-                                        and answers about a specific topic.</p>
+                                    <p>FAQ, singkatan dari frequently asked questions, adalah daftar pertanyaan yang sering
+                                        diajukan
+                                        dan jawaban tentang topik tertentu.</p>
                                     <!-- button  -->
                                     <a href="{{ route('public.help-center.faqs') }}" class="link-primary fw-semibold">
-                                        View FAQ
+                                        Lihat FAQ
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                             fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd"
@@ -104,13 +106,14 @@
                                     </div>
                                     <!-- heading  -->
                                     <h3 class="fw-semibold"><a href="{{ route('public.help-center.support') }}"
-                                            class="text-inherit">Support</a></h3>
+                                            class="text-inherit">Dukungan</a></h3>
                                     <!-- para  -->
-                                    <p>The good news is that youre not alone, and youre in the right place. Contact us
-                                        for more detailed support.</p>
+                                    <p>Berita baiknya adalah Anda tidak sendirian, dan Anda berada di tempat yang tepat.
+                                        Hubungi kami
+                                        untuk dukungan lebih lanjut.</p>
                                     <!-- button  -->
                                     <a href="{{ route('public.help-center.support') }}" class="link-primary fw-semibold">
-                                        Submit a Request
+                                        Kirim Permintaan
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                             fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd"
@@ -131,9 +134,9 @@
                     <div class="offset-lg-2 col-lg-6 col-12">
                         <div class="mb-8 pe-lg-8">
                             <!-- heading  -->
-                            <h2 class="mb-4 h1 fw-semibold">Most frequently asked questions</h2>
-                            <p class="lead">Here are the most frequently asked questions you may check before getting
-                                started</p>
+                            <h2 class="mb-4 h1 fw-semibold">Pertanyaan yang Sering Diajukan</h2>
+                            <p class="lead">Berikut adalah pertanyaan yang sering diajukan yang dapat Anda periksa
+                                sebelum memulai</p>
                         </div>
                     </div>
                 </div>
@@ -175,7 +178,7 @@
                 <div class="row">
                     <div class="offset-lg-2 col-lg-4 col-12">
                         <div class="mb-8">
-                            <h2 class="mb-0 h1 fw-semibold">Can't find what you're looking for?</h2>
+                            <h2 class="mb-0 h1 fw-semibold">Tidak dapat menemukan apa yang Anda cari?</h2>
                         </div>
                     </div>
                 </div>
@@ -184,7 +187,7 @@
                         <div class="row">
                             <div class="col-md-6 col-12">
                                 <!-- card  -->
-                                <div class="card border mb-md-0 mb-4">
+                                <div class="card border mb-md-0 mb-4 h-100">
                                     <!-- card body  -->
                                     <div class="card-body">
                                         <div class="mb-3">
@@ -199,17 +202,18 @@
                                             </svg>
                                         </div>
                                         <!-- para  -->
-                                        <h3 class="mb-2 fw-semibold">Contact us</h3>
-                                        <p>Geeks is here to help. We can provide you with the support you need. Just
-                                            contact us and our team will reply quick to you.</p>
+                                        <h3 class="mb-2 fw-semibold">Hubungi kami</h3>
+                                        <p>Tim UpMySkill ada di sini untuk membantu. Kami dapat memberikan dukungan yang
+                                            Anda
+                                            butuhkan. Cukup hubungi kami dan tim kami akan segera membalas Anda.</p>
                                         <!-- btn  -->
-                                        <a href="#" class="btn btn-primary btn-sm">Contact us</a>
+                                        <a href="#" class="btn btn-primary btn-sm">Hubungi kami</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6 col-12">
                                 <!-- card  -->
-                                <div class="card border">
+                                <div class="card border h-100">
                                     <!-- card body  -->
                                     <div class="card-body">
                                         <div class="mb-3">
@@ -232,12 +236,12 @@
                                             </svg>
                                         </div>
                                         <!-- para  -->
-                                        <h3 class="mb-2 fw-semibold">Support</h3>
-                                        <p>The good news is that you’re not alone, and you’re in the right place.
-                                            Contact us for more detailed support.</p>
+                                        <h3 class="mb-2 fw-semibold">Dukungan</h3>
+                                        <p>Berita baiknya adalah Anda tidak sendirian, dan Anda berada di tempat yang tepat.
+                                            Hubungi kami untuk dukungan lebih lanjut.</p>
                                         <!-- btn  -->
-                                        <a href="help-center-support.html" class="btn btn-outline-secondary btn-sm">Submit
-                                            a Ticket</a>
+                                        <a href="help-center-support.html" class="btn btn-outline-secondary btn-sm">Kirim
+                                            Tiket</a>
                                     </div>
                                 </div>
                             </div>
