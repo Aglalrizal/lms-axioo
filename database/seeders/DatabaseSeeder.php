@@ -29,7 +29,9 @@ class DatabaseSeeder extends Seeder
             FaqSeeder::class,
             BlogCategorySeeder::class,
             CourseCategorySeeder::class,
-            ProgramSeeder::class
+            ProgramSeeder::class,
+            TransactionSeeder::class,
+            EnrollmentSeeder::class
         ]);
 
         //akun admin

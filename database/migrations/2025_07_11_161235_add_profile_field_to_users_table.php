@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('education')->nullable()->after('address');
             $table->string('institution')->nullable()->after('education');
             $table->string('major')->nullable()->after('institution');
+            $table->text('bio')->nullable();
         });
     }
 

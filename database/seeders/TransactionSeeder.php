@@ -12,6 +12,6 @@ class TransactionSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        \App\Models\Transaction::factory(200)->create();
     }
 }
