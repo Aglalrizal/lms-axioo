@@ -330,12 +330,31 @@
                                                                         <p>Jawaban:
                                                                             {{ $submission->text_answer ?? '-' }}</p>
                                                                     </div>
+                                                                    <div>
+                                                                        <p class="mb-3">
+                                                                            {{ $submission->feedback ?? '' }}
+                                                                        </p>
+                                                                        <p class="mb-3">Keterangan:
+                                                                            @if ($submission->status < 1)
+                                                                                <span class="alert alert-danger">Tidak
+                                                                                    Lulus</span>
+                                                                            @else
+                                                                                <span
+                                                                                    class="alert alert-success">Lulus</span>
+                                                                            @endif
+                                                                        </p>
+                                                                        <small class="form-text">Jika tidak lulus, sila
+                                                                            kerjakan kembali tugasnya.</small>
+                                                                    </div>
+
                                                                 </div>
-                                                                <div class="card-footer text-end">
-                                                                    <button type="button"
-                                                                        wire:click="confirmDeleteSubmission"
-                                                                        class="btn btn-danger">Hapus</button>
-                                                                </div>
+                                                                @if ($submission->status != 'graded')
+                                                                    <div class="card-footer text-end">
+                                                                        <button type="button"
+                                                                            wire:click="confirmDeleteSubmission"
+                                                                            class="btn btn-danger">Hapus</button>
+                                                                    </div>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>

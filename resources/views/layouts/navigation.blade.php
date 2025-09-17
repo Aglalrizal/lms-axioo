@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container px-0">
-        <a class="navbar-brand" href="/"><img src="{{ asset('assets/images/upmyskill_logo_light.png') }}"
-                alt="UpMysSkill" style="height: 40px; width: auto;" /></a>
+        <a class="navbar-brand" href="/"><img src="{{ asset('assets/images/logo.png') }}" alt="UpMysSkill"
+                style="height: 40px; width: auto;" /></a>
 
         <!-- Mobile view nav wrap -->
         <div class="ms-auto d-flex align-items-center order-lg-3">

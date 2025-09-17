@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container-fluid px-0">
         <a class="navbar-brand" href="../index.html"><img src="{{ asset('../assets/images/brand/logo/logo.svg') }}"
-                alt="Geeks"></a>
+                alt="UPI-Axioo LMS"></a>
         <!-- Mobile view nav wrap -->
         <div class="ms-auto d-flex align-items-center order-lg-3">
             <ul class="navbar-nav navbar-right-wrap flex-row d-none d-md-block">

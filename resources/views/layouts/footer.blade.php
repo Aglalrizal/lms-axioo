@@ -4,8 +4,8 @@
             <div class="col-xl-3 col-lg-12 col-md-6 col-12">
                 <div class="d-flex flex-column gap-4">
                     <div>
-                        <img style="height: 4rem; width: auto;" src="{{ asset('assets/images/upmyskill_logo_dark.png') }}"
-                            alt="UpMysSkill logo" />
+                        <img style="height: 4rem; width: auto;filter:brightness(0) invert(1)""
+                            src="{{ asset('assets/images/logo.png') }}" alt="UpMysSkill logo" />
                     </div>
                     <p class="mb-0">
                         Empower Your Potential with UpMySkill!

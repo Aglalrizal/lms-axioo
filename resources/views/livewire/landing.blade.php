@@ -92,6 +92,9 @@
                 <div class="infiniteScroll">
                     <!-- Set pertama logo -->
                     <div class="infiniteScrollitem logo-inverse">
+                        <img src="{{ asset('assets/images/upi.png') }}" alt="upi-logo" />
+                    </div>
+                    <div class="infiniteScrollitem logo-inverse">
                         <img src="{{ asset('assets/images/axioo_logo.png') }}" alt="axioo logo" />
                     </div>
                     <div class="infiniteScrollitem logo-inverse">
@@ -110,6 +113,9 @@
 
                 <div class="infiniteScroll">
                     <!-- Duplikasi untuk efek seamless -->
+                    <div class="infiniteScrollitem logo-inverse">
+                        <img src="{{ asset('assets/images/upi.png') }}" alt="upi-logo" />
+                    </div>
                     <div class="infiniteScrollitem logo-inverse">
                         <img src="{{ asset('assets/images/axioo_logo.png') }}" alt="axioo logo" />
                     </div>

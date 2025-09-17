@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/images/favicon/favicon.ico') }}" />
-
     <!-- darkmode js -->
     <script src="{{ asset('assets/js/vendors/darkMode.js') }}"></script>
 
@@ -35,7 +34,7 @@
 
     @yield('styles')
 
-    <title>Homepage | Axioo</title>
+    <title>UPI-Axioo LMS</title>
     @livewireStyles
 </head>
 
