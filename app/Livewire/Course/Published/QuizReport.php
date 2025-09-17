@@ -32,6 +32,15 @@ class QuizReport extends Component
 
     public int $totalQuestions = 0;
 
+    /**
+     * Open a participant's last attempt in a modal component.
+     */
+    public function openParticipant(int $attemptId): void
+    {
+        // Let the modal component load its own heavy relations for separation of concerns
+        $this->dispatch('show-quiz-attempt', $attemptId);
+    }
+
     public function setActiveTab($tab)
     {
         $this->activeTab = $tab;
