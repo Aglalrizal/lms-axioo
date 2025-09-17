@@ -128,13 +128,12 @@
                                                                 ? ($participant->total_score / $totalQuestions) * 100
                                                                 : 0;
                                                     @endphp
-                                                    <tr>
+                                                    <tr role="button"
+                                                        wire:click="openParticipant({{ $participant->id }})">
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="avatar avatar-xs me-2">
-                                                                    <img src="{{ $participant->user->profile_picture
-                                                                        ? asset('storage/' . $participant->user->profile_picture)
-                                                                        : 'https://ui-avatars.com/api/?background=random&name=' . urlencode($participant->user->first_name) }}"
+                                                                    <img src="{{ $participant->user->avatar_url }}"
                                                                         alt="{{ $participant->user->first_name }}"
                                                                         class="rounded-circle">
                                                                 </div>
@@ -368,4 +367,5 @@
             </div>
         </div>
     </div>
+    @livewire('course.published.quiz-attempt-report-modal')
 </section>
