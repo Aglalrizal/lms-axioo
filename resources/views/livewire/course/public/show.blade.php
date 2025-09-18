@@ -188,7 +188,13 @@
                                 <a @if ($is_enrolled) href="{{ $this->url }}"
                                 @else
                                 wire:click="enrollUser" @endif
-                                    class="btn btn-primary mb-2">{{ $is_enrolled ? 'Lanjut Belajar' : 'Daftar Sekarang' }}</a>
+                                    class="btn btn-primary mb-2">
+                                    @if ($is_completed)
+                                        Selesai dipelajari
+                                    @else
+                                        {{ $is_enrolled ? 'Lanjut Belajar' : 'Daftar Sekarang' }}
+                                    @endif
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -206,11 +212,6 @@
 
                                             <div class="me-auto d-flex flex-column">
                                                 <span>{{ $syllabus->title }}</span>
-
-                                                <div class="fs-5 fw-normal text-break">
-                                                    {{ $syllabus->description }}
-                                                </div>
-
                                                 <p
                                                     class="mb-0 fs-6 mt-3 fw-normal badge text-light-emphasis bg-light-subtle border border-light-subtle">
                                                     {{ $syllabus->courseContents->where('type', 'article')->count() }}
@@ -235,6 +236,9 @@
                                             data-bs-parent="#courseAccordion">
                                             <!-- List group item -->
                                             <ul class="list-group list-group-flush">
+                                                <div class="fs-5 fw-normal text-break list-group-item">
+                                                    {{ $syllabus->description }}
+                                                </div>
                                                 @foreach ($syllabus->courseContents as $content)
                                                     <!-- List group item -->
                                                     <li class="list-group-item">

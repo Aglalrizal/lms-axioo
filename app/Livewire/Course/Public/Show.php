@@ -22,6 +22,8 @@ class Show extends Component
 
     public $url = '';
 
+    public $is_completed = false;
+
     public function enrollUser()
     {
         if (! Auth::check()) {
@@ -158,6 +160,16 @@ class Show extends Component
                     })
                     ->orderBy('global_order', 'desc')
                     ->first();
+
+                $totalContents = $this->course->syllabus->flatMap->courseContents->count();
+                $completedContents = $this->course->progresses()
+                    ->where('student_id', $user->id)
+                    ->where('is_completed', true)
+                    ->count();
+
+                if ($totalContents > 0 && $totalContents === $completedContents) {
+                    $this->is_completed = true;
+                }
 
                 if ($lastCompleted) {
                     // Cari next content dari lastCompleted

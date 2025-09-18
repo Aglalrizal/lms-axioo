@@ -77,9 +77,8 @@
                                                                     Lulus</span>
                                                             </th>
                                                         @endif
-                                                        <th><a class="btn btn-info" data-bs-toggle="modal"
-                                                                data-bs-target="#fullscreenModal"
-                                                                wire:click="setSelectedQuizAttempt({{ $a->id }})">Detail</a>
+                                                        <th><a class="btn btn-info"
+                                                                wire:click="openQuizDetail({{ $a->id }})">Detail</a>
                                                         </th>
                                                         <!-- Tombol Trigger -->
                                                         {{-- <button type="button" class="btn btn-primary"
@@ -181,7 +180,7 @@
                                                 @endforeach
                                             </table>
                                             {{ $data->links() }}
-                                            <livewire:quiz.quiz-result-modal :attemptId="$selectedAttemptId" :key="'quiz-result-' . $selectedAttemptId" />
+                                            @livewire('course.published.quiz-attempt-report-modal')
                                         </div>
                                     @endif
                                     <div class="d-flex justify-content-end">
@@ -313,7 +312,13 @@
                                                                     </div>
                                                                     <div class="mb-3">
                                                                         <p>Url:
-                                                                            {{ $submission->url ?? '-' }}
+                                                                            @if ($submission->url)
+                                                                                <a href="{{ $submission->url }}"
+                                                                                    target="_blank"
+                                                                                    rel="noopener noreferrer">{{ $submission->url }}</a>
+                                                                            @else
+                                                                                -
+                                                                            @endif
                                                                         </p>
                                                                     </div>
                                                                     <div class="mb-3">
@@ -332,18 +337,21 @@
                                                                     </div>
                                                                     <div>
                                                                         <p class="mb-3">
-                                                                            {{ $submission->feedback ?? '' }}
+                                                                            Feedback: {{ $submission->feedback ?? '' }}
                                                                         </p>
                                                                         <p class="mb-3">Keterangan:
-                                                                            @if ($submission->status < 1)
-                                                                                <span class="alert alert-danger">Tidak
+                                                                            @if ($submission->grade < 1)
+                                                                                <span
+                                                                                    class="alert alert-danger py-1 px-2">Tidak
                                                                                     Lulus</span>
                                                                             @else
                                                                                 <span
-                                                                                    class="alert alert-success">Lulus</span>
+                                                                                    class="alert alert-success py-1 px-2">Lulus</span>
                                                                             @endif
                                                                         </p>
-                                                                        <small class="form-text">Jika tidak lulus, sila
+                                                                        <small class="form-text">Jika <span
+                                                                                class="text-danger">tidak lulus</span>,
+                                                                            sila
                                                                             kerjakan kembali tugasnya.</small>
                                                                     </div>
 

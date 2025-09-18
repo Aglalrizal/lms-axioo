@@ -27,13 +27,13 @@
                             <a class="nav-link @if ($activeTab === 'instructions') active @endif"
                                 wire:click.prevent="setActiveTab('instructions')" id="instructions-tab"
                                 data-bs-toggle="pill" href="#instructions" role="tab" aria-controls="instructions"
-                                aria-selected="true">Instruksi</a>
+                                aria-selected="false">Instruksi</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link @if ($activeTab === 'submission') active @endif"
                                 wire:click.prevent="setActiveTab('submission')" id="submission-tab"
                                 data-bs-toggle="pill" href="#submission" role="tab" aria-controls="submission"
-                                aria-selected="true">Tugas yang dikumpulkan</a>
+                                aria-selected="false">Tugas yang dikumpulkan</a>
                         </li>
                     </ul>
                 </div>

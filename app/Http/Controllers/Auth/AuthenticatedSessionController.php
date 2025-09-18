@@ -90,12 +90,22 @@ class AuthenticatedSessionController extends Controller
                     ->first();
 
                 if ($lastProgress) {
-                    $content = $lastProgress->courseContent;
-                    $redirectUrl = route('course.show.content', [
-                        'slug' => $course->slug,
-                        'syllabusId' => $content->syllabus_id,
-                        'courseContentId' => $content->id,
-                    ]);
+                    $totalContents = $course->syllabus->flatMap->courseContents->count();
+                    $completedContents = $course->progresses()
+                        ->where('student_id', Auth::id())
+                        ->where('is_completed', true)
+                        ->count();
+
+                    if ($totalContents === $completedContents) {
+                        $redirectUrl = route('course.show', $course->slug);
+                    } else {
+                        $content = $lastProgress->courseContent;
+                        $redirectUrl = route('course.show.content', [
+                            'slug' => $course->slug,
+                            'syllabusId' => $content->syllabus_id,
+                            'courseContentId' => $content->id,
+                        ]);
+                    }
                 } else {
                     $syllabus = $course->syllabus->sortBy('order')->first();
                     $content = $syllabus->courseContents->sortBy('order')->first();

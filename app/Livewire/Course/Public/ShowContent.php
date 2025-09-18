@@ -38,17 +38,15 @@ class ShowContent extends Component
 
     public $submission;
 
-    public $selectedAttemptId;
-
     protected $rules = [
         'textAnswer' => 'nullable|string',
         'url' => 'nullable|url',
         'file' => 'nullable|file|max:10240',
     ];
 
-    public function setSelectedQuizAttempt($id)
+    public function openQuizDetail(int $attemptId): void
     {
-        $this->selectedAttemptId = $id;
+        $this->dispatch('show-quiz-attempt', $attemptId);
     }
 
     public function markComplete()
